@@ -1,0 +1,6 @@
+.ant-layout-header {
+  background-color: #fff !important;
+  border-bottom: 1px solid rgb(0 0 0 / 10%);
+  padding: 16px 24px !important;
+  line-height: inherit !important;
+}

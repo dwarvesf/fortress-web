@@ -1,0 +1,27 @@
+name: Run test
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v2
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.8.0
+        with:
+          access_token: ${{ github.token }}
+      - name: Jest run
+        run: |
+          yarn
+          yarn test:ci
+      - name: Cypress run
+        uses: cypress-io/github-action@v4
+        with:
+          build: yarn build
+          start: yarn start

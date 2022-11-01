@@ -1,0 +1,99 @@
+@import '~antd/lib/style/themes/default.less';
+
+//
+// PROJECT
+// -----------------------------------------
+// https://lesscss.org/#escaping
+@THEME--DARK: ~'theme-dark';
+
+@height-base: 40px;
+
+@modal-mask-bg: fade(@black, 75%);
+
+@border-color-split: #f2f4f8;
+
+// Font
+@font-family: 'Montserrat', sans-serif;
+
+// Typography
+// ---
+@typography-title-font-weight: 700;
+
+// Links
+@link-color: #000;
+@link-hover-decoration: underline;
+
+// Colors
+@primary-color: #E13F5E;
+@primary-color--dark: #ffff;
+
+@primary-color-bg: #fff;
+@primary-color-bg--dark: #000;
+
+@text-color: #000;
+@text-color--dark: #eee;
+
+@gray-color: #cbcbcb;
+@gray-color--dark: #8f8f8f;
+
+@heading-color: @black;
+
+// Border
+@border-radius-base: 0px;
+@border-radius-sm: 2px;
+
+// Form
+@form-vertical-label-padding: 0 0 16px;
+
+@input-bg: #f2f4f8;
+@input-border-color: transparent;
+
+// Button
+@btn-font-weight: 600;
+@btn-default-bg: #d2d7e3;
+@btn-default-border: transparent;
+
+// Tabs
+@tabs-card-gutter: 0px;
+
+// Tooltip
+// ---
+// Tooltip max width
+@tooltip-max-width: 280px;
+// Tooltip background color
+@tooltip-bg: @black;
+// Tooltip arrow width
+@tooltip-arrow-width: 8px * sqrt(2);
+// Tooltip distance with trigger
+@tooltip-distance: @tooltip-arrow-width - 1px + 4px;
+// Tooltip arrow color
+@tooltip-arrow-color: @tooltip-bg;
+
+// Table
+@table-header-bg: @component-background;
+@table-header-sort-bg: @component-background;
+@table-row-hover-bg: #f2f4f8;
+
+// Dropdown
+
+// Calendar
+@picker-basic-cell-hover-with-range-color: #e8ecf2;
+@picker-date-hover-range-border-color: #e8ecf2;
+@picker-date-hover-range-color: #e8ecf2;
+@picker-basic-cell-hover-color: #e8ecf2;
+@picker-basic-cell-active-with-range-color: #e8ecf2;
+@picker-basic-cell-disabled-bg: transparent;
+
+// Media queries breakpoints
+@screen-xs: 481px;
+// 👆 Extra small screen / phone
+// 👇 Small screen / tablet
+@screen-sm: 641px;
+// Medium screen / desktop
+@screen-md: 769px;
+// Large screen / wide desktop
+@screen-lg: 1025px;
+// Extra large screen / full hd
+@screen-xl: 1281px;
+// Extra extra large screen / large desktop
+@screen-xxl: 1537px;
