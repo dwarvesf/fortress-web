@@ -13,7 +13,9 @@ const [Provider, useAuthContext] = createContext<AuthContextValues>({
   name: 'auth',
 })
 
-const tokenKey = 'df-token'
+const tokenKey = 'fortress-token'
+// const refreshTokenKey = 'fortress-refresh-token'
+
 const user = {
   firstName: 'Charlie',
   lastName: 'Puth',

@@ -7,7 +7,7 @@ import Head from 'next/head'
 import { AuthContextProvider } from 'context/auth'
 import { ThemeProvider } from 'styled-components'
 import { theme } from 'styles'
-import { AuthenticatedLayout } from 'components/common/AuthenticatedLayout'
+// import { AuthenticatedLayout } from 'components/common/AuthenticatedLayout'
 
 class MyApp extends App {
   render() {
@@ -32,10 +32,10 @@ class MyApp extends App {
         </Head>
         <ThemeProvider theme={theme}>
           <AuthContextProvider>
-            <AuthenticatedLayout>
-              <NProgressHandler />
-              <Component {...pageProps} />
-            </AuthenticatedLayout>
+            {/* <AuthenticatedLayout> */}
+            <NProgressHandler />
+            <Component {...pageProps} />
+            {/* </AuthenticatedLayout> */}
           </AuthContextProvider>
         </ThemeProvider>
       </>

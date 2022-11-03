@@ -1,5 +1,7 @@
+import { AuthenticatedLayout } from 'components/common/AuthenticatedLayout'
+
 const Default = () => {
-  return <div>Members</div>
+  return <AuthenticatedLayout>Members</AuthenticatedLayout>
 }
 
 export default Default

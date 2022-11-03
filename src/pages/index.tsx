@@ -1,5 +1,7 @@
+import { AuthenticatedLayout } from 'components/common/AuthenticatedLayout'
+
 const DashboardPage = () => {
-  return <div>Dashboard</div>
+  return <AuthenticatedLayout>Dashboard</AuthenticatedLayout>
 }
 
 export default DashboardPage
