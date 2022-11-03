@@ -27,7 +27,8 @@
             "specialLink": ["hrefLeft", "hrefRight"],
             "aspects": ["invalidHref", "preferButton"]
           }
-        ]
+        ],
+        "prefer-destructuring": "off"
       }
     }
   ]

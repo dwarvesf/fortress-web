@@ -1,0 +1,11 @@
+# Settings in the [build] context are global and are applied to all contexts
+# unless otherwise overridden by more specific contexts.
+[build]
+  publish = ".next"
+  command = "yarn build"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+[context.master.environment]
+  BASE_URL = ''
