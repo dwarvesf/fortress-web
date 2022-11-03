@@ -10,21 +10,11 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: development
-      url: ${{ steps.build-and-deploy.outputs.netlify_live_url }}
+      url: https://develop--fortress-v2.netlify.app
     timeout-minutes: 20
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-          ref: ${{github.event.after}}
-
-      # https://gist.github.com/ffflorian/71de2e72a3788fbc63fa5ead8e3b5fde
-      - name: Get Commit Message
-        id: get_commit_message
-        run: |
-          MSG=$(git log --format=%B -n 1 ${{github.event.after}})
-          echo "commit_message=$MSG" >> $GITHUB_OUTPUT
 
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.8.0
@@ -47,14 +37,8 @@ jobs:
       - name: Build & Deploy
         id: build-and-deploy
         run: |
-          COMMAND="netlify deploy --build --prod -m '${{ steps.get_commit_message.outputs.commit_message }}'"
+          COMMAND="netlify deploy --build --alias develop"
           OUTPUT=$(sh -c "$COMMAND")
-
-          NETLIFY_LOGS_URL=$(echo "$OUTPUT" | grep -Eo '(http|https)://app.netlify.com/[a-zA-Z0-9./?=_-]*') # Unique key: app.netlify.com
-          NETLIFY_LIVE_URL=$(echo "$OUTPUT" | grep -Eo '(http|https)://[a-zA-Z0-9./?=_-]*' | grep -Ev "netlify.com|(--)") # Unique key: doesn't contain -- and app.netlify.com
-
-          echo "::set-output name=netlify_logs_url::$NETLIFY_LOGS_URL"
-          echo "::set-output name=netlify_live_url::$NETLIFY_LIVE_URL"
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}

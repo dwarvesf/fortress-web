@@ -10,21 +10,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    environment: preview
     timeout-minutes: 20
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-          ref: ${{github.event.after}}
-
-      # https://gist.github.com/ffflorian/71de2e72a3788fbc63fa5ead8e3b5fde
-      - name: Get Commit Message
-        id: get_commit_message
-        run: |
-          MSG=$(git log --format=%B -n 1 ${{github.event.after}})
-          echo "commit_message=$MSG" >> $GITHUB_OUTPUT
 
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.8.0
@@ -58,13 +47,13 @@ jobs:
       - name: Build & Deploy
         id: build_and_deploy
         run: |
-          COMMAND="netlify deploy --build -m '${{ steps.get_commit_message.outputs.commit_message }}' --alias pr-${{ github.event.number }}"
+          COMMAND="netlify deploy --build -m ${{ github.head_ref }} --alias pr-${{ github.event.number }}"
           OUTPUT=$(sh -c "$COMMAND")
 
-          NETLIFY_URL=$(echo "$OUTPUT" | grep -Eo '(http|https)://[a-zA-Z0-9./?=_-]*(--)[a-zA-Z0-9./?=_-]*') # Unique key: --
+          NETLIFY_LIVE_URL=$(echo "$OUTPUT" | grep -Eo '(http|https)://[a-zA-Z0-9./?=_-]*(--)[a-zA-Z0-9./?=_-]*') # Unique key: --
           NETLIFY_LOGS_URL=$(echo "$OUTPUT" | grep -Eo '(http|https)://app.netlify.com/[a-zA-Z0-9./?=_-]*') # Unique key: app.netlify.com
 
-          echo "netlify_preview_url=$NETLIFY_URL" >> $GITHUB_OUTPUT
+          echo "netlify_live_url=$NETLIFY_LIVE_URL" >> $GITHUB_OUTPUT
           echo "netlify_logs_url=$NETLIFY_LOGS_URL" >> $GITHUB_OUTPUT
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
@@ -79,4 +68,4 @@ jobs:
           status: ${{ job.status }}
           deployment_id: ${{ steps.deployment.outputs.deployment_id }}
           logs: ${{ steps.build_and_deploy.outputs.netlify_logs_url }}
-          env_url: ${{ steps.build_and_deploy.outputs.netlify_preview_url }}
+          env_url: ${{ steps.build_and_deploy.outputs.netlify_live_url }}
