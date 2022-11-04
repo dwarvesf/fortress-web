@@ -107,13 +107,13 @@ const CopyrightText = styled(Typography.Text)`
 const LoginPage = () => {
   const { Text } = Typography
   const { push } = useRouter()
-  const { isLogin } = useAuthContext()
+  const { isLogin, login } = useAuthContext()
 
   useEffect(() => {
     if (isLogin) {
       push(ROUTES.DASHBOARD)
     }
-  }, [isLogin, push])
+  }, [push, isLogin])
 
   return (
     <LoginContainer>
@@ -135,7 +135,7 @@ const LoginPage = () => {
           Fortress
         </LoginHeading>
         <LoginWelcomeText>Welcome</LoginWelcomeText>
-        <GoogleLoginButton>
+        <GoogleLoginButton onClick={() => login()}>
           <GoogleOutlined />
           <Text>Login with Google</Text>
         </GoogleLoginButton>
@@ -178,49 +178,6 @@ const LoginPage = () => {
           </Link>
         </SocialLinks>
         <CopyrightText>A product of Dwarves, LLC</CopyrightText>
-        {/* <Card className="w-full max-w-[460px] !p-10">
-        <FormProvider {...formInstance}>
-          <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
-            <FormInput
-              label="Email"
-              placeholder="Email"
-              name="email"
-              fullWidth
-              rules={{ required: 'Required' }}
-            />
-            <FormInput
-              label="Password"
-              placeholder="Password"
-              name="password"
-              type="password"
-              fullWidth
-              rules={{ required: 'Required' }}
-            />
-            <div className="flex justify-between items-center">
-              <Checkbox>Remember me</Checkbox>
-              <Button appearance="link" type="button">
-                Forgot your password?
-              </Button>
-            </div>
-
-            <Button appearance="primary" type="submit" fullWidth>
-              Sign in
-            </Button>
-
-            <Divider>Or continue by</Divider>
-
-            <Button
-              type="button"
-              fullWidth
-              onClick={() => {
-                login('test@d.foundation', 'test')
-              }}
-            >
-              Use demo account
-            </Button>
-          </form>
-        </FormProvider>
-      </Card> */}
       </LoginCard>
     </LoginContainer>
   )

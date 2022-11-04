@@ -7,8 +7,10 @@ import {
 } from '@ant-design/icons'
 import type { MenuProps } from 'antd'
 import { Layout, Menu } from 'antd'
+import { ROUTES } from 'constants/routes'
+import { useAuthContext } from 'context/auth'
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { WithChildren } from 'types/common'
 import { Logo } from '../Logo'
 
@@ -43,7 +45,16 @@ interface Props extends WithChildren {}
 export const AuthenticatedLayout = (props: Props) => {
   const { children } = props
 
+  const { isLogin } = useAuthContext()
+
   const { push } = useRouter()
+
+  useEffect(() => {
+    if (!isLogin) {
+      push(ROUTES.LOGIN)
+    }
+  }, [push, isLogin])
+
   const [collapsed, setCollapsed] = useState(false)
 
   return (
