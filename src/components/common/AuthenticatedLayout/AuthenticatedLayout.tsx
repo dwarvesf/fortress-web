@@ -9,8 +9,10 @@ import type { MenuProps } from 'antd'
 import { Layout, Menu } from 'antd'
 import { ROUTES } from 'constants/routes'
 import { useAuthContext } from 'context/auth'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
+import styled from 'styled-components'
 import { WithChildren } from 'types/common'
 import { Logo } from '../Logo'
 
@@ -42,6 +44,10 @@ const items: MenuItem[] = [
 
 interface Props extends WithChildren {}
 
+const LogoLink = styled.a`
+  text-decoration: none !important;
+`
+
 export const AuthenticatedLayout = (props: Props) => {
   const { children } = props
 
@@ -60,7 +66,11 @@ export const AuthenticatedLayout = (props: Props) => {
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Header>
-        <Logo hasText />
+        <Link href={ROUTES.DASHBOARD}>
+          <LogoLink>
+            <Logo hasText />
+          </LogoLink>
+        </Link>
       </Header>
       <Layout>
         <Sider
