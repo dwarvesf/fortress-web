@@ -1,7 +1,6 @@
 import 'antd/dist/antd.css'
 import '../styles/index.css'
 import React from 'react'
-// import App from 'next/app'
 import NProgressHandler from 'components/common/NProgressHandler'
 import Head from 'next/head'
 import { AuthContextProvider } from 'context/auth'
