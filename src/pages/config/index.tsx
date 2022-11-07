@@ -1,5 +1,4 @@
 import { Button, Typography } from 'antd'
-import { AuthenticatedLayout } from 'components/common/AuthenticatedLayout'
 import { useAuthContext } from 'context/auth'
 
 const Default = () => {
@@ -7,11 +6,11 @@ const Default = () => {
   const { Text } = Typography
 
   return (
-    <AuthenticatedLayout>
+    <>
       <Text>{session?.user?.name}</Text>
       <br />
       <Button onClick={() => logout()}>Logout</Button>
-    </AuthenticatedLayout>
+    </>
   )
 }
 

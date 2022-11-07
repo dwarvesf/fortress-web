@@ -51,17 +51,23 @@ const LogoLink = styled.a`
 export const AuthenticatedLayout = (props: Props) => {
   const { children } = props
 
-  const { isLogin } = useAuthContext()
+  const { isAuthenticated } = useAuthContext()
 
-  const { push } = useRouter()
+  const { push, pathname } = useRouter()
 
   useEffect(() => {
-    if (!isLogin) {
-      push(ROUTES.LOGIN)
+    if (!isAuthenticated) {
+      if (pathname !== '/login') {
+        push(ROUTES.LOGIN)
+      }
     }
-  }, [push, isLogin])
+  }, [push, isAuthenticated, pathname])
 
   const [collapsed, setCollapsed] = useState(false)
+
+  if (pathname === '/login') {
+    return <Layout>{children}</Layout>
+  }
 
   return (
     <Layout style={{ minHeight: '100vh' }}>

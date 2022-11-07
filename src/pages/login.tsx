@@ -101,13 +101,13 @@ const CopyrightText = styled(Typography.Text)`
 const LoginPage = () => {
   const { Text } = Typography
   const { push } = useRouter()
-  const { isLogin, login } = useAuthContext()
+  const { isAuthenticated, login } = useAuthContext()
 
   useEffect(() => {
-    if (isLogin) {
+    if (isAuthenticated) {
       push(ROUTES.DASHBOARD)
     }
-  }, [push, isLogin])
+  }, [push, isAuthenticated])
 
   return (
     <LoginContainer>

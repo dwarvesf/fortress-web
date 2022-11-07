@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import { WithChildren } from 'types/common'
 
 interface AuthContextValues {
-  isLogin: boolean
+  isAuthenticated: boolean
   login: () => void
   logout: () => void
   session: Session | null
@@ -20,14 +20,14 @@ const [Provider, useAuthContext] = createContext<AuthContextValues>({
 const AuthContextProvider = ({ children }: WithChildren) => {
   const { data: session, status } = useSession()
 
-  const [isLogin, setIsLogin] = useState<boolean>(() => {
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
     return isSSR()
       ? false
       : Boolean(window.localStorage.getItem(AUTH_TOKEN_KEY))
   })
 
   useEffect(() => {
-    setIsLogin(status === 'authenticated' && session !== null)
+    setIsAuthenticated(status === 'authenticated' && session !== null)
   }, [session, status])
 
   // TODO: bind API and implement login and logout functions with localStorage's setItem and removeItem
@@ -35,7 +35,7 @@ const AuthContextProvider = ({ children }: WithChildren) => {
   return (
     <Provider
       value={{
-        isLogin,
+        isAuthenticated,
         login: () => signIn('google'),
         logout: () => signOut(),
         session,

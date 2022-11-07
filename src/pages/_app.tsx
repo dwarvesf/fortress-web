@@ -9,6 +9,7 @@ import { theme } from 'styles'
 import { SessionProvider } from 'next-auth/react'
 import { NextComponentType, NextPageContext } from 'next'
 import { Session } from 'next-auth'
+import { AuthenticatedLayout } from 'components/common/AuthenticatedLayout'
 
 const MyApp = ({
   Component,
@@ -39,8 +40,10 @@ const MyApp = ({
       <SessionProvider session={session}>
         <ThemeProvider theme={theme}>
           <AuthContextProvider>
-            <NProgressHandler />
-            <Component {...pageProps} />
+            <AuthenticatedLayout>
+              <NProgressHandler />
+              <Component {...pageProps} />
+            </AuthenticatedLayout>
           </AuthContextProvider>
         </ThemeProvider>
       </SessionProvider>
