@@ -69,7 +69,7 @@ export const AuthenticatedLayout = (props: Props) => {
     return <Layout>{children}</Layout>
   }
 
-  return (
+  return isAuthenticated ? (
     <Layout style={{ minHeight: '100vh' }}>
       <Header>
         <Link href={ROUTES.DASHBOARD}>
@@ -104,5 +104,5 @@ export const AuthenticatedLayout = (props: Props) => {
         </Layout>
       </Layout>
     </Layout>
-  )
+  ) : null
 }
