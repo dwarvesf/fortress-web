@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { Card, Button, Typography, Row, Col } from 'antd'
-import { useAuthContext } from 'context/auth'
+import { LOGIN_REDIRECTION_KEY, useAuthContext } from 'context/auth'
 import { useRouter } from 'next/router'
 import { ROUTES } from 'constants/routes'
 import styled from 'styled-components'
@@ -101,13 +101,17 @@ const CopyrightText = styled(Typography.Text)`
 const LoginPage = () => {
   const { Text } = Typography
   const { push } = useRouter()
-  const { isAuthenticated, login } = useAuthContext()
+  const { session, login } = useAuthContext()
 
   useEffect(() => {
-    if (isAuthenticated) {
-      push(ROUTES.DASHBOARD)
+    if (session !== null) {
+      const redirectUrl = window.localStorage.getItem(LOGIN_REDIRECTION_KEY)
+
+      push(redirectUrl || ROUTES.DASHBOARD).then(() => {
+        window.localStorage.removeItem(LOGIN_REDIRECTION_KEY)
+      })
     }
-  }, [push, isAuthenticated])
+  }, [push, session])
 
   return (
     <LoginContainer>

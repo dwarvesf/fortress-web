@@ -8,7 +8,7 @@ import {
 import type { MenuProps } from 'antd'
 import { Layout, Menu } from 'antd'
 import { ROUTES } from 'constants/routes'
-import { useAuthContext } from 'context/auth'
+import { LOGIN_REDIRECTION_KEY, useAuthContext } from 'context/auth'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
@@ -51,17 +51,21 @@ const LogoLink = styled.a`
 export const AuthenticatedLayout = (props: Props) => {
   const { children } = props
 
-  const { isAuthenticated } = useAuthContext()
+  const { session } = useAuthContext()
 
   const { push, pathname } = useRouter()
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (session === null) {
+      if (!window.location.href.includes(ROUTES.LOGIN)) {
+        window.localStorage.setItem(LOGIN_REDIRECTION_KEY, window.location.href)
+      }
+
       if (pathname !== '/login') {
         push(ROUTES.LOGIN)
       }
     }
-  }, [push, isAuthenticated, pathname])
+  }, [push, session, pathname])
 
   const [collapsed, setCollapsed] = useState(false)
 
@@ -69,7 +73,7 @@ export const AuthenticatedLayout = (props: Props) => {
     return <Layout>{children}</Layout>
   }
 
-  return isAuthenticated ? (
+  return session ? (
     <Layout style={{ minHeight: '100vh' }}>
       <Header style={{ position: 'fixed', zIndex: 30, width: '100vw' }}>
         <div style={{ maxWidth: 'max-content' }}>

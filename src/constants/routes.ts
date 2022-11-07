@@ -7,4 +7,5 @@ export const ROUTES = {
   CONFIG: '/config',
   MEMBERS: '/members',
   ADD_MEMBER: '/members/new',
+  MEMBER_DETAIL: (id: string) => `members/${id}`,
 }

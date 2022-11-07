@@ -8,6 +8,8 @@ import {
   Select,
   Typography,
 } from 'antd'
+import { ROUTES } from 'constants/routes'
+import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { theme } from 'styles'
@@ -39,32 +41,6 @@ const PrimaryButton = styled(Button)`
   border-radius: 4px;
 `
 
-class AddMemberFormValues {
-  fullname?: string
-  status?: keyof typeof MemberStatus
-  email?: string
-  personalEmail?: string
-  role?: keyof typeof MemberRole
-  seniority?: keyof typeof MemberSeniority
-  salary?: number
-  accountRole?: keyof typeof MemberAccountRole
-}
-
-const defaultValues: AddMemberFormValues = {
-  fullname: undefined,
-  status: 'onboarding',
-  email: undefined,
-  personalEmail: undefined,
-  role: 'frontend',
-  seniority: 'fresher',
-  salary: undefined,
-  accountRole: 'admin',
-}
-
-interface Props {
-  initialValues?: AddMemberFormValues
-}
-
 export const MemberStatus = {
   onboarding: 'Onboarding',
   probation: 'Probation',
@@ -86,7 +62,7 @@ export const MemberSeniority = {
   mid: 'Mid',
   senior: 'Senior',
   staff: 'Staff',
-  principle: 'principle',
+  principle: 'Principle',
 }
 
 export const MemberAccountRole = {
@@ -94,25 +70,76 @@ export const MemberAccountRole = {
   member: 'Member',
 }
 
+class AddMemberFormValues {
+  id?: string
+  fullname?: string
+  status?: keyof typeof MemberStatus
+  email?: string
+  personalEmail?: string
+  role?: keyof typeof MemberRole
+  seniority?: keyof typeof MemberSeniority
+  salary?: number
+  accountRole?: keyof typeof MemberAccountRole
+
+  constructor() {
+    this.id = crypto.randomUUID()
+  }
+}
+
+const defaultValues: AddMemberFormValues = {
+  fullname: undefined,
+  status: 'onboarding',
+  email: undefined,
+  personalEmail: undefined,
+  role: 'frontend',
+  seniority: 'fresher',
+  salary: undefined,
+  accountRole: 'admin',
+}
+
+interface Props {
+  initialValues?: AddMemberFormValues
+}
+
 const AddMemberPage = (props: Props) => {
   const { initialValues = defaultValues } = props
   const [form] = Form.useForm()
   const addMemberFormRef = useRef({ ...new AddMemberFormValues() })
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
+  const { push } = useRouter()
 
   const onSubmit = async (values: Required<AddMemberFormValues>) => {
     addMemberFormRef.current = transformDataToSend(values)
     try {
       setIsSubmitting(true)
+
       // TODO: Bind API
+
       notification.success({
         message: 'Success',
         description: `Successfully created new member!`,
+        btn: (
+          <Button
+            onClick={() =>
+              push(ROUTES.MEMBER_DETAIL(addMemberFormRef?.current?.id!))
+            }
+          >
+            <Typography.Text style={{ fontWeight: 500 }}>
+              View member detail
+            </Typography.Text>
+          </Button>
+        ),
+        duration: 5,
+      })
+
+      // Automatically route to members list page, should schedule this after the fetch data hook
+      return await new Promise(() => {
+        setTimeout(() => push(ROUTES.MEMBERS), 5000)
       })
     } catch (error: any) {
       notification.error({
         message: 'Error',
-        description: error?.message || 'Could not create new sign up link!!',
+        description: error?.message || 'Could not create new member!',
       })
     } finally {
       setIsSubmitting(false)
