@@ -71,19 +71,22 @@ export const AuthenticatedLayout = (props: Props) => {
 
   return isAuthenticated ? (
     <Layout style={{ minHeight: '100vh' }}>
-      <Header>
-        <Link href={ROUTES.DASHBOARD}>
-          <LogoLink>
-            <Logo hasText />
-          </LogoLink>
-        </Link>
+      <Header style={{ position: 'fixed', zIndex: 30, width: '100vw' }}>
+        <div style={{ maxWidth: 'max-content' }}>
+          <Link href={ROUTES.DASHBOARD}>
+            <LogoLink>
+              <Logo hasText />
+            </LogoLink>
+          </Link>
+        </div>
       </Header>
-      <Layout>
+      <Layout style={{ paddingTop: 64, height: '100vh' }}>
         <Sider
           collapsible
           collapsed={collapsed}
           onCollapse={(value) => setCollapsed(value)}
           theme="light"
+          style={{ position: 'sticky', top: 0 }}
         >
           <Menu
             theme="light"
@@ -94,9 +97,13 @@ export const AuthenticatedLayout = (props: Props) => {
             onClick={({ key }) => push(key)}
           />
         </Sider>
-        <Layout style={{ padding: '0 24px 24px' }}>
-          <Content style={{ margin: '0 16px' }}>
-            <div style={{ padding: 24, minHeight: 360 }}>{children}</div>
+        <Layout>
+          <Content
+            style={{ margin: '0 16px', overflow: 'auto', overflowX: 'auto' }}
+          >
+            <div style={{ padding: 24, minHeight: 360, minWidth: 250 }}>
+              {children}
+            </div>
           </Content>
           <Footer style={{ textAlign: 'center' }}>
             Dwarves, LLC © 2015 - 2022 All rights reserved.

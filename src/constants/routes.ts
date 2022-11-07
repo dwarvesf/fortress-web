@@ -5,4 +5,6 @@ export const ROUTES = {
   EMPLOYEES: '/employees',
   FEEDBACKS: '/feedbacks',
   CONFIG: '/config',
+  MEMBERS: '/members',
+  ADD_MEMBER: '/members/new',
 }
