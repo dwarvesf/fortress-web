@@ -13,6 +13,7 @@ import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { theme } from 'styles'
+import { v4 as uuid4 } from 'uuid'
 
 const Heading = styled(Typography.Text)`
   color: ${theme.colors.gray700};
@@ -20,7 +21,7 @@ const Heading = styled(Typography.Text)`
   font-size: 20px;
 `
 
-const AddMemberForm = styled(Form)`
+const CreateMemberForm = styled(Form)`
   .ant-form-item-row {
     flex-direction: column;
     align-items: start;
@@ -70,7 +71,7 @@ export const MemberAccountRole = {
   member: 'Member',
 }
 
-class AddMemberFormValues {
+class CreateMemberFormValues {
   id?: string
   fullname?: string
   status?: keyof typeof MemberStatus
@@ -82,11 +83,11 @@ class AddMemberFormValues {
   accountRole?: keyof typeof MemberAccountRole
 
   constructor() {
-    this.id = crypto.randomUUID()
+    this.id = uuid4()
   }
 }
 
-const defaultValues: AddMemberFormValues = {
+const defaultValues: CreateMemberFormValues = {
   fullname: undefined,
   status: 'onboarding',
   email: undefined,
@@ -98,18 +99,18 @@ const defaultValues: AddMemberFormValues = {
 }
 
 interface Props {
-  initialValues?: AddMemberFormValues
+  initialValues?: CreateMemberFormValues
 }
 
-const AddMemberPage = (props: Props) => {
+const CreateMemberPage = (props: Props) => {
   const { initialValues = defaultValues } = props
   const [form] = Form.useForm()
-  const addMemberFormRef = useRef({ ...new AddMemberFormValues() })
+  const createMemberFormRef = useRef({ ...new CreateMemberFormValues() })
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
   const { push } = useRouter()
 
-  const onSubmit = async (values: Required<AddMemberFormValues>) => {
-    addMemberFormRef.current = transformDataToSend(values)
+  const onSubmit = async (values: Required<CreateMemberFormValues>) => {
+    createMemberFormRef.current = transformDataToSend(values)
     try {
       setIsSubmitting(true)
 
@@ -120,11 +121,12 @@ const AddMemberPage = (props: Props) => {
         description: `Successfully created new member!`,
         btn: (
           <Button
-            onClick={() =>
-              push(ROUTES.MEMBER_DETAIL(addMemberFormRef?.current?.id!))
-            }
+            style={{ backgroundColor: theme.colors.white, borderRadius: 5 }}
+            onClick={() => {
+              push(ROUTES.MEMBER_DETAIL(createMemberFormRef?.current?.id!))
+            }}
           >
-            <Typography.Text style={{ fontWeight: 500 }}>
+            <Typography.Text type="success" style={{ fontWeight: 500 }}>
               View member detail
             </Typography.Text>
           </Button>
@@ -146,9 +148,9 @@ const AddMemberPage = (props: Props) => {
     }
   }
 
-  const transformDataToSend = (values: Required<AddMemberFormValues>) => {
+  const transformDataToSend = (values: Required<CreateMemberFormValues>) => {
     return {
-      ...addMemberFormRef.current,
+      ...createMemberFormRef.current,
       ...values,
     }
   }
@@ -162,11 +164,11 @@ const AddMemberPage = (props: Props) => {
   return (
     <Row>
       <Col span={24} lg={{ span: 16 }}>
-        <AddMemberForm
+        <CreateMemberForm
           form={form}
           initialValues={initialValues}
           onFinish={(values) => {
-            onSubmit(values as Required<AddMemberFormValues>)
+            onSubmit(values as Required<CreateMemberFormValues>)
           }}
         >
           <Heading as="h2">New member</Heading>
@@ -307,10 +309,10 @@ const AddMemberPage = (props: Props) => {
           <PrimaryButton htmlType="submit" loading={isSubmitting}>
             Submit
           </PrimaryButton>
-        </AddMemberForm>
+        </CreateMemberForm>
       </Col>
     </Row>
   )
 }
 
-export default AddMemberPage
+export default CreateMemberPage

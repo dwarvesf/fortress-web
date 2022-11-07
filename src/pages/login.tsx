@@ -101,17 +101,17 @@ const CopyrightText = styled(Typography.Text)`
 const LoginPage = () => {
   const { Text } = Typography
   const { push } = useRouter()
-  const { session, login } = useAuthContext()
+  const { isAuthenticated, login } = useAuthContext()
 
   useEffect(() => {
-    if (session !== null) {
+    if (isAuthenticated) {
       const redirectUrl = window.localStorage.getItem(LOGIN_REDIRECTION_KEY)
 
       push(redirectUrl || ROUTES.DASHBOARD).then(() => {
         window.localStorage.removeItem(LOGIN_REDIRECTION_KEY)
       })
     }
-  }, [push, session])
+  }, [push, isAuthenticated])
 
   return (
     <LoginContainer>

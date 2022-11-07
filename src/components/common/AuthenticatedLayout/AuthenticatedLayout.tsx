@@ -51,12 +51,12 @@ const LogoLink = styled.a`
 export const AuthenticatedLayout = (props: Props) => {
   const { children } = props
 
-  const { session } = useAuthContext()
+  const { isAuthenticated } = useAuthContext()
 
   const { push, pathname } = useRouter()
 
   useEffect(() => {
-    if (session === null) {
+    if (!isAuthenticated) {
       if (!window.location.href.includes(ROUTES.LOGIN)) {
         window.localStorage.setItem(LOGIN_REDIRECTION_KEY, window.location.href)
       }
@@ -65,7 +65,7 @@ export const AuthenticatedLayout = (props: Props) => {
         push(ROUTES.LOGIN)
       }
     }
-  }, [push, session, pathname])
+  }, [push, isAuthenticated, pathname])
 
   const [collapsed, setCollapsed] = useState(false)
 
@@ -73,7 +73,7 @@ export const AuthenticatedLayout = (props: Props) => {
     return <Layout>{children}</Layout>
   }
 
-  return session ? (
+  return isAuthenticated ? (
     <Layout style={{ minHeight: '100vh' }}>
       <Header style={{ position: 'fixed', zIndex: 30, width: '100vw' }}>
         <div style={{ maxWidth: 'max-content' }}>

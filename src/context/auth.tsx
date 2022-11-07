@@ -1,11 +1,12 @@
-import { createContext } from '@dwarvesf/react-utils'
+import { createContext, isSSR } from '@dwarvesf/react-utils'
 import { ROUTES } from 'constants/routes'
 import { Session } from 'next-auth'
 import { useSession, signIn, signOut } from 'next-auth/react'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { WithChildren } from 'types/common'
 
 interface AuthContextValues {
+  isAuthenticated: boolean
   login: () => void
   logout: () => void
   session: Session | null
@@ -21,6 +22,13 @@ const [Provider, useAuthContext] = createContext<AuthContextValues>({
 const AuthContextProvider = ({ children }: WithChildren) => {
   const { data: session } = useSession()
 
+  const isAuthenticated = useMemo(() => {
+    const authenticated = isSSR()
+      ? false
+      : Boolean(window.localStorage.getItem(AUTH_TOKEN_KEY))
+    return authenticated || session !== null
+  }, [session])
+
   useEffect(() => {
     if (!window.location.href.includes(ROUTES.LOGIN)) {
       window.localStorage.setItem(LOGIN_REDIRECTION_KEY, window.location.href)
@@ -32,6 +40,7 @@ const AuthContextProvider = ({ children }: WithChildren) => {
   return (
     <Provider
       value={{
+        isAuthenticated,
         login: () => signIn('google'),
         logout: () => signOut(),
         session,
