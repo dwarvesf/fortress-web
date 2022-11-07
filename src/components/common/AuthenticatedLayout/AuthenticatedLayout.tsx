@@ -7,8 +7,12 @@ import {
 } from '@ant-design/icons'
 import type { MenuProps } from 'antd'
 import { Layout, Menu } from 'antd'
+import { ROUTES } from 'constants/routes'
+import { useAuthContext } from 'context/auth'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import styled from 'styled-components'
 import { WithChildren } from 'types/common'
 import { Logo } from '../Logo'
 
@@ -40,16 +44,39 @@ const items: MenuItem[] = [
 
 interface Props extends WithChildren {}
 
+const LogoLink = styled.a`
+  text-decoration: none !important;
+`
+
 export const AuthenticatedLayout = (props: Props) => {
   const { children } = props
 
-  const { push } = useRouter()
+  const { isAuthenticated } = useAuthContext()
+
+  const { push, pathname } = useRouter()
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      if (pathname !== '/login') {
+        push(ROUTES.LOGIN)
+      }
+    }
+  }, [push, isAuthenticated, pathname])
+
   const [collapsed, setCollapsed] = useState(false)
 
-  return (
+  if (pathname === '/login') {
+    return <Layout>{children}</Layout>
+  }
+
+  return isAuthenticated ? (
     <Layout style={{ minHeight: '100vh' }}>
       <Header>
-        <Logo hasText />
+        <Link href={ROUTES.DASHBOARD}>
+          <LogoLink>
+            <Logo hasText />
+          </LogoLink>
+        </Link>
       </Header>
       <Layout>
         <Sider
@@ -77,5 +104,5 @@ export const AuthenticatedLayout = (props: Props) => {
         </Layout>
       </Layout>
     </Layout>
-  )
+  ) : null
 }

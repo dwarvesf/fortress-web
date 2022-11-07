@@ -1,5 +1,17 @@
+import { Button, Typography } from 'antd'
+import { useAuthContext } from 'context/auth'
+
 const Default = () => {
-  return <div>Config</div>
+  const { logout, session } = useAuthContext()
+  const { Text } = Typography
+
+  return (
+    <>
+      <Text>{session?.user?.name}</Text>
+      <br />
+      <Button onClick={() => logout()}>Logout</Button>
+    </>
+  )
 }
 
 export default Default

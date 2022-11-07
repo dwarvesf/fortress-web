@@ -1,5 +1,5 @@
 const Default = () => {
-  return <div>Feedbacks</div>
+  return <>Feedbacks</>
 }
 
 export default Default
