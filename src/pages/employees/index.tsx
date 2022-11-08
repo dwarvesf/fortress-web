@@ -145,7 +145,7 @@ const Default = () => {
               <Input placeholder="Search members" bordered />
             </Col>
             <Col>
-              <Button type="primary" href={`${ROUTES.EMPLOYEES}/new`}>
+              <Button type="primary" href={ROUTES.ADD_EMPLOYEE}>
                 Add Member
               </Button>
             </Col>

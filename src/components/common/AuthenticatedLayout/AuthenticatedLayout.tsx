@@ -75,7 +75,7 @@ export const AuthenticatedLayout = (props: Props) => {
 
   return isAuthenticated ? (
     <Layout style={{ minHeight: '100vh' }}>
-      <Header style={{ position: 'fixed', zIndex: 30, width: '100vw' }}>
+      <Header className="layout-header">
         <div style={{ maxWidth: 'max-content' }}>
           <Link href={ROUTES.DASHBOARD}>
             <LogoLink>
