@@ -1,6 +1,15 @@
 .ant-layout-header {
   background-color: #fff !important;
-  border-bottom: 1px solid rgb(0 0 0 / 10%);
+  border-bottom: 1px solid #d2d7e3;
   padding: 16px 24px !important;
   line-height: inherit !important;
+}
+
+.ant-input[type='text'] {
+  background: #fff;
+  border: 1px solid #d2d7e3;
+}
+
+.ant-table-thead > tr > th {
+  font-weight: bold;
 }

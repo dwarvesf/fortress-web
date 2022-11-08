@@ -35,11 +35,11 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-  getItem('Dashboard', '/', <LayoutFilled />),
-  getItem('Projects', '/projects', <AppstoreFilled />),
-  getItem('Members', '/members', <UserOutlined />),
-  getItem('Feedbacks', '/feedbacks', <WechatFilled />),
-  getItem('Config', '/config', <SettingFilled />),
+  getItem('Dashboard', ROUTES.DASHBOARD, <LayoutFilled />),
+  getItem('Projects', ROUTES.PROJECTS, <AppstoreFilled />),
+  getItem('Employees', ROUTES.EMPLOYEES, <UserOutlined />),
+  getItem('Feedbacks', ROUTES.FEEDBACKS, <WechatFilled />),
+  getItem('Config', ROUTES.CONFIG, <SettingFilled />),
 ]
 
 interface Props extends WithChildren {}
