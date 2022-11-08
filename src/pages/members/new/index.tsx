@@ -107,6 +107,7 @@ const CreateMemberPage = (props: Props) => {
   const [form] = Form.useForm()
   const createMemberFormRef = useRef({ ...new CreateMemberFormValues() })
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
+  console.log(isSubmitting)
   const { push } = useRouter()
 
   const onSubmit = async (values: Required<CreateMemberFormValues>) => {
@@ -136,6 +137,7 @@ const CreateMemberPage = (props: Props) => {
 
       // Automatically route to members list page, should schedule this after the fetch data hook
       return await new Promise(() => {
+        setIsSubmitting(false)
         setTimeout(() => push(ROUTES.MEMBERS), 5000)
       })
     } catch (error: any) {
