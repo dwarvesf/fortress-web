@@ -1,53 +1,11 @@
-import {
-  Button,
-  Col,
-  Form,
-  Input,
-  notification,
-  Row,
-  Select,
-  Space,
-  Typography,
-} from 'antd'
+import { Button, Col, Form, notification, Row, Space, Typography } from 'antd'
 import { ROUTES } from 'constants/routes'
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
-import styled from 'styled-components'
 import { theme } from 'styles'
 import { v4 as uuid4 } from 'uuid'
 import { PageHeader } from 'components/common/PageHeader'
-
-const CreateEmployeeForm = styled(Form)`
-  .ant-form-item-row {
-    flex-direction: column;
-    align-items: start;
-  }
-
-  .ant-form-item-control {
-    width: 100%;
-  }
-
-  .ant-form-item-label {
-    font-weight: 600;
-  }
-
-  .ant-form-item-required::after {
-    content: '*';
-    color: ${theme.colors.primary};
-  }
-
-  .ant-form-item-required::before {
-    display: none !important;
-  }
-
-  .ant-input-status-error {
-    background-color: ${theme.colors.white} !important;
-  }
-
-  input {
-    background-color: ${theme.colors.white};
-  }
-`
+import { CreateEmployeeForm } from 'components/pages/employees/CreateEmployeeForm'
 
 export const EmployeeStatus = {
   onboarding: 'Onboarding',
@@ -78,7 +36,7 @@ export const EmployeeAccountRole = {
   member: 'Member',
 }
 
-class CreateEmployeeFormValues {
+export class CreateEmployeeFormValues {
   id?: string
   fullname?: string
   status?: keyof typeof EmployeeStatus
@@ -179,154 +137,9 @@ const CreateEmployeePage = (props: Props) => {
           <CreateEmployeeForm
             form={form}
             initialValues={initialValues}
-            onFinish={(values) => {
-              onSubmit(values as Required<CreateEmployeeFormValues>)
-            }}
-          >
-            <Row gutter={32}>
-              <Col span={24} md={{ span: 12 }}>
-                <Form.Item
-                  label="Fullname"
-                  name="fullname"
-                  rules={[
-                    { required: true, message: 'Please input fullname' },
-                    {
-                      max: 99,
-                      message: 'Fullname must be less than 100 characters',
-                    },
-                  ]}
-                >
-                  <Input type="text" placeholder="Enter fullname" />
-                </Form.Item>
-              </Col>
-
-              <Col span={24} md={{ span: 12 }}>
-                <Form.Item
-                  label="Status"
-                  name="status"
-                  rules={[{ required: true, message: 'Please select status' }]}
-                >
-                  <Select
-                    bordered={false}
-                    style={{ background: theme.colors.white }}
-                  >
-                    {Object.keys(EmployeeStatus).map((k) => (
-                      <Select.Option value={k} key={k}>
-                        {EmployeeStatus[k as keyof typeof EmployeeStatus]}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-              </Col>
-
-              <Col span={24} md={{ span: 12 }}>
-                <Form.Item
-                  label="Email"
-                  name="email"
-                  rules={[
-                    { required: true, message: 'Please input email' },
-                    { type: 'email', message: 'Wrong email format' },
-                  ]}
-                >
-                  <Input type="email" placeholder="Enter email" />
-                </Form.Item>
-              </Col>
-
-              <Col span={24} md={{ span: 12 }}>
-                <Form.Item
-                  label="Personal email"
-                  name="personalEmail"
-                  rules={[
-                    {
-                      required: true,
-                      message: 'Please input personal email',
-                    },
-                    { type: 'email', message: 'Wrong email format' },
-                  ]}
-                >
-                  <Input type="email" placeholder="Enter email" />
-                </Form.Item>
-              </Col>
-
-              <Col span={24} md={{ span: 12 }}>
-                <Form.Item
-                  label="Role"
-                  name="role"
-                  rules={[{ required: true, message: 'Please select role' }]}
-                >
-                  <Select
-                    bordered={false}
-                    style={{ background: theme.colors.white }}
-                  >
-                    {Object.keys(EmployeeRole).map((k) => (
-                      <Select.Option value={k} key={k}>
-                        {EmployeeRole[k as keyof typeof EmployeeRole]}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-              </Col>
-
-              <Col span={24} md={{ span: 12 }}>
-                <Form.Item
-                  label="Seniority"
-                  name="seniority"
-                  rules={[
-                    { required: true, message: 'Please select seniority' },
-                  ]}
-                >
-                  <Select
-                    bordered={false}
-                    style={{ background: theme.colors.white }}
-                  >
-                    {Object.keys(EmployeeSeniority).map((k) => (
-                      <Select.Option value={k} key={k}>
-                        {EmployeeSeniority[k as keyof typeof EmployeeSeniority]}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-              </Col>
-
-              <Col span={24} md={{ span: 12 }}>
-                <Form.Item
-                  label="Salary"
-                  name="salary"
-                  rules={[{ required: true, message: 'Please input salary' }]}
-                >
-                  <Input type="number" placeholder="Enter salary" />
-                </Form.Item>
-              </Col>
-
-              <Col span={24} md={{ span: 12 }}>
-                <Form.Item
-                  label="Account role"
-                  name="accountRole"
-                  rules={[
-                    { required: true, message: 'Please select account role' },
-                  ]}
-                >
-                  <Select
-                    bordered={false}
-                    style={{ background: theme.colors.white }}
-                  >
-                    {Object.keys(EmployeeAccountRole).map((k) => (
-                      <Select.Option value={k} key={k}>
-                        {
-                          EmployeeAccountRole[
-                            k as keyof typeof EmployeeAccountRole
-                          ]
-                        }
-                      </Select.Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-              </Col>
-            </Row>
-            <Button type="primary" htmlType="submit" loading={isSubmitting}>
-              Submit
-            </Button>
-          </CreateEmployeeForm>
+            onSubmit={onSubmit}
+            isLoading={isSubmitting}
+          />
         </Col>
       </Row>
     </Space>

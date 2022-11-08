@@ -102,12 +102,8 @@ export const AuthenticatedLayout = (props: Props) => {
           />
         </Sider>
         <Layout>
-          <Content
-            style={{ margin: '0 16px', overflow: 'auto', overflowX: 'auto' }}
-          >
-            <div style={{ padding: 24, minHeight: 360, minWidth: 250 }}>
-              {children}
-            </div>
+          <Content className="layout-main">
+            <div className="layout-main-content">{children}</div>
           </Content>
           <Footer style={{ textAlign: 'center' }}>
             Dwarves, LLC © 2015 - 2022 All rights reserved.
