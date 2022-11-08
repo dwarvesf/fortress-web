@@ -58,3 +58,18 @@
 .ant-table-thead > tr > th {
   font-weight: bold;
 }
+
+.ant-tabs-nav-list {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.ant-card-head .ant-card-head-title {
+  padding: 8px 0;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.ant-card-head .ant-card-extra {
+  padding: 8px 0;
+}

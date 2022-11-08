@@ -11,9 +11,10 @@ import { ROUTES } from 'constants/routes'
 import { LOGIN_REDIRECTION_KEY, useAuthContext } from 'context/auth'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { WithChildren } from 'types/common'
+import { isActivePath } from 'utils/link'
 import { Logo } from '../Logo'
 
 const { Header, Content, Footer, Sider } = Layout
@@ -69,6 +70,12 @@ export const AuthenticatedLayout = (props: Props) => {
 
   const [collapsed, setCollapsed] = useState(false)
 
+  const activeMenuKey = useMemo(() => {
+    return items.find((item) => {
+      return isActivePath(item?.key as string, pathname)
+    })?.key as string
+  }, [pathname])
+
   if (pathname === '/login') {
     return <Layout>{children}</Layout>
   }
@@ -99,6 +106,7 @@ export const AuthenticatedLayout = (props: Props) => {
             mode="inline"
             items={items}
             onClick={({ key }) => push(key)}
+            activeKey={activeMenuKey}
           />
         </Sider>
         <Layout>
