@@ -1,5 +1,15 @@
-import { Form, Row, Col, Input, Select, Button } from 'antd'
-import { FormInstance } from 'antd/lib/form'
+import {
+  Form,
+  Row,
+  Col,
+  Input,
+  Select,
+  Button,
+  notification,
+  Typography,
+} from 'antd'
+import { ROUTES } from 'constants/routes'
+import { useRouter } from 'next/router'
 import {
   EmployeeStatus,
   EmployeeRole,
@@ -7,17 +17,94 @@ import {
   EmployeeAccountRole,
   CreateEmployeeFormValues,
 } from 'pages/employees/new'
+import { useRef, useState, useEffect } from 'react'
 import { theme } from 'styles'
 
 interface Props {
-  form: FormInstance<CreateEmployeeFormValues>
-  initialValues: CreateEmployeeFormValues
-  onSubmit: (values: Required<CreateEmployeeFormValues>) => Promise<any>
-  isLoading: boolean
+  initialValues?: CreateEmployeeFormValues
+  isEditing?: boolean
 }
 
-export const CreateEmployeeForm = (props: Props) => {
-  const { form, initialValues, onSubmit, isLoading } = props
+const defaultValues: CreateEmployeeFormValues = {
+  fullname: undefined,
+  status: 'onboarding',
+  email: undefined,
+  personalEmail: undefined,
+  role: 'frontend',
+  seniority: 'fresher',
+  salary: undefined,
+  accountRole: 'admin',
+}
+
+export const EmployeeForm = (props: Props) => {
+  const { initialValues = defaultValues, isEditing = false } = props
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
+
+  const { push } = useRouter()
+
+  const [form] = Form.useForm()
+  const createEmployeeFormRef = useRef({ ...new CreateEmployeeFormValues() })
+
+  const onSubmit = async (values: Required<CreateEmployeeFormValues>) => {
+    createEmployeeFormRef.current = transformDataToSend(values)
+    try {
+      setIsSubmitting(true)
+
+      // TODO: Bind API
+
+      notification.success({
+        message: 'Success',
+        description: isEditing
+          ? 'Successfully edited employee!'
+          : 'Successfully created new employee!',
+        btn: !isEditing ? (
+          <Button
+            style={{ backgroundColor: theme.colors.white, borderRadius: 5 }}
+            onClick={() => {
+              push(ROUTES.EMPLOYEE_DETAIL(createEmployeeFormRef?.current?.id!))
+            }}
+          >
+            <Typography.Text
+              style={{ fontWeight: 500, color: theme.colors.primary }}
+            >
+              View employee detail
+            </Typography.Text>
+          </Button>
+        ) : null,
+        duration: 5,
+      })
+
+      // Automatically route to employees list page, should schedule this after the fetch data hook
+      return await new Promise(() => {
+        setIsSubmitting(false)
+        setTimeout(() => push(ROUTES.EMPLOYEES), 5000)
+      })
+    } catch (error: any) {
+      notification.error({
+        message: 'Error',
+        description:
+          error?.message ||
+          (isEditing
+            ? 'Could not edit employee!'
+            : 'Could not create new employee!'),
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  const transformDataToSend = (values: Required<CreateEmployeeFormValues>) => {
+    return {
+      ...createEmployeeFormRef.current,
+      ...values,
+    }
+  }
+
+  useEffect(() => {
+    if (initialValues) {
+      form.setFieldsValue(initialValues)
+    }
+  }, [initialValues]) // eslint-disable-line
 
   return (
     <Form
@@ -147,7 +234,7 @@ export const CreateEmployeeForm = (props: Props) => {
           </Form.Item>
         </Col>
       </Row>
-      <Button type="primary" htmlType="submit" loading={isLoading}>
+      <Button type="primary" htmlType="submit" loading={isSubmitting}>
         Submit
       </Button>
     </Form>
