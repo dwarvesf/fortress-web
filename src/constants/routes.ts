@@ -6,5 +6,5 @@ export const ROUTES = {
   FEEDBACKS: '/feedbacks',
   CONFIG: '/config',
   ADD_EMPLOYEE: '/employees/new',
-  EMPLOYEE_DETAIL: (id: string) => `employees/${id}`,
+  EMPLOYEE_DETAIL: (id: string) => `/employees/${id}`,
 }
