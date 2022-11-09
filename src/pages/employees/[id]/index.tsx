@@ -37,7 +37,7 @@ const Default = () => {
                   title="Profile"
                   extra={<SectionEditButton onClick={noop} />}
                 >
-                  <Row gutter={24} wrap={false}>
+                  <Row gutter={24}>
                     <Col span={24} lg={{ span: 8 }}>
                       <Space
                         direction="vertical"
@@ -69,7 +69,7 @@ const Default = () => {
                         />
                       </Space>
                     </Col>
-                    <Col flex={1}>
+                    <Col span={24} lg={{ span: 16 }}>
                       <DataRows
                         data={[
                           {

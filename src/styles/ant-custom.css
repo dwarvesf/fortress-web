@@ -5,15 +5,17 @@
 }
 
 .layout-main {
-  margin: 0 16px;
   overflow: auto;
-  overflow-x: auto;
 }
 
 .layout-main-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.layout-main-content-body {
   padding: 24px;
-  min-height: 360px;
-  min-width: 250px;
+  flex: 1;
 }
 
 .ant-layout-header {
@@ -21,6 +23,12 @@
   border-bottom: 1px solid #d2d7e3;
   padding: 16px 24px !important;
   line-height: inherit !important;
+}
+
+.ant-layout-footer {
+  padding: 12px 50px !important;
+  text-align: center;
+  font-size: 12px !important;
 }
 
 .ant-input[type='text'],

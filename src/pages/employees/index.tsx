@@ -125,10 +125,14 @@ const Default = () => {
         render: (value) => (
           <Row justify="end" gutter={[8, 8]}>
             <Col>
-              <Button type="text" size="small" icon={<EyeOutlined />} />
+              <Link href={ROUTES.EMPLOYEE_DETAIL(value.id)}>
+                <a>
+                  <Button type="text" size="small" icon={<EyeOutlined />} />
+                </a>
+              </Link>
             </Col>
             <Col>
-              <Link href={ROUTES.EMPLOYEE_DETAIL(value.id)}>
+              <Link href={ROUTES.EDIT_EMPLOYEE(value.id)}>
                 <a>
                   <Button type="text" size="small" icon={<EditOutlined />} />
                 </a>

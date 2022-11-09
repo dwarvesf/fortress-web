@@ -109,13 +109,11 @@ export const AuthenticatedLayout = (props: Props) => {
             activeKey={activeMenuKey}
           />
         </Sider>
-        <Layout>
-          <Content className="layout-main">
-            <div className="layout-main-content">{children}</div>
+        <Layout className="layout-main">
+          <Content className="layout-main-content">
+            <div className="layout-main-content-body">{children}</div>
+            <Footer>Dwarves, LLC © 2015 - 2022 All rights reserved.</Footer>
           </Content>
-          <Footer style={{ textAlign: 'center' }}>
-            Dwarves, LLC © 2015 - 2022 All rights reserved.
-          </Footer>
         </Layout>
       </Layout>
     </Layout>
