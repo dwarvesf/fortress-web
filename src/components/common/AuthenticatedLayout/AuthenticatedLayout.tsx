@@ -11,9 +11,10 @@ import { ROUTES } from 'constants/routes'
 import { LOGIN_REDIRECTION_KEY, useAuthContext } from 'context/auth'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { WithChildren } from 'types/common'
+import { isActivePath } from 'utils/link'
 import { Logo } from '../Logo'
 
 const { Header, Content, Footer, Sider } = Layout
@@ -69,6 +70,12 @@ export const AuthenticatedLayout = (props: Props) => {
 
   const [collapsed, setCollapsed] = useState(false)
 
+  const activeMenuKey = useMemo(() => {
+    return items.find((item) => {
+      return isActivePath(item?.key as string, pathname)
+    })?.key as string
+  }, [pathname])
+
   if (pathname === '/login') {
     return <Layout>{children}</Layout>
   }
@@ -99,15 +106,14 @@ export const AuthenticatedLayout = (props: Props) => {
             mode="inline"
             items={items}
             onClick={({ key }) => push(key)}
+            activeKey={activeMenuKey}
           />
         </Sider>
-        <Layout>
-          <Content className="layout-main">
-            <div className="layout-main-content">{children}</div>
+        <Layout className="layout-main">
+          <Content className="layout-main-content">
+            <div className="layout-main-content-body">{children}</div>
+            <Footer>Dwarves, LLC © 2015 - 2022 All rights reserved.</Footer>
           </Content>
-          <Footer style={{ textAlign: 'center' }}>
-            Dwarves, LLC © 2015 - 2022 All rights reserved.
-          </Footer>
         </Layout>
       </Layout>
     </Layout>

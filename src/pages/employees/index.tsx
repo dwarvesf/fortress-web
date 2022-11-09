@@ -67,6 +67,7 @@ const Default = () => {
         key: 'github',
         dataIndex: 'github',
         render: (value) => (
+          // TODO: Add valid Github links
           <Typography.Link href="/" target="_blank" rel="noreferrer" underline>
             {value}
           </Typography.Link>
@@ -121,13 +122,21 @@ const Default = () => {
       {
         title: '',
         key: 'action',
-        render: () => (
+        render: (value) => (
           <Row justify="end" gutter={[8, 8]}>
             <Col>
-              <Button type="text" size="small" icon={<EyeOutlined />} />
+              <Link href={ROUTES.EMPLOYEE_DETAIL(value.id)}>
+                <a>
+                  <Button type="text" size="small" icon={<EyeOutlined />} />
+                </a>
+              </Link>
             </Col>
             <Col>
-              <Button type="text" size="small" icon={<EditOutlined />} />
+              <Link href={ROUTES.EDIT_EMPLOYEE(value.id)}>
+                <a>
+                  <Button type="text" size="small" icon={<EditOutlined />} />
+                </a>
+              </Link>
             </Col>
           </Row>
         ),
@@ -157,6 +166,7 @@ const Default = () => {
         columns={columns}
         rowKey={(row) => row.name}
         pagination={false}
+        scroll={{ x: 'max-content' }}
       />
       <Row justify="end">
         <Pagination />
