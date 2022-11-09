@@ -8,7 +8,7 @@ import {
 import type { MenuProps } from 'antd'
 import { Layout, Menu } from 'antd'
 import { ROUTES } from 'constants/routes'
-import { useAuthContext } from 'context/auth'
+import { LOGIN_REDIRECTION_KEY, useAuthContext } from 'context/auth'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
@@ -57,6 +57,10 @@ export const AuthenticatedLayout = (props: Props) => {
 
   useEffect(() => {
     if (!isAuthenticated) {
+      if (!window.location.href.includes(ROUTES.LOGIN)) {
+        window.localStorage.setItem(LOGIN_REDIRECTION_KEY, window.location.href)
+      }
+
       if (pathname !== '/login') {
         push(ROUTES.LOGIN)
       }
@@ -71,19 +75,22 @@ export const AuthenticatedLayout = (props: Props) => {
 
   return isAuthenticated ? (
     <Layout style={{ minHeight: '100vh' }}>
-      <Header>
-        <Link href={ROUTES.DASHBOARD}>
-          <LogoLink>
-            <Logo hasText />
-          </LogoLink>
-        </Link>
+      <Header className="layout-header">
+        <div style={{ maxWidth: 'max-content' }}>
+          <Link href={ROUTES.DASHBOARD}>
+            <LogoLink>
+              <Logo hasText />
+            </LogoLink>
+          </Link>
+        </div>
       </Header>
-      <Layout>
+      <Layout style={{ paddingTop: 64, height: '100vh' }}>
         <Sider
           collapsible
           collapsed={collapsed}
           onCollapse={(value) => setCollapsed(value)}
           theme="light"
+          style={{ position: 'sticky', top: 0 }}
         >
           <Menu
             theme="light"
@@ -94,9 +101,9 @@ export const AuthenticatedLayout = (props: Props) => {
             onClick={({ key }) => push(key)}
           />
         </Sider>
-        <Layout style={{ padding: '0 24px 24px' }}>
-          <Content style={{ margin: '0 16px' }}>
-            <div style={{ padding: 24, minHeight: 360 }}>{children}</div>
+        <Layout>
+          <Content className="layout-main">
+            <div className="layout-main-content">{children}</div>
           </Content>
           <Footer style={{ textAlign: 'center' }}>
             Dwarves, LLC © 2015 - 2022 All rights reserved.

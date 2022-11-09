@@ -1,3 +1,21 @@
+.layout-header {
+  position: fixed;
+  z-index: 30;
+  width: 100vw;
+}
+
+.layout-main {
+  margin: 0 16px;
+  overflow: auto;
+  overflow-x: auto;
+}
+
+.layout-main-content {
+  padding: 24px;
+  min-height: 360px;
+  min-width: 250px;
+}
+
 .ant-layout-header {
   background-color: #fff !important;
   border-bottom: 1px solid #d2d7e3;
@@ -5,9 +23,36 @@
   line-height: inherit !important;
 }
 
-.ant-input[type='text'] {
-  background: #fff;
-  border: 1px solid #d2d7e3;
+.ant-input[type='text'],
+.ant-input[type='email'],
+.ant-input[type='number'] {
+  background: #fff !important;
+}
+
+.ant-input-status-error {
+  background: #fff !important;
+}
+
+.ant-form-item-row {
+  flex-direction: column !important;
+  align-items: start !important;
+}
+
+.ant-form-item-control {
+  width: 100% !important;
+}
+
+.ant-form-item-label {
+  font-weight: 600;
+}
+
+.ant-form-item-required::after {
+  content: '*' !important;
+  color: #e13f5e !important;
+}
+
+.ant-form-item-required::before {
+  display: none !important;
 }
 
 .ant-table-thead > tr > th {

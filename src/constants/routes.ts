@@ -5,4 +5,6 @@ export const ROUTES = {
   EMPLOYEES: '/employees',
   FEEDBACKS: '/feedbacks',
   CONFIG: '/config',
+  ADD_EMPLOYEE: '/employees/new',
+  EMPLOYEE_DETAIL: (id: string) => `/employees/${id}`,
 }
