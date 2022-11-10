@@ -8,4 +8,5 @@ export const ROUTES = {
   ADD_EMPLOYEE: '/employees/new',
   EMPLOYEE_DETAIL: (id: string) => `/employees/${id}`,
   EDIT_EMPLOYEE: (id: string) => `/employees/${id}/edit`,
+  PROFILE: '/profile',
 }

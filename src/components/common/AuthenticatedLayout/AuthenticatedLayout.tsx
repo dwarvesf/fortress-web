@@ -5,8 +5,7 @@ import {
   UserOutlined,
   WechatFilled,
 } from '@ant-design/icons'
-import type { MenuProps } from 'antd'
-import { Layout, Menu } from 'antd'
+import { Col, MenuProps, Row, Layout, Menu } from 'antd'
 import { ROUTES } from 'constants/routes'
 import { LOGIN_REDIRECTION_KEY, useAuthContext } from 'context/auth'
 import Link from 'next/link'
@@ -16,6 +15,7 @@ import styled from 'styled-components'
 import { WithChildren } from 'types/common'
 import { isActivePath } from 'utils/link'
 import { Logo } from '../Logo'
+import { ProfileDropdown } from './ProfileDropdown'
 
 const { Header, Content, Footer, Sider } = Layout
 
@@ -83,13 +83,18 @@ export const AuthenticatedLayout = (props: Props) => {
   return isAuthenticated ? (
     <Layout style={{ minHeight: '100vh' }}>
       <Header className="layout-header">
-        <div style={{ maxWidth: 'max-content' }}>
-          <Link href={ROUTES.DASHBOARD}>
-            <LogoLink>
-              <Logo hasText />
-            </LogoLink>
-          </Link>
-        </div>
+        <Row justify="space-between">
+          <Col>
+            <Link href={ROUTES.DASHBOARD}>
+              <LogoLink>
+                <Logo hasText />
+              </LogoLink>
+            </Link>
+          </Col>
+          <Col>
+            <ProfileDropdown />
+          </Col>
+        </Row>
       </Header>
       <Layout style={{ paddingTop: 64, height: '100vh' }}>
         <Sider
