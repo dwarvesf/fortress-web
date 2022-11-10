@@ -1,15 +1,14 @@
 import { createContext, isSSR } from '@dwarvesf/react-utils'
 import { ROUTES } from 'constants/routes'
-import { Session } from 'next-auth'
-import { useSession, signIn, signOut } from 'next-auth/react'
 import { useEffect, useMemo } from 'react'
 import { WithChildren } from 'types/common'
+import { useGoogleLogin } from '@react-oauth/google'
 
 interface AuthContextValues {
   isAuthenticated: boolean
   login: () => void
   logout: () => void
-  session: Session | null
+  session: null
 }
 
 export const AUTH_TOKEN_KEY = 'fortress-token'
@@ -20,20 +19,23 @@ const [Provider, useAuthContext] = createContext<AuthContextValues>({
 })
 
 const AuthContextProvider = ({ children }: WithChildren) => {
-  const { data: session } = useSession()
+  const login = useGoogleLogin({
+    onSuccess: (codeResponse) => console.log(codeResponse),
+    flow: 'auth-code',
+  })
 
   const isAuthenticated = useMemo(() => {
     const authenticated = isSSR()
       ? false
       : Boolean(window.localStorage.getItem(AUTH_TOKEN_KEY))
-    return authenticated || session !== null
-  }, [session])
+    return authenticated
+  }, [])
 
   useEffect(() => {
     if (!window.location.href.includes(ROUTES.LOGIN)) {
       window.localStorage.setItem(LOGIN_REDIRECTION_KEY, window.location.href)
     }
-  }, [session])
+  }, [])
 
   // TODO: bind API and implement login and logout functions with localStorage's setItem and removeItem
 
@@ -41,9 +43,9 @@ const AuthContextProvider = ({ children }: WithChildren) => {
     <Provider
       value={{
         isAuthenticated,
-        login: () => signIn('google'),
-        logout: () => signOut(),
-        session,
+        login,
+        logout: () => undefined,
+        session: null,
       }}
     >
       {children}
