@@ -1,0 +1,1 @@
+export { AvatarArray } from './AvatarArray'

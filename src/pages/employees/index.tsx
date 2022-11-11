@@ -14,10 +14,12 @@ import { useMemo } from 'react'
 import Table, { ColumnsType } from 'antd/lib/table'
 import { EditOutlined, EyeOutlined } from '@ant-design/icons'
 import Link from 'next/link'
+import { AvatarWithName } from 'components/common/AvatarWithName'
 
 const Default = () => {
   const mockData = [
     {
+      id: 1,
       name: 'Huy Tieu',
       discord: '0xlight#0209',
       email: 'huytq@d.foundation',
@@ -39,8 +41,7 @@ const Default = () => {
     return [
       {
         title: 'Employee',
-        key: 'name',
-        dataIndex: 'name',
+        render: (value) => <AvatarWithName user={value} />,
       },
       {
         title: 'Discord',
@@ -56,7 +57,6 @@ const Default = () => {
             href={`mailto:${value}`}
             target="_blank"
             rel="noreferrer"
-            underline
           >
             {value}
           </Typography.Link>
@@ -68,7 +68,7 @@ const Default = () => {
         dataIndex: 'github',
         render: (value) => (
           // TODO: Add valid Github links
-          <Typography.Link href="/" target="_blank" rel="noreferrer" underline>
+          <Typography.Link href="/" target="_blank" rel="noreferrer">
             {value}
           </Typography.Link>
         ),
@@ -154,9 +154,11 @@ const Default = () => {
               <Input placeholder="Search members" bordered />
             </Col>
             <Col>
-              <Button type="primary" href={ROUTES.ADD_EMPLOYEE}>
-                Add Member
-              </Button>
+              <Link href={ROUTES.ADD_EMPLOYEE}>
+                <a>
+                  <Button type="primary">Add Employee</Button>
+                </a>
+              </Link>
             </Col>
           </>
         }
