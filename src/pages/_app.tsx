@@ -34,18 +34,16 @@ const MyApp = ({
         <meta property="og:image" content="/thumbnail.jpeg" />
         <meta name="twitter:image" content="/thumbnail.jpeg" />
       </Head>
-      <ThemeProvider theme={theme}>
-        <GoogleOAuthProvider
-          clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}
-        >
+      <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}>
+        <ThemeProvider theme={theme}>
           <AuthContextProvider>
             <AuthenticatedLayout>
               <NProgressHandler />
               <Component {...pageProps} />
             </AuthenticatedLayout>
           </AuthContextProvider>
-        </GoogleOAuthProvider>
-      </ThemeProvider>
+        </ThemeProvider>
+      </GoogleOAuthProvider>
     </>
   )
 }
