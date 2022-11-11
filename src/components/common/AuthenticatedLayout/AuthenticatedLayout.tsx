@@ -62,7 +62,7 @@ export const AuthenticatedLayout = (props: Props) => {
         window.localStorage.setItem(LOGIN_REDIRECTION_KEY, window.location.href)
       }
 
-      if (pathname !== '/login') {
+      if (pathname !== ROUTES.LOGIN) {
         push(ROUTES.LOGIN)
       }
     }
@@ -76,7 +76,7 @@ export const AuthenticatedLayout = (props: Props) => {
     })?.key as string
   }, [pathname])
 
-  if (pathname === '/login') {
+  if (pathname === ROUTES.LOGIN) {
     return <Layout>{children}</Layout>
   }
 

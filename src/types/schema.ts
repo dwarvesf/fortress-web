@@ -192,3 +192,29 @@ export interface ViewSeniorityResponse {
 export interface ViewUpdateEmployeeStatusResponse {
   data?: ViewEmployeeData
 }
+
+export interface AuthResponse {
+  accessToken: string
+  employee: AuthEmployee
+}
+
+export interface AuthEmployee {
+  address: string
+  avatar: string
+  birthday: string
+  createdAt: string
+  deletedAt: string
+  displayName: string
+  fullName: string
+  gender: string
+  horoscope: string
+  id: string
+  joinedDate: string
+  leftDate: string
+  mbti: string
+  personalEmail: string
+  phoneNumber: string
+  status: string
+  teamEmail: string
+  updatedAt: string
+}
