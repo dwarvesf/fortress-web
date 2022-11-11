@@ -22,10 +22,10 @@ to see your project.
 
 ## Deployment
 
-| Name        | Link                                                 |
-| ----------- | ---------------------------------------------------- |
-| Boilerplate | https://df-nextjs-boilerplate.netlify.app/           |
-| UI Docs     | https://df-nextjs-boilerplate-storybook.netlify.app/ |
+| Name        | Link                                      |
+| ----------- | ----------------------------------------- |
+| Development | https://develop--fortress-v2.netlify.app/ |
+| Production  | https://fortress-v2.netlify.app/          |
 
 ## Documentation
 
