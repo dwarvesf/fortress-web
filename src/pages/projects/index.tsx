@@ -1,4 +1,4 @@
-import { Button, Col, Input, Pagination, Row, Space } from 'antd'
+import { Col, Input, Pagination, Row, Space } from 'antd'
 import { ROUTES } from 'constants/routes'
 import { PageHeader } from 'components/common/PageHeader'
 import { useMemo } from 'react'
@@ -8,10 +8,13 @@ import Link from 'next/link'
 import { capitalizeFirstLetter } from 'utils/string'
 import { AvatarArray } from 'components/common/AvatarArray'
 import { AvatarWithName } from 'components/common/AvatarWithName'
+import { ProjectLink } from 'components/common/DetailLink'
+import { Button } from 'components/common/Button'
 
 const Default = () => {
   const mockData = [
     {
+      id: 1,
       name: 'Fortress',
       status: 'active',
       lead: {
@@ -34,6 +37,10 @@ const Default = () => {
         {
           id: 4,
           name: 'Tt',
+        },
+        {
+          id: 5,
+          name: 'Aa',
         },
       ],
       deliveryManager: {
@@ -90,16 +97,22 @@ const Default = () => {
         render: (value) => (
           <Row justify="end" gutter={[8, 8]}>
             <Col>
-              <Link href={ROUTES.PROJECT_DETAIL(value.id)}>
-                <a>
-                  <Button type="text" size="small" icon={<EyeOutlined />} />
-                </a>
-              </Link>
+              <ProjectLink id={value.id}>
+                <Button
+                  type="text-primary"
+                  size="small"
+                  icon={<EyeOutlined />}
+                />
+              </ProjectLink>
             </Col>
             <Col>
               <Link href={ROUTES.EDIT_PROJECT(value.id)}>
                 <a>
-                  <Button type="text" size="small" icon={<EditOutlined />} />
+                  <Button
+                    type="text-primary"
+                    size="small"
+                    icon={<EditOutlined />}
+                  />
                 </a>
               </Link>
             </Col>
@@ -131,7 +144,7 @@ const Default = () => {
       <Table
         dataSource={mockData}
         columns={columns}
-        rowKey={(row) => row.name}
+        rowKey={(row) => row.id}
         pagination={false}
         scroll={{ x: 'max-content' }}
       />

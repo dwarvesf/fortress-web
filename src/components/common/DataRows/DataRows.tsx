@@ -13,7 +13,7 @@ export const DataRows = (props: Props) => {
   const { data } = props
 
   return (
-    <Row gutter={24}>
+    <Row gutter={[24, 8]}>
       {data.map((item, index) => {
         return (
           <Fragment key={index}>

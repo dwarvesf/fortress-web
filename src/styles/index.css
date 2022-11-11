@@ -1,2 +1,6 @@
 @import './vendor/nprogress.css';
 @import './ant-custom.css';
+
+body a:hover {
+  color: #e13f5e;
+}
