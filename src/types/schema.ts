@@ -8,6 +8,7 @@
  * ## SOURCE: https://github.com/acacode/swagger-typescript-api ##
  * ---------------------------------------------------------------
  */
+import { DefaultOptionType } from 'antd/lib/select'
 
 export interface ModelChapter {
   code?: string
@@ -160,6 +161,11 @@ export interface ViewProjectData {
   startDate?: string
   status?: string
   technicalLeads?: ViewProjectHead[]
+}
+
+export interface ApiResponse {
+  /** @format int32 */
+  code?: number
   type?: string
   updatedAt?: string
 }
@@ -216,5 +222,18 @@ export interface AuthUser {
   phoneNumber: string
   status?: string
   teamEmail: string
+  updatedAt?: string
+}
+
+export interface SelectOptionResponse {
+  data: SelectOption[]
+}
+
+export interface SelectOption extends Partial<DefaultOptionType> {
+  code?: string
+  name?: string
+  createdAt?: string
+  deletedAt?: string
+  id?: string
   updatedAt?: string
 }

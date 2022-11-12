@@ -1,13 +1,5 @@
-import {
-  Form,
-  Row,
-  Col,
-  Input,
-  Select,
-  Button,
-  notification,
-  Typography,
-} from 'antd'
+import { Form, Row, Col, Input, Button, notification, Typography } from 'antd'
+import { AsyncSelect } from 'components/common/Select'
 import { ROUTES } from 'constants/routes'
 import { useRouter } from 'next/router'
 import {
@@ -47,6 +39,7 @@ export const EmployeeForm = (props: Props) => {
 
   const onSubmit = async (values: Required<CreateEmployeeFormValues>) => {
     createEmployeeFormRef.current = transformDataToSend(values)
+
     try {
       setIsSubmitting(true)
 
@@ -137,13 +130,24 @@ export const EmployeeForm = (props: Props) => {
             name="status"
             rules={[{ required: true, message: 'Please select status' }]}
           >
-            <Select bordered={false} style={{ background: theme.colors.white }}>
-              {Object.keys(EmployeeStatus).map((k) => (
-                <Select.Option value={k} key={k}>
-                  {EmployeeStatus[k as keyof typeof EmployeeStatus]}
-                </Select.Option>
-              ))}
-            </Select>
+            <AsyncSelect
+              optionGetter={() => {
+                const dataArray = Object.keys(EmployeeStatus).map((key) => {
+                  return {
+                    code: key,
+                    name: EmployeeStatus[key as keyof typeof EmployeeStatus],
+                  }
+                })
+                return new Promise((resolve) => {
+                  setTimeout(() => resolve({ data: dataArray }), 5000)
+                })
+              }}
+              value={
+                EmployeeStatus[
+                  defaultValues.status as keyof typeof EmployeeStatus
+                ]
+              }
+            />
           </Form.Item>
         </Col>
 
@@ -182,13 +186,22 @@ export const EmployeeForm = (props: Props) => {
             name="role"
             rules={[{ required: true, message: 'Please select role' }]}
           >
-            <Select bordered={false} style={{ background: theme.colors.white }}>
-              {Object.keys(EmployeeRole).map((k) => (
-                <Select.Option value={k} key={k}>
-                  {EmployeeRole[k as keyof typeof EmployeeRole]}
-                </Select.Option>
-              ))}
-            </Select>
+            <AsyncSelect
+              optionGetter={() => {
+                const dataArray = Object.keys(EmployeeRole).map((key) => {
+                  return {
+                    code: key,
+                    name: EmployeeRole[key as keyof typeof EmployeeRole],
+                  }
+                })
+                return new Promise((resolve) => {
+                  setTimeout(() => resolve({ data: dataArray }), 5000)
+                })
+              }}
+              value={
+                EmployeeRole[defaultValues.status as keyof typeof EmployeeRole]
+              }
+            />
           </Form.Item>
         </Col>
 
@@ -198,13 +211,26 @@ export const EmployeeForm = (props: Props) => {
             name="seniority"
             rules={[{ required: true, message: 'Please select seniority' }]}
           >
-            <Select bordered={false} style={{ background: theme.colors.white }}>
-              {Object.keys(EmployeeSeniority).map((k) => (
-                <Select.Option value={k} key={k}>
-                  {EmployeeSeniority[k as keyof typeof EmployeeSeniority]}
-                </Select.Option>
-              ))}
-            </Select>
+            <AsyncSelect
+              optionGetter={() => {
+                const dataArray = Object.keys(EmployeeSeniority).map((key) => {
+                  return {
+                    code: key,
+                    name: EmployeeSeniority[
+                      key as keyof typeof EmployeeSeniority
+                    ],
+                  }
+                })
+                return new Promise((resolve) => {
+                  setTimeout(() => resolve({ data: dataArray }), 5000)
+                })
+              }}
+              value={
+                EmployeeSeniority[
+                  defaultValues.status as keyof typeof EmployeeSeniority
+                ]
+              }
+            />
           </Form.Item>
         </Col>
 
@@ -224,13 +250,28 @@ export const EmployeeForm = (props: Props) => {
             name="accountRole"
             rules={[{ required: true, message: 'Please select account role' }]}
           >
-            <Select bordered={false} style={{ background: theme.colors.white }}>
-              {Object.keys(EmployeeAccountRole).map((k) => (
-                <Select.Option value={k} key={k}>
-                  {EmployeeAccountRole[k as keyof typeof EmployeeAccountRole]}
-                </Select.Option>
-              ))}
-            </Select>
+            <AsyncSelect
+              optionGetter={() => {
+                const dataArray = Object.keys(EmployeeAccountRole).map(
+                  (key) => {
+                    return {
+                      code: key,
+                      name: EmployeeAccountRole[
+                        key as keyof typeof EmployeeAccountRole
+                      ],
+                    }
+                  },
+                )
+                return new Promise((resolve) => {
+                  setTimeout(() => resolve({ data: dataArray }), 5000)
+                })
+              }}
+              value={
+                EmployeeAccountRole[
+                  defaultValues.status as keyof typeof EmployeeAccountRole
+                ]
+              }
+            />
           </Form.Item>
         </Col>
       </Row>
