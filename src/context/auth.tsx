@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { createContext, isSSR } from '@dwarvesf/react-utils'
 import { ROUTES } from 'constants/routes'
 import { useEffect, useMemo, useState } from 'react'
@@ -6,7 +7,7 @@ import { useGoogleLogin } from '@react-oauth/google'
 import { AuthEmployee } from 'types/schema'
 import { client } from 'libs/apis'
 import { notification } from 'antd'
-import { emitter, EVENTS } from 'libs/emitter'
+import { parseJWT, getCookie } from 'utils/string'
 
 interface AuthContextValues {
   isAuthenticated: boolean
@@ -23,9 +24,9 @@ const [Provider, useAuthContext] = createContext<AuthContextValues>({
 })
 
 const AuthContextProvider = ({ children }: WithChildren) => {
-  const [authToken, setAuthToken] = useState(() => {
-    return isSSR() ? '' : window.localStorage.getItem(AUTH_TOKEN_KEY)
-  })
+  const [authToken, setAuthToken] = useState(() =>
+    isSSR() ? '' : getCookie(AUTH_TOKEN_KEY),
+  )
   const [employee, setEmployee] = useState<AuthEmployee>()
 
   const login = useGoogleLogin({
@@ -34,9 +35,14 @@ const AuthContextProvider = ({ children }: WithChildren) => {
       try {
         const { accessToken: token, employee: employeeData } =
           await client.login(codeResponse.code, window.location.origin)
+
         if (token) {
+          const jwtObj = parseJWT(token)
+          const expiryTime = dayjs.unix(jwtObj?.exp)
+
           setAuthToken(token)
-          window.localStorage.setItem(AUTH_TOKEN_KEY, token)
+          document.cookie = `${AUTH_TOKEN_KEY}=${token}; expires=${expiryTime.toDate()}`
+
           if (employeeData) {
             setEmployee(employeeData)
           }
@@ -53,7 +59,9 @@ const AuthContextProvider = ({ children }: WithChildren) => {
   const logout = () => {
     setAuthToken('')
     setEmployee(undefined)
-    window.localStorage.removeItem(AUTH_TOKEN_KEY)
+
+    const now = dayjs()
+    document.cookie = `${AUTH_TOKEN_KEY}=; expires=${now.toDate()}`
   }
 
   useEffect(() => {
@@ -61,21 +69,13 @@ const AuthContextProvider = ({ children }: WithChildren) => {
       window.localStorage.setItem(LOGIN_REDIRECTION_KEY, window.location.href)
     }
 
-    emitter.on(EVENTS.API_ERROR, async (data: any) => {
-      if (data.status === 401) {
-        logout()
-      }
-    })
-
-    return () => {
-      emitter.off(EVENTS.API_ERROR)
+    if (getCookie(AUTH_TOKEN_KEY) === '') {
+      logout()
     }
   }, [])
 
   const isAuthenticated = useMemo(() => {
-    const authenticated = isSSR()
-      ? false
-      : Boolean(window.localStorage.getItem(AUTH_TOKEN_KEY))
+    const authenticated = isSSR() ? false : Boolean(getCookie(AUTH_TOKEN_KEY))
 
     return authenticated && authToken !== ''
   }, [authToken])
