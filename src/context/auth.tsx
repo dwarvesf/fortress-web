@@ -80,7 +80,7 @@ const AuthContextProvider = ({ children }: WithChildren) => {
   useAsyncEffect(async () => {
     if (authToken) {
       try {
-        const profile = await client.getUser()
+        const profile = await client.getProfile()
         setEmployee(profile.data)
       } catch (error) {
         console.error(error)

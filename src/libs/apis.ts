@@ -23,7 +23,7 @@ class Client {
     })
   }
 
-  public getUser() {
+  public getProfile() {
     return fetcher<{
       data: AuthEmployee
     }>(`${BASE_API_URL}/profile`, {
