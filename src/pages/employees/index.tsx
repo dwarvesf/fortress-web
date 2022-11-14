@@ -1,13 +1,4 @@
-import {
-  Button,
-  Col,
-  Input,
-  Pagination,
-  Row,
-  Space,
-  Tag,
-  Typography,
-} from 'antd'
+import { Col, Input, Pagination, Row, Space, Tag } from 'antd'
 import { ROUTES } from 'constants/routes'
 import { PageHeader } from 'components/common/PageHeader'
 import { useMemo } from 'react'
@@ -15,6 +6,8 @@ import Table, { ColumnsType } from 'antd/lib/table'
 import { EditOutlined, EyeOutlined } from '@ant-design/icons'
 import Link from 'next/link'
 import { AvatarWithName } from 'components/common/AvatarWithName'
+import { EmployeeLink, ProjectLink } from 'components/common/DetailLink'
+import { Button } from 'components/common/Button'
 
 const Default = () => {
   const mockData = [
@@ -53,13 +46,9 @@ const Default = () => {
         key: 'email',
         dataIndex: 'email',
         render: (value) => (
-          <Typography.Link
-            href={`mailto:${value}`}
-            target="_blank"
-            rel="noreferrer"
-          >
+          <a href={`mailto:${value}`} target="_blank" rel="noreferrer">
             {value}
-          </Typography.Link>
+          </a>
         ),
       },
       {
@@ -68,9 +57,9 @@ const Default = () => {
         dataIndex: 'github',
         render: (value) => (
           // TODO: Add valid Github links
-          <Typography.Link href="/" target="_blank" rel="noreferrer">
+          <a href="/" target="_blank" rel="noreferrer">
             {value}
-          </Typography.Link>
+          </a>
         ),
       },
       {
@@ -78,13 +67,11 @@ const Default = () => {
         key: 'roles',
         dataIndex: 'roles',
         render: (value) => (
-          <Row gutter={[0, 8]}>
+          <Space size={[0, 8]}>
             {value.map((role: any) => (
-              <Col>
-                <Tag>{role}</Tag>
-              </Col>
+              <Tag key={role}>{role}</Tag>
             ))}
-          </Row>
+          </Space>
         ),
       },
       {
@@ -92,17 +79,13 @@ const Default = () => {
         key: 'projects',
         dataIndex: 'projects',
         render: (value) => (
-          <Row gutter={[0, 8]}>
+          <Space size={[0, 8]}>
             {value.map((project: any) => (
-              <Col>
-                <Link href="/">
-                  <a>
-                    <Tag>{project.name}</Tag>
-                  </a>
-                </Link>
-              </Col>
+              <ProjectLink key={project.id} id={project.id}>
+                <Tag>{project.name}</Tag>
+              </ProjectLink>
             ))}
-          </Row>
+          </Space>
         ),
       },
       {
@@ -110,13 +93,11 @@ const Default = () => {
         key: 'skillset',
         dataIndex: 'skillset',
         render: (value) => (
-          <Row gutter={[0, 8]}>
+          <Space size={[0, 8]}>
             {value.map((skill: any) => (
-              <Col>
-                <Tag>{skill}</Tag>
-              </Col>
+              <Tag key={skill}>{skill}</Tag>
             ))}
-          </Row>
+          </Space>
         ),
       },
       {
@@ -125,16 +106,22 @@ const Default = () => {
         render: (value) => (
           <Row justify="end" gutter={[8, 8]}>
             <Col>
-              <Link href={ROUTES.EMPLOYEE_DETAIL(value.id)}>
-                <a>
-                  <Button type="text" size="small" icon={<EyeOutlined />} />
-                </a>
-              </Link>
+              <EmployeeLink id={value.id}>
+                <Button
+                  type="text-primary"
+                  size="small"
+                  icon={<EyeOutlined />}
+                />
+              </EmployeeLink>
             </Col>
             <Col>
               <Link href={ROUTES.EDIT_EMPLOYEE(value.id)}>
                 <a>
-                  <Button type="text" size="small" icon={<EditOutlined />} />
+                  <Button
+                    type="text-primary"
+                    size="small"
+                    icon={<EditOutlined />}
+                  />
                 </a>
               </Link>
             </Col>
@@ -166,7 +153,7 @@ const Default = () => {
       <Table
         dataSource={mockData}
         columns={columns}
-        rowKey={(row) => row.name}
+        rowKey={(row) => row.id}
         pagination={false}
         scroll={{ x: 'max-content' }}
       />

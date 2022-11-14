@@ -1,8 +1,7 @@
 import { Avatar, Space, Tooltip } from 'antd'
-import Link from 'next/link'
 import { theme } from 'styles'
-import { ROUTES } from 'constants/routes'
 import { AvatarWithName } from '../AvatarWithName'
+import { EmployeeLink } from '../DetailLink'
 
 interface Props {
   size?: number
@@ -19,28 +18,26 @@ export const AvatarArray = (props: Props) => {
     <Space direction="horizontal" size={0}>
       {data.slice(0, numOfVisibleAvatar).map((user: any, index: number) => {
         return (
-          <Link href={ROUTES.EMPLOYEE_DETAIL(user.id)} key={user.id}>
-            <a>
-              <Tooltip
-                title={
-                  <span style={{ color: theme.colors.black }}>{user.name}</span>
-                }
-                color="white"
-              >
-                <Avatar
-                  src={user.image}
-                  size={size}
-                  style={{
-                    marginLeft: index !== 0 ? offset : 0,
-                    borderStyle: 'solid',
-                    borderWidth: 0.5,
-                    borderColor: theme.colors.white,
-                  }}
-                  icon={!user.image && user.name.slice(0, 1)}
-                />
-              </Tooltip>
-            </a>
-          </Link>
+          <EmployeeLink id={user.id} key={user.id}>
+            <Tooltip
+              title={
+                <span style={{ color: theme.colors.black }}>{user.name}</span>
+              }
+              color="white"
+            >
+              <Avatar
+                src={user.image}
+                size={size}
+                style={{
+                  marginLeft: index !== 0 ? offset : 0,
+                  borderStyle: 'solid',
+                  borderWidth: 0.5,
+                  borderColor: theme.colors.white,
+                }}
+                icon={!user.image && user.name.slice(0, 1)}
+              />
+            </Tooltip>
+          </EmployeeLink>
         )
       })}
       {data.length > numOfVisibleAvatar ? (

@@ -1,5 +1,5 @@
 import { LogoutOutlined, UserOutlined } from '@ant-design/icons'
-import { Avatar, Col, Dropdown, Menu, Row } from 'antd'
+import { Avatar, Dropdown, Menu, Space } from 'antd'
 import { ROUTES } from 'constants/routes'
 import { useAuthContext } from 'context/auth'
 import Link from 'next/link'
@@ -20,12 +20,10 @@ export const ProfileDropdown = () => {
           label: (
             <Link href={ROUTES.PROFILE}>
               <a style={{ textDecoration: 'none' }}>
-                <Row gutter={8}>
-                  <Col>
-                    <UserOutlined style={iconStyle} />
-                  </Col>
-                  <Col>Profile</Col>
-                </Row>
+                <Space>
+                  <UserOutlined style={iconStyle} />
+                  <span>Profile</span>
+                </Space>
               </a>
             </Link>
           ),
@@ -33,12 +31,10 @@ export const ProfileDropdown = () => {
         {
           key: 'logout',
           label: (
-            <Row gutter={8} role="button" onClick={logout}>
-              <Col>
-                <LogoutOutlined style={iconStyle} />
-              </Col>
-              <Col>Logout</Col>
-            </Row>
+            <Space role="button" onClick={logout}>
+              <LogoutOutlined style={iconStyle} />
+              <span>Logout</span>
+            </Space>
           ),
         },
       ]}
@@ -47,12 +43,10 @@ export const ProfileDropdown = () => {
 
   return (
     <Dropdown overlay={menuRender}>
-      <Row gutter={8} align="middle">
-        <Col>
-          <Avatar size={32} icon={<UserOutlined />} />
-        </Col>
-        <Col>John Doe</Col>
-      </Row>
+      <Space align="center">
+        <Avatar size={32} icon={<UserOutlined />} />
+        <span>John Doe</span>
+      </Space>
     </Dropdown>
   )
 }
