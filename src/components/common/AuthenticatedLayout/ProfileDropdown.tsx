@@ -1,5 +1,5 @@
 import { LogoutOutlined, UserOutlined } from '@ant-design/icons'
-import { Avatar, Dropdown, Menu, Space } from 'antd'
+import { Avatar, Dropdown, Menu, Space, Image } from 'antd'
 import { ROUTES } from 'constants/routes'
 import { useAuthContext } from 'context/auth'
 import Link from 'next/link'
@@ -10,7 +10,7 @@ const iconStyle = {
 }
 
 export const ProfileDropdown = () => {
-  const { logout } = useAuthContext()
+  const { logout, user } = useAuthContext()
 
   const menuRender = (
     <Menu
@@ -44,8 +44,8 @@ export const ProfileDropdown = () => {
   return (
     <Dropdown overlay={menuRender}>
       <Space align="center">
-        <Avatar size={32} icon={<UserOutlined />} />
-        <span>John Doe</span>
+        <Avatar size={32} icon={<Image src={user?.avatar} preview={false} />} />
+        <span>{user?.displayName}</span>
       </Space>
     </Dropdown>
   )

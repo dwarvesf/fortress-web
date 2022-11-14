@@ -39,12 +39,15 @@ const AuthContextProvider = ({ children }: WithChildren) => {
         } = await client.login(codeResponse.code, window.location.origin)
 
         if (accessToken) {
+          client.setAuthToken(accessToken)
           setAuthToken(accessToken)
 
           const jwtObj = parseJWT(accessToken)
           const expiryTime = dayjs.unix(jwtObj?.exp)
 
-          document.cookie = `${AUTH_TOKEN_KEY}=${accessToken}; expires=${expiryTime.toDate()}`
+          document.cookie = `${AUTH_TOKEN_KEY}=${accessToken}; expires=${expiryTime.toDate()}; domain=${
+            window.location.hostname
+          }`
 
           if (employee) {
             setIsAuthenticating(false)
@@ -63,9 +66,12 @@ const AuthContextProvider = ({ children }: WithChildren) => {
   const logout = () => {
     setAuthToken('')
     setUser(undefined)
+    client.clearAuthToken()
 
     const now = dayjs()
-    document.cookie = `${AUTH_TOKEN_KEY}=; expires=${now.toDate()}`
+    document.cookie = `${AUTH_TOKEN_KEY}=; expires=${now.toDate()}; domain=${
+      window.location.hostname
+    }`
   }
 
   useEffect(() => {
@@ -78,6 +84,7 @@ const AuthContextProvider = ({ children }: WithChildren) => {
     const authToken = getCookie(AUTH_TOKEN_KEY)
 
     if (authToken) {
+      client.setAuthToken(authToken)
       setAuthToken(authToken)
       try {
         const profile = await client.getProfile()

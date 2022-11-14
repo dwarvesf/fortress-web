@@ -13,6 +13,21 @@ class Client {
     'Content-Type': 'application/json',
   }
 
+  privateHeaders: HeadersInit = {
+    ...this.headers,
+  }
+
+  public setAuthToken(token: string) {
+    this.privateHeaders = {
+      ...this.privateHeaders,
+      Authorization: `Bearer ${token}`,
+    }
+  }
+
+  public clearAuthToken() {
+    this.privateHeaders = { ...this.headers }
+  }
+
   public login(code: string, redirectUrl: string) {
     return fetcher<{ data: AuthResponse }>(`${BASE_API_URL}/auth`, {
       method: 'POST',
@@ -27,7 +42,7 @@ class Client {
     return fetcher<{
       data: AuthUser
     }>(`${BASE_API_URL}/profile`, {
-      headers: { ...this.headers },
+      headers: { ...this.privateHeaders },
     })
   }
 }
