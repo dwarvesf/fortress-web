@@ -195,10 +195,10 @@ export interface ViewUpdateEmployeeStatusResponse {
 
 export interface AuthResponse {
   accessToken: string
-  employee: AuthEmployee
+  employee: AuthUser
 }
 
-export interface AuthEmployee {
+export interface AuthUser {
   address?: string
   avatar: string
   birthday: string

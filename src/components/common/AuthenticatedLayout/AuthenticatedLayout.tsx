@@ -5,7 +5,7 @@ import {
   UserOutlined,
   WechatFilled,
 } from '@ant-design/icons'
-import { Col, MenuProps, Row, Layout, Menu } from 'antd'
+import { Col, MenuProps, Row, Layout, Menu, Spin } from 'antd'
 import { ROUTES } from 'constants/routes'
 import { LOGIN_REDIRECTION_KEY, useAuthContext } from 'context/auth'
 import Link from 'next/link'
@@ -52,21 +52,21 @@ const LogoLink = styled.a`
 export const AuthenticatedLayout = (props: Props) => {
   const { children } = props
 
-  const { isAuthenticated } = useAuthContext()
+  const { isAuthenticated, isAuthenticating } = useAuthContext()
 
-  const { push, pathname } = useRouter()
+  const { replace, push, pathname } = useRouter()
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (!isAuthenticated && !isAuthenticating) {
       if (!window.location.href.includes(ROUTES.LOGIN)) {
         window.localStorage.setItem(LOGIN_REDIRECTION_KEY, window.location.href)
       }
 
       if (pathname !== ROUTES.LOGIN) {
-        push(ROUTES.LOGIN)
+        replace(ROUTES.LOGIN)
       }
     }
-  }, [push, isAuthenticated, pathname])
+  }, [replace, isAuthenticated, pathname, isAuthenticating])
 
   const [collapsed, setCollapsed] = useState(false)
 
@@ -76,11 +76,26 @@ export const AuthenticatedLayout = (props: Props) => {
     })?.key as string
   }, [pathname])
 
+  if (isAuthenticating || (!isAuthenticated && pathname !== ROUTES.LOGIN)) {
+    return (
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+        }}
+      >
+        <Spin size="large" />
+      </div>
+    )
+  }
+
   if (!isAuthenticated || pathname === ROUTES.LOGIN) {
     return <Layout>{children}</Layout>
   }
 
-  return isAuthenticated ? (
+  return (
     <Layout style={{ minHeight: '100vh' }}>
       <Header className="layout-header">
         <Row justify="space-between">
@@ -122,5 +137,5 @@ export const AuthenticatedLayout = (props: Props) => {
         </Layout>
       </Layout>
     </Layout>
-  ) : null
+  )
 }

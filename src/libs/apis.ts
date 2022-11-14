@@ -1,4 +1,4 @@
-import { AuthEmployee, AuthResponse } from 'types/schema'
+import { AuthUser, AuthResponse } from 'types/schema'
 import fetcher from './fetcher'
 
 // keys for swr
@@ -25,7 +25,7 @@ class Client {
 
   public getProfile() {
     return fetcher<{
-      data: AuthEmployee
+      data: AuthUser
     }>(`${BASE_API_URL}/profile`, {
       headers: { ...this.headers },
     })

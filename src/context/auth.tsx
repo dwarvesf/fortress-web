@@ -1,10 +1,10 @@
 import dayjs from 'dayjs'
-import { createContext, isSSR } from '@dwarvesf/react-utils'
+import { createContext } from '@dwarvesf/react-utils'
 import { ROUTES } from 'constants/routes'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { WithChildren } from 'types/common'
 import { useGoogleLogin } from '@react-oauth/google'
-import { AuthEmployee } from 'types/schema'
+import { AuthUser } from 'types/schema'
 import { client } from 'libs/apis'
 import { notification } from 'antd'
 import { parseJWT, getCookie } from 'utils/string'
@@ -12,9 +12,10 @@ import { useAsyncEffect } from '@dwarvesf/react-hooks'
 
 interface AuthContextValues {
   isAuthenticated: boolean
+  isAuthenticating: boolean
   login: () => void
   logout: () => void
-  employee?: AuthEmployee
+  user?: AuthUser
 }
 
 export const AUTH_TOKEN_KEY = 'fortress-token'
@@ -25,10 +26,9 @@ const [Provider, useAuthContext] = createContext<AuthContextValues>({
 })
 
 const AuthContextProvider = ({ children }: WithChildren) => {
-  const [authToken, setAuthToken] = useState(() =>
-    isSSR() ? '' : getCookie(AUTH_TOKEN_KEY),
-  )
-  const [employee, setEmployee] = useState<AuthEmployee>()
+  const [authToken, setAuthToken] = useState('')
+  const [isAuthenticating, setIsAuthenticating] = useState<boolean>(true)
+  const [user, setUser] = useState<AuthUser>()
 
   const login = useGoogleLogin({
     flow: 'auth-code',
@@ -47,7 +47,8 @@ const AuthContextProvider = ({ children }: WithChildren) => {
           }`
 
           if (employeeData) {
-            setEmployee(employeeData)
+            setIsAuthenticating(false)
+            setUser(employeeData)
           }
         }
       } catch (error: any) {
@@ -61,7 +62,7 @@ const AuthContextProvider = ({ children }: WithChildren) => {
 
   const logout = () => {
     setAuthToken('')
-    setEmployee(undefined)
+    setUser(undefined)
 
     const now = dayjs()
     document.cookie = `${AUTH_TOKEN_KEY}=; expires=${now.toDate()}`
@@ -71,36 +72,36 @@ const AuthContextProvider = ({ children }: WithChildren) => {
     if (!window.location.href.includes(ROUTES.LOGIN)) {
       window.localStorage.setItem(LOGIN_REDIRECTION_KEY, window.location.href)
     }
+  }, [authToken])
 
-    if (getCookie(AUTH_TOKEN_KEY) === '') {
-      setAuthToken('')
+  useAsyncEffect(async () => {
+    const authToken = getCookie(AUTH_TOKEN_KEY)
+
+    if (authToken) {
+      setAuthToken(authToken)
+      try {
+        const profile = await client.getProfile()
+        setUser(profile.data)
+      } catch (error) {
+        console.error(error)
+      } finally {
+        setIsAuthenticating(false)
+      }
+    } else {
+      setIsAuthenticating(false)
     }
   }, [])
 
-  useAsyncEffect(async () => {
-    if (authToken) {
-      try {
-        const profile = await client.getProfile()
-        setEmployee(profile.data)
-      } catch (error) {
-        console.error(error)
-      }
-    }
-  }, [authToken])
-
-  const isAuthenticated = useMemo(() => {
-    const authenticated = isSSR() ? false : getCookie(AUTH_TOKEN_KEY) !== ''
-
-    return authenticated && authToken !== ''
-  }, [authToken])
+  const isAuthenticated = Boolean(authToken) && !isAuthenticating
 
   return (
     <Provider
       value={{
         isAuthenticated,
+        isAuthenticating,
         login,
         logout,
-        employee,
+        user,
       }}
     >
       {children}
