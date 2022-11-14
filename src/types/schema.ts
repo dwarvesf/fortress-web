@@ -199,22 +199,22 @@ export interface AuthResponse {
 }
 
 export interface AuthEmployee {
-  address: string
+  address?: string
   avatar: string
   birthday: string
-  createdAt: string
-  deletedAt: string
+  createdAt?: string
+  deletedAt?: string
   displayName: string
   fullName: string
   gender: string
-  horoscope: string
+  horoscope?: string
   id: string
-  joinedDate: string
-  leftDate: string
-  mbti: string
+  joinedDate?: string
+  leftDate?: string
+  mbti?: string
   personalEmail: string
   phoneNumber: string
-  status: string
+  status?: string
   teamEmail: string
-  updatedAt: string
+  updatedAt?: string
 }

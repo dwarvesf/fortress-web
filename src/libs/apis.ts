@@ -1,4 +1,4 @@
-import { AuthResponse } from 'types/schema'
+import { AuthEmployee, AuthResponse } from 'types/schema'
 import fetcher from './fetcher'
 
 // keys for swr
@@ -20,6 +20,14 @@ class Client {
         ...this.headers,
       },
       body: JSON.stringify({ code, redirectUrl }),
+    })
+  }
+
+  public getUser() {
+    return fetcher<{
+      data: AuthEmployee
+    }>(`${BASE_API_URL}/profile`, {
+      headers: { ...this.headers },
     })
   }
 }

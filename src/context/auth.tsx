@@ -8,6 +8,7 @@ import { AuthEmployee } from 'types/schema'
 import { client } from 'libs/apis'
 import { notification } from 'antd'
 import { parseJWT, getCookie } from 'utils/string'
+import { useAsyncEffect } from '@dwarvesf/react-hooks'
 
 interface AuthContextValues {
   isAuthenticated: boolean
@@ -75,6 +76,17 @@ const AuthContextProvider = ({ children }: WithChildren) => {
       setAuthToken('')
     }
   }, [])
+
+  useAsyncEffect(async () => {
+    if (authToken) {
+      try {
+        const profile = await client.getUser()
+        setEmployee(profile.data)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+  }, [authToken])
 
   const isAuthenticated = useMemo(() => {
     const authenticated = isSSR() ? false : getCookie(AUTH_TOKEN_KEY) !== ''
