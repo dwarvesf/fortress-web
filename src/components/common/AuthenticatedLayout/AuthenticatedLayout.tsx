@@ -117,12 +117,11 @@ export const AuthenticatedLayout = (props: Props) => {
           collapsed={collapsed}
           onCollapse={(value) => setCollapsed(value)}
           theme="light"
-          style={{ position: 'sticky', top: 0 }}
+          style={{ top: 0 }}
         >
           <Menu
             theme="light"
             defaultSelectedKeys={['1']}
-            style={{ height: '100%', borderRight: 0 }}
             mode="inline"
             items={items}
             onClick={({ key }) => push(key)}

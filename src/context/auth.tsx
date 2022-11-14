@@ -34,21 +34,21 @@ const AuthContextProvider = ({ children }: WithChildren) => {
     flow: 'auth-code',
     onSuccess: async (codeResponse) => {
       try {
-        const { accessToken: token, employee: employeeData } =
-          await client.login(codeResponse.code, window.location.origin)
+        const {
+          data: { accessToken, employee },
+        } = await client.login(codeResponse.code, window.location.origin)
 
-        if (token) {
-          const jwtObj = parseJWT(token)
+        if (accessToken) {
+          setAuthToken(accessToken)
+
+          const jwtObj = parseJWT(accessToken)
           const expiryTime = dayjs.unix(jwtObj?.exp)
 
-          setAuthToken(token)
-          document.cookie = `${AUTH_TOKEN_KEY}=${token}; expires=${expiryTime.toDate()}; domain=${
-            window.location.origin
-          }`
+          document.cookie = `${AUTH_TOKEN_KEY}=${accessToken}; expires=${expiryTime.toDate()}`
 
-          if (employeeData) {
+          if (employee) {
             setIsAuthenticating(false)
-            setUser(employeeData)
+            setUser(employee)
           }
         }
       } catch (error: any) {

@@ -14,7 +14,7 @@ class Client {
   }
 
   public login(code: string, redirectUrl: string) {
-    return fetcher<AuthResponse>(`${BASE_API_URL}/auth`, {
+    return fetcher<{ data: AuthResponse }>(`${BASE_API_URL}/auth`, {
       method: 'POST',
       headers: {
         ...this.headers,
