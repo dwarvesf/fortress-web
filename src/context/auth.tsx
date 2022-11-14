@@ -41,7 +41,9 @@ const AuthContextProvider = ({ children }: WithChildren) => {
           const expiryTime = dayjs.unix(jwtObj?.exp)
 
           setAuthToken(token)
-          document.cookie = `${AUTH_TOKEN_KEY}=${token}; expires=${expiryTime.toDate()}`
+          document.cookie = `${AUTH_TOKEN_KEY}=${token}; expires=${expiryTime.toDate()}; domain=${
+            window.location.origin
+          }`
 
           if (employeeData) {
             setEmployee(employeeData)
@@ -61,7 +63,9 @@ const AuthContextProvider = ({ children }: WithChildren) => {
     setEmployee(undefined)
 
     const now = dayjs()
-    document.cookie = `${AUTH_TOKEN_KEY}=; expires=${now.toDate()}`
+    document.cookie = `${AUTH_TOKEN_KEY}=; expires=${now.toDate()}; domain=${
+      window.location.href
+    }`
   }
 
   useEffect(() => {
@@ -75,7 +79,7 @@ const AuthContextProvider = ({ children }: WithChildren) => {
   }, [])
 
   const isAuthenticated = useMemo(() => {
-    const authenticated = isSSR() ? false : Boolean(getCookie(AUTH_TOKEN_KEY))
+    const authenticated = isSSR() ? false : getCookie(AUTH_TOKEN_KEY) !== ''
 
     return authenticated && authToken !== ''
   }, [authToken])
