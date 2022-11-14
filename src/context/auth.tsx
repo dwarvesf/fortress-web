@@ -63,9 +63,7 @@ const AuthContextProvider = ({ children }: WithChildren) => {
     setEmployee(undefined)
 
     const now = dayjs()
-    document.cookie = `${AUTH_TOKEN_KEY}=; expires=${now.toDate()}; domain=${
-      window.location.href
-    }`
+    document.cookie = `${AUTH_TOKEN_KEY}=; expires=${now.toDate()}`
   }
 
   useEffect(() => {

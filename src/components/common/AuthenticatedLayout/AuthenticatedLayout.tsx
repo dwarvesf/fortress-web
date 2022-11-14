@@ -76,11 +76,11 @@ export const AuthenticatedLayout = (props: Props) => {
     })?.key as string
   }, [pathname])
 
-  if (pathname === ROUTES.LOGIN) {
+  if (!isAuthenticated || pathname === ROUTES.LOGIN) {
     return <Layout>{children}</Layout>
   }
 
-  return isAuthenticated ? (
+  return (
     <Layout style={{ minHeight: '100vh' }}>
       <Header className="layout-header">
         <Row justify="space-between">
@@ -122,5 +122,5 @@ export const AuthenticatedLayout = (props: Props) => {
         </Layout>
       </Layout>
     </Layout>
-  ) : null
+  )
 }
