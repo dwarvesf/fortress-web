@@ -70,7 +70,7 @@ const AuthContextProvider = ({ children }: WithChildren) => {
     }
 
     if (getCookie(AUTH_TOKEN_KEY) === '') {
-      logout()
+      setAuthToken('')
     }
   }, [])
 
