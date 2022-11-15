@@ -69,9 +69,7 @@ const AuthContextProvider = ({ children }: WithChildren) => {
     client.clearAuthToken()
 
     const pass = dayjs().subtract(1, 'year')
-    document.cookie = `${AUTH_TOKEN_KEY}=; expires=${pass.toDate()}; domain=${
-      window.location.hostname
-    }`
+    document.cookie = `${AUTH_TOKEN_KEY}=; expires=${pass.toDate()}`
   }
 
   useEffect(() => {
