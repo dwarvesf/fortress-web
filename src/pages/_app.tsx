@@ -34,7 +34,7 @@ const MyApp = ({
         <meta property="og:image" content="/thumbnail.jpeg" />
         <meta name="twitter:image" content="/thumbnail.jpeg" />
       </Head>
-      <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}>
+      <GoogleOAuthProvider clientId={process.env.GOOGLE_CLIENT_ID!}>
         <ThemeProvider theme={theme}>
           <AuthContextProvider>
             <AuthenticatedLayout>

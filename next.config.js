@@ -14,6 +14,7 @@ module.exports = withAntdLess({
   },
   env: {
     BASE_URL: process.env.BASE_URL,
+    GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
   },
   // Warning: This allows production builds to successfully complete even if
   // your project has TS & ESLint errors.
