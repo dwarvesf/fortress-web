@@ -9,6 +9,10 @@
  * ---------------------------------------------------------------
  */
 
+export interface Response<T> {
+  data: T
+}
+
 export interface ModelChapter {
   code?: string
   createdAt?: string
