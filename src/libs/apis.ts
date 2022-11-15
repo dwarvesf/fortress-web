@@ -1,5 +1,9 @@
-import { AuthUser, AuthResponse, Response } from 'types/schema'
+import { AuthUser, AuthResponse } from 'types/schema'
 import fetcher from './fetcher'
+
+export interface Response<T> {
+  data: T
+}
 
 // keys for swr
 export const GET_PATHS = {
