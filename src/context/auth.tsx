@@ -68,7 +68,7 @@ const AuthContextProvider = ({ children }: WithChildren) => {
     setUser(undefined)
     client.clearAuthToken()
 
-    const now = dayjs()
+    const now = dayjs().subtract(1, 'year')
     document.cookie = `${AUTH_TOKEN_KEY}=; expires=${now.toDate()}; domain=${
       window.location.hostname
     }`
