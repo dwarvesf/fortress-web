@@ -33,6 +33,7 @@ const AuthContextProvider = ({ children }: WithChildren) => {
 
   const login = useGoogleLogin({
     flow: 'auth-code',
+    redirect_uri: typeof window !== 'undefined' ? window.location.origin : '',
     onSuccess: async (codeResponse) => {
       try {
         const {
