@@ -21,10 +21,12 @@ export function setCookie(
   cvalue: string,
   config?: { expires?: Date; domain?: string },
 ) {
-  document.cookie = `${cname}=${cvalue}; expires=${config?.expires}; domain=${config?.domain}`
+  document.cookie = `${cname}=${cvalue}; expires=${config?.expires}; domain=${config?.domain}; path=/`
 }
 
-export function removeCookie(cname: string) {
+export function removeCookie(cname: string, config?: { domain?: string }) {
   const pass = dayjs().subtract(1, 'year')
-  document.cookie = `${cname}=; expires=${pass.toDate()}`
+  document.cookie = `${cname}=; expires=${pass.toDate()}; domain=${
+    config?.domain
+  }; path=/`
 }

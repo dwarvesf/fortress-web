@@ -6,7 +6,7 @@ export const GET_PATHS = {
   getUsers: '/users',
 }
 
-const BASE_URL = 'https://develop-api.fortress.dwarvesf.com/api/v1'
+const BASE_URL = process.env.BASE_URL
 
 class Client {
   headers: HeadersInit = {

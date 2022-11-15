@@ -69,8 +69,9 @@ const AuthContextProvider = ({ children }: WithChildren) => {
     setAuthToken('')
     setUser(undefined)
     client.clearAuthToken()
-
-    removeCookie(AUTH_TOKEN_KEY)
+    removeCookie(AUTH_TOKEN_KEY, {
+      domain: window.location.hostname,
+    })
   }
 
   useEffect(() => {
