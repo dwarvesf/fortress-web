@@ -1,15 +1,22 @@
-import { createContext, isSSR } from '@dwarvesf/react-utils'
+import dayjs from 'dayjs'
+import { createContext } from '@dwarvesf/react-utils'
 import { ROUTES } from 'constants/routes'
-import { Session } from 'next-auth'
-import { useSession, signIn, signOut } from 'next-auth/react'
-import { useEffect, useMemo } from 'react'
+import { useEffect, useState } from 'react'
 import { WithChildren } from 'types/common'
+import { useGoogleLogin } from '@react-oauth/google'
+import { AuthUser } from 'types/schema'
+import { client } from 'libs/apis'
+import { notification } from 'antd'
+import { parseJWT } from 'utils/string'
+import { getCookie, setCookie, removeCookie } from 'utils/cookie'
+import { useAsyncEffect } from '@dwarvesf/react-hooks'
 
 interface AuthContextValues {
   isAuthenticated: boolean
+  isAuthenticating: boolean
   login: () => void
   logout: () => void
-  session: Session | null
+  user?: AuthUser
 }
 
 export const AUTH_TOKEN_KEY = 'fortress-token'
@@ -20,30 +27,88 @@ const [Provider, useAuthContext] = createContext<AuthContextValues>({
 })
 
 const AuthContextProvider = ({ children }: WithChildren) => {
-  const { data: session } = useSession()
+  const [authToken, setAuthToken] = useState('')
+  const [isAuthenticating, setIsAuthenticating] = useState<boolean>(true)
+  const [user, setUser] = useState<AuthUser>()
 
-  const isAuthenticated = useMemo(() => {
-    const authenticated = isSSR()
-      ? false
-      : Boolean(window.localStorage.getItem(AUTH_TOKEN_KEY))
-    return authenticated || session !== null
-  }, [session])
+  const login = useGoogleLogin({
+    flow: 'auth-code',
+    onSuccess: async (codeResponse) => {
+      try {
+        const {
+          data: { accessToken, employee },
+        } = await client.login(codeResponse.code, window.location.origin)
+
+        if (accessToken) {
+          client.setAuthToken(accessToken)
+          setAuthToken(accessToken)
+
+          const jwtObj = parseJWT(accessToken)
+          const expiryTime = dayjs.unix(jwtObj?.exp)
+
+          setCookie(AUTH_TOKEN_KEY, accessToken, {
+            expires: expiryTime.toDate(),
+            domain: window.location.hostname,
+          })
+
+          if (employee) {
+            setIsAuthenticating(false)
+            setUser(employee)
+          }
+        }
+      } catch (error: any) {
+        notification.error({
+          message: 'Error',
+          description: error.message || 'Could not login!',
+        })
+      }
+    },
+  })
+
+  const logout = () => {
+    setAuthToken('')
+    setUser(undefined)
+    client.clearAuthToken()
+    removeCookie(AUTH_TOKEN_KEY, {
+      domain: window.location.hostname,
+    })
+  }
 
   useEffect(() => {
     if (!window.location.href.includes(ROUTES.LOGIN)) {
       window.localStorage.setItem(LOGIN_REDIRECTION_KEY, window.location.href)
     }
-  }, [session])
+  }, [authToken])
 
-  // TODO: bind API and implement login and logout functions with localStorage's setItem and removeItem
+  useAsyncEffect(async () => {
+    const authToken = getCookie(AUTH_TOKEN_KEY)
+
+    if (authToken) {
+      client.setAuthToken(authToken)
+      setAuthToken(authToken)
+      try {
+        const profile = await client.getProfile()
+        setUser(profile.data)
+      } catch (error) {
+        console.error(error)
+      } finally {
+        setIsAuthenticating(false)
+      }
+    } else {
+      setIsAuthenticating(false)
+    }
+  }, [])
+
+  const isAuthenticated = Boolean(authToken) && !isAuthenticating
 
   return (
     <Provider
       value={{
         isAuthenticated,
-        login: () => signIn('google'),
-        logout: () => signOut(),
-        session,
+        isAuthenticating,
+        login,
+        logout,
+        user,
       }}
     >
       {children}

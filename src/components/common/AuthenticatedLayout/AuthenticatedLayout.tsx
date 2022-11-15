@@ -5,7 +5,7 @@ import {
   UserOutlined,
   WechatFilled,
 } from '@ant-design/icons'
-import { Col, MenuProps, Row, Layout, Menu } from 'antd'
+import { Col, MenuProps, Row, Layout, Menu, Spin } from 'antd'
 import { ROUTES } from 'constants/routes'
 import { LOGIN_REDIRECTION_KEY, useAuthContext } from 'context/auth'
 import Link from 'next/link'
@@ -52,21 +52,21 @@ const LogoLink = styled.a`
 export const AuthenticatedLayout = (props: Props) => {
   const { children } = props
 
-  const { isAuthenticated } = useAuthContext()
+  const { isAuthenticated, isAuthenticating } = useAuthContext()
 
-  const { push, pathname } = useRouter()
+  const { replace, push, pathname } = useRouter()
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (!isAuthenticated && !isAuthenticating) {
       if (!window.location.href.includes(ROUTES.LOGIN)) {
         window.localStorage.setItem(LOGIN_REDIRECTION_KEY, window.location.href)
       }
 
-      if (pathname !== '/login') {
-        push(ROUTES.LOGIN)
+      if (pathname !== ROUTES.LOGIN) {
+        replace(ROUTES.LOGIN)
       }
     }
-  }, [push, isAuthenticated, pathname])
+  }, [replace, isAuthenticated, pathname, isAuthenticating])
 
   const [collapsed, setCollapsed] = useState(false)
 
@@ -76,11 +76,26 @@ export const AuthenticatedLayout = (props: Props) => {
     })?.key as string
   }, [pathname])
 
-  if (pathname === '/login') {
+  if (isAuthenticating || (!isAuthenticated && pathname !== ROUTES.LOGIN)) {
+    return (
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+        }}
+      >
+        <Spin size="large" />
+      </div>
+    )
+  }
+
+  if (!isAuthenticated || pathname === ROUTES.LOGIN) {
     return <Layout>{children}</Layout>
   }
 
-  return isAuthenticated ? (
+  return (
     <Layout style={{ minHeight: '100vh' }}>
       <Header className="layout-header">
         <Row justify="space-between">
@@ -102,12 +117,11 @@ export const AuthenticatedLayout = (props: Props) => {
           collapsed={collapsed}
           onCollapse={(value) => setCollapsed(value)}
           theme="light"
-          style={{ position: 'sticky', top: 0 }}
+          style={{ top: 0 }}
         >
           <Menu
             theme="light"
             defaultSelectedKeys={['1']}
-            style={{ height: '100%', borderRight: 0 }}
             mode="inline"
             items={items}
             onClick={({ key }) => push(key)}
@@ -122,5 +136,5 @@ export const AuthenticatedLayout = (props: Props) => {
         </Layout>
       </Layout>
     </Layout>
-  ) : null
+  )
 }

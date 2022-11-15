@@ -6,19 +6,16 @@ import Head from 'next/head'
 import { AuthContextProvider } from 'context/auth'
 import { ThemeProvider } from 'styled-components'
 import { theme } from 'styles'
-import { SessionProvider } from 'next-auth/react'
 import { NextComponentType, NextPageContext } from 'next'
-import { Session } from 'next-auth'
 import { AuthenticatedLayout } from 'components/common/AuthenticatedLayout'
+import { GoogleOAuthProvider } from '@react-oauth/google'
 
 const MyApp = ({
   Component,
   pageProps,
-  session,
 }: {
   Component: NextComponentType<NextPageContext, any, any>
   pageProps: {}
-  session: Session | null
 }) => {
   return (
     <>
@@ -37,7 +34,7 @@ const MyApp = ({
         <meta property="og:image" content="/thumbnail.jpeg" />
         <meta name="twitter:image" content="/thumbnail.jpeg" />
       </Head>
-      <SessionProvider session={session}>
+      <GoogleOAuthProvider clientId={process.env.GOOGLE_CLIENT_ID!}>
         <ThemeProvider theme={theme}>
           <AuthContextProvider>
             <AuthenticatedLayout>
@@ -46,7 +43,7 @@ const MyApp = ({
             </AuthenticatedLayout>
           </AuthContextProvider>
         </ThemeProvider>
-      </SessionProvider>
+      </GoogleOAuthProvider>
     </>
   )
 }
