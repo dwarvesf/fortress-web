@@ -7,7 +7,8 @@ import { useGoogleLogin } from '@react-oauth/google'
 import { AuthUser } from 'types/schema'
 import { client } from 'libs/apis'
 import { notification } from 'antd'
-import { parseJWT, getCookie } from 'utils/string'
+import { parseJWT } from 'utils/string'
+import { getCookie, setCookie, removeCookie } from 'utils/cookie'
 import { useAsyncEffect } from '@dwarvesf/react-hooks'
 
 interface AuthContextValues {
@@ -45,9 +46,10 @@ const AuthContextProvider = ({ children }: WithChildren) => {
           const jwtObj = parseJWT(accessToken)
           const expiryTime = dayjs.unix(jwtObj?.exp)
 
-          document.cookie = `${AUTH_TOKEN_KEY}=${accessToken}; expires=${expiryTime.toDate()}; domain=${
-            window.location.hostname
-          }`
+          setCookie(AUTH_TOKEN_KEY, accessToken, {
+            expires: expiryTime.toDate(),
+            domain: window.location.hostname,
+          })
 
           if (employee) {
             setIsAuthenticating(false)
@@ -68,8 +70,7 @@ const AuthContextProvider = ({ children }: WithChildren) => {
     setUser(undefined)
     client.clearAuthToken()
 
-    const pass = dayjs().subtract(1, 'year')
-    document.cookie = `${AUTH_TOKEN_KEY}=; expires=${pass.toDate()}`
+    removeCookie(AUTH_TOKEN_KEY)
   }
 
   useEffect(() => {
