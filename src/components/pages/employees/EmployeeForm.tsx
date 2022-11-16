@@ -29,7 +29,6 @@ export const EmployeeForm = (props: Props) => {
 
   const onSubmit = async (values: Required<CreateEmployeeFormValues>) => {
     createEmployeeFormRef.current = transformDataToSend(values)
-    console.log(createEmployeeFormRef.current)
 
     try {
       setIsSubmitting(true)
