@@ -29,11 +29,12 @@ export const EmployeeForm = (props: Props) => {
 
   const onSubmit = async (values: Required<CreateEmployeeFormValues>) => {
     createEmployeeFormRef.current = transformDataToSend(values)
+    console.log(createEmployeeFormRef.current)
 
     try {
       setIsSubmitting(true)
 
-      // TODO: Bind create member & get select options API
+      // TODO: Bind create member & get select options APIs
 
       notification.success({
         message: 'Success',
@@ -234,7 +235,7 @@ export const EmployeeForm = (props: Props) => {
             name="salary"
             rules={[{ required: true, message: 'Please input salary' }]}
           >
-            <Input type="number" placeholder="Enter salary" />
+            <Input type="number" placeholder="Enter salary" min={0} />
           </Form.Item>
         </Col>
 
