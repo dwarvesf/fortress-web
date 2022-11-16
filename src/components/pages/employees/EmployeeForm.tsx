@@ -1,6 +1,7 @@
 import { Form, Row, Col, Input, Button, notification, Typography } from 'antd'
 import { AsyncSelect } from 'components/common/Select'
 import { ROUTES } from 'constants/routes'
+import { GET_PATHS } from 'libs/apis'
 import { useRouter } from 'next/router'
 import {
   EmployeeStatus,
@@ -17,19 +18,8 @@ interface Props {
   isEditing?: boolean
 }
 
-const defaultValues: CreateEmployeeFormValues = {
-  fullname: undefined,
-  status: 'onboarding',
-  email: undefined,
-  personalEmail: undefined,
-  role: 'frontend',
-  seniority: 'fresher',
-  salary: undefined,
-  accountRole: 'admin',
-}
-
 export const EmployeeForm = (props: Props) => {
-  const { initialValues = defaultValues, isEditing = false } = props
+  const { initialValues, isEditing = false } = props
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
 
   const { push } = useRouter()
@@ -43,7 +33,7 @@ export const EmployeeForm = (props: Props) => {
     try {
       setIsSubmitting(true)
 
-      // TODO: Bind API
+      // TODO: Bind create member & get select options API
 
       notification.success({
         message: 'Success',
@@ -132,21 +122,23 @@ export const EmployeeForm = (props: Props) => {
           >
             <AsyncSelect
               optionGetter={() => {
-                const dataArray = Object.keys(EmployeeStatus).map((key) => {
-                  return {
-                    code: key,
-                    name: EmployeeStatus[key as keyof typeof EmployeeStatus],
-                  }
-                })
                 return new Promise((resolve) => {
-                  setTimeout(() => resolve({ data: dataArray }), 5000)
+                  setTimeout(
+                    () =>
+                      resolve({
+                        data: Object.keys(EmployeeStatus).map((key) => ({
+                          code: key,
+                          name: EmployeeStatus[
+                            key as keyof typeof EmployeeStatus
+                          ],
+                        })),
+                      }),
+                    5000,
+                  )
                 })
               }}
-              value={
-                EmployeeStatus[
-                  defaultValues.status as keyof typeof EmployeeStatus
-                ]
-              }
+              swrKeys={GET_PATHS.getStatusSelectOptions}
+              placeholder="Select status"
             />
           </Form.Item>
         </Col>
@@ -188,19 +180,21 @@ export const EmployeeForm = (props: Props) => {
           >
             <AsyncSelect
               optionGetter={() => {
-                const dataArray = Object.keys(EmployeeRole).map((key) => {
-                  return {
-                    code: key,
-                    name: EmployeeRole[key as keyof typeof EmployeeRole],
-                  }
-                })
                 return new Promise((resolve) => {
-                  setTimeout(() => resolve({ data: dataArray }), 5000)
+                  setTimeout(
+                    () =>
+                      resolve({
+                        data: Object.keys(EmployeeRole).map((key) => ({
+                          code: key,
+                          name: EmployeeRole[key as keyof typeof EmployeeRole],
+                        })),
+                      }),
+                    5000,
+                  )
                 })
               }}
-              value={
-                EmployeeRole[defaultValues.status as keyof typeof EmployeeRole]
-              }
+              swrKeys={GET_PATHS.getPositionSelectOptions}
+              placeholder="Select role"
             />
           </Form.Item>
         </Col>
@@ -213,23 +207,23 @@ export const EmployeeForm = (props: Props) => {
           >
             <AsyncSelect
               optionGetter={() => {
-                const dataArray = Object.keys(EmployeeSeniority).map((key) => {
-                  return {
-                    code: key,
-                    name: EmployeeSeniority[
-                      key as keyof typeof EmployeeSeniority
-                    ],
-                  }
-                })
                 return new Promise((resolve) => {
-                  setTimeout(() => resolve({ data: dataArray }), 5000)
+                  setTimeout(
+                    () =>
+                      resolve({
+                        data: Object.keys(EmployeeSeniority).map((key) => ({
+                          code: key,
+                          name: EmployeeSeniority[
+                            key as keyof typeof EmployeeSeniority
+                          ],
+                        })),
+                      }),
+                    5000,
+                  )
                 })
               }}
-              value={
-                EmployeeSeniority[
-                  defaultValues.status as keyof typeof EmployeeSeniority
-                ]
-              }
+              swrKeys={GET_PATHS.getSenioritySelectOptions}
+              placeholder="Select seniority"
             />
           </Form.Item>
         </Col>
@@ -252,25 +246,23 @@ export const EmployeeForm = (props: Props) => {
           >
             <AsyncSelect
               optionGetter={() => {
-                const dataArray = Object.keys(EmployeeAccountRole).map(
-                  (key) => {
-                    return {
-                      code: key,
-                      name: EmployeeAccountRole[
-                        key as keyof typeof EmployeeAccountRole
-                      ],
-                    }
-                  },
-                )
                 return new Promise((resolve) => {
-                  setTimeout(() => resolve({ data: dataArray }), 5000)
+                  setTimeout(
+                    () =>
+                      resolve({
+                        data: Object.keys(EmployeeAccountRole).map((key) => ({
+                          code: key,
+                          name: EmployeeAccountRole[
+                            key as keyof typeof EmployeeAccountRole
+                          ],
+                        })),
+                      }),
+                    5000,
+                  )
                 })
               }}
-              value={
-                EmployeeAccountRole[
-                  defaultValues.status as keyof typeof EmployeeAccountRole
-                ]
-              }
+              swrKeys={GET_PATHS.getAccountRoleSelectOptions}
+              placeholder="Select account role"
             />
           </Form.Item>
         </Col>
