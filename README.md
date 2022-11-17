@@ -29,9 +29,9 @@ to see your project.
 
 ## References
 
-| Name    | Link                                                          |
-| ------- | ------------------------------------------------------------- |
-| API Doc | https://develop-api.fortress.dwarvesf.com/swagger/index.html/ |
+| Name    | Link                                                         |
+| ------- | ------------------------------------------------------------ |
+| API Doc | https://develop-api.fortress.dwarvesf.com/swagger/index.html |
 
 ## Documentation
 
