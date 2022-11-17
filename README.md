@@ -27,6 +27,12 @@ to see your project.
 | Development | https://develop--fortress-v2.netlify.app/ |
 | Production  | https://fortress-v2.netlify.app/          |
 
+## References
+
+| Name    | Link                                                          |
+| ------- | ------------------------------------------------------------- |
+| API Doc | https://develop-api.fortress.dwarvesf.com/swagger/index.html/ |
+
 ## Documentation
 
 - [Getting started](./docs/GETTING_STARTED.md)

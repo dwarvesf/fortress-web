@@ -7,7 +7,7 @@ right build command and the correct path to app bundles.
 ## Main App
 
 - Build command: `yarn build`
-- Publish directory: `out`
+- Publish directory: `.next`
 
 ## Document UI
 

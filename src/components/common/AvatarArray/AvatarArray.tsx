@@ -1,11 +1,12 @@
 import { Avatar, Space, Tooltip } from 'antd'
 import { theme } from 'styles'
+import { ViewEmployeeData } from 'types/schema'
 import { AvatarWithName } from '../AvatarWithName'
 import { EmployeeLink } from '../DetailLink'
 
 interface Props {
   size?: number
-  data?: (any & { image?: string; name?: string })[]
+  data?: ViewEmployeeData[]
   numOfVisibleAvatar?: number
 }
 
@@ -16,17 +17,19 @@ export const AvatarArray = (props: Props) => {
 
   return (
     <Space direction="horizontal" size={0}>
-      {data.slice(0, numOfVisibleAvatar).map((user: any, index: number) => {
+      {data.slice(0, numOfVisibleAvatar).map((user, index: number) => {
         return (
-          <EmployeeLink id={user.id} key={user.id}>
+          <EmployeeLink id={user.id || ''} key={user.id}>
             <Tooltip
               title={
-                <span style={{ color: theme.colors.black }}>{user.name}</span>
+                <span style={{ color: theme.colors.black }}>
+                  {user.displayName}
+                </span>
               }
               color="white"
             >
               <Avatar
-                src={user.image}
+                src={user.avatar}
                 size={size}
                 style={{
                   marginLeft: index !== 0 ? offset : 0,
@@ -34,7 +37,7 @@ export const AvatarArray = (props: Props) => {
                   borderWidth: 0.5,
                   borderColor: theme.colors.white,
                 }}
-                icon={!user.image && user.name.slice(0, 1)}
+                icon={!user.avatar && user.displayName?.slice(0, 1)}
               />
             </Tooltip>
           </EmployeeLink>
