@@ -7,8 +7,12 @@ import {
   ViewProjectListDataResponse,
   ViewMetaData,
   ViewEmployeeData,
+  ViewAccountRoleResponse,
+  ViewPositionResponse,
+  ViewSeniorityResponse,
 } from 'types/schema'
 import qs from 'qs'
+import { MetaSelectOption } from 'types/common'
 import fetcher from './fetcher'
 
 const BASE_URL = process.env.BASE_URL
@@ -99,9 +103,39 @@ class Client {
     )
   }
 
+  public getMetaSeniorities() {
+    return fetcher<ViewSeniorityResponse>(`${BASE_URL}/metadata/seniorities`, {
+      headers: { ...this.privateHeaders },
+    })
+  }
+
+  public getMetaPositions() {
+    return fetcher<ViewPositionResponse>(`${BASE_URL}/metadata/positions`, {
+      headers: { ...this.privateHeaders },
+    })
+  }
+
+  public getMetaAccountRoles() {
+    return fetcher<ViewAccountRoleResponse>(
+      `${BASE_URL}/metadata/account-roles`,
+      {
+        headers: { ...this.privateHeaders },
+      },
+    )
+  }
+
   public getProjectStatusMetadata = () => {
     return fetcher<Response<ViewMetaData[]>>(
       `${BASE_URL}/metadata/project-statuses`,
+      {
+        headers: { ...this.privateHeaders },
+      },
+    )
+  }
+
+  public getMetaAccountStatuses() {
+    return fetcher<Response<MetaSelectOption[]>>( // no schema yet
+      `${BASE_URL}/metadata/account-statuses`,
       {
         headers: { ...this.privateHeaders },
       },

@@ -1,15 +1,9 @@
 import { Form, Row, Col, Input, Button, notification, Typography } from 'antd'
 import { AsyncSelect } from 'components/common/Select'
 import { ROUTES } from 'constants/routes'
-import { GET_PATHS } from 'libs/apis'
+import { client, GET_PATHS } from 'libs/apis'
 import { useRouter } from 'next/router'
-import {
-  EmployeeStatus,
-  EmployeeRole,
-  EmployeeSeniority,
-  EmployeeAccountRole,
-  CreateEmployeeFormValues,
-} from 'pages/employees/new'
+import { CreateEmployeeFormValues } from 'pages/employees/new'
 import { useRef, useState, useEffect } from 'react'
 import { theme } from 'styles'
 
@@ -29,6 +23,7 @@ export const EmployeeForm = (props: Props) => {
 
   const onSubmit = async (values: Required<CreateEmployeeFormValues>) => {
     createEmployeeFormRef.current = transformDataToSend(values)
+    console.log(createEmployeeFormRef.current)
 
     try {
       setIsSubmitting(true)
@@ -121,23 +116,8 @@ export const EmployeeForm = (props: Props) => {
             rules={[{ required: true, message: 'Please select status' }]}
           >
             <AsyncSelect
-              optionGetter={() =>
-                new Promise((resolve) => {
-                  setTimeout(
-                    () =>
-                      resolve({
-                        data: Object.keys(EmployeeStatus).map((key) => ({
-                          code: key,
-                          name: EmployeeStatus[
-                            key as keyof typeof EmployeeStatus
-                          ],
-                        })),
-                      }),
-                    5000,
-                  )
-                })
-              }
-              swrKeys={GET_PATHS.getAccountStatusMetadata}
+              optionGetter={() => client.getMetaAccountStatuses()}
+              swrKeys={GET_PATHS.getStatusSelectOptions}
               placeholder="Select status"
             />
           </Form.Item>
@@ -174,27 +154,15 @@ export const EmployeeForm = (props: Props) => {
 
         <Col span={24} md={{ span: 12 }}>
           <Form.Item
-            label="Role"
-            name="role"
-            rules={[{ required: true, message: 'Please select role' }]}
+            label="Positions"
+            name="positions"
+            rules={[{ required: true, message: 'Please select positions' }]}
           >
             <AsyncSelect
-              optionGetter={() =>
-                new Promise((resolve) => {
-                  setTimeout(
-                    () =>
-                      resolve({
-                        data: Object.keys(EmployeeRole).map((key) => ({
-                          code: key,
-                          name: EmployeeRole[key as keyof typeof EmployeeRole],
-                        })),
-                      }),
-                    5000,
-                  )
-                })
-              }
-              swrKeys={GET_PATHS.getPositionMetadata}
-              placeholder="Select role"
+              mode="multiple"
+              optionGetter={() => client.getMetaPositions()}
+              swrKeys={GET_PATHS.getPositionSelectOptions}
+              placeholder="Select positions"
             />
           </Form.Item>
         </Col>
@@ -206,23 +174,8 @@ export const EmployeeForm = (props: Props) => {
             rules={[{ required: true, message: 'Please select seniority' }]}
           >
             <AsyncSelect
-              optionGetter={() =>
-                new Promise((resolve) => {
-                  setTimeout(
-                    () =>
-                      resolve({
-                        data: Object.keys(EmployeeSeniority).map((key) => ({
-                          code: key,
-                          name: EmployeeSeniority[
-                            key as keyof typeof EmployeeSeniority
-                          ],
-                        })),
-                      }),
-                    5000,
-                  )
-                })
-              }
-              swrKeys={GET_PATHS.getSeniorityMetadata}
+              optionGetter={() => client.getMetaSeniorities()}
+              swrKeys={GET_PATHS.getSenioritySelectOptions}
               placeholder="Select seniority"
             />
           </Form.Item>
@@ -245,23 +198,8 @@ export const EmployeeForm = (props: Props) => {
             rules={[{ required: true, message: 'Please select account role' }]}
           >
             <AsyncSelect
-              optionGetter={() =>
-                new Promise((resolve) => {
-                  setTimeout(
-                    () =>
-                      resolve({
-                        data: Object.keys(EmployeeAccountRole).map((key) => ({
-                          code: key,
-                          name: EmployeeAccountRole[
-                            key as keyof typeof EmployeeAccountRole
-                          ],
-                        })),
-                      }),
-                    5000,
-                  )
-                })
-              }
-              swrKeys={GET_PATHS.getAccountRoleMetadata}
+              optionGetter={() => client.getMetaAccountRoles()}
+              swrKeys={GET_PATHS.getAccountRoleSelectOptions}
               placeholder="Select account role"
             />
           </Form.Item>
