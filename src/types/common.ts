@@ -9,7 +9,7 @@ import {
 
 export type WithChildren<T = {}> = T & { children: ReactNode }
 
-export interface SelectOption
+export interface MetaSelectOption
   extends Partial<DefaultOptionType>,
     ViewMetaData,
     ModelPosition,
