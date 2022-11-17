@@ -1,8 +1,9 @@
 import { Avatar, Space } from 'antd'
+import { ViewEmployeeData } from 'types/schema'
 import { EmployeeLink } from '../DetailLink'
 
 interface Props {
-  user: any
+  user: ViewEmployeeData
   avatarSize?: number
 }
 
@@ -10,14 +11,14 @@ export const AvatarWithName = (props: Props) => {
   const { user, avatarSize = 24 } = props
 
   return (
-    <EmployeeLink id={user.id}>
+    <EmployeeLink id={user.id || ''}>
       <Space direction="horizontal">
         <Avatar
-          src={user.image}
+          src={user.avatar}
           size={avatarSize}
-          icon={!user.image && user.name.slice(0, 1)}
+          icon={!user.displayName && user.displayName?.slice(0, 1)}
         />
-        <span>{user.name}</span>
+        <span>{user.displayName}</span>
       </Space>
     </EmployeeLink>
   )

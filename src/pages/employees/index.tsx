@@ -8,27 +8,20 @@ import Link from 'next/link'
 import { AvatarWithName } from 'components/common/AvatarWithName'
 import { EmployeeLink, ProjectLink } from 'components/common/DetailLink'
 import { Button } from 'components/common/Button'
+import { EmployeeListFilter } from 'types/filters/EmployeeListFilter'
+import { useFetchWithCache } from 'hooks/useFetchWithCache'
+import { client, GET_PATHS } from 'libs/apis'
+import { ModelPosition, ViewEmployeeData, ViewStack } from 'types/schema'
+import { useFilter } from 'hooks/useFilter'
+import debounce from 'lodash.debounce'
 
 const Default = () => {
-  const mockData = [
-    {
-      id: 1,
-      name: 'Huy Tieu',
-      discord: '0xlight#0209',
-      email: 'huytq@d.foundation',
-      github: 'tqhuy1991',
-      roles: ['PM', 'Delivery'],
-      projects: [
-        {
-          name: 'Droppii',
-        },
-        {
-          name: 'Nghenhan',
-        },
-      ],
-      skillset: ['PM', 'BA'],
-    },
-  ]
+  const { filter, setFilter } = useFilter(new EmployeeListFilter())
+  const { data, loading } = useFetchWithCache(
+    [GET_PATHS.getEmployees, filter],
+    () => client.getEmployees(filter),
+  )
+  const employees = data?.data || []
 
   const columns = useMemo(() => {
     return [
@@ -38,13 +31,20 @@ const Default = () => {
       },
       {
         title: 'Discord',
-        key: 'discord',
-        dataIndex: 'discord',
+        key: 'discordID',
+        dataIndex: 'discordID',
+        render: (value) => value || '-',
+      },
+      {
+        title: 'Notion',
+        key: 'notionID',
+        dataIndex: 'notionID',
+        render: (value) => value || '-',
       },
       {
         title: 'Email',
-        key: 'email',
-        dataIndex: 'email',
+        key: 'personalEmail',
+        dataIndex: 'personalEmail',
         render: (value) => (
           <a href={`mailto:${value}`} target="_blank" rel="noreferrer">
             {value}
@@ -53,23 +53,29 @@ const Default = () => {
       },
       {
         title: 'Github',
-        key: 'github',
-        dataIndex: 'github',
-        render: (value) => (
-          // TODO: Add valid Github links
-          <a href="/" target="_blank" rel="noreferrer">
-            {value}
-          </a>
-        ),
+        key: 'githubID',
+        dataIndex: 'githubID',
+        render: (value) =>
+          value ? (
+            <a
+              href={`https://github.com/${value}`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {value}
+            </a>
+          ) : (
+            '-'
+          ),
       },
       {
-        title: 'Roles',
-        key: 'roles',
-        dataIndex: 'roles',
+        title: 'Positions',
+        key: 'positions',
+        dataIndex: 'positions',
         render: (value) => (
           <Space size={[0, 8]}>
-            {value.map((role: any) => (
-              <Tag key={role}>{role}</Tag>
+            {value.map((position: ModelPosition) => (
+              <Tag key={position.id}>{position.name}</Tag>
             ))}
           </Space>
         ),
@@ -89,13 +95,13 @@ const Default = () => {
         ),
       },
       {
-        title: 'Skillset',
-        key: 'skillset',
-        dataIndex: 'skillset',
+        title: 'Stacks',
+        key: 'stacks',
+        dataIndex: 'stacks',
         render: (value) => (
           <Space size={[0, 8]}>
-            {value.map((skill: any) => (
-              <Tag key={skill}>{skill}</Tag>
+            {value?.map((stack: ViewStack) => (
+              <Tag key={stack.code}>{stack.name}</Tag>
             ))}
           </Space>
         ),
@@ -128,7 +134,7 @@ const Default = () => {
           </Row>
         ),
       },
-    ] as ColumnsType<any>
+    ] as ColumnsType<ViewEmployeeData>
   }, [])
 
   return (
@@ -138,7 +144,14 @@ const Default = () => {
         rightRender={
           <>
             <Col style={{ width: 256 }}>
-              <Input placeholder="Search members" bordered />
+              <Input
+                placeholder="Search employees"
+                bordered
+                onChange={debounce(
+                  (event) => console.log(event.target.value),
+                  300,
+                )}
+              />
             </Col>
             <Col>
               <Link href={ROUTES.ADD_EMPLOYEE}>
@@ -151,14 +164,20 @@ const Default = () => {
         }
       />
       <Table
-        dataSource={mockData}
+        loading={loading}
+        dataSource={employees}
         columns={columns}
-        rowKey={(row) => row.id}
+        rowKey={(row) => row.id as string}
         pagination={false}
         scroll={{ x: 'max-content' }}
       />
       <Row justify="end">
-        <Pagination />
+        <Pagination
+          current={filter.page}
+          onChange={(page) => setFilter({ page })}
+          total={data?.total}
+          pageSize={filter.size}
+        />
       </Row>
     </Space>
   )
