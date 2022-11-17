@@ -1,4 +1,4 @@
-import { Col, Input, Pagination, Row, Space } from 'antd'
+import { Col, Input, Pagination, Row, Space, Tag } from 'antd'
 import { ROUTES } from 'constants/routes'
 import { PageHeader } from 'components/common/PageHeader'
 import { useMemo } from 'react'
@@ -10,49 +10,31 @@ import { AvatarArray } from 'components/common/AvatarArray'
 import { AvatarWithName } from 'components/common/AvatarWithName'
 import { ProjectLink } from 'components/common/DetailLink'
 import { Button } from 'components/common/Button'
+import { ProjectListFilter } from 'types/filters/ProjectListFilter'
+import { useFetchWithCache } from 'hooks/useFetchWithCache'
+import { client, GET_PATHS } from 'libs/apis'
+import { ViewProjectData } from 'types/schema'
+import { useFilter } from 'hooks/useFilter'
+import debounce from 'lodash.debounce'
+import { transformMetadataToFilterOption } from 'utils/select'
+import { statusColors } from 'constants/colors'
 
 const Default = () => {
-  const mockData = [
+  const { filter, setFilter } = useFilter(new ProjectListFilter())
+  const { data, loading } = useFetchWithCache(
+    [GET_PATHS.getProjects, filter],
+    () => client.getProjects(filter),
+  )
+  const projects = data?.data || []
+
+  const { data: projectStatusMetadata } = useFetchWithCache(
+    [GET_PATHS.getProjectStatusMetadata],
+    () => client.getProjectStatusMetadata(),
     {
-      id: 1,
-      name: 'Fortress',
-      status: 'active',
-      lead: {
-        id: 1,
-        name: 'John Doe',
-      },
-      members: [
-        {
-          id: 1,
-          name: 'Xx',
-        },
-        {
-          id: 2,
-          name: 'Yy',
-        },
-        {
-          id: 3,
-          name: 'Zz',
-        },
-        {
-          id: 4,
-          name: 'Tt',
-        },
-        {
-          id: 5,
-          name: 'Aa',
-        },
-      ],
-      deliveryManager: {
-        id: 1,
-        name: 'John Doe',
-      },
-      accountManager: {
-        id: 1,
-        name: 'John Doe',
-      },
+      revalidateOnFocus: false,
     },
-  ]
+  )
+  const projectStatuses = projectStatusMetadata?.data || []
 
   const columns = useMemo(() => {
     return [
@@ -65,13 +47,22 @@ const Default = () => {
         title: 'Status',
         key: 'status',
         dataIndex: 'status',
-        render: (value) => capitalizeFirstLetter(value),
+        filterMultiple: false,
+        filters: projectStatuses
+          .map(transformMetadataToFilterOption)
+          .map(({ text, value = '' }) => ({
+            text: <Tag color={statusColors[value]}>{text}</Tag>,
+            value,
+          })),
+        render: (value) => (
+          <Tag color={statusColors[value]}>{capitalizeFirstLetter(value)}</Tag>
+        ),
       },
       {
         title: 'Lead',
-        key: 'lead',
-        dataIndex: 'lead',
-        render: (value) => <AvatarWithName user={value} />,
+        key: 'technicalLeads',
+        dataIndex: 'technicalLeads',
+        render: (value) => <AvatarArray data={value} />,
       },
       {
         title: 'Members',
@@ -83,13 +74,13 @@ const Default = () => {
         title: 'Delivery Manager',
         key: 'deliveryManager',
         dataIndex: 'deliveryManager',
-        render: (value) => <AvatarWithName user={value} />,
+        render: (value) => (value ? <AvatarWithName user={value} /> : '-'),
       },
       {
         title: 'Account Manager',
         key: 'accountManager',
         dataIndex: 'accountManager',
-        render: (value) => <AvatarWithName user={value} />,
+        render: (value) => (value ? <AvatarWithName user={value} /> : '-'),
       },
       {
         title: '',
@@ -119,8 +110,8 @@ const Default = () => {
           </Row>
         ),
       },
-    ] as ColumnsType<any>
-  }, [])
+    ] as ColumnsType<ViewProjectData>
+  }, [JSON.stringify({ projectStatuses, setFilter })]) // eslint-disable-line
 
   return (
     <Space direction="vertical" size={24} style={{ width: '100%' }}>
@@ -129,7 +120,17 @@ const Default = () => {
         rightRender={
           <>
             <Col style={{ width: 256 }}>
-              <Input placeholder="Search projects" bordered />
+              <Input
+                placeholder="Search projects"
+                bordered
+                onChange={debounce(
+                  (event) =>
+                    setFilter({
+                      name: event.target.value,
+                    }),
+                  300,
+                )}
+              />
             </Col>
             <Col>
               <Link href={ROUTES.ADD_PROJECT}>
@@ -142,14 +143,25 @@ const Default = () => {
         }
       />
       <Table
-        dataSource={mockData}
+        loading={loading}
+        dataSource={projects}
         columns={columns}
-        rowKey={(row) => row.id}
+        rowKey={(row) => row.id || ''}
         pagination={false}
         scroll={{ x: 'max-content' }}
+        onChange={(_, filters) => {
+          setFilter({
+            status: (filters.status?.[0] as string) || '',
+          })
+        }}
       />
       <Row justify="end">
-        <Pagination />
+        <Pagination
+          current={filter.page}
+          onChange={(page) => setFilter({ page })}
+          total={data?.total}
+          pageSize={filter.size}
+        />
       </Row>
     </Space>
   )

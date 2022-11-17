@@ -232,6 +232,7 @@ export interface ViewEmployeeData {
   leftDate?: string
   lineManager?: ViewBasisEmployeeInfo
   mbti?: string
+  mentees?: ViewEmployeeData[]
   notionID?: string
   personalEmail?: string
   phoneNumber?: string
@@ -358,7 +359,7 @@ export interface ViewStackResponse {
   data?: ModelChapter[]
 }
 
-export interface ViewUpdataEmployeeStatusResponse {
+export interface ViewUpdateEmployeeStatusResponse {
   data?: ViewEmployeeData
 }
 

@@ -1,12 +1,12 @@
 import { Avatar, Space, Tooltip } from 'antd'
 import { theme } from 'styles'
-import { ViewEmployeeData } from 'types/schema'
+import { ViewEmployeeData, ViewProjectMember } from 'types/schema'
 import { AvatarWithName } from '../AvatarWithName'
 import { EmployeeLink } from '../DetailLink'
 
 interface Props {
   size?: number
-  data?: ViewEmployeeData[]
+  data?: (ViewEmployeeData & ViewProjectMember)[]
   numOfVisibleAvatar?: number
 }
 
@@ -19,7 +19,10 @@ export const AvatarArray = (props: Props) => {
     <Space direction="horizontal" size={0}>
       {data.slice(0, numOfVisibleAvatar).map((user, index: number) => {
         return (
-          <EmployeeLink id={user.id || ''} key={user.id}>
+          <EmployeeLink
+            id={user.id || user.employeeID || ''}
+            key={user.id || user.employeeID}
+          >
             <Tooltip
               title={
                 <span style={{ color: theme.colors.black }}>
@@ -49,7 +52,12 @@ export const AvatarArray = (props: Props) => {
           title={
             <Space direction="vertical">
               {data.slice(numOfVisibleAvatar).map((user) => {
-                return <AvatarWithName key={user.id} user={user} />
+                return (
+                  <AvatarWithName
+                    key={user.id || user.employeeID}
+                    user={user}
+                  />
+                )
               })}
             </Space>
           }

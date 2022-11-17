@@ -137,7 +137,7 @@ export const EmployeeForm = (props: Props) => {
                   )
                 })
               }
-              swrKeys={GET_PATHS.getStatusSelectOptions}
+              swrKeys={GET_PATHS.getAccountStatusMetadata}
               placeholder="Select status"
             />
           </Form.Item>
@@ -193,7 +193,7 @@ export const EmployeeForm = (props: Props) => {
                   )
                 })
               }
-              swrKeys={GET_PATHS.getPositionSelectOptions}
+              swrKeys={GET_PATHS.getPositionMetadata}
               placeholder="Select role"
             />
           </Form.Item>
@@ -222,7 +222,7 @@ export const EmployeeForm = (props: Props) => {
                   )
                 })
               }
-              swrKeys={GET_PATHS.getSenioritySelectOptions}
+              swrKeys={GET_PATHS.getSeniorityMetadata}
               placeholder="Select seniority"
             />
           </Form.Item>
@@ -261,7 +261,7 @@ export const EmployeeForm = (props: Props) => {
                   )
                 })
               }
-              swrKeys={GET_PATHS.getAccountRoleSelectOptions}
+              swrKeys={GET_PATHS.getAccountRoleMetadata}
               placeholder="Select account role"
             />
           </Form.Item>
