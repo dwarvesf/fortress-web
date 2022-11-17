@@ -121,8 +121,8 @@ export const EmployeeForm = (props: Props) => {
             rules={[{ required: true, message: 'Please select status' }]}
           >
             <AsyncSelect
-              optionGetter={() => {
-                return new Promise((resolve) => {
+              optionGetter={() =>
+                new Promise((resolve) => {
                   setTimeout(
                     () =>
                       resolve({
@@ -136,7 +136,7 @@ export const EmployeeForm = (props: Props) => {
                     5000,
                   )
                 })
-              }}
+              }
               swrKeys={GET_PATHS.getStatusSelectOptions}
               placeholder="Select status"
             />
@@ -179,8 +179,8 @@ export const EmployeeForm = (props: Props) => {
             rules={[{ required: true, message: 'Please select role' }]}
           >
             <AsyncSelect
-              optionGetter={() => {
-                return new Promise((resolve) => {
+              optionGetter={() =>
+                new Promise((resolve) => {
                   setTimeout(
                     () =>
                       resolve({
@@ -192,7 +192,7 @@ export const EmployeeForm = (props: Props) => {
                     5000,
                   )
                 })
-              }}
+              }
               swrKeys={GET_PATHS.getPositionSelectOptions}
               placeholder="Select role"
             />
@@ -206,8 +206,8 @@ export const EmployeeForm = (props: Props) => {
             rules={[{ required: true, message: 'Please select seniority' }]}
           >
             <AsyncSelect
-              optionGetter={() => {
-                return new Promise((resolve) => {
+              optionGetter={() =>
+                new Promise((resolve) => {
                   setTimeout(
                     () =>
                       resolve({
@@ -221,7 +221,7 @@ export const EmployeeForm = (props: Props) => {
                     5000,
                   )
                 })
-              }}
+              }
               swrKeys={GET_PATHS.getSenioritySelectOptions}
               placeholder="Select seniority"
             />
@@ -245,8 +245,8 @@ export const EmployeeForm = (props: Props) => {
             rules={[{ required: true, message: 'Please select account role' }]}
           >
             <AsyncSelect
-              optionGetter={() => {
-                return new Promise((resolve) => {
+              optionGetter={() =>
+                new Promise((resolve) => {
                   setTimeout(
                     () =>
                       resolve({
@@ -260,7 +260,7 @@ export const EmployeeForm = (props: Props) => {
                     5000,
                   )
                 })
-              }}
+              }
               swrKeys={GET_PATHS.getAccountRoleSelectOptions}
               placeholder="Select account role"
             />

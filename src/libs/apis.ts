@@ -1,42 +1,8 @@
-import { DefaultOptionType } from 'antd/lib/select'
+import { ViewAuthData, ViewProfileData } from 'types/schema'
 import fetcher from './fetcher'
 
 export interface Response<T> {
   data: T
-}
-
-export interface AuthResponse {
-  accessToken: string
-  employee: AuthUser
-}
-
-export interface AuthUser {
-  address?: string
-  avatar: string
-  birthday: string
-  createdAt?: string
-  deletedAt?: string
-  displayName: string
-  fullName: string
-  gender: string
-  horoscope?: string
-  id: string
-  joinedDate?: string
-  leftDate?: string
-  mbti?: string
-  personalEmail: string
-  phoneNumber: string
-  status?: string
-  teamEmail: string
-  updatedAt?: string
-}
-
-export interface SelectOption extends Partial<DefaultOptionType> {
-  code: string
-  name: string
-  id?: string
-  createdAt?: string
-  updatedAt?: string
 }
 
 // keys for swr
@@ -71,7 +37,7 @@ class Client {
   }
 
   public login(code: string, redirectUrl: string) {
-    return fetcher<Response<AuthResponse>>(`${BASE_URL}/auth`, {
+    return fetcher<Response<ViewAuthData>>(`${BASE_URL}/auth`, {
       method: 'POST',
       headers: {
         ...this.headers,
@@ -81,7 +47,7 @@ class Client {
   }
 
   public getProfile() {
-    return fetcher<Response<AuthUser>>(`${BASE_URL}/profile`, {
+    return fetcher<Response<ViewProfileData>>(`${BASE_URL}/profile`, {
       headers: { ...this.privateHeaders },
     })
   }

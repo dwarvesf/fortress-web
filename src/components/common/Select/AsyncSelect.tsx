@@ -1,9 +1,11 @@
 import { notification, Select, SelectProps } from 'antd'
 import { DefaultOptionType } from 'antd/lib/select'
-import { SelectOption, Response } from 'libs/apis'
+import { Response } from 'libs/apis'
 import { useEffect, useState } from 'react'
 import { theme } from 'styles'
 import useSWR from 'swr'
+import { SelectOption } from 'types/common'
+import { transformSelectMetaToOption } from 'utils/select'
 
 interface Props extends SelectProps {
   optionGetter: () => Promise<Response<SelectOption[]>>
@@ -15,40 +17,35 @@ export const AsyncSelect = (props: Props) => {
   const { optionGetter, swrKeys, placeholder = '', onChange } = props
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [currentValue, setCurrentValue] = useState<string>()
-  const [option, setOption] = useState<SelectOption[]>([])
+  const [options, setOptions] = useState<SelectOption[]>([])
 
-  const { data: optionData } = useSWR<Response<SelectOption[]>, Error>(
+  const { data: optionsData, error } = useSWR<Response<SelectOption[]>, Error>(
     typeof swrKeys === 'string' ? [swrKeys] : swrKeys,
     optionGetter,
     {
       revalidateOnFocus: false,
-      onError: (error) => {
-        setIsLoading(false)
-        return notification.error({
-          message: 'Error',
-          description: error.message || "Couldn't fetch data!",
-        })
-      },
     },
   )
 
   useEffect(() => {
-    if (optionData) {
-      setOption(optionData.data)
+    if (optionsData) {
+      setOptions(optionsData.data)
       setIsLoading(false)
     }
-  }, [optionData])
+    if (error) {
+      setIsLoading(false)
+      notification.error({
+        message: 'Error',
+        description: error.message || "Couldn't fetch data!",
+      })
+    }
+  }, [error, optionsData])
 
   return (
     <Select
       bordered={false}
       style={{ background: theme.colors.white }}
-      options={option?.map((o) => {
-        return {
-          value: o.code,
-          label: o.name,
-        }
-      })}
+      options={options?.map(transformSelectMetaToOption)}
       value={currentValue}
       onSelect={(value: string, option: DefaultOptionType) => {
         setCurrentValue(value)
