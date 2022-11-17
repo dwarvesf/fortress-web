@@ -3,6 +3,7 @@ import { v4 as uuid4 } from 'uuid'
 import { PageHeader } from 'components/common/PageHeader'
 import { EmployeeForm } from 'components/pages/employees/EmployeeForm'
 
+// Mock data for select options
 export const EmployeeStatus = {
   onboarding: 'Onboarding',
   probation: 'Probation',

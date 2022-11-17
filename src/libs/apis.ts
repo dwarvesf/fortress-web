@@ -1,4 +1,4 @@
-import { AuthUser, AuthResponse } from 'types/schema'
+import { ViewAuthData, ViewProfileData } from 'types/schema'
 import fetcher from './fetcher'
 
 export interface Response<T> {
@@ -8,6 +8,10 @@ export interface Response<T> {
 // keys for swr
 export const GET_PATHS = {
   getUsers: '/users',
+  getStatusSelectOptions: '/metadata/account-statuses',
+  getPositionSelectOptions: '/metadata/positions',
+  getAccountRoleSelectOptions: '/metadata/account-roles',
+  getSenioritySelectOptions: '/metadata/seniorities',
 }
 
 const BASE_URL = process.env.BASE_URL
@@ -33,7 +37,7 @@ class Client {
   }
 
   public login(code: string, redirectUrl: string) {
-    return fetcher<Response<AuthResponse>>(`${BASE_URL}/auth`, {
+    return fetcher<Response<ViewAuthData>>(`${BASE_URL}/auth`, {
       method: 'POST',
       headers: {
         ...this.headers,
@@ -43,7 +47,7 @@ class Client {
   }
 
   public getProfile() {
-    return fetcher<Response<AuthUser>>(`${BASE_URL}/profile`, {
+    return fetcher<Response<ViewProfileData>>(`${BASE_URL}/profile`, {
       headers: { ...this.privateHeaders },
     })
   }

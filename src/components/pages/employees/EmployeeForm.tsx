@@ -1,14 +1,7 @@
-import {
-  Form,
-  Row,
-  Col,
-  Input,
-  Select,
-  Button,
-  notification,
-  Typography,
-} from 'antd'
+import { Form, Row, Col, Input, Button, notification, Typography } from 'antd'
+import { AsyncSelect } from 'components/common/Select'
 import { ROUTES } from 'constants/routes'
+import { GET_PATHS } from 'libs/apis'
 import { useRouter } from 'next/router'
 import {
   EmployeeStatus,
@@ -25,19 +18,8 @@ interface Props {
   isEditing?: boolean
 }
 
-const defaultValues: CreateEmployeeFormValues = {
-  fullname: undefined,
-  status: 'onboarding',
-  email: undefined,
-  personalEmail: undefined,
-  role: 'frontend',
-  seniority: 'fresher',
-  salary: undefined,
-  accountRole: 'admin',
-}
-
 export const EmployeeForm = (props: Props) => {
-  const { initialValues = defaultValues, isEditing = false } = props
+  const { initialValues, isEditing = false } = props
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
 
   const { push } = useRouter()
@@ -47,10 +29,11 @@ export const EmployeeForm = (props: Props) => {
 
   const onSubmit = async (values: Required<CreateEmployeeFormValues>) => {
     createEmployeeFormRef.current = transformDataToSend(values)
+
     try {
       setIsSubmitting(true)
 
-      // TODO: Bind API
+      // TODO: Bind create member & get select options APIs
 
       notification.success({
         message: 'Success',
@@ -137,13 +120,26 @@ export const EmployeeForm = (props: Props) => {
             name="status"
             rules={[{ required: true, message: 'Please select status' }]}
           >
-            <Select bordered={false} style={{ background: theme.colors.white }}>
-              {Object.keys(EmployeeStatus).map((k) => (
-                <Select.Option value={k} key={k}>
-                  {EmployeeStatus[k as keyof typeof EmployeeStatus]}
-                </Select.Option>
-              ))}
-            </Select>
+            <AsyncSelect
+              optionGetter={() =>
+                new Promise((resolve) => {
+                  setTimeout(
+                    () =>
+                      resolve({
+                        data: Object.keys(EmployeeStatus).map((key) => ({
+                          code: key,
+                          name: EmployeeStatus[
+                            key as keyof typeof EmployeeStatus
+                          ],
+                        })),
+                      }),
+                    5000,
+                  )
+                })
+              }
+              swrKeys={GET_PATHS.getStatusSelectOptions}
+              placeholder="Select status"
+            />
           </Form.Item>
         </Col>
 
@@ -182,13 +178,24 @@ export const EmployeeForm = (props: Props) => {
             name="role"
             rules={[{ required: true, message: 'Please select role' }]}
           >
-            <Select bordered={false} style={{ background: theme.colors.white }}>
-              {Object.keys(EmployeeRole).map((k) => (
-                <Select.Option value={k} key={k}>
-                  {EmployeeRole[k as keyof typeof EmployeeRole]}
-                </Select.Option>
-              ))}
-            </Select>
+            <AsyncSelect
+              optionGetter={() =>
+                new Promise((resolve) => {
+                  setTimeout(
+                    () =>
+                      resolve({
+                        data: Object.keys(EmployeeRole).map((key) => ({
+                          code: key,
+                          name: EmployeeRole[key as keyof typeof EmployeeRole],
+                        })),
+                      }),
+                    5000,
+                  )
+                })
+              }
+              swrKeys={GET_PATHS.getPositionSelectOptions}
+              placeholder="Select role"
+            />
           </Form.Item>
         </Col>
 
@@ -198,13 +205,26 @@ export const EmployeeForm = (props: Props) => {
             name="seniority"
             rules={[{ required: true, message: 'Please select seniority' }]}
           >
-            <Select bordered={false} style={{ background: theme.colors.white }}>
-              {Object.keys(EmployeeSeniority).map((k) => (
-                <Select.Option value={k} key={k}>
-                  {EmployeeSeniority[k as keyof typeof EmployeeSeniority]}
-                </Select.Option>
-              ))}
-            </Select>
+            <AsyncSelect
+              optionGetter={() =>
+                new Promise((resolve) => {
+                  setTimeout(
+                    () =>
+                      resolve({
+                        data: Object.keys(EmployeeSeniority).map((key) => ({
+                          code: key,
+                          name: EmployeeSeniority[
+                            key as keyof typeof EmployeeSeniority
+                          ],
+                        })),
+                      }),
+                    5000,
+                  )
+                })
+              }
+              swrKeys={GET_PATHS.getSenioritySelectOptions}
+              placeholder="Select seniority"
+            />
           </Form.Item>
         </Col>
 
@@ -214,7 +234,7 @@ export const EmployeeForm = (props: Props) => {
             name="salary"
             rules={[{ required: true, message: 'Please input salary' }]}
           >
-            <Input type="number" placeholder="Enter salary" />
+            <Input type="number" placeholder="Enter salary" min={0} />
           </Form.Item>
         </Col>
 
@@ -224,13 +244,26 @@ export const EmployeeForm = (props: Props) => {
             name="accountRole"
             rules={[{ required: true, message: 'Please select account role' }]}
           >
-            <Select bordered={false} style={{ background: theme.colors.white }}>
-              {Object.keys(EmployeeAccountRole).map((k) => (
-                <Select.Option value={k} key={k}>
-                  {EmployeeAccountRole[k as keyof typeof EmployeeAccountRole]}
-                </Select.Option>
-              ))}
-            </Select>
+            <AsyncSelect
+              optionGetter={() =>
+                new Promise((resolve) => {
+                  setTimeout(
+                    () =>
+                      resolve({
+                        data: Object.keys(EmployeeAccountRole).map((key) => ({
+                          code: key,
+                          name: EmployeeAccountRole[
+                            key as keyof typeof EmployeeAccountRole
+                          ],
+                        })),
+                      }),
+                    5000,
+                  )
+                })
+              }
+              swrKeys={GET_PATHS.getAccountRoleSelectOptions}
+              placeholder="Select account role"
+            />
           </Form.Item>
         </Col>
       </Row>

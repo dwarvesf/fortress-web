@@ -4,19 +4,19 @@ import { ROUTES } from 'constants/routes'
 import { useEffect, useState } from 'react'
 import { WithChildren } from 'types/common'
 import { useGoogleLogin } from '@react-oauth/google'
-import { AuthUser } from 'types/schema'
 import { client } from 'libs/apis'
 import { notification } from 'antd'
 import { parseJWT } from 'utils/string'
 import { getCookie, setCookie, removeCookie } from 'utils/cookie'
 import { useAsyncEffect } from '@dwarvesf/react-hooks'
+import { ViewEmployeeData } from 'types/schema'
 
 interface AuthContextValues {
   isAuthenticated: boolean
   isAuthenticating: boolean
   login: () => void
   logout: () => void
-  user?: AuthUser
+  user?: ViewEmployeeData
 }
 
 export const AUTH_TOKEN_KEY = 'fortress-token'
@@ -29,7 +29,7 @@ const [Provider, useAuthContext] = createContext<AuthContextValues>({
 const AuthContextProvider = ({ children }: WithChildren) => {
   const [authToken, setAuthToken] = useState('')
   const [isAuthenticating, setIsAuthenticating] = useState<boolean>(true)
-  const [user, setUser] = useState<AuthUser>()
+  const [user, setUser] = useState<ViewEmployeeData>()
 
   const login = useGoogleLogin({
     flow: 'auth-code',

@@ -9,6 +9,23 @@
  * ---------------------------------------------------------------
  */
 
+export interface GithubComDwarvesfFortressApiPkgHandlerEmployeeEditSkillsInput {
+  chapter?: string
+  positions: string[]
+  seniority: string
+  stacks: string[]
+}
+
+export interface GithubComDwarvesfFortressApiPkgHandlerProjectCreateProjectInput {
+  accountManagerID: string
+  countryID: string
+  deliveryManagerID?: string
+  name: string
+  startDate?: string
+  status: string
+  type: string
+}
+
 export interface ModelChapter {
   code?: string
   createdAt?: string
@@ -55,6 +72,23 @@ export interface ModelSeniority {
   updatedAt?: string
 }
 
+export interface PkgHandlerEmployeeEditSkillsInput {
+  chapter?: string
+  positions: string[]
+  seniority: string
+  stacks: string[]
+}
+
+export interface PkgHandlerProjectCreateProjectInput {
+  accountManagerID: string
+  countryID: string
+  deliveryManagerID?: string
+  name: string
+  startDate?: string
+  status: string
+  type: string
+}
+
 export interface ViewAccountRoleResponse {
   data?: ModelRole[]
 }
@@ -76,6 +110,12 @@ export interface ViewAuthData {
   employee?: ViewEmployeeData
 }
 
+export interface ViewBasisEmployeeInfo {
+  avatar?: string
+  fullName?: string
+  id?: string
+}
+
 export interface ViewChapterResponse {
   data?: ModelChapter[]
 }
@@ -88,23 +128,50 @@ export interface ViewCountriesResponse {
   data?: ModelCountry[]
 }
 
+export interface ViewCreateProjectData {
+  accountManager?: ViewProjectHead
+  createdAt?: string
+  deletedAt?: string
+  deliveryManager?: ViewProjectHead
+  id?: string
+  name?: string
+  startDate?: string
+  status?: string
+  type?: string
+  updatedAt?: string
+}
+
+export interface ViewEditEmployeeResponse {
+  data?: ViewEmployeeData
+}
+
 export interface ViewEmployeeData {
+  accountStatus?: string
   address?: string
   avatar?: string
   birthday?: string
+  chapter?: ModelChapter
   createdAt?: string
   deletedAt?: string
+  discordID?: string
   displayName?: string
   /** basic info */
   fullName?: string
   gender?: string
+  githubID?: string
   horoscope?: string
   id?: string
   joinedDate?: string
   leftDate?: string
+  lineManager?: ViewBasisEmployeeInfo
   mbti?: string
+  notionID?: string
   personalEmail?: string
   phoneNumber?: string
+  positions?: ModelPosition[]
+  projects?: ViewEmployeeProjectData[]
+  roles?: ModelRole[]
+  seniority?: ModelSeniority
   /** working info */
   status?: string
   teamEmail?: string
@@ -113,6 +180,11 @@ export interface ViewEmployeeData {
 
 export interface ViewEmployeeListDataResponse {
   data?: ViewEmployeeData[]
+}
+
+export interface ViewEmployeeProjectData {
+  id?: string
+  name?: string
 }
 
 export interface ViewErrorResponse {
@@ -132,11 +204,11 @@ export interface ViewPositionResponse {
 export interface ViewProfileData {
   avatar?: string
   birthday?: string
-  discordId?: string
+  discordID?: string
   displayName?: string
   fullName?: string
   gender?: string
-  githubId?: string
+  githubID?: string
   id?: string
   personalEmail?: string
   phoneNumber?: string
@@ -189,32 +261,26 @@ export interface ViewSeniorityResponse {
   data?: ModelSeniority[]
 }
 
+export interface ViewStackResponse {
+  data?: ModelChapter[]
+}
+
 export interface ViewUpdateEmployeeStatusResponse {
   data?: ViewEmployeeData
 }
 
-export interface AuthResponse {
-  accessToken: string
-  employee: AuthUser
+export interface ViewUpdateProjectStatusResponse {
+  data?: ViewUpdatedProject
 }
 
-export interface AuthUser {
-  address?: string
-  avatar: string
-  birthday: string
+export interface ViewUpdatedProject {
   createdAt?: string
   deletedAt?: string
-  displayName: string
-  fullName: string
-  gender: string
-  horoscope?: string
-  id: string
-  joinedDate?: string
-  leftDate?: string
-  mbti?: string
-  personalEmail: string
-  phoneNumber: string
+  endDate?: string
+  id?: string
+  name?: string
+  startDate?: string
   status?: string
-  teamEmail: string
+  type?: string
   updatedAt?: string
 }
