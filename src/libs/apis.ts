@@ -6,6 +6,7 @@ import {
   ViewEmployeeListDataResponse,
   ViewProjectListDataResponse,
   ViewMetaData,
+  ViewEmployeeData,
 } from 'types/schema'
 import qs from 'qs'
 import fetcher from './fetcher'
@@ -79,6 +80,12 @@ class Client {
         headers: { ...this.privateHeaders },
       },
     )
+  }
+
+  public getEmployee(id: string) {
+    return fetcher<Response<ViewEmployeeData>>(`${BASE_URL}/employees/${id}`, {
+      headers: { ...this.privateHeaders },
+    })
   }
 
   public getProjects(filter: ProjectListFilter) {

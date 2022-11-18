@@ -3,7 +3,10 @@ import { ViewEmployeeData, ViewProjectMember } from 'types/schema'
 import { EmployeeLink } from '../DetailLink'
 
 interface Props {
-  user: ViewEmployeeData & ViewProjectMember
+  user: Pick<
+    ViewEmployeeData & ViewProjectMember,
+    'id' | 'employeeID' | 'avatar' | 'displayName'
+  >
   avatarSize?: number
 }
 

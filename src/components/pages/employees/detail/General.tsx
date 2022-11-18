@@ -3,8 +3,17 @@ import { Space, Col, Row, Avatar, Select } from 'antd'
 import { AvatarWithName } from 'components/common/AvatarWithName'
 import { DataRows } from 'components/common/DataRows'
 import { EditableDetailSectionCard } from 'components/common/EditableDetailSectionCard'
+import { DATE_FORMAT } from 'constants/date'
+import { format } from 'date-fns'
+import { ViewEmployeeData } from 'types/schema'
 
-export const General = () => {
+interface Props {
+  data: ViewEmployeeData
+}
+
+export const General = (props: Props) => {
+  const { data } = props
+
   return (
     <Space direction="vertical" size={24} style={{ width: '100%' }}>
       <Row gutter={[0, 24]}>
@@ -17,7 +26,11 @@ export const General = () => {
                   size={24}
                   style={{ justifyContent: 'center' }}
                 >
-                  <Avatar size={128} icon={<UserOutlined />} />
+                  <Avatar
+                    size={128}
+                    icon={<UserOutlined />}
+                    src={data.avatar}
+                  />
                   <Select
                     style={{ width: '100%' }}
                     value="onboarding"
@@ -47,28 +60,36 @@ export const General = () => {
                   data={[
                     {
                       label: 'Full Name',
-                      value: 'John Doe',
+                      value: data.fullName,
                     },
                     {
                       label: 'Email',
                       value: (
-                        <a href={`mailto:${'johndoe@d.foundation'}`}>
-                          johndoe@d.foundation
+                        <a href={`mailto:${data.teamEmail}`}>
+                          {data.teamEmail}
                         </a>
                       ),
                     },
                     {
                       label: 'Phone',
-                      value: <a href={`tel:${'999999999'}`}>999999999</a>,
+                      value: data.phoneNumber ? (
+                        <a href={`tel:${data.phoneNumber}`}>
+                          {data.phoneNumber}
+                        </a>
+                      ) : (
+                        '-'
+                      ),
                     },
                     {
                       label: 'Line Manager',
-                      value: (
-                        <AvatarWithName user={{ id: 1, name: 'Jane Doe' }} />
+                      value: data.lineManager ? (
+                        <AvatarWithName user={data.lineManager} />
+                      ) : (
+                        '-'
                       ),
                     },
-                    { label: 'Discord ID', value: 'john#123' },
-                    { label: 'Github ID', value: 'john_doe' },
+                    { label: 'Discord ID', value: data.discordID || '-' },
+                    { label: 'Github ID', value: data.githubID || '-' },
                   ]}
                 />
               </Col>
@@ -81,13 +102,15 @@ export const General = () => {
               data={[
                 {
                   label: 'Roles',
-                  value: 'Frontend Engineer',
+                  value: data.positions
+                    ?.map((position) => position.name)
+                    .join(', '),
                 },
-                { label: 'Chapter', value: 'Web' },
-                { label: 'Seniority', value: 'Mid' },
+                { label: 'Chapter', value: data.chapter?.name },
+                { label: 'Seniority', value: data.seniority?.name },
                 {
                   label: 'Stack',
-                  value: ['React', 'CSS', 'Javascript'].join(', '),
+                  value: data.stacks?.map((stack) => stack.name).join(', '),
                 },
               ]}
             />
@@ -99,15 +122,17 @@ export const General = () => {
               data={[
                 {
                   label: 'Date of Birth',
-                  value: '20/02/1995',
+                  value: data.birthday
+                    ? format(new Date(data.birthday), DATE_FORMAT)
+                    : '',
                 },
-                { label: 'Gender', value: 'Male' },
-                { label: 'Address', value: '50 Truong Dinh, D3, HCM' },
+                { label: 'Gender', value: data.gender },
+                { label: 'Address', value: data.address },
                 {
                   label: 'Personal Email',
                   value: (
-                    <a href={`mailto:${'john.doe@gmail.com'}`}>
-                      john.doe@gmail.com
+                    <a href={`mailto:${data.personalEmail}`}>
+                      {data.personalEmail}
                     </a>
                   ),
                 },

@@ -20,7 +20,7 @@ export const DataRows = (props: Props) => {
             <Col span={8} style={{ color: theme.colors.gray500 }}>
               {item.label}
             </Col>
-            <Col span={16}>{item.value}</Col>
+            <Col span={16}>{item.value || '-'}</Col>
           </Fragment>
         )
       })}
