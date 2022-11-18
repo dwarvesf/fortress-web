@@ -9,14 +9,15 @@
  * ---------------------------------------------------------------
  */
 
-export interface GithubComDwarvesfFortressApiPkgHandlerEmployeeCreateEmployee {
-  displayName: string
+export interface GithubComDwarvesfFortressApiPkgHandlerEmployeeCreateEmployeeInput {
+  displayName?: string
   fullName: string
   personalEmail: string
-  positionID: string
+  positions: string[]
   roleID: string
   salary: number
   seniorityID: string
+  status: string
   teamEmail: string
 }
 
@@ -44,14 +45,50 @@ export interface GithubComDwarvesfFortressApiPkgHandlerEmployeeUpdateSkillsInput
   stacks: string[]
 }
 
+export interface GithubComDwarvesfFortressApiPkgHandlerProfileUpdateInfoInput {
+  discordID?: string
+  githubID?: string
+  notionID?: string
+  phoneNumber: string
+  teamEmail: string
+}
+
+export interface GithubComDwarvesfFortressApiPkgHandlerProjectAssignMemberInput {
+  deploymentType: string
+  discount?: number
+  employeeID?: string
+  isLead?: boolean
+  joinedDate?: string
+  leftDate?: string
+  positions: string[]
+  rate: number
+  seniorityID: string
+  status: string
+}
+
 export interface GithubComDwarvesfFortressApiPkgHandlerProjectCreateProjectInput {
   accountManagerID: string
   countryID: string
   deliveryManagerID?: string
+  members?: GithubComDwarvesfFortressApiPkgHandlerProjectAssignMemberInput[]
   name: string
   startDate?: string
   status: string
-  type: string
+  type?: string
+}
+
+export interface GithubComDwarvesfFortressApiPkgHandlerProjectUpdateMemberInput {
+  deploymentType: string
+  discount?: number
+  employeeID?: string
+  isLead?: boolean
+  joinedDate?: string
+  leftDate?: string
+  positions: string[]
+  projectSlotID: string
+  rate: number
+  seniorityID: string
+  status: string
 }
 
 export interface GormDeletedAt {
@@ -115,14 +152,15 @@ export interface ModelStack {
   updatedAt?: string
 }
 
-export interface PkgHandlerEmployeeCreateEmployee {
-  displayName: string
+export interface PkgHandlerEmployeeCreateEmployeeInput {
+  displayName?: string
   fullName: string
   personalEmail: string
-  positionID: string
+  positions: string[]
   roleID: string
   salary: number
   seniorityID: string
+  status: string
   teamEmail: string
 }
 
@@ -150,14 +188,50 @@ export interface PkgHandlerEmployeeUpdateSkillsInput {
   stacks: string[]
 }
 
+export interface PkgHandlerProfileUpdateInfoInput {
+  discordID?: string
+  githubID?: string
+  notionID?: string
+  phoneNumber: string
+  teamEmail: string
+}
+
+export interface PkgHandlerProjectAssignMemberInput {
+  deploymentType: string
+  discount?: number
+  employeeID?: string
+  isLead?: boolean
+  joinedDate?: string
+  leftDate?: string
+  positions: string[]
+  rate: number
+  seniorityID: string
+  status: string
+}
+
 export interface PkgHandlerProjectCreateProjectInput {
   accountManagerID: string
   countryID: string
   deliveryManagerID?: string
+  members?: PkgHandlerProjectAssignMemberInput[]
   name: string
   startDate?: string
   status: string
-  type: string
+  type?: string
+}
+
+export interface PkgHandlerProjectUpdateMemberInput {
+  deploymentType: string
+  discount?: number
+  employeeID?: string
+  isLead?: boolean
+  joinedDate?: string
+  leftDate?: string
+  positions: string[]
+  projectSlotID: string
+  rate: number
+  seniorityID: string
+  status: string
 }
 
 export interface ViewAccountRoleResponse {
@@ -199,12 +273,30 @@ export interface ViewCountriesResponse {
   data?: ModelCountry[]
 }
 
+export interface ViewCreateMemberData {
+  avatar?: string
+  deploymentType?: string
+  displayName?: string
+  employeeID?: string
+  fullName?: string
+  isLead?: boolean
+  positions?: ViewPosition[]
+  projectMemberID?: string
+  projectSlotID?: string
+  status?: string
+}
+
+export interface ViewCreateMemberDataResponse {
+  data?: ViewCreateMemberData
+}
+
 export interface ViewCreateProjectData {
   accountManager?: ViewProjectHead
   createdAt?: string
   deletedAt?: GormDeletedAt
   deliveryManager?: ViewProjectHead
   id?: string
+  members?: ViewCreateMemberData[]
   name?: string
   startDate?: string
   status?: string
@@ -232,7 +324,6 @@ export interface ViewEmployeeData {
   leftDate?: string
   lineManager?: ViewBasisEmployeeInfo
   mbti?: string
-  mentees?: ViewEmployeeData[]
   notionID?: string
   personalEmail?: string
   phoneNumber?: string
@@ -252,8 +343,10 @@ export interface ViewEmployeeListDataResponse {
 }
 
 export interface ViewEmployeeProjectData {
+  deploymentType?: string
   id?: string
   name?: string
+  positions?: ViewPosition[]
 }
 
 export interface ViewErrorResponse {
@@ -395,6 +488,23 @@ export interface ViewUpdatePersonalEmployeeData {
 
 export interface ViewUpdatePersonalEmployeeResponse {
   data?: ViewUpdatePersonalEmployeeData
+}
+
+export interface ViewUpdateProfileInfoData {
+  createdAt?: string
+  deletedAt?: GormDeletedAt
+  discordID?: string
+  githubID?: string
+  id?: string
+  notionID?: string
+  phoneNumber?: string
+  /** basic info */
+  teamEmail?: string
+  updatedAt?: string
+}
+
+export interface ViewUpdateProfileInfoResponse {
+  data?: ViewUpdateProfileInfoData
 }
 
 export interface ViewUpdateProjectStatusResponse {

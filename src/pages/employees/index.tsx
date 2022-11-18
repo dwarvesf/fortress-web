@@ -43,8 +43,8 @@ const Default = () => {
       },
       {
         title: 'Email',
-        key: 'personalEmail',
-        dataIndex: 'personalEmail',
+        key: 'teamEmail',
+        dataIndex: 'teamEmail',
         render: (value) => (
           <a href={`mailto:${value}`} target="_blank" rel="noreferrer">
             {value}
