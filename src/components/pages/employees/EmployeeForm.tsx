@@ -1,14 +1,5 @@
-import {
-  Form,
-  Row,
-  Col,
-  Input,
-  Button,
-  notification,
-  Typography,
-  Tag,
-  Select,
-} from 'antd'
+import { Form, Row, Col, Input, Button, notification, Tag, Select } from 'antd'
+import { DefaultOptionType } from 'antd/lib/select'
 import { AsyncSelect } from 'components/common/Select'
 import { statusColors } from 'constants/colors'
 import { ROUTES } from 'constants/routes'
@@ -16,9 +7,9 @@ import { employeeStatuses } from 'constants/status'
 import { client, GET_PATHS } from 'libs/apis'
 import { useRouter } from 'next/router'
 import { CreateEmployeeFormValues } from 'pages/employees/new'
-import { useRef, useState, useEffect } from 'react'
-import { theme } from 'styles'
+import { useState, useEffect } from 'react'
 import { PkgHandlerEmployeeCreateEmployeeInput } from 'types/schema'
+import { transformMetadataToSelectOption } from 'utils/select'
 
 const { Option } = Select
 
@@ -27,36 +18,29 @@ interface Props {
   isEditing?: boolean
 }
 
-const customOptionRenderer = (metaItem: { id?: string; name?: string }) => (
-  <Option key={metaItem.id} value={metaItem.id} label={metaItem.name}>
-    <Tag color={statusColors[metaItem.id!]}>{metaItem.name || '-'}</Tag>
+const customOptionRenderer = (option: DefaultOptionType) => (
+  <Option key={option.value} value={option.value} label={option.label}>
+    <Tag color={statusColors[option.value!]}>{option.label || '-'}</Tag>
   </Option>
 )
 
 export const EmployeeForm = (props: Props) => {
   const { initialValues, isEditing = false } = props
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
-  const [salaryValue, setSalaryValue] = useState<number>() // since form data always output string values
+  const [salaryValue, setSalaryValue] = useState<number>(0) // since form data always output string values
 
   const { push } = useRouter()
 
   const [form] = Form.useForm()
-  const createEmployeeFormRef = useRef({ ...new CreateEmployeeFormValues() })
 
   const onCreateSubmit = async (
     values: Required<PkgHandlerEmployeeCreateEmployeeInput>,
   ) => {
-    createEmployeeFormRef.current = transformDataToSend(values)
-
-    // Schedule to redirect to employee list page
-    // Clear timer in case clicking on employee detail button or catching error
-    const redirectTimer = setTimeout(() => push(ROUTES.EMPLOYEES), 5000)
-
     try {
       setIsSubmitting(true)
 
       const { data } = await client.createNewEmployee(
-        createEmployeeFormRef.current as PkgHandlerEmployeeCreateEmployeeInput,
+        transformDataToSend(values),
       )
 
       notification.success({
@@ -64,24 +48,20 @@ export const EmployeeForm = (props: Props) => {
         description: 'Successfully created new employee!',
         btn: (
           <Button
-            style={{ backgroundColor: theme.colors.primary }}
+            type="primary"
             onClick={() => {
-              clearTimeout(redirectTimer)
               push(ROUTES.EMPLOYEE_DETAIL(data.id!))
             }}
           >
-            <Typography.Text
-              style={{ fontWeight: 500, color: theme.colors.white }}
-            >
-              View employee detail
-            </Typography.Text>
+            View employee detail
           </Button>
         ),
         duration: 5,
       })
-    } catch (error: any) {
-      clearTimeout(redirectTimer)
 
+      // Redirect to employee list page if create successfully
+      setTimeout(() => push(ROUTES.EMPLOYEES))
+    } catch (error: any) {
       notification.error({
         message: 'Error',
         description: error?.message || 'Could not create new employee!',
@@ -95,7 +75,7 @@ export const EmployeeForm = (props: Props) => {
 
   const transformDataToSend = (
     values: Required<PkgHandlerEmployeeCreateEmployeeInput>,
-  ) => {
+  ): PkgHandlerEmployeeCreateEmployeeInput => {
     return {
       fullName: values.fullName,
       displayName: values.displayName,
@@ -168,14 +148,13 @@ export const EmployeeForm = (props: Props) => {
           >
             <AsyncSelect
               optionGetter={() =>
-                Promise.resolve({
-                  data: Object.keys(employeeStatuses).map((key) => ({
-                    id: key,
-                    name: employeeStatuses[
-                      key as keyof typeof employeeStatuses
-                    ],
+                Promise.resolve(
+                  Object.keys(employeeStatuses).map((key) => ({
+                    value: key,
+                    label:
+                      employeeStatuses[key as keyof typeof employeeStatuses],
                   })),
-                })
+                )
               }
               swrKeys={GET_PATHS.getAccountStatusMetadata}
               placeholder="Select status"
@@ -221,7 +200,10 @@ export const EmployeeForm = (props: Props) => {
           >
             <AsyncSelect
               mode="multiple"
-              optionGetter={() => client.getMetaPositions()}
+              optionGetter={async () => {
+                const { data } = await client.getPositionsMetadata()
+                return data?.map(transformMetadataToSelectOption) || []
+              }}
               swrKeys={GET_PATHS.getPositionMetadata}
               placeholder="Select positions"
             />
@@ -235,7 +217,10 @@ export const EmployeeForm = (props: Props) => {
             rules={[{ required: true, message: 'Please select seniority' }]}
           >
             <AsyncSelect
-              optionGetter={() => client.getMetaSeniorities()}
+              optionGetter={async () => {
+                const { data } = await client.getSenioritiesMetadata()
+                return data?.map(transformMetadataToSelectOption) || []
+              }}
               swrKeys={GET_PATHS.getSeniorityMetadata}
               placeholder="Select seniority"
             />
@@ -266,7 +251,10 @@ export const EmployeeForm = (props: Props) => {
             rules={[{ required: true, message: 'Please select account role' }]}
           >
             <AsyncSelect
-              optionGetter={() => client.getMetaAccountRoles()}
+              optionGetter={async () => {
+                const { data } = await client.getAccountRolesMetadata()
+                return data?.map(transformMetadataToSelectOption) || []
+              }}
               swrKeys={GET_PATHS.getAccountRoleMetadata}
               placeholder="Select account role"
             />

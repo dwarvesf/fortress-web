@@ -1,25 +1,12 @@
 import { notification, Select, SelectProps } from 'antd'
 import { DefaultOptionType } from 'antd/lib/select'
-import { Response } from 'libs/apis'
 import { useEffect, useState } from 'react'
 import { theme } from 'styles'
 import useSWR from 'swr'
-import { MetaSelectOption } from 'types/common'
-import {
-  ViewAccountRoleResponse,
-  ViewPositionResponse,
-  ViewSeniorityResponse,
-} from 'types/schema'
-import { transformMetadataToSelectOption } from 'utils/select'
-
-type CreateEmployeeSelectOptions =
-  | ViewPositionResponse
-  | ViewSeniorityResponse
-  | ViewAccountRoleResponse
-  | Response<MetaSelectOption[]>
+import { searchFilterOption } from 'utils/select'
 
 interface Props extends SelectProps {
-  optionGetter: () => Promise<CreateEmployeeSelectOptions>
+  optionGetter: () => Promise<DefaultOptionType[]>
   swrKeys: string[] | string
   placeholder?: string
   mode?: 'multiple' | 'tags'
@@ -36,18 +23,19 @@ export const AsyncSelect = (props: Props) => {
     onChange,
   } = props
   const [isLoading, setIsLoading] = useState<boolean>(true)
-  const [options, setOptions] = useState<MetaSelectOption[]>([])
+  const [options, setOptions] = useState<DefaultOptionType[]>([])
 
-  const { data: optionsData, error } = useSWR<
-    CreateEmployeeSelectOptions,
-    Error
-  >(typeof swrKeys === 'string' ? [swrKeys] : swrKeys, optionGetter, {
-    revalidateOnFocus: false,
-  })
+  const { data: optionsData, error } = useSWR<DefaultOptionType[], Error>(
+    typeof swrKeys === 'string' ? [swrKeys] : swrKeys,
+    optionGetter,
+    {
+      revalidateOnFocus: false,
+    },
+  )
 
   useEffect(() => {
     if (optionsData) {
-      setOptions(optionsData.data!)
+      setOptions(optionsData)
       setIsLoading(false)
     }
     if (error) {
@@ -69,20 +57,17 @@ export const AsyncSelect = (props: Props) => {
       disabled={isLoading}
       showSearch
       maxTagCount={2}
-      options={
-        typeof customOptionRenderer === 'function'
-          ? undefined
-          : options?.map(transformMetadataToSelectOption)
-      }
+      options={typeof customOptionRenderer === 'function' ? undefined : options}
       onChange={(
         value: string | string[],
         option: DefaultOptionType | DefaultOptionType[],
       ) => {
         onChange?.(value, option)
       }}
+      filterOption={searchFilterOption}
     >
       {typeof customOptionRenderer === 'function' &&
-        options?.map(customOptionRenderer)}
+        options.map(customOptionRenderer)}
     </Select>
   )
 }

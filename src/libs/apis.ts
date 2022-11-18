@@ -104,19 +104,19 @@ class Client {
     )
   }
 
-  public getMetaSeniorities() {
+  public getSenioritiesMetadata() {
     return fetcher<ViewSeniorityResponse>(`${BASE_URL}/metadata/seniorities`, {
       headers: { ...this.privateHeaders },
     })
   }
 
-  public getMetaPositions() {
+  public getPositionsMetadata() {
     return fetcher<ViewPositionResponse>(`${BASE_URL}/metadata/positions`, {
       headers: { ...this.privateHeaders },
     })
   }
 
-  public getMetaAccountRoles() {
+  public getAccountRolesMetadata() {
     return fetcher<ViewAccountRoleResponse>(
       `${BASE_URL}/metadata/account-roles`,
       {
