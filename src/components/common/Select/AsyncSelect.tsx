@@ -58,12 +58,7 @@ export const AsyncSelect = (props: Props) => {
       showSearch
       maxTagCount={2}
       options={typeof customOptionRenderer === 'function' ? undefined : options}
-      onChange={(
-        value: string | string[],
-        option: DefaultOptionType | DefaultOptionType[],
-      ) => {
-        onChange?.(value, option)
-      }}
+      onChange={onChange}
       filterOption={searchFilterOption}
     >
       {typeof customOptionRenderer === 'function' &&

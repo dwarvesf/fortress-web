@@ -27,7 +27,6 @@ const customOptionRenderer = (option: DefaultOptionType) => (
 export const EmployeeForm = (props: Props) => {
   const { initialValues, isEditing = false } = props
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
-  const [salaryValue, setSalaryValue] = useState<number>(0) // since form data always output string values
 
   const { push } = useRouter()
 
@@ -74,7 +73,7 @@ export const EmployeeForm = (props: Props) => {
   // TODO: const onEditSubmit
 
   const transformDataToSend = (
-    values: Required<PkgHandlerEmployeeCreateEmployeeInput>,
+    values: Required<Record<string, any>>,
   ): PkgHandlerEmployeeCreateEmployeeInput => {
     return {
       fullName: values.fullName,
@@ -82,7 +81,7 @@ export const EmployeeForm = (props: Props) => {
       personalEmail: values.personalEmail,
       positions: values.positions,
       roleID: values.roleID,
-      salary: salaryValue,
+      salary: parseFloat(values.salary),
       seniorityID: values.seniorityID,
       status: values.status,
       teamEmail: values.teamEmail,
@@ -233,14 +232,7 @@ export const EmployeeForm = (props: Props) => {
             name="salary"
             rules={[{ required: true, message: 'Please input salary' }]}
           >
-            <Input
-              type="number"
-              placeholder="Enter salary"
-              min={0}
-              onChange={(e) => {
-                setSalaryValue(parseFloat(e.target.value))
-              }}
-            />
+            <Input type="number" placeholder="Enter salary" min={0} />
           </Form.Item>
         </Col>
 
