@@ -452,7 +452,7 @@ export interface ViewStackResponse {
   data?: ModelChapter[]
 }
 
-export interface ViewUpdataEmployeeStatusResponse {
+export interface ViewUpdateEmployeeStatusResponse {
   data?: ViewEmployeeData
 }
 

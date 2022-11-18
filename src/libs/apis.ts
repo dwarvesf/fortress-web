@@ -10,9 +10,10 @@ import {
   ViewAccountRoleResponse,
   ViewPositionResponse,
   ViewSeniorityResponse,
+  PkgHandlerEmployeeCreateEmployeeInput,
+  ViewEmployeeData,
 } from 'types/schema'
 import qs from 'qs'
-import { MetaSelectOption } from 'types/common'
 import fetcher from './fetcher'
 
 const BASE_URL = process.env.BASE_URL
@@ -133,13 +134,14 @@ class Client {
     )
   }
 
-  public getMetaAccountStatuses() {
-    return fetcher<Response<MetaSelectOption[]>>( // no schema yet
-      `${BASE_URL}/metadata/account-statuses`,
-      {
-        headers: { ...this.privateHeaders },
+  public createNewEmployee(data: PkgHandlerEmployeeCreateEmployeeInput) {
+    return fetcher<Response<ViewEmployeeData>>(`${BASE_URL}/employees`, {
+      method: 'POST',
+      headers: {
+        ...this.privateHeaders,
       },
-    )
+      body: JSON.stringify(data),
+    })
   }
 }
 

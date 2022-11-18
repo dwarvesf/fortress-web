@@ -1,8 +1,8 @@
 export function transformMetadataToSelectOption(metaItem: {
-  code?: string
+  id?: string
   name?: string
 }) {
-  return { label: metaItem.name, value: metaItem.code }
+  return { label: metaItem.name, value: metaItem.id }
 }
 
 export function transformMetadataToFilterOption(metaItem: {

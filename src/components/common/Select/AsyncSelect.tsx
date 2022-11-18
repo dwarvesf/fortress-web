@@ -10,7 +10,7 @@ import {
   ViewPositionResponse,
   ViewSeniorityResponse,
 } from 'types/schema'
-import { transformSelectMetaToOption } from 'utils/select'
+import { transformMetadataToSelectOption } from 'utils/select'
 
 type CreateEmployeeSelectOptions =
   | ViewPositionResponse
@@ -23,10 +23,18 @@ interface Props extends SelectProps {
   swrKeys: string[] | string
   placeholder?: string
   mode?: 'multiple' | 'tags'
+  customOptionRenderer?: (metaItem: any) => JSX.Element
 }
 
 export const AsyncSelect = (props: Props) => {
-  const { optionGetter, swrKeys, mode, placeholder = '', onChange } = props
+  const {
+    optionGetter,
+    swrKeys,
+    mode,
+    placeholder = '',
+    customOptionRenderer,
+    onChange,
+  } = props
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [options, setOptions] = useState<MetaSelectOption[]>([])
 
@@ -56,18 +64,25 @@ export const AsyncSelect = (props: Props) => {
       mode={mode}
       bordered={false}
       style={{ background: theme.colors.white, overflow: 'auto' }}
-      options={options?.map(transformSelectMetaToOption)}
+      placeholder={isLoading ? 'Fetching data' : placeholder}
+      loading={isLoading}
+      disabled={isLoading}
+      showSearch
+      maxTagCount={2}
+      options={
+        typeof customOptionRenderer === 'function'
+          ? undefined
+          : options?.map(transformMetadataToSelectOption)
+      }
       onChange={(
         value: string | string[],
         option: DefaultOptionType | DefaultOptionType[],
       ) => {
         onChange?.(value, option)
       }}
-      placeholder={isLoading ? 'Fetching data' : placeholder}
-      loading={isLoading}
-      disabled={isLoading}
-      showSearch
-      maxTagCount={2}
-    />
+    >
+      {typeof customOptionRenderer === 'function' &&
+        options?.map(customOptionRenderer)}
+    </Select>
   )
 }

@@ -7,4 +7,7 @@ export const statusColors: Record<string, TagProps['color']> = {
   'on-leave': 'gold',
   paused: 'gold',
   closed: '',
+  left: '',
+  'full-time': 'green',
+  contractor: 'cyan',
 }
