@@ -11,7 +11,6 @@ import {
   ViewPositionResponse,
   ViewSeniorityResponse,
   PkgHandlerEmployeeCreateEmployeeInput,
-  ViewEmployeeData,
 } from 'types/schema'
 import qs from 'qs'
 import fetcher from './fetcher'
