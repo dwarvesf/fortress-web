@@ -8,8 +8,6 @@ import { searchFilterOption } from 'utils/select'
 interface Props extends SelectProps {
   optionGetter: () => Promise<DefaultOptionType[]>
   swrKeys: string[] | string
-  placeholder?: string
-  mode?: 'multiple' | 'tags'
   customOptionRenderer?: (metaItem: any) => JSX.Element
 }
 
@@ -17,10 +15,12 @@ export const AsyncSelect = (props: Props) => {
   const {
     optionGetter,
     swrKeys,
+    customOptionRenderer,
     mode,
     placeholder = '',
-    customOptionRenderer,
     onChange,
+    style,
+    ...rest
   } = props
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [options, setOptions] = useState<DefaultOptionType[]>([])
@@ -51,7 +51,7 @@ export const AsyncSelect = (props: Props) => {
     <Select
       mode={mode}
       bordered={false}
-      style={{ background: theme.colors.white, overflow: 'auto' }}
+      style={{ background: theme.colors.white, overflow: 'auto', ...style }}
       placeholder={isLoading ? 'Fetching data' : placeholder}
       loading={isLoading}
       disabled={isLoading}
@@ -60,6 +60,7 @@ export const AsyncSelect = (props: Props) => {
       options={typeof customOptionRenderer === 'function' ? undefined : options}
       onChange={onChange}
       filterOption={searchFilterOption}
+      {...rest}
     >
       {typeof customOptionRenderer === 'function' &&
         options.map(customOptionRenderer)}
