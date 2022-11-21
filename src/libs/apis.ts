@@ -92,6 +92,19 @@ class Client {
     })
   }
 
+  public updateEmployeeStatus(id: string, employeeStatus: string) {
+    return fetcher<Response<ViewEmployeeData>>(
+      `${BASE_URL}/employees/${id}/employee-status`,
+      {
+        method: 'PUT',
+        headers: { ...this.privateHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          employeeStatus,
+        }),
+      },
+    )
+  }
+
   public getProjects(filter: ProjectListFilter) {
     const queryString = qs.stringify(filter)
 

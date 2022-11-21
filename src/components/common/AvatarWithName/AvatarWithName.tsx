@@ -5,13 +5,14 @@ import { EmployeeLink } from '../DetailLink'
 interface Props {
   user: Pick<
     ViewEmployeeData & ViewProjectMember,
-    'id' | 'employeeID' | 'avatar' | 'displayName'
+    'id' | 'employeeID' | 'avatar' | 'displayName' | 'fullName'
   >
   avatarSize?: number
 }
 
 export const AvatarWithName = (props: Props) => {
   const { user, avatarSize = 24 } = props
+  const name = user.displayName || user.fullName
 
   return (
     <EmployeeLink id={user.id || user.employeeID || ''}>
@@ -19,9 +20,9 @@ export const AvatarWithName = (props: Props) => {
         <Avatar
           src={user.avatar}
           size={avatarSize}
-          icon={!user.displayName && user.displayName?.slice(0, 1)}
+          icon={!name && name?.slice(0, 1)}
         />
-        <span>{user.displayName}</span>
+        <span>{name}</span>
       </Space>
     </EmployeeLink>
   )
