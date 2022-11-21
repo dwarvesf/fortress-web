@@ -18,16 +18,9 @@ export const searchFilterOption = (
   input: string,
   option?: DefaultOptionType,
 ) => {
-  if (
-    !option?.value ||
-    !option.label ||
-    typeof option.label !== 'string' ||
-    typeof option.value !== 'string'
-  )
+  if (!option?.label) {
     return false
+  }
 
-  return (
-    option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0 ||
-    option.value.toLowerCase().indexOf(input.toLowerCase()) >= 0
-  )
+  return String(option.label).toLowerCase().indexOf(input.toLowerCase()) >= 0
 }
