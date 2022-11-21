@@ -1,8 +1,10 @@
+import { DefaultOptionType } from 'antd/lib/select'
+
 export function transformMetadataToSelectOption(metaItem: {
-  code?: string
+  id?: string
   name?: string
-}) {
-  return { label: metaItem.name, value: metaItem.code }
+}): DefaultOptionType {
+  return { label: metaItem.name, value: metaItem.id }
 }
 
 export function transformMetadataToFilterOption(metaItem: {
@@ -10,4 +12,15 @@ export function transformMetadataToFilterOption(metaItem: {
   name?: string
 }) {
   return { text: metaItem.name, value: metaItem.code }
+}
+
+export const searchFilterOption = (
+  input: string,
+  option?: DefaultOptionType,
+) => {
+  if (!option?.label) {
+    return false
+  }
+
+  return String(option.label).toLowerCase().indexOf(input.toLowerCase()) >= 0
 }

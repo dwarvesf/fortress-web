@@ -7,6 +7,10 @@ import {
   ViewProjectListDataResponse,
   ViewMetaData,
   ViewEmployeeData,
+  ViewAccountRoleResponse,
+  ViewPositionResponse,
+  ViewSeniorityResponse,
+  PkgHandlerEmployeeCreateEmployeeInput,
 } from 'types/schema'
 import qs from 'qs'
 import fetcher from './fetcher'
@@ -99,6 +103,27 @@ class Client {
     )
   }
 
+  public getSenioritiesMetadata() {
+    return fetcher<ViewSeniorityResponse>(`${BASE_URL}/metadata/seniorities`, {
+      headers: { ...this.privateHeaders },
+    })
+  }
+
+  public getPositionsMetadata() {
+    return fetcher<ViewPositionResponse>(`${BASE_URL}/metadata/positions`, {
+      headers: { ...this.privateHeaders },
+    })
+  }
+
+  public getAccountRolesMetadata() {
+    return fetcher<ViewAccountRoleResponse>(
+      `${BASE_URL}/metadata/account-roles`,
+      {
+        headers: { ...this.privateHeaders },
+      },
+    )
+  }
+
   public getProjectStatusMetadata = () => {
     return fetcher<Response<ViewMetaData[]>>(
       `${BASE_URL}/metadata/project-statuses`,
@@ -106,6 +131,16 @@ class Client {
         headers: { ...this.privateHeaders },
       },
     )
+  }
+
+  public createNewEmployee(data: PkgHandlerEmployeeCreateEmployeeInput) {
+    return fetcher<Response<ViewEmployeeData>>(`${BASE_URL}/employees`, {
+      method: 'POST',
+      headers: {
+        ...this.privateHeaders,
+      },
+      body: JSON.stringify(data),
+    })
   }
 }
 

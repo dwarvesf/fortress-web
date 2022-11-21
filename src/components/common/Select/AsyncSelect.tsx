@@ -1,34 +1,41 @@
 import { notification, Select, SelectProps } from 'antd'
 import { DefaultOptionType } from 'antd/lib/select'
-import { Response } from 'libs/apis'
 import { useEffect, useState } from 'react'
 import { theme } from 'styles'
 import useSWR from 'swr'
-import { MetaSelectOption } from 'types/common'
-import { transformSelectMetaToOption } from 'utils/select'
+import { searchFilterOption } from 'utils/select'
 
 interface Props extends SelectProps {
-  optionGetter: () => Promise<Response<MetaSelectOption[]>>
+  optionGetter: () => Promise<DefaultOptionType[]>
   swrKeys: string[] | string
-  placeholder?: string
+  customOptionRenderer?: (metaItem: any) => JSX.Element
 }
 
 export const AsyncSelect = (props: Props) => {
-  const { optionGetter, swrKeys, placeholder = '', onChange } = props
+  const {
+    optionGetter,
+    swrKeys,
+    customOptionRenderer,
+    mode,
+    placeholder = '',
+    onChange,
+    style,
+    ...rest
+  } = props
   const [isLoading, setIsLoading] = useState<boolean>(true)
-  const [currentValue, setCurrentValue] = useState<string>()
-  const [options, setOptions] = useState<MetaSelectOption[]>([])
+  const [options, setOptions] = useState<DefaultOptionType[]>([])
 
-  const { data: optionsData, error } = useSWR<
-    Response<MetaSelectOption[]>,
-    Error
-  >(typeof swrKeys === 'string' ? [swrKeys] : swrKeys, optionGetter, {
-    revalidateOnFocus: false,
-  })
+  const { data: optionsData, error } = useSWR<DefaultOptionType[], Error>(
+    typeof swrKeys === 'string' ? [swrKeys] : swrKeys,
+    optionGetter,
+    {
+      revalidateOnFocus: false,
+    },
+  )
 
   useEffect(() => {
     if (optionsData) {
-      setOptions(optionsData.data)
+      setOptions(optionsData)
       setIsLoading(false)
     }
     if (error) {
@@ -42,18 +49,21 @@ export const AsyncSelect = (props: Props) => {
 
   return (
     <Select
+      mode={mode}
       bordered={false}
-      style={{ background: theme.colors.white }}
-      options={options?.map(transformSelectMetaToOption)}
-      value={currentValue}
-      onSelect={(value: string, option: DefaultOptionType) => {
-        setCurrentValue(value)
-        onChange?.(value, option)
-      }}
+      style={{ background: theme.colors.white, overflow: 'auto', ...style }}
       placeholder={isLoading ? 'Fetching data' : placeholder}
       loading={isLoading}
       disabled={isLoading}
       showSearch
-    />
+      maxTagCount={2}
+      options={typeof customOptionRenderer === 'function' ? undefined : options}
+      onChange={onChange}
+      filterOption={searchFilterOption}
+      {...rest}
+    >
+      {typeof customOptionRenderer === 'function' &&
+        options.map(customOptionRenderer)}
+    </Select>
   )
 }
