@@ -106,7 +106,7 @@ export const EmployeeForm = (props: Props) => {
         }
       }}
     >
-      <Row gutter={28}>
+      <Row gutter={24}>
         <Col span={24} md={{ span: 12 }}>
           <Form.Item
             label="Full name"

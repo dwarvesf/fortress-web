@@ -1,4 +1,4 @@
-import { Form, Input, Modal, notification, Space } from 'antd'
+import { Col, Form, Input, Modal, notification, Row } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
 import { client } from 'libs/apis'
 import { useState } from 'react'
@@ -54,41 +54,53 @@ export const EditProfileInfoModal = (props: Props) => {
       destroyOnClose
     >
       <Form form={form} onFinish={onSubmit} initialValues={initialValues}>
-        <Space direction="vertical" style={{ width: '100%' }}>
-          <Form.Item
-            label="Phone Number"
-            name="phoneNumber"
-            required
-            rules={[{ required: true }]}
-          >
-            <Input placeholder="Enter phone number" className="bordered" />
-          </Form.Item>
-          <Form.Item
-            label="Team Email"
-            name="teamEmail"
-            required
-            rules={[{ required: true, type: 'email' }]}
-          >
-            <Input placeholder="Enter team email" className="bordered" />
-          </Form.Item>
-          <Form.Item
-            label="Personal Email"
-            name="personalEmail"
-            required
-            rules={[{ required: true, type: 'email' }]}
-          >
-            <Input placeholder="Enter personal email" className="bordered" />
-          </Form.Item>
-          <Form.Item label="Discord ID" name="discordID">
-            <Input placeholder="Enter Discord ID" className="bordered" />
-          </Form.Item>
-          <Form.Item label="Github ID" name="githubID">
-            <Input placeholder="Enter Github ID" className="bordered" />
-          </Form.Item>
-          <Form.Item label="Notion ID" name="notionID">
-            <Input placeholder="Enter Notion ID" className="bordered" />
-          </Form.Item>
-        </Space>
+        <Row gutter={24}>
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item
+              label="Phone Number"
+              name="phoneNumber"
+              required
+              rules={[{ required: true }]}
+            >
+              <Input placeholder="Enter phone number" className="bordered" />
+            </Form.Item>
+          </Col>
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item
+              label="Team Email"
+              name="teamEmail"
+              required
+              rules={[{ required: true, type: 'email' }]}
+            >
+              <Input placeholder="Enter team email" className="bordered" />
+            </Form.Item>
+          </Col>
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item
+              label="Personal Email"
+              name="personalEmail"
+              required
+              rules={[{ required: true, type: 'email' }]}
+            >
+              <Input placeholder="Enter personal email" className="bordered" />
+            </Form.Item>
+          </Col>
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item label="Discord ID" name="discordID">
+              <Input placeholder="Enter Discord ID" className="bordered" />
+            </Form.Item>
+          </Col>
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item label="Github ID" name="githubID">
+              <Input placeholder="Enter Github ID" className="bordered" />
+            </Form.Item>
+          </Col>
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item label="Notion ID" name="notionID">
+              <Input placeholder="Enter Notion ID" className="bordered" />
+            </Form.Item>
+          </Col>
+        </Row>
       </Form>
     </Modal>
   )
