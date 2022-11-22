@@ -307,7 +307,6 @@ export interface ViewCreateProjectData {
 }
 
 export interface ViewEmployeeData {
-  accountStatus?: string
   address?: string
   avatar?: string
   birthday?: string
@@ -362,11 +361,13 @@ export interface ViewMessageResponse {
 
 export interface ViewMetaData {
   code?: string
+  id?: string
   name?: string
 }
 
 export interface ViewPosition {
   code?: string
+  id?: string
   name?: string
 }
 
@@ -448,6 +449,7 @@ export interface ViewProjectMemberListResponse {
 
 export interface ViewRole {
   code?: string
+  id?: string
   name?: string
 }
 
@@ -457,6 +459,7 @@ export interface ViewSeniorityResponse {
 
 export interface ViewStack {
   code?: string
+  id?: string
   name?: string
 }
 

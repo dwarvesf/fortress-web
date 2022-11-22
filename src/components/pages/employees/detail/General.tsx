@@ -22,11 +22,6 @@ export const General = (props: Props) => {
   const { data } = props
 
   const [isLoading, setIsLoading] = useState(false)
-  const {
-    isOpen: isEditSkillsOpen,
-    onOpen: onEditSkillsOpen,
-    onClose: onEditSkillsClose,
-  } = useDisclosure()
 
   const onChangeStatus = async (value: string) => {
     try {
@@ -50,6 +45,12 @@ export const General = (props: Props) => {
     isOpen: isEditGeneralInfoOpen,
     onOpen: onEditGeneralInfoOpen,
     onClose: onEditGeneralInfoClose,
+  } = useDisclosure()
+
+  const {
+    isOpen: isEditSkillsOpen,
+    onOpen: onEditSkillsOpen,
+    onClose: onEditSkillsClose,
   } = useDisclosure()
 
   return (
@@ -143,7 +144,7 @@ export const General = (props: Props) => {
               </Row>
             </EditableDetailSectionCard>
           </Col>
-          <Col lg={{ span: 16 }}>
+          <Col span={24} lg={{ span: 16 }}>
             <EditableDetailSectionCard title="Skills" onEdit={onEditSkillsOpen}>
               <DataRows
                 data={[
@@ -208,7 +209,13 @@ export const General = (props: Props) => {
       <EditSkillsModal
         onClose={onEditSkillsClose}
         isOpen={isEditSkillsOpen}
-        onAfterSubmit={() => undefined}
+        initialValues={{
+          chapter: data.chapter?.id,
+          positions: (data.positions || []).map((p) => p.id || ''),
+          seniority: data.seniority?.id || '',
+          stacks: (data.stacks || []).map((s) => s.id || ''),
+        }}
+        onAfterSubmit={() => mutate([GET_PATHS.getEmployees, data.id])}
       />
     </>
   )

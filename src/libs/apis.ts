@@ -19,6 +19,8 @@ import {
   ViewUpdateGeneralEmployeeResponse,
   PkgHandlerEmployeeUpdateSkillsInput,
   ViewUpdateSkillsEmployeeResponse,
+  ViewStackResponse,
+  ViewChapterResponse,
 } from 'types/schema'
 import qs from 'qs'
 import fetcher from './fetcher'
@@ -42,6 +44,7 @@ export const GET_PATHS = {
   getProjectStatusMetadata: '/metadata/project-statuses',
   getStackMetadata: '/metadata/stacks',
   getCountryMetadata: '/metadata/countries',
+  getChapterMetadata: '/metadata/chapters',
 }
 export interface Meta {
   page?: number
@@ -199,7 +202,13 @@ class Client {
   }
 
   public getStackMetadata = () => {
-    return fetcher<Response<ViewMetaData[]>>(`${BASE_URL}/metadata/stacks`, {
+    return fetcher<ViewStackResponse>(`${BASE_URL}/metadata/stacks`, {
+      headers: { ...this.privateHeaders },
+    })
+  }
+
+  public getChaptersMetadata = () => {
+    return fetcher<ViewChapterResponse>(`${BASE_URL}/metadata/chapters`, {
       headers: { ...this.privateHeaders },
     })
   }

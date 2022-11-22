@@ -29,15 +29,14 @@ export const EditSkillsModal = (props: Props) => {
       await client.updateEmployeeSkills(query.id as string, values)
 
       notification.success({
-        message: "Employee's general info successfully updated!",
+        message: "Employee's skills successfully updated!",
       })
 
       onClose()
-      form.resetFields()
       onAfterSubmit()
     } catch (error: any) {
       notification.error({
-        message: error?.message || "Could not update employee's general info!",
+        message: error?.message || "Could not update employee's skills!",
       })
     } finally {
       setIsSubmitting(false)
@@ -51,6 +50,7 @@ export const EditSkillsModal = (props: Props) => {
       onOk={form.submit}
       okButtonProps={{ loading: isSubmitting }}
       destroyOnClose
+      title="Edit skills"
     >
       <Form
         form={form}
@@ -59,16 +59,20 @@ export const EditSkillsModal = (props: Props) => {
         }}
         initialValues={initialValues}
       >
-        <Row gutter={28}>
+        <Row gutter={24}>
           <Col span={24}>
-            <Form.Item label="Positions" name="positions">
+            <Form.Item
+              label="Positions"
+              name="positions"
+              rules={[{ required: true, message: 'Please select positions' }]}
+            >
               <AsyncSelect
                 mode="multiple"
                 optionGetter={async () => {
                   const { data } = await client.getPositionsMetadata()
                   return data?.map(transformMetadataToSelectOption) || []
                 }}
-                swrKeys={GET_PATHS.getPositionMetadata}
+                swrKeys={[GET_PATHS.getPositionMetadata, 'edit-skills']}
                 placeholder="Select positions"
               />
             </Form.Item>
@@ -77,40 +81,46 @@ export const EditSkillsModal = (props: Props) => {
           <Col span={24}>
             <Form.Item label="Chapter" name="chapter">
               <AsyncSelect
-                mode="multiple"
                 optionGetter={async () => {
-                  const { data } = await client.getPositionsMetadata()
+                  const { data } = await client.getChaptersMetadata()
                   return data?.map(transformMetadataToSelectOption) || []
                 }}
-                swrKeys={GET_PATHS.getPositionMetadata}
+                swrKeys={[GET_PATHS.getChapterMetadata, 'edit-skills']}
                 placeholder="Select chapter"
               />
             </Form.Item>
           </Col>
 
           <Col span={24}>
-            <Form.Item label="Seniority" name="seniority">
+            <Form.Item
+              label="Seniority"
+              name="seniority"
+              rules={[{ required: true, message: 'Please select seniority' }]}
+            >
               <AsyncSelect
-                mode="multiple"
                 optionGetter={async () => {
-                  const { data } = await client.getPositionsMetadata()
+                  const { data } = await client.getSenioritiesMetadata()
                   return data?.map(transformMetadataToSelectOption) || []
                 }}
-                swrKeys={GET_PATHS.getPositionMetadata}
+                swrKeys={[GET_PATHS.getSeniorityMetadata, 'edit-skills']}
                 placeholder="Select seniority"
               />
             </Form.Item>
           </Col>
 
           <Col span={24}>
-            <Form.Item label="Tech stacks" name="stacks">
+            <Form.Item
+              label="Tech stack"
+              name="stacks"
+              rules={[{ required: true, message: 'Please select stack' }]}
+            >
               <AsyncSelect
                 mode="multiple"
                 optionGetter={async () => {
-                  const { data } = await client.getPositionsMetadata()
+                  const { data } = await client.getStacksMetadata()
                   return data?.map(transformMetadataToSelectOption) || []
                 }}
-                swrKeys={GET_PATHS.getPositionMetadata}
+                swrKeys={[GET_PATHS.getStackMetadata, 'edit-skills']}
                 placeholder="Select tech stacks"
               />
             </Form.Item>
