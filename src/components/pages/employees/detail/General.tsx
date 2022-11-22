@@ -85,7 +85,7 @@ export const General = (props: Props) => {
                     <Select
                       loading={isLoading}
                       style={{ width: '100%' }}
-                      defaultValue={data.status}
+                      value={data.status}
                       onChange={onChangeStatus}
                       options={Object.keys(employeeStatuses).map((key) => {
                         return {
