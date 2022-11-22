@@ -5,7 +5,7 @@ import {
   UserOutlined,
   WechatFilled,
 } from '@ant-design/icons'
-import { Col, MenuProps, Row, Layout, Menu, Spin } from 'antd'
+import { Col, MenuProps, Row, Layout, Menu } from 'antd'
 import { ROUTES } from 'constants/routes'
 import { LOGIN_REDIRECTION_KEY, useAuthContext } from 'context/auth'
 import Link from 'next/link'
@@ -15,6 +15,7 @@ import styled from 'styled-components'
 import { WithChildren } from 'types/common'
 import { isActivePath } from 'utils/link'
 import { Logo } from '../Logo'
+import { PageSpinner } from '../PageSpinner'
 import { ProfileDropdown } from './ProfileDropdown'
 
 const { Header, Content, Footer, Sider } = Layout
@@ -77,18 +78,7 @@ export const AuthenticatedLayout = (props: Props) => {
   }, [pathname])
 
   if (isAuthenticating || (!isAuthenticated && pathname !== ROUTES.LOGIN)) {
-    return (
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '100vh',
-        }}
-      >
-        <Spin size="large" />
-      </div>
-    )
+    return <PageSpinner />
   }
 
   if (!isAuthenticated || pathname === ROUTES.LOGIN) {

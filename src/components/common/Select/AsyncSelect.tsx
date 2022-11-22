@@ -1,9 +1,11 @@
 import { notification, Select, SelectProps } from 'antd'
-import { DefaultOptionType } from 'antd/lib/select'
+import { DefaultOptionType as BaseDefaultOptionType } from 'antd/lib/select'
 import { useEffect, useState } from 'react'
 import { theme } from 'styles'
 import useSWR from 'swr'
 import { searchFilterOption } from 'utils/select'
+
+type DefaultOptionType = Omit<BaseDefaultOptionType, 'label'> & { label: any }
 
 interface Props extends SelectProps {
   optionGetter: () => Promise<DefaultOptionType[]>
@@ -39,15 +41,13 @@ export const AsyncSelect = (props: Props) => {
     if (error) {
       setIsLoading(false)
       notification.error({
-        message: 'Error',
-        description: error.message || "Couldn't fetch data!",
+        message: error.message || 'Could not fetch data!',
       })
     }
   }, [error, optionsData])
 
   return (
     <Select
-      bordered={false}
       style={{ background: theme.colors.white, overflow: 'auto', ...style }}
       placeholder={isLoading ? 'Fetching data' : placeholder}
       loading={isLoading}

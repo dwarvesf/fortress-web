@@ -8,13 +8,14 @@ interface Props {
     'id' | 'employeeID' | 'avatar' | 'displayName' | 'fullName'
   >
   avatarSize?: number
+  isLink?: boolean
 }
 
 export const AvatarWithName = (props: Props) => {
-  const { user, avatarSize = 24 } = props
+  const { user, avatarSize = 24, isLink = true } = props
   const name = user.displayName || user.fullName
 
-  return (
+  return isLink ? (
     <EmployeeLink id={user.id || user.employeeID || ''}>
       <Space direction="horizontal">
         <Avatar
@@ -25,5 +26,14 @@ export const AvatarWithName = (props: Props) => {
         <span>{name}</span>
       </Space>
     </EmployeeLink>
+  ) : (
+    <Space direction="horizontal">
+      <Avatar
+        src={user.avatar}
+        size={avatarSize}
+        icon={!user.displayName && user.displayName?.slice(0, 1)}
+      />
+      <span>{user.displayName}</span>
+    </Space>
   )
 }

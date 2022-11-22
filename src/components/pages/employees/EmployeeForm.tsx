@@ -43,8 +43,7 @@ export const EmployeeForm = (props: Props) => {
       )
 
       notification.success({
-        message: 'Success',
-        description: 'Successfully created new employee!',
+        message: 'New employee successfully created!',
         btn: (
           <Button
             type="primary"
@@ -62,8 +61,7 @@ export const EmployeeForm = (props: Props) => {
       setTimeout(() => push(ROUTES.EMPLOYEES))
     } catch (error: any) {
       notification.error({
-        message: 'Error',
-        description: error?.message || 'Could not create new employee!',
+        message: error?.message || 'Could not create new employee!',
       })
     } finally {
       setIsSubmitting(false)
@@ -146,6 +144,7 @@ export const EmployeeForm = (props: Props) => {
             rules={[{ required: true, message: 'Please select status' }]}
           >
             <AsyncSelect
+              bordered={false}
               optionGetter={() =>
                 Promise.resolve(
                   Object.keys(employeeStatuses).map((key) => ({
@@ -198,6 +197,7 @@ export const EmployeeForm = (props: Props) => {
             rules={[{ required: true, message: 'Please select positions' }]}
           >
             <AsyncSelect
+              bordered={false}
               mode="multiple"
               optionGetter={async () => {
                 const { data } = await client.getPositionsMetadata()
@@ -216,6 +216,7 @@ export const EmployeeForm = (props: Props) => {
             rules={[{ required: true, message: 'Please select seniority' }]}
           >
             <AsyncSelect
+              bordered={false}
               optionGetter={async () => {
                 const { data } = await client.getSenioritiesMetadata()
                 return data?.map(transformMetadataToSelectOption) || []
@@ -243,6 +244,7 @@ export const EmployeeForm = (props: Props) => {
             rules={[{ required: true, message: 'Please select account role' }]}
           >
             <AsyncSelect
+              bordered={false}
               optionGetter={async () => {
                 const { data } = await client.getAccountRolesMetadata()
                 return data?.map(transformMetadataToSelectOption) || []

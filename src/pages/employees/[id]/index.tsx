@@ -1,5 +1,6 @@
-import { Spin, Tabs } from 'antd'
+import { Tabs } from 'antd'
 import { PageHeader } from 'components/common/PageHeader'
+import { PageSpinner } from 'components/common/PageSpinner'
 import { General } from 'components/pages/employees/detail/General'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { client, GET_PATHS } from 'libs/apis'
@@ -17,7 +18,7 @@ const Default = () => {
   const employee = data?.data
 
   if (loading || !employee) {
-    return <Spin size="large" />
+    return <PageSpinner />
   }
 
   return (

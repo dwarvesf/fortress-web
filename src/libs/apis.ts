@@ -15,6 +15,8 @@ import {
   PkgHandlerProfileUpdateInfoInput,
   ViewProjectData,
   ViewProjectMemberListResponse,
+  PkgHandlerEmployeeUpdateGeneralInfoInput,
+  ViewUpdateGeneralEmployeeResponse,
 } from 'types/schema'
 import qs from 'qs'
 import fetcher from './fetcher'
@@ -200,6 +202,22 @@ class Client {
       },
       body: JSON.stringify(data),
     })
+  }
+
+  public updateEmployeeGeneralInfo(
+    id: string,
+    data: PkgHandlerEmployeeUpdateGeneralInfoInput,
+  ) {
+    return fetcher<ViewUpdateGeneralEmployeeResponse>(
+      `${BASE_URL}/employees/${id}/general-info`,
+      {
+        method: 'PUT',
+        headers: {
+          ...this.privateHeaders,
+        },
+        body: JSON.stringify(data),
+      },
+    )
   }
 }
 
