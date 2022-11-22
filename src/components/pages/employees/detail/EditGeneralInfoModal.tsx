@@ -1,10 +1,11 @@
+import { useAsyncEffect } from '@dwarvesf/react-hooks'
 import { Col, Form, Input, Modal, notification, Row, Select } from 'antd'
 import { DefaultOptionType } from 'antd/lib/select'
 import { AvatarWithName } from 'components/common/AvatarWithName'
 import { AsyncSelect } from 'components/common/Select'
 import { GET_PATHS, client } from 'libs/apis'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { ReactNode, useState } from 'react'
 import { PkgHandlerEmployeeUpdateGeneralInfoInput } from 'types/schema'
 
 const { Option } = Select
@@ -22,7 +23,7 @@ const customOptionRenderer = (
   <Option
     key={option.label.id}
     value={option.label.id}
-    label={option.label.displayName}
+    label={option.label.fullName}
   >
     <AvatarWithName isLink={false} user={option.label} />
   </Option>
@@ -40,7 +41,6 @@ export const EditGeneralInfoModal = (props: Props) => {
   ) => {
     try {
       setIsSubmitting(true)
-
       await client.updateEmployeeGeneralInfo(query.id as string, values)
 
       notification.success({
@@ -48,7 +48,6 @@ export const EditGeneralInfoModal = (props: Props) => {
       })
 
       onClose()
-      form.resetFields()
       onAfterSubmit()
     } catch (error: any) {
       notification.error({
@@ -59,6 +58,27 @@ export const EditGeneralInfoModal = (props: Props) => {
     }
   }
 
+  let defaultLineManager: ReactNode
+
+  useAsyncEffect(async () => {
+    if (initialValues?.lineManagerID) {
+      const { data } = await client.getEmployee(initialValues.lineManagerID)
+      defaultLineManager = (
+        <Option key={data.id} value={data.id} label={data.fullName}>
+          <AvatarWithName
+            isLink={false}
+            user={{
+              fullName: data.fullName,
+              id: data.id,
+              displayName: data.displayName,
+              avatar: data.avatar,
+            }}
+          />
+        </Option>
+      )
+    }
+  }, [])
+
   return (
     <Modal
       open={isOpen}
@@ -67,14 +87,8 @@ export const EditGeneralInfoModal = (props: Props) => {
       okButtonProps={{ loading: isSubmitting }}
       destroyOnClose
     >
-      <Form
-        form={form}
-        onFinish={(values) => {
-          onSubmit(values)
-        }}
-        initialValues={initialValues}
-      >
-        <Row gutter={28}>
+      <Form form={form} onFinish={onSubmit} initialValues={initialValues}>
+        <Row gutter={24}>
           <Col span={24} md={{ span: 12 }}>
             <Form.Item
               label="Full name"
@@ -87,7 +101,11 @@ export const EditGeneralInfoModal = (props: Props) => {
                 },
               ]}
             >
-              <Input type="text" placeholder="Enter full name" />
+              <Input
+                className="bordered"
+                type="text"
+                placeholder="Enter full name"
+              />
             </Form.Item>
           </Col>
 
@@ -100,7 +118,11 @@ export const EditGeneralInfoModal = (props: Props) => {
                 { type: 'email', message: 'Wrong email format' },
               ]}
             >
-              <Input type="email" placeholder="Enter team email" />
+              <Input
+                className="bordered"
+                type="email"
+                placeholder="Enter team email"
+              />
             </Form.Item>
           </Col>
 
@@ -127,7 +149,11 @@ export const EditGeneralInfoModal = (props: Props) => {
                 },
               ]}
             >
-              <Input type="text" placeholder="Enter phone number" />
+              <Input
+                className="bordered"
+                type="text"
+                placeholder="Enter phone number"
+              />
             </Form.Item>
           </Col>
 
@@ -138,7 +164,6 @@ export const EditGeneralInfoModal = (props: Props) => {
                   const { data } = await client.getEmployees({
                     page: 1,
                     size: 1000,
-                    workingStatus: 'full-time',
                     preload: false,
                   })
                   return (
@@ -160,9 +185,10 @@ export const EditGeneralInfoModal = (props: Props) => {
                     ) || []
                   )
                 }}
-                swrKeys={GET_PATHS.getAccountStatusMetadata}
+                swrKeys={[GET_PATHS.getAccountStatusMetadata, 'line-manager']}
                 placeholder="Select status"
                 customOptionRenderer={customOptionRenderer}
+                value={defaultLineManager}
               />
             </Form.Item>
           </Col>
@@ -178,19 +204,31 @@ export const EditGeneralInfoModal = (props: Props) => {
                 },
               ]}
             >
-              <Input type="text" placeholder="Enter Discord ID" />
+              <Input
+                className="bordered"
+                type="text"
+                placeholder="Enter Discord ID"
+              />
             </Form.Item>
           </Col>
 
           <Col span={24} md={{ span: 12 }}>
             <Form.Item label="GitHub ID" name="githubID">
-              <Input type="text" placeholder="Enter GitHub ID" />
+              <Input
+                className="bordered"
+                type="text"
+                placeholder="Enter GitHub ID"
+              />
             </Form.Item>
           </Col>
 
           <Col span={24} md={{ span: 12 }}>
             <Form.Item label="Notion ID" name="notionID">
-              <Input type="text" placeholder="Enter Notion ID" />
+              <Input
+                className="bordered"
+                type="text"
+                placeholder="Enter Notion ID"
+              />
             </Form.Item>
           </Col>
         </Row>

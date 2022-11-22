@@ -5,7 +5,6 @@ import { AvatarWithName } from 'components/common/AvatarWithName'
 import { DataRows } from 'components/common/DataRows'
 import { EditableDetailSectionCard } from 'components/common/EditableDetailSectionCard'
 import { DATE_FORMAT } from 'constants/date'
-// import { useAuthContext } from 'context/auth'
 import { format } from 'date-fns'
 import { ViewEmployeeData } from 'types/schema'
 import { client, GET_PATHS } from 'libs/apis'
@@ -19,7 +18,6 @@ interface Props {
 }
 
 export const General = (props: Props) => {
-  // const { revalidate } = useAuthContext()
   const { data } = props
 
   const [isLoading, setIsLoading] = useState(false)
@@ -47,26 +45,6 @@ export const General = (props: Props) => {
     onOpen: onEditGeneralInfoOpen,
     onClose: onEditGeneralInfoClose,
   } = useDisclosure()
-
-  const [isLoading, setIsLoading] = useState(false)
-
-  const onChangeStatus = async (value: string) => {
-    try {
-      setIsLoading(true)
-
-      await client.updateEmployeeStatus(data.id || '', value)
-
-      // Refetch user data
-      notification.success({ message: 'Employee status updated successfully!' })
-      mutate([GET_PATHS.getEmployees, data.id])
-    } catch (error: any) {
-      notification.error({
-        message: error?.message || 'Could not update employee status.',
-      })
-    } finally {
-      setIsLoading(false)
-    }
-  }
 
   return (
     <>
@@ -149,6 +127,10 @@ export const General = (props: Props) => {
                           </a>
                         ),
                       },
+                      {
+                        label: 'Notion ID',
+                        value: data.notionID || '-',
+                      },
                     ]}
                   />
                 </Col>
@@ -205,7 +187,16 @@ export const General = (props: Props) => {
       <EditGeneralInfoModal
         onClose={onEditGeneralInfoClose}
         isOpen={isEditGeneralInfoOpen}
-        onAfterSubmit={() => undefined}
+        initialValues={{
+          discordID: data.discordID,
+          email: data.teamEmail || '',
+          fullName: data.fullName || '',
+          githubID: data.githubID,
+          lineManagerID: data.lineManager?.id || '',
+          notionID: data.notionID,
+          phone: data.phoneNumber || '',
+        }}
+        onAfterSubmit={() => mutate([GET_PATHS.getEmployees, data.id])}
       />
     </>
   )

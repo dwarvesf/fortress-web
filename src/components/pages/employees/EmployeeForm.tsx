@@ -144,6 +144,7 @@ export const EmployeeForm = (props: Props) => {
             rules={[{ required: true, message: 'Please select status' }]}
           >
             <AsyncSelect
+              bordered={false}
               optionGetter={() =>
                 Promise.resolve(
                   Object.keys(employeeStatuses).map((key) => ({
@@ -196,6 +197,7 @@ export const EmployeeForm = (props: Props) => {
             rules={[{ required: true, message: 'Please select positions' }]}
           >
             <AsyncSelect
+              bordered={false}
               mode="multiple"
               optionGetter={async () => {
                 const { data } = await client.getPositionsMetadata()
@@ -214,6 +216,7 @@ export const EmployeeForm = (props: Props) => {
             rules={[{ required: true, message: 'Please select seniority' }]}
           >
             <AsyncSelect
+              bordered={false}
               optionGetter={async () => {
                 const { data } = await client.getSenioritiesMetadata()
                 return data?.map(transformMetadataToSelectOption) || []
@@ -241,6 +244,7 @@ export const EmployeeForm = (props: Props) => {
             rules={[{ required: true, message: 'Please select account role' }]}
           >
             <AsyncSelect
+              bordered={false}
               optionGetter={async () => {
                 const { data } = await client.getAccountRolesMetadata()
                 return data?.map(transformMetadataToSelectOption) || []
