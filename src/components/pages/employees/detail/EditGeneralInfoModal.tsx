@@ -23,7 +23,7 @@ const customOptionRenderer = (
   <Option
     key={option.label.id}
     value={option.label.id}
-    label={option.label.fullName}
+    label={option.label.displayName}
   >
     <AvatarWithName isLink={false} user={option.label} />
   </Option>
@@ -170,14 +170,14 @@ export const EditGeneralInfoModal = (props: Props) => {
                     data?.map(
                       (metaItem: {
                         id?: string
-                        displayName?: string
+                        fullName?: string
                         avatar?: string
                       }) => {
                         return {
                           value: metaItem.id,
                           label: {
                             id: metaItem.id,
-                            displayName: metaItem.displayName,
+                            fullName: metaItem.fullName,
                             avatar: metaItem.avatar,
                           },
                         }
