@@ -38,6 +38,8 @@ export const GET_PATHS = {
   getAccountRoleMetadata: '/metadata/account-roles',
   getSeniorityMetadata: '/metadata/seniorities',
   getProjectStatusMetadata: '/metadata/project-statuses',
+  getStackMetadata: '/metadata/stacks',
+  getCountryMetadata: '/metadata/countries',
 }
 export interface Meta {
   page?: number
@@ -192,6 +194,18 @@ class Client {
         headers: { ...this.privateHeaders },
       },
     )
+  }
+
+  public getStackMetadata = () => {
+    return fetcher<Response<ViewMetaData[]>>(`${BASE_URL}/metadata/stacks`, {
+      headers: { ...this.privateHeaders },
+    })
+  }
+
+  public getCountryMetadata = () => {
+    return fetcher<Response<ViewMetaData[]>>(`${BASE_URL}/metadata/countries`, {
+      headers: { ...this.privateHeaders },
+    })
   }
 
   public createNewEmployee(data: PkgHandlerEmployeeCreateEmployeeInput) {
