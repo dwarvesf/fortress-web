@@ -11,6 +11,7 @@ import {
   ViewPositionResponse,
   ViewSeniorityResponse,
   PkgHandlerEmployeeCreateEmployeeInput,
+  PkgHandlerProfileUpdateInfoInput,
 } from 'types/schema'
 import qs from 'qs'
 import fetcher from './fetcher'
@@ -72,6 +73,14 @@ class Client {
   public getProfile() {
     return fetcher<Response<ViewProfileData>>(`${BASE_URL}/profile`, {
       headers: { ...this.privateHeaders },
+    })
+  }
+
+  public updateProfile(data: Partial<PkgHandlerProfileUpdateInfoInput>) {
+    return fetcher<Response<ViewProfileData>>(`${BASE_URL}/profile`, {
+      headers: { ...this.privateHeaders },
+      method: 'PUT',
+      body: JSON.stringify(data),
     })
   }
 
