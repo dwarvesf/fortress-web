@@ -12,6 +12,7 @@ import { mutate } from 'swr'
 import { useState } from 'react'
 import { EmployeeStatus, employeeStatuses } from 'constants/status'
 import { EditGeneralInfoModal } from './EditGeneralInfoModal'
+import { EditSkillsModal } from './EditSkillsModal'
 
 interface Props {
   data: ViewEmployeeData
@@ -44,6 +45,12 @@ export const General = (props: Props) => {
     isOpen: isEditGeneralInfoOpen,
     onOpen: onEditGeneralInfoOpen,
     onClose: onEditGeneralInfoClose,
+  } = useDisclosure()
+
+  const {
+    isOpen: isEditSkillsDialogOpen,
+    onOpen: onEditSkillsDialogOpen,
+    onClose: onEditSkillsDialogClose,
   } = useDisclosure()
 
   return (
@@ -138,7 +145,10 @@ export const General = (props: Props) => {
             </EditableDetailSectionCard>
           </Col>
           <Col span={24} lg={{ span: 16 }}>
-            <EditableDetailSectionCard title="Skills">
+            <EditableDetailSectionCard
+              title="Skills"
+              onEdit={onEditSkillsDialogOpen}
+            >
               <DataRows
                 data={[
                   {
@@ -195,6 +205,18 @@ export const General = (props: Props) => {
           lineManagerID: data.lineManager?.id || '',
           notionID: data.notionID,
           phone: data.phoneNumber || '',
+        }}
+        onAfterSubmit={() => mutate([GET_PATHS.getEmployees, data.id])}
+      />
+
+      <EditSkillsModal
+        onClose={onEditSkillsDialogClose}
+        isOpen={isEditSkillsDialogOpen}
+        initialValues={{
+          chapter: data.chapter?.id,
+          positions: (data.positions || []).map((p) => p.id || ''),
+          seniority: data.seniority?.id || '',
+          stacks: (data.stacks || []).map((s) => s.id || ''),
         }}
         onAfterSubmit={() => mutate([GET_PATHS.getEmployees, data.id])}
       />
