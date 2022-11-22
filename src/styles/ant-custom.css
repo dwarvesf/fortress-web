@@ -108,3 +108,7 @@
 .ant-card-body > .ant-table-wrapper .ant-table-cell:last-of-type {
   padding-right: 24px;
 }
+
+.ant-input[type='date'] {
+  background: transparent;
+}
