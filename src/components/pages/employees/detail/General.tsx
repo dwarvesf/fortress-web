@@ -48,9 +48,9 @@ export const General = (props: Props) => {
   } = useDisclosure()
 
   const {
-    isOpen: isEditSkillsOpen,
-    onOpen: onEditSkillsOpen,
-    onClose: onEditSkillsClose,
+    isOpen: isEditSkillsDialogOpen,
+    onOpen: onEditSkillsDialogOpen,
+    onClose: onEditSkillsDialogClose,
   } = useDisclosure()
 
   return (
@@ -145,7 +145,10 @@ export const General = (props: Props) => {
             </EditableDetailSectionCard>
           </Col>
           <Col span={24} lg={{ span: 16 }}>
-            <EditableDetailSectionCard title="Skills" onEdit={onEditSkillsOpen}>
+            <EditableDetailSectionCard
+              title="Skills"
+              onEdit={onEditSkillsDialogOpen}
+            >
               <DataRows
                 data={[
                   {
@@ -207,8 +210,8 @@ export const General = (props: Props) => {
       />
 
       <EditSkillsModal
-        onClose={onEditSkillsClose}
-        isOpen={isEditSkillsOpen}
+        onClose={onEditSkillsDialogClose}
+        isOpen={isEditSkillsDialogOpen}
         initialValues={{
           chapter: data.chapter?.id,
           positions: (data.positions || []).map((p) => p.id || ''),
