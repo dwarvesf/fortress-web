@@ -52,13 +52,7 @@ export const EditSkillsModal = (props: Props) => {
       destroyOnClose
       title="Edit skills"
     >
-      <Form
-        form={form}
-        onFinish={(values) => {
-          onSubmit(values)
-        }}
-        initialValues={initialValues}
-      >
+      <Form form={form} onFinish={onSubmit} initialValues={initialValues}>
         <Row gutter={24}>
           <Col span={24}>
             <Form.Item

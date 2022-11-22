@@ -1,6 +1,6 @@
 import { UserOutlined } from '@ant-design/icons'
-import { useDisclosure } from '@dwarvesf/react-hooks'
 import { Space, Col, Row, Avatar, Select, notification } from 'antd'
+import { useDisclosure } from '@dwarvesf/react-hooks'
 import { AvatarWithName } from 'components/common/AvatarWithName'
 import { DataRows } from 'components/common/DataRows'
 import { EditableDetailSectionCard } from 'components/common/EditableDetailSectionCard'
