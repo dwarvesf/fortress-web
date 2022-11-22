@@ -111,7 +111,7 @@ export const EditSkillsModal = (props: Props) => {
               <AsyncSelect
                 mode="multiple"
                 optionGetter={async () => {
-                  const { data } = await client.getStacksMetadata()
+                  const { data } = await client.getStackMetadata()
                   return data?.map(transformMetadataToSelectOption) || []
                 }}
                 swrKeys={[GET_PATHS.getStackMetadata, 'edit-skills']}
