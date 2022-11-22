@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { PkgHandlerEmployeeUpdatePersonalInfoInput } from 'types/schema'
 import moment from 'moment'
+import { SELECT_BOX_DATE_FORMAT } from 'constants/date'
 
 interface Props {
   isOpen: boolean
@@ -65,6 +66,7 @@ export const EditPersonalInfoModal = (props: Props) => {
               ]}
             >
               <DatePicker
+                format={SELECT_BOX_DATE_FORMAT}
                 style={{ width: '100%' }}
                 placeholder="Select date of birth"
                 className="bordered"
