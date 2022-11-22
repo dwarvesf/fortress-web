@@ -11,8 +11,10 @@ import { client, GET_PATHS } from 'libs/apis'
 import { mutate } from 'swr'
 import { useState } from 'react'
 import { EmployeeStatus, employeeStatuses } from 'constants/status'
+import moment from 'moment'
 import { EditGeneralInfoModal } from './EditGeneralInfoModal'
 import { EditSkillsModal } from './EditSkillsModal'
+import { EditPersonalInfoModal } from './EdiPersonalInfoModal'
 
 interface Props {
   data: ViewEmployeeData
@@ -42,15 +44,21 @@ export const General = (props: Props) => {
   }
 
   const {
-    isOpen: isEditGeneralInfoOpen,
-    onOpen: onEditGeneralInfoOpen,
-    onClose: onEditGeneralInfoClose,
+    isOpen: isEditGeneralInfoDialogOpen,
+    onOpen: onEditGeneralInfoDialogOpen,
+    onClose: onEditGeneralInfoDialogClose,
   } = useDisclosure()
 
   const {
     isOpen: isEditSkillsDialogOpen,
     onOpen: onEditSkillsDialogOpen,
     onClose: onEditSkillsDialogClose,
+  } = useDisclosure()
+
+  const {
+    isOpen: isEditPersonalInfoDialogOpen,
+    onOpen: onEditPersonalInfoDialogOpen,
+    onClose: onEditPersonalInfoDialogClose,
   } = useDisclosure()
 
   return (
@@ -60,7 +68,7 @@ export const General = (props: Props) => {
           <Col span={24} lg={{ span: 16 }}>
             <EditableDetailSectionCard
               title="Profile"
-              onEdit={onEditGeneralInfoOpen}
+              onEdit={onEditGeneralInfoDialogOpen}
             >
               <Row gutter={24}>
                 <Col span={24} lg={{ span: 8 }}>
@@ -168,7 +176,10 @@ export const General = (props: Props) => {
             </EditableDetailSectionCard>
           </Col>
           <Col span={24} lg={{ span: 16 }}>
-            <EditableDetailSectionCard title="Personal Info">
+            <EditableDetailSectionCard
+              title="Personal Info"
+              onEdit={onEditPersonalInfoDialogOpen}
+            >
               <DataRows
                 data={[
                   {
@@ -195,8 +206,8 @@ export const General = (props: Props) => {
       </Space>
 
       <EditGeneralInfoModal
-        onClose={onEditGeneralInfoClose}
-        isOpen={isEditGeneralInfoOpen}
+        onClose={onEditGeneralInfoDialogClose}
+        isOpen={isEditGeneralInfoDialogOpen}
         initialValues={{
           discordID: data.discordID,
           email: data.teamEmail || '',
@@ -217,6 +228,18 @@ export const General = (props: Props) => {
           positions: (data.positions || []).map((p) => p.id || ''),
           seniority: data.seniority?.id || '',
           stacks: (data.stacks || []).map((s) => s.id || ''),
+        }}
+        onAfterSubmit={() => mutate([GET_PATHS.getEmployees, data.id])}
+      />
+
+      <EditPersonalInfoModal
+        onClose={onEditPersonalInfoDialogClose}
+        isOpen={isEditPersonalInfoDialogOpen}
+        initialValues={{
+          dob: data.birthday ? moment(data.birthday) : moment(),
+          gender: data.gender || '',
+          address: data.address || '',
+          personalEmail: data.personalEmail || '',
         }}
         onAfterSubmit={() => mutate([GET_PATHS.getEmployees, data.id])}
       />
