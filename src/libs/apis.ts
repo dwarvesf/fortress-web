@@ -12,6 +12,7 @@ import {
   ViewSeniorityResponse,
   PkgHandlerEmployeeCreateEmployeeInput,
   PkgHandlerProfileUpdateInfoInput,
+  ViewProjectData,
 } from 'types/schema'
 import qs from 'qs'
 import fetcher from './fetcher'
@@ -121,6 +122,25 @@ class Client {
       `${BASE_URL}/projects?${queryString}`,
       {
         headers: { ...this.privateHeaders },
+      },
+    )
+  }
+
+  public getProject(id: string) {
+    return fetcher<Response<ViewProjectData>>(`${BASE_URL}/projects/${id}`, {
+      headers: { ...this.privateHeaders },
+    })
+  }
+
+  public updateProjectStatus(id: string, status: string) {
+    return fetcher<Response<ViewEmployeeData>>(
+      `${BASE_URL}/projects/${id}/status`,
+      {
+        method: 'PUT',
+        headers: { ...this.privateHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          status,
+        }),
       },
     )
   }

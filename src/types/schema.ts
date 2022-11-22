@@ -49,6 +49,7 @@ export interface GithubComDwarvesfFortressApiPkgHandlerProfileUpdateInfoInput {
   discordID?: string
   githubID?: string
   notionID?: string
+  personalEmail: string
   phoneNumber: string
   teamEmail: string
 }
@@ -192,6 +193,7 @@ export interface PkgHandlerProfileUpdateInfoInput {
   discordID?: string
   githubID?: string
   notionID?: string
+  personalEmail: string
   phoneNumber: string
   teamEmail: string
 }
@@ -354,6 +356,10 @@ export interface ViewErrorResponse {
   errors?: ViewApiError[]
 }
 
+export interface ViewMessageResponse {
+  message?: string
+}
+
 export interface ViewMetaData {
   code?: string
   name?: string
@@ -377,6 +383,7 @@ export interface ViewProfileData {
   gender?: string
   githubID?: string
   id?: string
+  notionID?: string
   personalEmail?: string
   phoneNumber?: string
   teamEmail?: string
@@ -388,14 +395,19 @@ export interface ViewProfileDataResponse {
 
 export interface ViewProjectData {
   accountManager?: ViewProjectHead
+  clientEmail?: string
+  country?: string
   createdAt?: string
   deletedAt?: GormDeletedAt
   deliveryManager?: ViewProjectHead
   endDate?: string
   id?: string
+  industry?: string
   members?: ViewProjectMember[]
   name?: string
+  projectEmail?: string
   salePerson?: ViewProjectHead
+  stacks?: ViewStack[]
   startDate?: string
   status?: string
   technicalLeads?: ViewProjectHead[]

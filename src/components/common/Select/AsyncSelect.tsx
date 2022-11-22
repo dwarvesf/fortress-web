@@ -16,9 +16,7 @@ export const AsyncSelect = (props: Props) => {
     optionGetter,
     swrKeys,
     customOptionRenderer,
-    mode,
     placeholder = '',
-    onChange,
     style,
     ...rest
   } = props
@@ -49,7 +47,6 @@ export const AsyncSelect = (props: Props) => {
 
   return (
     <Select
-      mode={mode}
       bordered={false}
       style={{ background: theme.colors.white, overflow: 'auto', ...style }}
       placeholder={isLoading ? 'Fetching data' : placeholder}
@@ -58,7 +55,6 @@ export const AsyncSelect = (props: Props) => {
       showSearch
       maxTagCount={2}
       options={typeof customOptionRenderer === 'function' ? undefined : options}
-      onChange={onChange}
       filterOption={searchFilterOption}
       {...rest}
     >

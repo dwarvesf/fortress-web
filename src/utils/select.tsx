@@ -3,8 +3,9 @@ import { DefaultOptionType } from 'antd/lib/select'
 export function transformMetadataToSelectOption(metaItem: {
   id?: string
   name?: string
+  code?: string
 }): DefaultOptionType {
-  return { label: metaItem.name, value: metaItem.id }
+  return { label: metaItem.name, value: metaItem.id || metaItem.code }
 }
 
 export function transformMetadataToFilterOption(metaItem: {

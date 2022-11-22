@@ -17,6 +17,7 @@ interface Props {
 
 export const General = (props: Props) => {
   const { data } = props
+
   const [isLoading, setIsLoading] = useState(false)
 
   const onChangeStatus = async (value: string) => {
