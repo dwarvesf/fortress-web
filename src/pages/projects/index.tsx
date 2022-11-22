@@ -41,7 +41,9 @@ const Default = () => {
       {
         title: 'Name',
         key: 'name',
-        dataIndex: 'name',
+        render: (value) => (
+          <ProjectLink id={value.id}>{value.name}</ProjectLink>
+        ),
       },
       {
         title: 'Status',
