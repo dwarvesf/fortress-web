@@ -16,7 +16,7 @@ import {
   ViewProjectData,
   ViewProjectMemberListResponse,
   PkgHandlerEmployeeUpdateGeneralInfoInput,
-  ViewUpdateGeneralInfoEmployeeData,
+  ViewUpdateGeneralEmployeeResponse,
 } from 'types/schema'
 import qs from 'qs'
 import fetcher from './fetcher'
@@ -208,7 +208,7 @@ class Client {
     id: string,
     data: PkgHandlerEmployeeUpdateGeneralInfoInput,
   ) {
-    return fetcher<Response<ViewUpdateGeneralInfoEmployeeData>>(
+    return fetcher<ViewUpdateGeneralEmployeeResponse>(
       `${BASE_URL}/employees/${id}/general-info`,
       {
         method: 'PUT',
