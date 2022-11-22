@@ -1,7 +1,7 @@
 import Table, { ColumnsType } from 'antd/lib/table'
 import { AvatarWithName } from 'components/common/AvatarWithName'
 import { useMemo } from 'react'
-import { ViewProjectMember } from 'types/schema'
+import { ViewPosition, ViewProjectMember } from 'types/schema'
 
 export const MemberTable = ({ data }: { data: ViewProjectMember[] }) => {
   const columns = useMemo(() => {
@@ -15,7 +15,8 @@ export const MemberTable = ({ data }: { data: ViewProjectMember[] }) => {
         title: 'Positions',
         key: 'positions',
         dataIndex: 'positions',
-        render: (value) => value.join(', '),
+        render: (value: ViewPosition[]) =>
+          value?.map((position) => position.name).join(', '),
       },
       {
         title: 'Seniority',
