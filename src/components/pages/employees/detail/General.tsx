@@ -11,8 +11,10 @@ import { client, GET_PATHS } from 'libs/apis'
 import { mutate } from 'swr'
 import { useState } from 'react'
 import { EmployeeStatus, employeeStatuses } from 'constants/status'
+import moment from 'moment'
 import { EditGeneralInfoModal } from './EditGeneralInfoModal'
 import { EditSkillsModal } from './EditSkillsModal'
+import { EditPersonalInfoModal } from './EditPersonalInfoModal'
 
 interface Props {
   data: ViewEmployeeData
@@ -42,15 +44,21 @@ export const General = (props: Props) => {
   }
 
   const {
-    isOpen: isEditGeneralInfoOpen,
-    onOpen: onEditGeneralInfoOpen,
-    onClose: onEditGeneralInfoClose,
+    isOpen: isEditGeneralInfoDialogOpen,
+    onOpen: openEditGeneralInfoDialog,
+    onClose: closeEditGeneralInfoDialog,
   } = useDisclosure()
 
   const {
     isOpen: isEditSkillsDialogOpen,
-    onOpen: onEditSkillsDialogOpen,
-    onClose: onEditSkillsDialogClose,
+    onOpen: openEditSkillsDialog,
+    onClose: closeEditSkillsDialog,
+  } = useDisclosure()
+
+  const {
+    isOpen: isEditPersonalInfoDialogOpen,
+    onOpen: openEditPersonalInfoDialog,
+    onClose: closeEditPersonalInfoDialog,
   } = useDisclosure()
 
   return (
@@ -60,9 +68,9 @@ export const General = (props: Props) => {
           <Col span={24} lg={{ span: 16 }}>
             <EditableDetailSectionCard
               title="Profile"
-              onEdit={onEditGeneralInfoOpen}
+              onEdit={openEditGeneralInfoDialog}
             >
-              <Row gutter={24}>
+              <Row gutter={[24, 24]}>
                 <Col span={24} lg={{ span: 8 }}>
                   <Space
                     direction="vertical"
@@ -77,7 +85,7 @@ export const General = (props: Props) => {
                     <Select
                       loading={isLoading}
                       style={{ width: '100%' }}
-                      defaultValue={data.status}
+                      value={data.status}
                       onChange={onChangeStatus}
                       options={Object.keys(employeeStatuses).map((key) => {
                         return {
@@ -147,7 +155,7 @@ export const General = (props: Props) => {
           <Col span={24} lg={{ span: 16 }}>
             <EditableDetailSectionCard
               title="Skills"
-              onEdit={onEditSkillsDialogOpen}
+              onEdit={openEditSkillsDialog}
             >
               <DataRows
                 data={[
@@ -168,7 +176,10 @@ export const General = (props: Props) => {
             </EditableDetailSectionCard>
           </Col>
           <Col span={24} lg={{ span: 16 }}>
-            <EditableDetailSectionCard title="Personal Info">
+            <EditableDetailSectionCard
+              title="Personal Info"
+              onEdit={openEditPersonalInfoDialog}
+            >
               <DataRows
                 data={[
                   {
@@ -195,8 +206,8 @@ export const General = (props: Props) => {
       </Space>
 
       <EditGeneralInfoModal
-        onClose={onEditGeneralInfoClose}
-        isOpen={isEditGeneralInfoOpen}
+        onClose={closeEditGeneralInfoDialog}
+        isOpen={isEditGeneralInfoDialogOpen}
         initialValues={{
           discordID: data.discordID,
           email: data.teamEmail || '',
@@ -210,13 +221,25 @@ export const General = (props: Props) => {
       />
 
       <EditSkillsModal
-        onClose={onEditSkillsDialogClose}
+        onClose={closeEditSkillsDialog}
         isOpen={isEditSkillsDialogOpen}
         initialValues={{
           chapter: data.chapter?.id,
           positions: (data.positions || []).map((p) => p.id || ''),
           seniority: data.seniority?.id || '',
           stacks: (data.stacks || []).map((s) => s.id || ''),
+        }}
+        onAfterSubmit={() => mutate([GET_PATHS.getEmployees, data.id])}
+      />
+
+      <EditPersonalInfoModal
+        onClose={closeEditPersonalInfoDialog}
+        isOpen={isEditPersonalInfoDialogOpen}
+        initialValues={{
+          dob: data.birthday ? moment(data.birthday) : moment(),
+          gender: data.gender || '',
+          address: data.address || '',
+          personalEmail: data.personalEmail || '',
         }}
         onAfterSubmit={() => mutate([GET_PATHS.getEmployees, data.id])}
       />
