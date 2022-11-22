@@ -14,9 +14,10 @@ import { ViewEmployeeData } from 'types/schema'
 interface AuthContextValues {
   isAuthenticated: boolean
   isAuthenticating: boolean
+  user?: ViewEmployeeData
   login: () => void
   logout: () => void
-  user?: ViewEmployeeData
+  revalidate: () => void
 }
 
 export const AUTH_TOKEN_KEY = 'fortress-token'
@@ -30,6 +31,7 @@ const AuthContextProvider = ({ children }: WithChildren) => {
   const [authToken, setAuthToken] = useState('')
   const [isAuthenticating, setIsAuthenticating] = useState<boolean>(true)
   const [user, setUser] = useState<ViewEmployeeData>()
+  const [fetchTrigger, setFetchTrigger] = useState(Date.now())
 
   const login = useGoogleLogin({
     flow: 'auth-code',
@@ -74,6 +76,8 @@ const AuthContextProvider = ({ children }: WithChildren) => {
     })
   }
 
+  const revalidate = () => setFetchTrigger(Date.now())
+
   useEffect(() => {
     if (!window.location.href.includes(ROUTES.LOGIN)) {
       window.localStorage.setItem(LOGIN_REDIRECTION_KEY, window.location.href)
@@ -97,7 +101,7 @@ const AuthContextProvider = ({ children }: WithChildren) => {
     } else {
       setIsAuthenticating(false)
     }
-  }, [])
+  }, [fetchTrigger]) // eslint-disable-line
 
   const isAuthenticated = Boolean(authToken) && !isAuthenticating
 
@@ -106,9 +110,10 @@ const AuthContextProvider = ({ children }: WithChildren) => {
       value={{
         isAuthenticated,
         isAuthenticating,
+        user,
         login,
         logout,
-        user,
+        revalidate,
       }}
     >
       {children}
