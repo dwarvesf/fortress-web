@@ -185,7 +185,7 @@ export const EditGeneralInfoModal = (props: Props) => {
                     ) || []
                   )
                 }}
-                swrKeys={[GET_PATHS.getAccountStatusMetadata, 'line-manager']}
+                swrKeys={[GET_PATHS.getEmployees, 'line-manager']}
                 placeholder="Select status"
                 customOptionRenderer={customOptionRenderer}
                 value={defaultLineManager}
