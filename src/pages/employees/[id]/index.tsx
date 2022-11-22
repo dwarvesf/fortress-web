@@ -17,7 +17,18 @@ const Default = () => {
   const employee = data?.data
 
   if (loading || !employee) {
-    return <Spin size="large" />
+    return (
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+        }}
+      >
+        <Spin size="large" />
+      </div>
+    )
   }
 
   return (

@@ -1,9 +1,11 @@
 import { notification, Select, SelectProps } from 'antd'
-import { DefaultOptionType } from 'antd/lib/select'
+import { DefaultOptionType as BaseDefaultOptionType } from 'antd/lib/select'
 import { useEffect, useState } from 'react'
 import { theme } from 'styles'
 import useSWR from 'swr'
 import { searchFilterOption } from 'utils/select'
+
+type DefaultOptionType = Omit<BaseDefaultOptionType, 'label'> & { label: any }
 
 interface Props extends SelectProps {
   optionGetter: () => Promise<DefaultOptionType[]>

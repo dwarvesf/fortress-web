@@ -54,12 +54,17 @@
   font-weight: 600;
 }
 
-.ant-form-item-required::after {
+.ant-form-item-label > label::after {
+  display: none;
+}
+
+.ant-form-item-label > .ant-form-item-required::after {
+  display: block;
   content: '*' !important;
   color: #e13f5e !important;
 }
 
-.ant-form-item-required::before {
+.ant-form-item-label > .ant-form-item-required::before {
   display: none !important;
 }
 
