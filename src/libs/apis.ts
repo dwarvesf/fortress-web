@@ -1,5 +1,6 @@
 import { EmployeeListFilter } from 'types/filters/EmployeeListFilter'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
+import { ProjectStaffListFilter } from 'types/filters/ProjectStaffListFilter'
 import {
   ViewAuthData,
   ViewProfileData,
@@ -13,6 +14,7 @@ import {
   PkgHandlerEmployeeCreateEmployeeInput,
   PkgHandlerProfileUpdateInfoInput,
   ViewProjectData,
+  ViewProjectMemberListResponse,
 } from 'types/schema'
 import qs from 'qs'
 import fetcher from './fetcher'
@@ -28,6 +30,7 @@ export const GET_PATHS = {
   getUsers: '/users',
   getEmployees: '/employees',
   getProjects: '/projects',
+  getProjectStaffList: (id: string) => `/projects/${id}/members`,
   getAccountStatusMetadata: '/metadata/account-statuses',
   getPositionMetadata: '/metadata/positions',
   getAccountRoleMetadata: '/metadata/account-roles',
@@ -130,6 +133,20 @@ class Client {
     return fetcher<Response<ViewProjectData>>(`${BASE_URL}/projects/${id}`, {
       headers: { ...this.privateHeaders },
     })
+  }
+
+  public getProjectStaffList(
+    projectId: string,
+    filter: ProjectStaffListFilter,
+  ) {
+    const queryString = qs.stringify(filter)
+
+    return fetcher<ViewProjectMemberListResponse & Meta>(
+      `${BASE_URL}/projects/${projectId}/members?${queryString}`,
+      {
+        headers: { ...this.privateHeaders },
+      },
+    )
   }
 
   public updateProjectStatus(id: string, status: string) {

@@ -22,23 +22,36 @@ const Default = () => {
   return (
     <>
       <PageHeader title={project.name || ''} />
-      <Tabs defaultActiveKey="1">
-        <Tabs.TabPane tab="General" key="1">
-          <General data={project} />
-        </Tabs.TabPane>
-        <Tabs.TabPane tab="Staff" key="2">
-          <Staff />
-        </Tabs.TabPane>
-        <Tabs.TabPane tab="Performance" key="3">
-          Performance
-        </Tabs.TabPane>
-        <Tabs.TabPane tab="Stakeholders" key="4">
-          Stakeholders
-        </Tabs.TabPane>
-        <Tabs.TabPane tab="Document" key="5">
-          Document
-        </Tabs.TabPane>
-      </Tabs>
+      <Tabs
+        defaultActiveKey="1"
+        items={[
+          {
+            key: '1',
+            label: 'General',
+            children: <General data={project} />,
+          },
+          {
+            key: '2',
+            label: 'Staff',
+            children: <Staff data={project} />,
+          },
+          {
+            key: '3',
+            label: 'Performance',
+            children: 'Performance',
+          },
+          {
+            key: '4',
+            label: 'Stakeholders',
+            children: 'Stakeholders',
+          },
+          {
+            key: '5',
+            label: 'Document',
+            children: 'Document',
+          },
+        ]}
+      />
     </>
   )
 }
