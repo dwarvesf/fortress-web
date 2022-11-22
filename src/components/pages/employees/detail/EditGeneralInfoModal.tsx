@@ -170,14 +170,14 @@ export const EditGeneralInfoModal = (props: Props) => {
                     data?.map(
                       (metaItem: {
                         id?: string
-                        fullName?: string
+                        displayName?: string
                         avatar?: string
                       }) => {
                         return {
                           value: metaItem.id,
                           label: {
                             id: metaItem.id,
-                            fullName: metaItem.fullName,
+                            displayName: metaItem.displayName,
                             avatar: metaItem.avatar,
                           },
                         }
