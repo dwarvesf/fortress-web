@@ -1,6 +1,6 @@
 import { UserOutlined } from '@ant-design/icons'
-import { Space, Col, Row, Avatar, Select, notification } from 'antd'
 import { useDisclosure } from '@dwarvesf/react-hooks'
+import { Space, Col, Row, Avatar, Select, notification } from 'antd'
 import { AvatarWithName } from 'components/common/AvatarWithName'
 import { DataRows } from 'components/common/DataRows'
 import { EditableDetailSectionCard } from 'components/common/EditableDetailSectionCard'
@@ -12,6 +12,7 @@ import { mutate } from 'swr'
 import { useState } from 'react'
 import { EmployeeStatus, employeeStatuses } from 'constants/status'
 import { EditGeneralInfoModal } from './EditGeneralInfoModal'
+import { EditSkillsModal } from './EditSkillsModal'
 
 interface Props {
   data: ViewEmployeeData
@@ -21,6 +22,11 @@ export const General = (props: Props) => {
   const { data } = props
 
   const [isLoading, setIsLoading] = useState(false)
+  const {
+    isOpen: isEditSkillsOpen,
+    onOpen: onEditSkillsOpen,
+    onClose: onEditSkillsClose,
+  } = useDisclosure()
 
   const onChangeStatus = async (value: string) => {
     try {
@@ -137,8 +143,8 @@ export const General = (props: Props) => {
               </Row>
             </EditableDetailSectionCard>
           </Col>
-          <Col span={24} lg={{ span: 16 }}>
-            <EditableDetailSectionCard title="Skills">
+          <Col lg={{ span: 16 }}>
+            <EditableDetailSectionCard title="Skills" onEdit={onEditSkillsOpen}>
               <DataRows
                 data={[
                   {
@@ -197,6 +203,12 @@ export const General = (props: Props) => {
           phone: data.phoneNumber || '',
         }}
         onAfterSubmit={() => mutate([GET_PATHS.getEmployees, data.id])}
+      />
+
+      <EditSkillsModal
+        onClose={onEditSkillsClose}
+        isOpen={isEditSkillsOpen}
+        onAfterSubmit={() => undefined}
       />
     </>
   )
