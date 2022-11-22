@@ -43,8 +43,7 @@ export const EmployeeForm = (props: Props) => {
       )
 
       notification.success({
-        message: 'Success',
-        description: 'Successfully created new employee!',
+        message: 'New employee successfully created!',
         btn: (
           <Button
             type="primary"
@@ -62,8 +61,7 @@ export const EmployeeForm = (props: Props) => {
       setTimeout(() => push(ROUTES.EMPLOYEES))
     } catch (error: any) {
       notification.error({
-        message: 'Error',
-        description: error?.message || 'Could not create new employee!',
+        message: error?.message || 'Could not create new employee!',
       })
     } finally {
       setIsSubmitting(false)

@@ -1,5 +1,5 @@
 import { UserOutlined } from '@ant-design/icons'
-import { Space, Col, Row, Avatar, Select } from 'antd'
+import { Space, Col, Row, Avatar, Select, notification } from 'antd'
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { AvatarWithName } from 'components/common/AvatarWithName'
 import { DataRows } from 'components/common/DataRows'
@@ -8,6 +8,10 @@ import { DATE_FORMAT } from 'constants/date'
 // import { useAuthContext } from 'context/auth'
 import { format } from 'date-fns'
 import { ViewEmployeeData } from 'types/schema'
+import { client, GET_PATHS } from 'libs/apis'
+import { mutate } from 'swr'
+import { useState } from 'react'
+import { EmployeeStatus, employeeStatuses } from 'constants/status'
 import { EditGeneralInfoModal } from './EditGeneralInfoModal'
 
 interface Props {
@@ -44,6 +48,26 @@ export const General = (props: Props) => {
     onClose: onEditGeneralInfoClose,
   } = useDisclosure()
 
+  const [isLoading, setIsLoading] = useState(false)
+
+  const onChangeStatus = async (value: string) => {
+    try {
+      setIsLoading(true)
+
+      await client.updateEmployeeStatus(data.id || '', value)
+
+      // Refetch user data
+      notification.success({ message: 'Employee status updated successfully!' })
+      mutate([GET_PATHS.getEmployees, data.id])
+    } catch (error: any) {
+      notification.error({
+        message: error?.message || 'Could not update employee status.',
+      })
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   return (
     <>
       <Space direction="vertical" size={24} style={{ width: '100%' }}>
@@ -66,26 +90,16 @@ export const General = (props: Props) => {
                       src={data.avatar}
                     />
                     <Select
+                      loading={isLoading}
                       style={{ width: '100%' }}
-                      value="onboarding"
-                      options={[
-                        {
-                          label: 'Onboarding',
-                          value: 'onboarding',
-                        },
-                        {
-                          label: 'Probation',
-                          value: 'probation',
-                        },
-                        {
-                          label: 'Active',
-                          value: 'active',
-                        },
-                        {
-                          label: 'On Leave',
-                          value: 'on-leave',
-                        },
-                      ]}
+                      defaultValue={data.status}
+                      onChange={onChangeStatus}
+                      options={Object.keys(employeeStatuses).map((key) => {
+                        return {
+                          label: employeeStatuses[key as EmployeeStatus],
+                          value: key,
+                        }
+                      })}
                     />
                   </Space>
                 </Col>

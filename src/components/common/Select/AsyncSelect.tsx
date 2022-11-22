@@ -41,8 +41,7 @@ export const AsyncSelect = (props: Props) => {
     if (error) {
       setIsLoading(false)
       notification.error({
-        message: 'Error',
-        description: error.message || "Couldn't fetch data!",
+        message: error.message || 'Could not fetch data!',
       })
     }
   }, [error, optionsData])

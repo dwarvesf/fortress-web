@@ -60,8 +60,7 @@ const AuthContextProvider = ({ children }: WithChildren) => {
         }
       } catch (error: any) {
         notification.error({
-          message: 'Error',
-          description: error.message || 'Could not login!',
+          message: error.message || 'Could not login!',
         })
       }
     },

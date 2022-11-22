@@ -208,10 +208,8 @@ class Client {
     id: string,
     data: PkgHandlerEmployeeUpdateGeneralInfoInput,
   ) {
-    const queryString = qs.stringify(data)
-
     return fetcher<Response<ViewUpdateGeneralInfoEmployeeData>>(
-      `${BASE_URL}/employees/${id}/general-info?${queryString}`,
+      `${BASE_URL}/employees/${id}/general-info`,
       {
         method: 'PUT',
         headers: {

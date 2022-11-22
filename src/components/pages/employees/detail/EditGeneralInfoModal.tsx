@@ -44,8 +44,7 @@ export const EditGeneralInfoModal = (props: Props) => {
       await client.updateEmployeeGeneralInfo(query.id as string, values)
 
       notification.success({
-        message: 'Success',
-        description: "Successfully updated employee's general info!",
+        message: "Employee's general info successfully updated!",
       })
 
       onClose()
@@ -53,9 +52,7 @@ export const EditGeneralInfoModal = (props: Props) => {
       onAfterSubmit()
     } catch (error: any) {
       notification.error({
-        message: 'Error',
-        description:
-          error?.message || "Could not update employee's general info!",
+        message: error?.message || "Could not update employee's general info!",
       })
     } finally {
       setIsSubmitting(false)
