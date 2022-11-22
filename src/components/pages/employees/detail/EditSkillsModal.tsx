@@ -115,7 +115,7 @@ export const EditSkillsModal = (props: Props) => {
                   return data?.map(transformMetadataToSelectOption) || []
                 }}
                 swrKeys={[GET_PATHS.getStackMetadata, 'edit-skills']}
-                placeholder="Select tech stacks"
+                placeholder="Select tech stack"
               />
             </Form.Item>
           </Col>
