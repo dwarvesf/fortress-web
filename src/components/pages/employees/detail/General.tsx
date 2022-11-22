@@ -14,7 +14,7 @@ import { EmployeeStatus, employeeStatuses } from 'constants/status'
 import moment from 'moment'
 import { EditGeneralInfoModal } from './EditGeneralInfoModal'
 import { EditSkillsModal } from './EditSkillsModal'
-import { EditPersonalInfoModal } from './EdiPersonalInfoModal'
+import { EditPersonalInfoModal } from './EditPersonalInfoModal'
 
 interface Props {
   data: ViewEmployeeData
@@ -45,20 +45,20 @@ export const General = (props: Props) => {
 
   const {
     isOpen: isEditGeneralInfoDialogOpen,
-    onOpen: onEditGeneralInfoDialogOpen,
-    onClose: onEditGeneralInfoDialogClose,
+    onOpen: openEditGeneralInfoDialog,
+    onClose: closeEditGeneralInfoDialog,
   } = useDisclosure()
 
   const {
     isOpen: isEditSkillsDialogOpen,
-    onOpen: onEditSkillsDialogOpen,
-    onClose: onEditSkillsDialogClose,
+    onOpen: openEditSkillsDialog,
+    onClose: closeEditSkillsDialog,
   } = useDisclosure()
 
   const {
     isOpen: isEditPersonalInfoDialogOpen,
-    onOpen: onEditPersonalInfoDialogOpen,
-    onClose: onEditPersonalInfoDialogClose,
+    onOpen: openEditPersonalInfoDialog,
+    onClose: closeEditPersonalInfoDialog,
   } = useDisclosure()
 
   return (
@@ -68,7 +68,7 @@ export const General = (props: Props) => {
           <Col span={24} lg={{ span: 16 }}>
             <EditableDetailSectionCard
               title="Profile"
-              onEdit={onEditGeneralInfoDialogOpen}
+              onEdit={openEditGeneralInfoDialog}
             >
               <Row gutter={24}>
                 <Col span={24} lg={{ span: 8 }}>
@@ -155,7 +155,7 @@ export const General = (props: Props) => {
           <Col span={24} lg={{ span: 16 }}>
             <EditableDetailSectionCard
               title="Skills"
-              onEdit={onEditSkillsDialogOpen}
+              onEdit={openEditSkillsDialog}
             >
               <DataRows
                 data={[
@@ -178,7 +178,7 @@ export const General = (props: Props) => {
           <Col span={24} lg={{ span: 16 }}>
             <EditableDetailSectionCard
               title="Personal Info"
-              onEdit={onEditPersonalInfoDialogOpen}
+              onEdit={openEditPersonalInfoDialog}
             >
               <DataRows
                 data={[
@@ -206,7 +206,7 @@ export const General = (props: Props) => {
       </Space>
 
       <EditGeneralInfoModal
-        onClose={onEditGeneralInfoDialogClose}
+        onClose={closeEditGeneralInfoDialog}
         isOpen={isEditGeneralInfoDialogOpen}
         initialValues={{
           discordID: data.discordID,
@@ -221,7 +221,7 @@ export const General = (props: Props) => {
       />
 
       <EditSkillsModal
-        onClose={onEditSkillsDialogClose}
+        onClose={closeEditSkillsDialog}
         isOpen={isEditSkillsDialogOpen}
         initialValues={{
           chapter: data.chapter?.id,
@@ -233,7 +233,7 @@ export const General = (props: Props) => {
       />
 
       <EditPersonalInfoModal
-        onClose={onEditPersonalInfoDialogClose}
+        onClose={closeEditPersonalInfoDialog}
         isOpen={isEditPersonalInfoDialogOpen}
         initialValues={{
           dob: data.birthday ? moment(data.birthday) : moment(),

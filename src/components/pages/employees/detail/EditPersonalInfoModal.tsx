@@ -104,7 +104,7 @@ export const EditPersonalInfoModal = (props: Props) => {
                 {
                   max: 200,
                   message:
-                    'Full name must be less than or equal to 200 characters',
+                    'Address must be less than or equal to 200 characters',
                 },
               ]}
             >
