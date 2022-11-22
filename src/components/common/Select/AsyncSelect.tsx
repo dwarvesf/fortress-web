@@ -8,8 +8,8 @@ import { searchFilterOption } from 'utils/select'
 type DefaultOptionType = Omit<BaseDefaultOptionType, 'label'> & { label: any }
 
 interface Props extends SelectProps {
-  optionGetter: () => Promise<DefaultOptionType[]>
   swrKeys: string[] | string
+  optionGetter: () => Promise<DefaultOptionType[]>
   customOptionRenderer?: (metaItem: any) => JSX.Element
 }
 
