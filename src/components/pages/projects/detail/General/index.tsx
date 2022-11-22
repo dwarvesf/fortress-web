@@ -12,6 +12,7 @@ import { client, GET_PATHS } from 'libs/apis'
 import { mutate } from 'swr'
 import { ViewProjectData } from 'types/schema'
 import { transformMetadataToSelectOption } from 'utils/select'
+import { EditProjectContactInfoModal } from './EditProjectContactInfoModal'
 import { EditProjectGeneralInfoModal } from './EditProjectGeneralInfoModal'
 import { MemberTable } from './MemberTable'
 
@@ -26,6 +27,12 @@ export const General = (props: Props) => {
     isOpen: isEditProjectGeneralInfoDialogOpen,
     onOpen: openEditProjectGeneralInfoDialog,
     onClose: closeEditProjectGeneralInfoDialog,
+  } = useDisclosure()
+
+  const {
+    isOpen: isEditProjectContactInfoDialogOpen,
+    onOpen: openEditProjectContactInfoDialog,
+    onClose: closeEditProjectContactInfoDialog,
   } = useDisclosure()
 
   const onChangeStatus = async (value: string) => {
@@ -107,7 +114,10 @@ export const General = (props: Props) => {
             </EditableDetailSectionCard>
           </Col>
           <Col lg={{ span: 16 }}>
-            <EditableDetailSectionCard title="Contact Info">
+            <EditableDetailSectionCard
+              title="Contact Info"
+              onEdit={openEditProjectContactInfoDialog}
+            >
               <DataRows
                 data={[
                   {
@@ -167,6 +177,16 @@ export const General = (props: Props) => {
           stacks: (data.stacks || []).map((stack) => stack.code || ''),
         }}
         onClose={closeEditProjectGeneralInfoDialog}
+        onAfterSubmit={() => mutate([GET_PATHS.getProjects, data.id])}
+      />
+      <EditProjectContactInfoModal
+        isOpen={isEditProjectContactInfoDialogOpen}
+        initialValues={{
+          ...data,
+          accountManager: data.accountManager?.employeeID,
+          deliveryManager: data.deliveryManager?.employeeID,
+        }}
+        onClose={closeEditProjectContactInfoDialog}
         onAfterSubmit={() => mutate([GET_PATHS.getProjects, data.id])}
       />
     </>
