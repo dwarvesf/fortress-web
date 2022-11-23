@@ -45,7 +45,7 @@ export const EmployeeForm = (props: Props) => {
             View employee detail
           </Button>
         ),
-        duration: 10,
+        duration: 5,
       })
 
       // Redirect to employee list page if create successfully

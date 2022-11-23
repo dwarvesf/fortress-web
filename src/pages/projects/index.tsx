@@ -18,9 +18,11 @@ import { useFilter } from 'hooks/useFilter'
 import debounce from 'lodash.debounce'
 import { transformMetadataToFilterOption } from 'utils/select'
 import { statusColors } from 'constants/colors'
+import { useRouter } from 'next/router'
 
 const Default = () => {
   const { filter, setFilter } = useFilter(new ProjectListFilter())
+  const { push } = useRouter()
   const { data, loading } = useFetchWithCache(
     [GET_PATHS.getProjects, filter],
     () => client.getProjects(filter),
@@ -44,6 +46,7 @@ const Default = () => {
         render: (value) => (
           <ProjectLink id={value.id}>{value.name}</ProjectLink>
         ),
+        fixed: 'left',
       },
       {
         title: 'Status',
@@ -116,6 +119,7 @@ const Default = () => {
             </Col>
           </Row>
         ),
+        fixed: 'right',
       },
     ] as ColumnsType<ViewProjectData>
   }, [JSON.stringify({ projectStatuses, setFilter })]) // eslint-disable-line
@@ -142,7 +146,12 @@ const Default = () => {
             <Col>
               <Link href={ROUTES.ADD_PROJECT}>
                 <a>
-                  <Button type="primary">Add Project</Button>
+                  <Button
+                    type="primary"
+                    onClick={() => push(ROUTES.CREATE_PROJECT)}
+                  >
+                    Add Project
+                  </Button>
                 </a>
               </Link>
             </Col>

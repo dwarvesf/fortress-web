@@ -74,7 +74,7 @@
 
 .ant-table-tbody > tr.ant-table-row:hover > td,
 .ant-table-tbody > tr > td.ant-table-cell-row-hover {
-  background: rgb(225 63 94 / 5%) !important;
+  background: rgb(254 245 247) !important;
 }
 
 .ant-tabs-nav-list {

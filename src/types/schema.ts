@@ -80,6 +80,13 @@ export interface GithubComDwarvesfFortressApiPkgHandlerProjectCreateProjectInput
   type?: string
 }
 
+export interface GithubComDwarvesfFortressApiPkgHandlerProjectUpdateContactInfoInput {
+  accountManagerID: string
+  clientEmail?: string
+  deliveryManagerID?: string
+  projectEmail?: string
+}
+
 export interface GithubComDwarvesfFortressApiPkgHandlerProjectUpdateGeneralInfoInput {
   countryID: string
   name: string
@@ -233,6 +240,13 @@ export interface PkgHandlerProjectCreateProjectInput {
   type?: string
 }
 
+export interface PkgHandlerProjectUpdateContactInfoInput {
+  accountManagerID: string
+  clientEmail?: string
+  deliveryManagerID?: string
+  projectEmail?: string
+}
+
 export interface PkgHandlerProjectUpdateGeneralInfoInput {
   countryID: string
   name: string
@@ -279,6 +293,14 @@ export interface ViewBasicCountryInfo {
   code?: string
   id?: string
   name?: string
+}
+
+export interface ViewBasicProjectHeadInfo {
+  avatar?: string
+  displayName?: string
+  employeeID?: string
+  fullName?: string
+  position?: string
 }
 
 export interface ViewBasisEmployeeInfo {
@@ -466,6 +488,7 @@ export interface ViewProjectMember {
   leftDate?: string
   position?: string
   positions?: ViewPosition[]
+  projectMemberID?: string
   projectSlotID?: string
   rate?: number
   seniority?: ModelSeniority
@@ -549,6 +572,16 @@ export interface ViewUpdateProfileInfoData {
 
 export interface ViewUpdateProfileInfoResponse {
   data?: ViewUpdateProfileInfoData
+}
+
+export interface ViewUpdateProjectContactInfo {
+  clientEmail?: string
+  projectEmail?: string
+  projectHead?: ViewBasicProjectHeadInfo[]
+}
+
+export interface ViewUpdateProjectContactInfoResponse {
+  data?: ViewUpdateProjectContactInfo
 }
 
 export interface ViewUpdateProjectGeneralInfo {
