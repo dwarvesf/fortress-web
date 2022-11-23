@@ -3,6 +3,7 @@ import { PageHeader } from 'components/common/PageHeader'
 import { General } from 'components/pages/projects/detail/General'
 import { Staff } from 'components/pages/projects/detail/Staff'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
+import { useTabWithQuery } from 'hooks/useTabWithQuery'
 import { client, GET_PATHS } from 'libs/apis'
 import { useRouter } from 'next/router'
 
@@ -10,6 +11,9 @@ const Default = () => {
   const {
     query: { id },
   } = useRouter()
+
+  const { tabKey = '1', setTabKey } = useTabWithQuery()
+
   const { data, loading } = useFetchWithCache([GET_PATHS.getProjects, id], () =>
     client.getProject(id as string),
   )
@@ -23,7 +27,8 @@ const Default = () => {
     <>
       <PageHeader title={project.name || ''} />
       <Tabs
-        defaultActiveKey="1"
+        defaultActiveKey={tabKey}
+        onTabClick={setTabKey}
         items={[
           {
             key: '1',

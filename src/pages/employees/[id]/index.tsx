@@ -3,6 +3,7 @@ import { PageHeader } from 'components/common/PageHeader'
 import { PageSpinner } from 'components/common/PageSpinner'
 import { General } from 'components/pages/employees/detail/General'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
+import { useTabWithQuery } from 'hooks/useTabWithQuery'
 import { client, GET_PATHS } from 'libs/apis'
 import { useRouter } from 'next/router'
 
@@ -10,6 +11,8 @@ const Default = () => {
   const {
     query: { id },
   } = useRouter()
+
+  const { tabKey = '1', setTabKey } = useTabWithQuery()
 
   const { data, loading } = useFetchWithCache(
     [GET_PATHS.getEmployees, id],
@@ -25,7 +28,8 @@ const Default = () => {
     <>
       <PageHeader title={employee?.displayName || ''} />
       <Tabs
-        defaultActiveKey="1"
+        defaultActiveKey={tabKey}
+        onTabClick={setTabKey}
         items={[
           {
             key: '1',

@@ -1,7 +1,8 @@
+import { Space, Tag } from 'antd'
 import Table, { ColumnsType } from 'antd/lib/table'
 import { AvatarWithName } from 'components/common/AvatarWithName'
 import { useMemo } from 'react'
-import { ViewPosition, ViewProjectMember } from 'types/schema'
+import { ModelPosition, ViewPosition, ViewProjectMember } from 'types/schema'
 
 export const MemberTable = ({ data }: { data: ViewProjectMember[] }) => {
   const columns = useMemo(() => {
@@ -15,8 +16,13 @@ export const MemberTable = ({ data }: { data: ViewProjectMember[] }) => {
         title: 'Positions',
         key: 'positions',
         dataIndex: 'positions',
-        render: (value: ViewPosition[]) =>
-          value?.map((position) => position.name).join(', '),
+        render: (value: ViewPosition[]) => (
+          <Space size={[0, 8]}>
+            {value.map((position: ModelPosition) => (
+              <Tag key={position.id}>{position.name}</Tag>
+            ))}
+          </Space>
+        ),
       },
       {
         title: 'Seniority',

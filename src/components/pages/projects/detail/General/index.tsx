@@ -174,7 +174,7 @@ export const General = (props: Props) => {
           startDate: data.startDate
             ? format(new Date(data.startDate), SERVER_DATE_FORMAT)
             : undefined,
-          stacks: (data.stacks || []).map((stack) => stack.code || ''),
+          stacks: (data.stacks || []).map((stack) => stack.id || ''),
         }}
         onClose={closeEditProjectGeneralInfoDialog}
         onAfterSubmit={() => mutate([GET_PATHS.getProjects, data.id])}

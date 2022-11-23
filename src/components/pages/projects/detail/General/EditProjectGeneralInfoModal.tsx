@@ -52,6 +52,7 @@ export const EditProjectGeneralInfoModal = (props: Props) => {
       onOk={form.submit}
       okButtonProps={{ loading: isSubmitting }}
       destroyOnClose
+      title="Edit Project's General Info"
     >
       <Form form={form} onFinish={onSubmit} initialValues={initialValues}>
         <Space direction="vertical" style={{ width: '100%' }}>
@@ -88,6 +89,7 @@ export const EditProjectGeneralInfoModal = (props: Props) => {
           </Form.Item>
           <Form.Item label="Stacks" name="stacks">
             <AsyncSelect
+              mode="multiple"
               placeholder="Select project's stacks"
               swrKeys={[GET_PATHS.getStackMetadata]}
               optionGetter={async () =>
