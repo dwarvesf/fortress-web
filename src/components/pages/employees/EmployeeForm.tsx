@@ -1,7 +1,6 @@
-import { Form, Row, Col, Input, Button, notification, Tag, Select } from 'antd'
-import { DefaultOptionType } from 'antd/lib/select'
+import { Form, Row, Col, Input, Button, notification } from 'antd'
 import { AsyncSelect } from 'components/common/Select'
-import { statusColors } from 'constants/colors'
+import { renderStatusOption } from 'components/common/Select/renderers/statusOption'
 import { ROUTES } from 'constants/routes'
 import { employeeStatuses } from 'constants/status'
 import { client, GET_PATHS } from 'libs/apis'
@@ -11,18 +10,10 @@ import { useState, useEffect } from 'react'
 import { PkgHandlerEmployeeCreateEmployeeInput } from 'types/schema'
 import { transformMetadataToSelectOption } from 'utils/select'
 
-const { Option } = Select
-
 interface Props {
   initialValues?: CreateEmployeeFormValues
   isEditing?: boolean
 }
-
-const customOptionRenderer = (option: DefaultOptionType) => (
-  <Option key={option.value} value={option.value} label={option.label}>
-    <Tag color={statusColors[option.value!]}>{option.label || '-'}</Tag>
-  </Option>
-)
 
 export const EmployeeForm = (props: Props) => {
   const { initialValues, isEditing = false } = props
@@ -156,7 +147,7 @@ export const EmployeeForm = (props: Props) => {
               }
               swrKeys={GET_PATHS.getAccountStatusMetadata}
               placeholder="Select status"
-              customOptionRenderer={customOptionRenderer}
+              customOptionRenderer={renderStatusOption}
             />
           </Form.Item>
         </Col>

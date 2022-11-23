@@ -56,9 +56,14 @@ const Default = () => {
             text: <Tag color={statusColors[value]}>{text}</Tag>,
             value,
           })),
-        render: (value) => (
-          <Tag color={statusColors[value]}>{capitalizeFirstLetter(value)}</Tag>
-        ),
+        render: (value) =>
+          value ? (
+            <Tag color={statusColors[value]}>
+              {capitalizeFirstLetter(value)}
+            </Tag>
+          ) : (
+            '-'
+          ),
       },
       {
         title: 'Lead',

@@ -52,6 +52,7 @@ export const EditProfileInfoModal = (props: Props) => {
       onOk={form.submit}
       okButtonProps={{ loading: isSubmitting }}
       destroyOnClose
+      title="Edit Profile"
     >
       <Form form={form} onFinish={onSubmit} initialValues={initialValues}>
         <Row gutter={24}>

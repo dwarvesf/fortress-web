@@ -54,9 +54,9 @@ export const AsyncSelect = (props: Props) => {
       disabled={isLoading}
       showSearch
       showArrow
-      maxTagCount={2}
       options={typeof customOptionRenderer === 'function' ? undefined : options}
       filterOption={searchFilterOption}
+      maxTagCount="responsive"
       {...rest}
     >
       {typeof customOptionRenderer === 'function' &&

@@ -1,40 +1,56 @@
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
-import { Col, Row, Table } from 'antd'
+import { Space, Table, Tag } from 'antd'
 import { ColumnsType } from 'antd/lib/table'
 import { AvatarWithName } from 'components/common/AvatarWithName'
-import { Button } from 'components/common/Button'
 import { DATE_FORMAT } from 'constants/date'
 import { format } from 'date-fns'
 import { useMemo } from 'react'
-import { ViewPosition, ViewProjectMember } from 'types/schema'
+import {
+  ModelPosition,
+  ModelSeniority,
+  ViewPosition,
+  ViewProjectMember,
+} from 'types/schema'
 import { capitalizeFirstLetter } from 'utils/string'
+import { Actions } from './Actions'
 
 export const StaffTable = ({
   data,
   isLoading,
+  onAfterAction,
 }: {
   data: ViewProjectMember[]
   isLoading: boolean
+  onAfterAction: () => void
 }) => {
   const columns = useMemo(() => {
     return [
       {
         title: 'Name',
         key: 'name',
-        render: (value) => <AvatarWithName user={value} />,
+        render: (value) => (
+          <Space>
+            <AvatarWithName user={value} />
+            {value.isLead && <Tag color="red">Lead</Tag>}
+          </Space>
+        ),
       },
       {
         title: 'Positions',
         key: 'positions',
         dataIndex: 'positions',
-        render: (value: ViewPosition[]) =>
-          value?.map((position) => position.name).join(', '),
+        render: (value: ViewPosition[]) => (
+          <Space size={[0, 8]}>
+            {value.map((position: ModelPosition) => (
+              <Tag key={position.id}>{position.name}</Tag>
+            ))}
+          </Space>
+        ),
       },
       {
         title: 'Seniority',
         key: 'seniority',
         dataIndex: 'seniority',
-        render: (value) => (value ? capitalizeFirstLetter(value) : '-'),
+        render: (value: ModelSeniority) => value?.name || '-',
       },
       {
         title: 'Deployment Type',
@@ -56,27 +72,12 @@ export const StaffTable = ({
       },
       {
         key: 'action',
-        render: () => (
-          <Row justify="end" gutter={[8, 8]}>
-            <Col>
-              <Button
-                type="text-primary"
-                size="small"
-                icon={<EditOutlined />}
-              />
-            </Col>
-            <Col>
-              <Button
-                type="text-primary"
-                size="small"
-                icon={<DeleteOutlined />}
-              />
-            </Col>
-          </Row>
+        render: (value) => (
+          <Actions data={value} onAfterAction={onAfterAction} />
         ),
       },
     ] as ColumnsType<ViewProjectMember>
-  }, [])
+  }, [onAfterAction])
 
   return (
     <Table

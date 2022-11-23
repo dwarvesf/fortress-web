@@ -1,8 +1,8 @@
 import { useAsyncEffect } from '@dwarvesf/react-hooks'
 import { Col, Form, Input, Modal, notification, Row, Select } from 'antd'
-import { DefaultOptionType } from 'antd/lib/select'
 import { AvatarWithName } from 'components/common/AvatarWithName'
 import { AsyncSelect } from 'components/common/Select'
+import { renderEmployeeOption } from 'components/common/Select/renderers/employeeOption'
 import { GET_PATHS, client } from 'libs/apis'
 import { useRouter } from 'next/router'
 import { ReactNode, useState } from 'react'
@@ -16,18 +16,6 @@ interface Props {
   onClose: () => void
   onAfterSubmit: () => void
 }
-
-const customOptionRenderer = (
-  option: Omit<DefaultOptionType, 'label'> & { label: any },
-) => (
-  <Option
-    key={option.label.id}
-    value={option.label.id}
-    label={option.label.displayName}
-  >
-    <AvatarWithName isLink={false} user={option.label} />
-  </Option>
-)
 
 export const EditGeneralInfoModal = (props: Props) => {
   const { isOpen, initialValues, onClose, onAfterSubmit } = props
@@ -86,6 +74,7 @@ export const EditGeneralInfoModal = (props: Props) => {
       onOk={form.submit}
       okButtonProps={{ loading: isSubmitting }}
       destroyOnClose
+      title="Edit General Info"
     >
       <Form form={form} onFinish={onSubmit} initialValues={initialValues}>
         <Row gutter={24}>
@@ -187,7 +176,7 @@ export const EditGeneralInfoModal = (props: Props) => {
                 }}
                 swrKeys={[GET_PATHS.getEmployees, 'line-manager']}
                 placeholder="Select status"
-                customOptionRenderer={customOptionRenderer}
+                customOptionRenderer={renderEmployeeOption}
                 value={defaultLineManager}
               />
             </Form.Item>

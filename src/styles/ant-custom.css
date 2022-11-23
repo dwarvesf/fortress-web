@@ -112,3 +112,7 @@
 .ant-input[type='date'] {
   background: transparent;
 }
+
+.ant-modal-title {
+  font-weight: bold !important;
+}

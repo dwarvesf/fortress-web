@@ -1,25 +1,10 @@
-import { Form, Input, Modal, notification, Space, Select } from 'antd'
+import { Form, Input, Modal, notification, Space } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
 import { client, GET_PATHS } from 'libs/apis'
 import { useState } from 'react'
 import { ViewProjectData } from 'types/schema'
 import { AsyncSelect } from 'components/common/Select'
-import { DefaultOptionType } from 'antd/lib/select'
-import { AvatarWithName } from 'components/common/AvatarWithName'
-
-const { Option } = Select
-
-const customOptionRenderer = (
-  option: Omit<DefaultOptionType, 'label'> & { label: any },
-) => (
-  <Option
-    key={option.label.id}
-    value={option.label.id}
-    label={option.label.displayName}
-  >
-    <AvatarWithName isLink={false} user={option.label} />
-  </Option>
-)
+import { renderEmployeeOption } from 'components/common/Select/renderers/employeeOption'
 
 type ProjectContactInfoFormValues = Pick<
   ViewProjectData,
@@ -90,6 +75,7 @@ export const EditProjectContactInfoModal = (props: Props) => {
       onOk={form.submit}
       okButtonProps={{ loading: isSubmitting }}
       destroyOnClose
+      title="Edit Project's Contact Info"
     >
       <Form form={form} onFinish={onSubmit} initialValues={initialValues}>
         <Space direction="vertical" style={{ width: '100%' }}>
@@ -117,7 +103,7 @@ export const EditProjectContactInfoModal = (props: Props) => {
               placeholder="Select project's account manager"
               swrKeys={[GET_PATHS.getEmployees, 'account-manager']}
               optionGetter={employeeOptionGetter}
-              customOptionRenderer={customOptionRenderer}
+              customOptionRenderer={renderEmployeeOption}
             />
           </Form.Item>
           <Form.Item label="Delivery manager" name="deliveryManager">
@@ -125,7 +111,7 @@ export const EditProjectContactInfoModal = (props: Props) => {
               placeholder="Select project's delivery manager"
               swrKeys={[GET_PATHS.getEmployees, 'delivery-manager']}
               optionGetter={employeeOptionGetter}
-              customOptionRenderer={customOptionRenderer}
+              customOptionRenderer={renderEmployeeOption}
             />
           </Form.Item>
         </Space>

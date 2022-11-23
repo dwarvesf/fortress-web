@@ -160,7 +160,7 @@ export const General = (props: Props) => {
               <DataRows
                 data={[
                   {
-                    label: 'Roles',
+                    label: 'Positions',
                     value: data.positions
                       ?.map((position) => position.name)
                       .join(', '),

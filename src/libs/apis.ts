@@ -23,6 +23,9 @@ import {
   ViewChapterResponse,
   PkgHandlerEmployeeUpdatePersonalInfoInput,
   ViewUpdatePersonalEmployeeResponse,
+  ViewProjectMember,
+  GithubComDwarvesfFortressApiPkgHandlerProjectUpdateMemberInput,
+  GithubComDwarvesfFortressApiPkgHandlerProjectAssignMemberInput,
 } from 'types/schema'
 import qs from 'qs'
 import fetcher from './fetcher'
@@ -269,6 +272,38 @@ class Client {
   ) {
     return fetcher<ViewUpdatePersonalEmployeeResponse>(
       `${BASE_URL}/employees/${id}/personal-info`,
+      {
+        method: 'PUT',
+        headers: {
+          ...this.privateHeaders,
+        },
+        body: JSON.stringify(data),
+      },
+    )
+  }
+
+  public createProjectMember(
+    projectId: string,
+    data: Partial<GithubComDwarvesfFortressApiPkgHandlerProjectAssignMemberInput>,
+  ) {
+    return fetcher<Response<ViewProjectMember>>(
+      `${BASE_URL}/projects/${projectId}/members`,
+      {
+        method: 'POST',
+        headers: {
+          ...this.privateHeaders,
+        },
+        body: JSON.stringify(data),
+      },
+    )
+  }
+
+  public updateProjectMember(
+    projectId: string,
+    data: Partial<GithubComDwarvesfFortressApiPkgHandlerProjectUpdateMemberInput>,
+  ) {
+    return fetcher<Response<ViewProjectMember>>(
+      `${BASE_URL}/projects/${projectId}/members`,
       {
         method: 'PUT',
         headers: {

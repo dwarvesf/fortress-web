@@ -69,13 +69,22 @@ export interface GithubComDwarvesfFortressApiPkgHandlerProjectAssignMemberInput 
 
 export interface GithubComDwarvesfFortressApiPkgHandlerProjectCreateProjectInput {
   accountManagerID: string
+  clientEmail?: string
   countryID: string
   deliveryManagerID?: string
   members?: GithubComDwarvesfFortressApiPkgHandlerProjectAssignMemberInput[]
   name: string
+  projectEmail?: string
   startDate?: string
   status: string
   type?: string
+}
+
+export interface GithubComDwarvesfFortressApiPkgHandlerProjectUpdateGeneralInfoInput {
+  countryID: string
+  name: string
+  stacks?: string[]
+  startDate?: string
 }
 
 export interface GithubComDwarvesfFortressApiPkgHandlerProjectUpdateMemberInput {
@@ -213,13 +222,22 @@ export interface PkgHandlerProjectAssignMemberInput {
 
 export interface PkgHandlerProjectCreateProjectInput {
   accountManagerID: string
+  clientEmail?: string
   countryID: string
   deliveryManagerID?: string
   members?: PkgHandlerProjectAssignMemberInput[]
   name: string
+  projectEmail?: string
   startDate?: string
   status: string
   type?: string
+}
+
+export interface PkgHandlerProjectUpdateGeneralInfoInput {
+  countryID: string
+  name: string
+  stacks?: string[]
+  startDate?: string
 }
 
 export interface PkgHandlerProjectUpdateMemberInput {
@@ -255,6 +273,12 @@ export interface ViewApiError {
 export interface ViewAuthData {
   accessToken?: string
   employee?: ViewEmployeeData
+}
+
+export interface ViewBasicCountryInfo {
+  code?: string
+  id?: string
+  name?: string
 }
 
 export interface ViewBasisEmployeeInfo {
@@ -294,12 +318,15 @@ export interface ViewCreateMemberDataResponse {
 
 export interface ViewCreateProjectData {
   accountManager?: ViewProjectHead
+  clientEmail?: string
+  country?: ViewBasicCountryInfo
   createdAt?: string
   deletedAt?: GormDeletedAt
   deliveryManager?: ViewProjectHead
   id?: string
   members?: ViewCreateMemberData[]
   name?: string
+  projectEmail?: string
   startDate?: string
   status?: string
   type?: string
@@ -397,7 +424,7 @@ export interface ViewProfileDataResponse {
 export interface ViewProjectData {
   accountManager?: ViewProjectHead
   clientEmail?: string
-  country?: string
+  country?: ViewBasicCountryInfo
   createdAt?: string
   deletedAt?: GormDeletedAt
   deliveryManager?: ViewProjectHead
@@ -430,6 +457,7 @@ export interface ViewProjectListDataResponse {
 export interface ViewProjectMember {
   avatar?: string
   deploymentType?: string
+  discount?: number
   displayName?: string
   employeeID?: string
   fullName?: string
@@ -439,7 +467,8 @@ export interface ViewProjectMember {
   position?: string
   positions?: ViewPosition[]
   projectSlotID?: string
-  seniority?: string
+  rate?: number
+  seniority?: ModelSeniority
   status?: string
 }
 
@@ -520,6 +549,17 @@ export interface ViewUpdateProfileInfoData {
 
 export interface ViewUpdateProfileInfoResponse {
   data?: ViewUpdateProfileInfoData
+}
+
+export interface ViewUpdateProjectGeneralInfo {
+  country?: ViewBasicCountryInfo
+  name?: string
+  stacks?: ModelStack[]
+  startDate?: string
+}
+
+export interface ViewUpdateProjectGeneralInfoResponse {
+  data?: ViewUpdateProjectGeneralInfo
 }
 
 export interface ViewUpdateProjectStatusResponse {
