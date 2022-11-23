@@ -141,7 +141,6 @@ const CreateNewProjectPage = () => {
                       const { data } = await client.getEmployees({
                         page: 1,
                         size: 1000,
-                        // workingStatus: ['contractor'],
                         preload: false,
                       })
                       return (

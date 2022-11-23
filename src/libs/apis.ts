@@ -27,6 +27,7 @@ import {
   GithubComDwarvesfFortressApiPkgHandlerProjectUpdateMemberInput,
   GithubComDwarvesfFortressApiPkgHandlerProjectAssignMemberInput,
   PkgHandlerProjectCreateProjectInput,
+  ViewCreateProjectData,
 } from 'types/schema'
 import qs from 'qs'
 import fetcher from './fetcher'
@@ -284,7 +285,7 @@ class Client {
   }
 
   public createNewProject(data: PkgHandlerProjectCreateProjectInput) {
-    return fetcher<ViewUpdatePersonalEmployeeResponse>(`${BASE_URL}/projects`, {
+    return fetcher<Response<ViewCreateProjectData>>(`${BASE_URL}/projects`, {
       method: 'POST',
       headers: {
         ...this.privateHeaders,
