@@ -3,6 +3,7 @@ import Table, { ColumnsType } from 'antd/lib/table'
 import { AvatarWithName } from 'components/common/AvatarWithName'
 import { useMemo } from 'react'
 import { ModelPosition, ViewPosition, ViewProjectMember } from 'types/schema'
+import { capitalizeFirstLetter } from 'utils/string'
 
 export const MemberTable = ({ data }: { data: ViewProjectMember[] }) => {
   const columns = useMemo(() => {
@@ -28,11 +29,13 @@ export const MemberTable = ({ data }: { data: ViewProjectMember[] }) => {
         title: 'Seniority',
         key: 'seniority',
         dataIndex: 'seniority',
+        render: (value) => value?.name || '-',
       },
       {
         title: 'Deployment Type',
         key: 'deploymentType',
         dataIndex: 'deploymentType',
+        render: (value) => capitalizeFirstLetter(value),
       },
     ] as ColumnsType<ViewProjectMember>
   }, [])
