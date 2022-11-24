@@ -7,6 +7,7 @@ import { GET_PATHS, client } from 'libs/apis'
 import { useRouter } from 'next/router'
 import { ReactNode, useState } from 'react'
 import { PkgHandlerEmployeeUpdateGeneralInfoInput } from 'types/schema'
+import { transformEmployeeDataToSelectOption } from 'utils/select'
 
 const { Option } = Select
 
@@ -155,27 +156,10 @@ export const EditGeneralInfoModal = (props: Props) => {
                     size: 1000,
                     preload: false,
                   })
-                  return (
-                    data?.map(
-                      (metaItem: {
-                        id?: string
-                        displayName?: string
-                        avatar?: string
-                      }) => {
-                        return {
-                          value: metaItem.id,
-                          label: {
-                            id: metaItem.id,
-                            displayName: metaItem.displayName,
-                            avatar: metaItem.avatar,
-                          },
-                        }
-                      },
-                    ) || []
-                  )
+                  return (data || []).map(transformEmployeeDataToSelectOption)
                 }}
                 swrKeys={[GET_PATHS.getEmployees, 'line-manager']}
-                placeholder="Select status"
+                placeholder="Select line manager"
                 customOptionRenderer={renderEmployeeOption}
                 value={defaultLineManager}
               />

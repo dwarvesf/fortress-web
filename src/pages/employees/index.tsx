@@ -28,6 +28,7 @@ const Default = () => {
       {
         title: 'Employee',
         render: (value) => <AvatarWithName user={value} />,
+        fixed: 'left',
       },
       {
         title: 'Discord',
@@ -133,6 +134,7 @@ const Default = () => {
             </Col>
           </Row>
         ),
+        fixed: 'right',
       },
     ] as ColumnsType<ViewEmployeeData>
   }, [])

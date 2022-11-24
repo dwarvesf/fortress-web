@@ -21,6 +21,7 @@ import { statusColors } from 'constants/colors'
 
 const Default = () => {
   const { filter, setFilter } = useFilter(new ProjectListFilter())
+
   const { data, loading } = useFetchWithCache(
     [GET_PATHS.getProjects, filter],
     () => client.getProjects(filter),
@@ -44,6 +45,7 @@ const Default = () => {
         render: (value) => (
           <ProjectLink id={value.id}>{value.name}</ProjectLink>
         ),
+        fixed: 'left',
       },
       {
         title: 'Status',
@@ -116,6 +118,7 @@ const Default = () => {
             </Col>
           </Row>
         ),
+        fixed: 'right',
       },
     ] as ColumnsType<ViewProjectData>
   }, [JSON.stringify({ projectStatuses, setFilter })]) // eslint-disable-line

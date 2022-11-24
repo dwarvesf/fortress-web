@@ -53,7 +53,7 @@ export const General = (props: Props) => {
     <>
       <Space direction="vertical" size={24} style={{ width: '100%' }}>
         <Row gutter={[0, 24]}>
-          <Col lg={{ span: 16 }}>
+          <Col span={24} lg={{ span: 16 }}>
             <EditableDetailSectionCard
               title="Overview"
               onEdit={openEditProjectGeneralInfoDialog}
@@ -100,7 +100,7 @@ export const General = (props: Props) => {
                           : '',
                       },
                       { label: 'Industry', value: data.industry },
-                      { label: 'Country', value: data.country },
+                      { label: 'Country', value: data.country?.name || '-' },
                       {
                         label: 'Stack',
                         value: (data.stacks || [])
@@ -113,7 +113,7 @@ export const General = (props: Props) => {
               </Row>
             </EditableDetailSectionCard>
           </Col>
-          <Col lg={{ span: 16 }}>
+          <Col span={24} lg={{ span: 16 }}>
             <EditableDetailSectionCard
               title="Contact Info"
               onEdit={openEditProjectContactInfoDialog}
@@ -160,7 +160,7 @@ export const General = (props: Props) => {
               />
             </EditableDetailSectionCard>
           </Col>
-          <Col lg={{ span: 16 }}>
+          <Col span={24} lg={{ span: 16 }}>
             <Card title="Members" bodyStyle={{ padding: '1px 0 0' }}>
               <MemberTable data={data.members || []} />
             </Card>

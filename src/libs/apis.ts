@@ -26,6 +26,8 @@ import {
   ViewProjectMember,
   GithubComDwarvesfFortressApiPkgHandlerProjectUpdateMemberInput,
   GithubComDwarvesfFortressApiPkgHandlerProjectAssignMemberInput,
+  PkgHandlerProjectCreateProjectInput,
+  ViewCreateProjectData,
 } from 'types/schema'
 import qs from 'qs'
 import fetcher from './fetcher'
@@ -280,6 +282,16 @@ class Client {
         body: JSON.stringify(data),
       },
     )
+  }
+
+  public createNewProject(data: PkgHandlerProjectCreateProjectInput) {
+    return fetcher<Response<ViewCreateProjectData>>(`${BASE_URL}/projects`, {
+      method: 'POST',
+      headers: {
+        ...this.privateHeaders,
+      },
+      body: JSON.stringify(data),
+    })
   }
 
   public createProjectMember(
