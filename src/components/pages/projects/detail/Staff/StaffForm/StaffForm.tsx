@@ -2,7 +2,10 @@ import { Checkbox, Col, Form, Input, Row, Select } from 'antd'
 import { client, GET_PATHS } from 'libs/apis'
 import { GithubComDwarvesfFortressApiPkgHandlerProjectAssignMemberInput } from 'types/schema'
 import { AsyncSelect } from 'components/common/Select'
-import { transformMetadataToSelectOption } from 'utils/select'
+import {
+  transformEmployeeDataToSelectOption,
+  transformMetadataToSelectOption,
+} from 'utils/select'
 import { DeploymentType, deploymentTypes } from 'constants/deploymentTypes'
 import { ProjectStaffStatus, projectStaffStatuses } from 'constants/status'
 import { renderEmployeeOption } from 'components/common/Select/renderers/employeeOption'
@@ -49,24 +52,7 @@ export const StaffForm = (props: Props) => {
                   workingStatus: 'full-time',
                   preload: false,
                 })
-                return (
-                  data?.map(
-                    (metaItem: {
-                      id?: string
-                      displayName?: string
-                      avatar?: string
-                    }) => {
-                      return {
-                        value: metaItem.id,
-                        label: {
-                          id: metaItem.id,
-                          displayName: metaItem.displayName,
-                          avatar: metaItem.avatar,
-                        },
-                      }
-                    },
-                  ) || []
-                )
+                return (data || []).map(transformEmployeeDataToSelectOption)
               }}
               customOptionRenderer={renderEmployeeOption}
             />

@@ -1,4 +1,5 @@
 import { DefaultOptionType } from 'antd/lib/select'
+import { ViewEmployeeData } from 'types/schema'
 
 export function transformMetadataToSelectOption(metaItem: {
   id?: string
@@ -13,6 +14,17 @@ export function transformMetadataToFilterOption(metaItem: {
   name?: string
 }) {
   return { text: metaItem.name, value: metaItem.code }
+}
+
+export function transformEmployeeDataToSelectOption(
+  metaItem: ViewEmployeeData,
+) {
+  const { id } = metaItem
+
+  return {
+    value: id,
+    label: metaItem,
+  }
 }
 
 export const searchFilterOption = (

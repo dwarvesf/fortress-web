@@ -13,10 +13,7 @@ import { AsyncSelect } from 'components/common/Select'
 import { renderEmployeeOption } from 'components/common/Select/renderers/employeeOption'
 import { renderStatusOption } from 'components/common/Select/renderers/statusOption'
 import { PageHeader } from 'components/common/PageHeader'
-import {
-  CREATE_PROJECT_DATE_FORMAT,
-  SELECT_BOX_DATE_FORMAT,
-} from 'constants/date'
+import { SELECT_BOX_DATE_FORMAT, SERVER_DATE_FORMAT } from 'constants/date'
 import { projectTypes } from 'constants/projectTypes'
 import { ROUTES } from 'constants/routes'
 import { GET_PATHS, client } from 'libs/apis'
@@ -24,7 +21,11 @@ import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { theme } from 'styles'
 import { PkgHandlerProjectCreateProjectInput } from 'types/schema'
-import { transformMetadataToSelectOption } from 'utils/select'
+import {
+  transformEmployeeDataToSelectOption,
+  transformMetadataToSelectOption,
+} from 'utils/select'
+import { format } from 'date-fns'
 
 const CreateNewProjectPage = () => {
   const [form] = useForm()
@@ -67,7 +68,7 @@ const CreateNewProjectPage = () => {
       name: values.name,
       projectEmail: values.projectEmail,
       startDate: values.startDate
-        ? String(values.startDate.format(CREATE_PROJECT_DATE_FORMAT))
+        ? String(format(values.startDate.toDate(), SERVER_DATE_FORMAT))
         : '',
       status: values.status,
       type: values.type,
@@ -143,23 +144,8 @@ const CreateNewProjectPage = () => {
                         size: 1000,
                         preload: false,
                       })
-                      return (
-                        data?.map(
-                          (metaItem: {
-                            id?: string
-                            displayName?: string
-                            avatar?: string
-                          }) => {
-                            return {
-                              value: metaItem.id,
-                              label: {
-                                id: metaItem.id,
-                                displayName: metaItem.displayName,
-                                avatar: metaItem.avatar,
-                              },
-                            }
-                          },
-                        ) || []
+                      return (data || []).map(
+                        transformEmployeeDataToSelectOption,
                       )
                     }}
                     swrKeys={[
@@ -203,23 +189,8 @@ const CreateNewProjectPage = () => {
                         size: 1000,
                         preload: false,
                       })
-                      return (
-                        data?.map(
-                          (metaItem: {
-                            id?: string
-                            displayName?: string
-                            avatar?: string
-                          }) => {
-                            return {
-                              value: metaItem.id,
-                              label: {
-                                id: metaItem.id,
-                                displayName: metaItem.displayName,
-                                avatar: metaItem.avatar,
-                              },
-                            }
-                          },
-                        ) || []
+                      return (data || []).map(
+                        transformEmployeeDataToSelectOption,
                       )
                     }}
                     swrKeys={[

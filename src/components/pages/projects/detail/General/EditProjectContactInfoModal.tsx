@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { ViewProjectData } from 'types/schema'
 import { AsyncSelect } from 'components/common/Select'
 import { renderEmployeeOption } from 'components/common/Select/renderers/employeeOption'
+import { transformEmployeeDataToSelectOption } from 'utils/select'
 
 type ProjectContactInfoFormValues = Pick<
   ViewProjectData,
@@ -52,20 +53,7 @@ export const EditProjectContactInfoModal = (props: Props) => {
       workingStatus: 'full-time',
       preload: false,
     })
-    return (
-      data?.map(
-        (metaItem: { id?: string; displayName?: string; avatar?: string }) => {
-          return {
-            value: metaItem.id,
-            label: {
-              id: metaItem.id,
-              displayName: metaItem.displayName,
-              avatar: metaItem.avatar,
-            },
-          }
-        },
-      ) || []
-    )
+    return (data || []).map(transformEmployeeDataToSelectOption)
   }
 
   return (
