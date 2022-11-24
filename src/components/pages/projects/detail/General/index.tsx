@@ -175,6 +175,7 @@ export const General = (props: Props) => {
             ? format(new Date(data.startDate), SERVER_DATE_FORMAT)
             : undefined,
           stacks: (data.stacks || []).map((stack) => stack.id || ''),
+          countryID: data.country?.id || '',
         }}
         onClose={closeEditProjectGeneralInfoDialog}
         onAfterSubmit={() => mutate([GET_PATHS.getProjects, data.id])}
@@ -183,8 +184,8 @@ export const General = (props: Props) => {
         isOpen={isEditProjectContactInfoDialogOpen}
         initialValues={{
           ...data,
-          accountManager: data.accountManager?.employeeID,
-          deliveryManager: data.deliveryManager?.employeeID,
+          accountManagerID: data.accountManager?.employeeID || '',
+          deliveryManagerID: data.deliveryManager?.employeeID || '',
         }}
         onClose={closeEditProjectContactInfoDialog}
         onAfterSubmit={() => mutate([GET_PATHS.getProjects, data.id])}

@@ -46,7 +46,10 @@ export const EditSkillsModal = (props: Props) => {
   return (
     <Modal
       open={isOpen}
-      onCancel={onClose}
+      onCancel={() => {
+        onClose()
+        form.resetFields()
+      }}
       onOk={form.submit}
       okButtonProps={{ loading: isSubmitting }}
       destroyOnClose

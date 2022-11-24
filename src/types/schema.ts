@@ -45,11 +45,6 @@ export interface GithubComDwarvesfFortressApiPkgHandlerEmployeeUpdateSkillsInput
   stacks: string[]
 }
 
-export interface GithubComDwarvesfFortressApiPkgHandlerEmployeeUpdateWorkingStatusInput {
-  /** working info */
-  employeeStatus?: string
-}
-
 export interface GithubComDwarvesfFortressApiPkgHandlerProfileUpdateInfoInput {
   discordID?: string
   githubID?: string
@@ -208,11 +203,6 @@ export interface PkgHandlerEmployeeUpdateSkillsInput {
   positions: string[]
   seniority: string
   stacks: string[]
-}
-
-export interface PkgHandlerEmployeeUpdateWorkingStatusInput {
-  /** working info */
-  employeeStatus?: string
 }
 
 export interface PkgHandlerProfileUpdateInfoInput {
