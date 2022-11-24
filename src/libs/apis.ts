@@ -325,6 +325,18 @@ class Client {
       },
     )
   }
+
+  public deleteProjectMember(projectId: string, memberId: string) {
+    return fetcher<any>(
+      `${BASE_URL}/projects/${projectId}/members/${memberId}`,
+      {
+        method: 'DELETE',
+        headers: {
+          ...this.privateHeaders,
+        },
+      },
+    )
+  }
 }
 
 const client = new Client()
