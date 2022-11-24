@@ -92,7 +92,7 @@ export const StaffFormModal = (props: Props) => {
       <StaffForm
         form={form}
         initialValues={initialValues}
-        excludedEmployeeIds={excludedEmployeeIds}
+        excludedEmployeeIds={isEditing ? [] : excludedEmployeeIds}
         onSubmit={onSubmit}
       />
     </Modal>
