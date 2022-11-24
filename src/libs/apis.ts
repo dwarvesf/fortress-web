@@ -28,6 +28,10 @@ import {
   GithubComDwarvesfFortressApiPkgHandlerProjectAssignMemberInput,
   PkgHandlerProjectCreateProjectInput,
   ViewCreateProjectData,
+  PkgHandlerProjectUpdateGeneralInfoInput,
+  ViewUpdateProjectGeneralInfoResponse,
+  PkgHandlerProjectUpdateContactInfoInput,
+  ViewUpdateProjectContactInfoResponse,
 } from 'types/schema'
 import qs from 'qs'
 import fetcher from './fetcher'
@@ -334,6 +338,38 @@ class Client {
         headers: {
           ...this.privateHeaders,
         },
+      },
+    )
+  }
+
+  public updateProjectGeneralInfo(
+    id: string,
+    data: Partial<PkgHandlerProjectUpdateGeneralInfoInput>,
+  ) {
+    return fetcher<ViewUpdateProjectGeneralInfoResponse>(
+      `${BASE_URL}/projects/${id}/general-info`,
+      {
+        method: 'PUT',
+        headers: {
+          ...this.privateHeaders,
+        },
+        body: JSON.stringify(data),
+      },
+    )
+  }
+
+  public updateProjectContactInfo(
+    id: string,
+    data: Partial<PkgHandlerProjectUpdateContactInfoInput>,
+  ) {
+    return fetcher<ViewUpdateProjectContactInfoResponse>(
+      `${BASE_URL}/projects/${id}/contact-info`,
+      {
+        method: 'PUT',
+        headers: {
+          ...this.privateHeaders,
+        },
+        body: JSON.stringify(data),
       },
     )
   }

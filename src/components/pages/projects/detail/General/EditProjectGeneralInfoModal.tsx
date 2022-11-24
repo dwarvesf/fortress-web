@@ -2,14 +2,13 @@ import { Form, Input, Modal, notification, Space } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
 import { client, GET_PATHS } from 'libs/apis'
 import { useState } from 'react'
-import { ViewProjectData } from 'types/schema'
+import { PkgHandlerProjectUpdateGeneralInfoInput } from 'types/schema'
 import { AsyncSelect } from 'components/common/Select'
 import { transformMetadataToSelectOption } from 'utils/select'
+import { useRouter } from 'next/router'
 
-type ProjectGeneralInfoFormValues = Pick<
-  ViewProjectData,
-  'name' | 'country' | 'startDate'
-> & { stacks: string[] }
+type ProjectGeneralInfoFormValues =
+  Partial<PkgHandlerProjectUpdateGeneralInfoInput>
 
 interface Props {
   isOpen: boolean
@@ -20,6 +19,9 @@ interface Props {
 
 export const EditProjectGeneralInfoModal = (props: Props) => {
   const { isOpen, initialValues, onClose, onAfterSubmit } = props
+  const {
+    query: { id: productId },
+  } = useRouter()
 
   const [form] = useForm()
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -27,8 +29,8 @@ export const EditProjectGeneralInfoModal = (props: Props) => {
   const onSubmit = async (values: ProjectGeneralInfoFormValues) => {
     try {
       setIsSubmitting(true)
-      // await client.updateProfile(values)
-      console.log(values)
+
+      await client.updateProjectGeneralInfo(productId as string, values)
 
       notification.success({
         message: "Project's general info updated successfully!",
@@ -48,7 +50,10 @@ export const EditProjectGeneralInfoModal = (props: Props) => {
   return (
     <Modal
       open={isOpen}
-      onCancel={onClose}
+      onCancel={() => {
+        onClose()
+        form.resetFields()
+      }}
       onOk={form.submit}
       okButtonProps={{ loading: isSubmitting }}
       destroyOnClose
@@ -73,7 +78,7 @@ export const EditProjectGeneralInfoModal = (props: Props) => {
           </Form.Item>
           <Form.Item
             label="Country"
-            name="country"
+            name="countryID"
             required
             rules={[{ required: true }]}
           >
@@ -93,7 +98,7 @@ export const EditProjectGeneralInfoModal = (props: Props) => {
               placeholder="Select project's stacks"
               swrKeys={[GET_PATHS.getStackMetadata]}
               optionGetter={async () =>
-                (await client.getStackMetadata()).data.map(
+                ((await client.getStackMetadata()).data || []).map(
                   transformMetadataToSelectOption,
                 )
               }

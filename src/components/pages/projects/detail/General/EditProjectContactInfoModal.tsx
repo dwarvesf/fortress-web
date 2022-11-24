@@ -2,15 +2,14 @@ import { Form, Input, Modal, notification, Space } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
 import { client, GET_PATHS } from 'libs/apis'
 import { useState } from 'react'
-import { ViewProjectData } from 'types/schema'
+import { PkgHandlerProjectUpdateContactInfoInput } from 'types/schema'
 import { AsyncSelect } from 'components/common/Select'
 import { renderEmployeeOption } from 'components/common/Select/renderers/employeeOption'
 import { transformEmployeeDataToSelectOption } from 'utils/select'
+import { useRouter } from 'next/router'
 
-type ProjectContactInfoFormValues = Pick<
-  ViewProjectData,
-  'clientEmail' | 'projectEmail'
-> & { accountManager?: string; deliveryManager?: string }
+type ProjectContactInfoFormValues =
+  Partial<PkgHandlerProjectUpdateContactInfoInput>
 
 interface Props {
   isOpen: boolean
@@ -21,6 +20,9 @@ interface Props {
 
 export const EditProjectContactInfoModal = (props: Props) => {
   const { isOpen, initialValues, onClose, onAfterSubmit } = props
+  const {
+    query: { id: productId },
+  } = useRouter()
 
   const [form] = useForm()
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -28,8 +30,8 @@ export const EditProjectContactInfoModal = (props: Props) => {
   const onSubmit = async (values: ProjectContactInfoFormValues) => {
     try {
       setIsSubmitting(true)
-      // await client.updateProfile(values)
-      console.log(values)
+
+      await client.updateProjectContactInfo(productId as string, values)
 
       notification.success({
         message: "Project's contact info updated successfully!",
@@ -59,7 +61,10 @@ export const EditProjectContactInfoModal = (props: Props) => {
   return (
     <Modal
       open={isOpen}
-      onCancel={onClose}
+      onCancel={() => {
+        onClose()
+        form.resetFields()
+      }}
       onOk={form.submit}
       okButtonProps={{ loading: isSubmitting }}
       destroyOnClose
@@ -83,7 +88,7 @@ export const EditProjectContactInfoModal = (props: Props) => {
           </Form.Item>
           <Form.Item
             label="Account manager"
-            name="accountManager"
+            name="accountManagerID"
             required
             rules={[{ required: true }]}
           >
@@ -94,7 +99,7 @@ export const EditProjectContactInfoModal = (props: Props) => {
               customOptionRenderer={renderEmployeeOption}
             />
           </Form.Item>
-          <Form.Item label="Delivery manager" name="deliveryManager">
+          <Form.Item label="Delivery manager" name="deliveryManagerID">
             <AsyncSelect
               placeholder="Select project's delivery manager"
               swrKeys={[GET_PATHS.getEmployees, 'delivery-manager']}
