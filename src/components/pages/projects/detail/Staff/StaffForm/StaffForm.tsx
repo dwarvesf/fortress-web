@@ -17,11 +17,12 @@ export type StaffFormValues =
 interface Props {
   form: FormInstance<any>
   initialValues?: StaffFormValues
+  excludedEmployeeIds?: string[]
   onSubmit: (values: StaffFormValues) => void
 }
 
 export const StaffForm = (props: Props) => {
-  const { form, initialValues, onSubmit } = props
+  const { form, initialValues, excludedEmployeeIds = [], onSubmit } = props
 
   const status = Form.useWatch('status', form)
   const isStatusPending = status === 'pending'
@@ -52,7 +53,12 @@ export const StaffForm = (props: Props) => {
                   workingStatus: 'full-time',
                   preload: false,
                 })
-                return (data || []).map(transformEmployeeDataToSelectOption)
+                return (data || [])
+                  .filter(
+                    (employee) =>
+                      !excludedEmployeeIds.includes(employee?.id || ''),
+                  )
+                  .map(transformEmployeeDataToSelectOption)
               }}
               customOptionRenderer={renderEmployeeOption}
             />

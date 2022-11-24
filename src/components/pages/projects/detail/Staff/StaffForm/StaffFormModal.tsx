@@ -1,8 +1,9 @@
 import { Modal, notification } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
-import { client } from 'libs/apis'
+import { useFetchWithCache } from 'hooks/useFetchWithCache'
+import { client, GET_PATHS } from 'libs/apis'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { StaffForm, StaffFormValues } from './StaffForm'
 
 interface Props {
@@ -30,6 +31,21 @@ export const StaffFormModal = (props: Props) => {
 
   const [form] = useForm()
   const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const { data: allData } = useFetchWithCache(
+    [GET_PATHS.getProjectStaffList, projectId],
+    () =>
+      client.getProjectStaffList(projectId as string, {
+        page: 1,
+        size: 999,
+      }),
+  )
+  // eslint-disable-next-line
+  const allMembers = allData?.data || []
+
+  const excludedEmployeeIds = useMemo(() => {
+    return allMembers.map((member) => member.employeeID || '')
+  }, [allMembers])
 
   const onSubmit = async (values: StaffFormValues) => {
     try {
@@ -76,6 +92,7 @@ export const StaffFormModal = (props: Props) => {
       <StaffForm
         form={form}
         initialValues={initialValues}
+        excludedEmployeeIds={excludedEmployeeIds}
         onSubmit={onSubmit}
       />
     </Modal>

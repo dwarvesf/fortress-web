@@ -82,7 +82,7 @@ export const StaffTable = ({
   return (
     <Table
       loading={isLoading}
-      rowKey={(row) => row.employeeID || '-'}
+      rowKey={(row) => row.projectSlotID || '-'}
       columns={columns}
       dataSource={data}
       pagination={false}
