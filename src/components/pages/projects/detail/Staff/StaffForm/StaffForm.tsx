@@ -10,6 +10,7 @@ import { DeploymentType, deploymentTypes } from 'constants/deploymentTypes'
 import { ProjectStaffStatus, projectStaffStatuses } from 'constants/status'
 import { renderEmployeeOption } from 'components/common/Select/renderers/employeeOption'
 import { FormInstance } from 'antd/es/form/Form'
+import { useEffect } from 'react'
 
 export type StaffFormValues =
   Partial<GithubComDwarvesfFortressApiPkgHandlerProjectAssignMemberInput>
@@ -24,8 +25,23 @@ interface Props {
 export const StaffForm = (props: Props) => {
   const { form, initialValues, excludedEmployeeIds = [], onSubmit } = props
 
-  const status = Form.useWatch('status', form)
-  const isStatusPending = status === 'pending'
+  const employeeID = Form.useWatch('employeeID', form)
+  const status: ProjectStaffStatus = Form.useWatch('status', form)
+
+  // Set status to active if user selected an employee
+  // We don't allow pending status if employeeID is available
+  useEffect(() => {
+    if (employeeID && status === 'pending') {
+      form.setFieldValue('status', 'active')
+    }
+  }, [employeeID]) // eslint-disable-line
+
+  // Left date is only input-able if status === inactive
+  useEffect(() => {
+    if (status === 'inactive') {
+      form.setFieldValue('leftDate', '')
+    }
+  }, [status]) // eslint-disable-line
 
   return (
     <Form
@@ -40,12 +56,12 @@ export const StaffForm = (props: Props) => {
           <Form.Item
             label="Member"
             name="employeeID"
-            required={!isStatusPending}
-            rules={[{ required: !isStatusPending }]}
+            required={status !== 'pending'}
+            rules={[{ required: status !== 'pending' }]}
           >
             <AsyncSelect
               placeholder="Select a member"
-              swrKeys={[GET_PATHS.getEmployees]}
+              swrKeys={[GET_PATHS.getEmployees, excludedEmployeeIds.join('')]}
               optionGetter={async () => {
                 const { data } = await client.getEmployees({
                   page: 1,
@@ -53,6 +69,7 @@ export const StaffForm = (props: Props) => {
                   workingStatus: 'full-time',
                   preload: false,
                 })
+
                 return (data || [])
                   .filter(
                     (employee) =>
@@ -129,11 +146,16 @@ export const StaffForm = (props: Props) => {
           </Form.Item>
         </Col>
         <Col span={24} md={{ span: 12 }}>
-          <Form.Item label="Left Date" name="leftDate">
+          <Form.Item
+            label="Left Date"
+            name="leftDate"
+            rules={[{ required: status === 'inactive' }]}
+          >
             <Input
               type="date"
               placeholder="Select left date"
               className="bordered"
+              disabled={status !== 'inactive'}
             />
           </Form.Item>
         </Col>
@@ -155,7 +177,7 @@ export const StaffForm = (props: Props) => {
           <Form.Item label="Discount" name="discount">
             <Input
               type="number"
-              placeholder="Enter rate"
+              placeholder="Enter discount"
               className="bordered"
             />
           </Form.Item>
@@ -164,12 +186,20 @@ export const StaffForm = (props: Props) => {
           <Form.Item label="Status" name="status">
             <Select
               placeholder="Select status"
-              options={Object.keys(projectStaffStatuses).map((status) => {
-                return {
-                  label: projectStaffStatuses[status as ProjectStaffStatus],
-                  value: status,
-                }
-              })}
+              options={Object.keys(projectStaffStatuses)
+                .filter((status) => {
+                  if (employeeID) {
+                    return status !== 'pending'
+                  }
+
+                  return true
+                })
+                .map((status) => {
+                  return {
+                    label: projectStaffStatuses[status as ProjectStaffStatus],
+                    value: status,
+                  }
+                })}
             />
           </Form.Item>
         </Col>

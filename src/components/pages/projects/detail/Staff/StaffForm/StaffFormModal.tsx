@@ -43,9 +43,15 @@ export const StaffFormModal = (props: Props) => {
   // eslint-disable-next-line
   const allMembers = allData?.data || []
 
+  // Keep track of the initial employee ID because we don't want to
+  // hide it from the employee options (e.g. what if the user switches around and then
+  // settle back for the initial option)
+  const initialEmployeeID = initialValues?.employeeID || ''
   const excludedEmployeeIds = useMemo(() => {
-    return allMembers.map((member) => member.employeeID || '')
-  }, [allMembers])
+    return allMembers
+      .map((member) => member.employeeID || '')
+      .filter((id) => id !== initialEmployeeID)
+  }, [allMembers, initialEmployeeID])
 
   const onSubmit = async (values: StaffFormValues) => {
     try {
@@ -92,7 +98,7 @@ export const StaffFormModal = (props: Props) => {
       <StaffForm
         form={form}
         initialValues={initialValues}
-        excludedEmployeeIds={isEditing ? [] : excludedEmployeeIds}
+        excludedEmployeeIds={excludedEmployeeIds}
         onSubmit={onSubmit}
       />
     </Modal>

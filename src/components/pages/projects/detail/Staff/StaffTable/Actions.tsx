@@ -74,7 +74,6 @@ export const Actions = ({
             onClick={openEditDialog}
           />
         </Col>
-
         <Col>
           <Button
             type="text-primary"
@@ -84,24 +83,27 @@ export const Actions = ({
           />
         </Col>
       </Row>
-      <StaffFormModal
-        isEditing
-        isOpen={isEditDialogOpen}
-        onClose={closeEditDialog}
-        projectSlotID={data.projectSlotID}
-        initialValues={{
-          ...data,
-          positions: data.positions?.map((position) => position.id || '') || [],
-          joinedDate: data.joinedDate
-            ? format(new Date(data.joinedDate), SERVER_DATE_FORMAT)
-            : undefined,
-          leftDate: data.joinedDate
-            ? format(new Date(data.joinedDate), SERVER_DATE_FORMAT)
-            : undefined,
-          seniorityID: data.seniority?.id || '',
-        }}
-        onAfterSubmit={onAfterAction}
-      />
+      {isEditDialogOpen && (
+        <StaffFormModal
+          isEditing
+          isOpen={isEditDialogOpen}
+          onClose={closeEditDialog}
+          projectSlotID={data.projectSlotID}
+          initialValues={{
+            ...data,
+            positions:
+              data.positions?.map((position) => position.id || '') || [],
+            joinedDate: data.joinedDate
+              ? format(new Date(data.joinedDate), SERVER_DATE_FORMAT)
+              : undefined,
+            leftDate: data.joinedDate
+              ? format(new Date(data.joinedDate), SERVER_DATE_FORMAT)
+              : undefined,
+            seniorityID: data.seniority?.id || '',
+          }}
+          onAfterSubmit={onAfterAction}
+        />
+      )}
     </>
   )
 }

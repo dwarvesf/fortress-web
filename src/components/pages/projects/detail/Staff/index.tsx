@@ -266,24 +266,26 @@ export const Staff = (props: Props) => {
         </Card>
         {paginationRender}
       </Space>
-      <StaffFormModal
-        key={tabKey}
-        isOpen={isAddNewMemberDialogOpen}
-        onClose={closeAddNewMemberDialog}
-        onAfterSubmit={mutate}
-        initialValues={{
-          employeeID: '',
-          positions: [],
-          seniorityID: '',
-          deploymentType: 'official',
-          joinedDate: format(new Date(), SERVER_DATE_FORMAT),
-          leftDate: undefined,
-          rate: 0,
-          discount: 0,
-          status: tabKey || 'pending',
-          isLead: false,
-        }}
-      />
+      {isAddNewMemberDialogOpen && (
+        <StaffFormModal
+          key={tabKey}
+          isOpen={isAddNewMemberDialogOpen}
+          onClose={closeAddNewMemberDialog}
+          onAfterSubmit={mutate}
+          initialValues={{
+            employeeID: '',
+            positions: [],
+            seniorityID: '',
+            deploymentType: 'official',
+            joinedDate: format(new Date(), SERVER_DATE_FORMAT),
+            leftDate: undefined,
+            rate: 0,
+            discount: 0,
+            status: tabKey || 'pending',
+            isLead: false,
+          }}
+        />
+      )}
     </>
   )
 }

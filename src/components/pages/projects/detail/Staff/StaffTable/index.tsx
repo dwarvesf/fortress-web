@@ -27,24 +27,30 @@ export const StaffTable = ({
       {
         title: 'Name',
         key: 'name',
-        render: (value) => (
-          <Space>
-            <AvatarWithName user={value} />
-            {value.isLead && <Tag color="red">Lead</Tag>}
-          </Space>
-        ),
+        render: (value) =>
+          value.displayName ? (
+            <Space>
+              <AvatarWithName user={value} />
+              {value.isLead && <Tag color="red">Lead</Tag>}
+            </Space>
+          ) : (
+            '-'
+          ),
       },
       {
         title: 'Positions',
         key: 'positions',
         dataIndex: 'positions',
-        render: (value: ViewPosition[]) => (
-          <Space size={[0, 8]}>
-            {value.map((position: ModelPosition) => (
-              <Tag key={position.id}>{position.name}</Tag>
-            ))}
-          </Space>
-        ),
+        render: (value: ViewPosition[]) =>
+          value.length > 0 ? (
+            <Space size={[0, 8]}>
+              {value.map((position: ModelPosition) => (
+                <Tag key={position.id}>{position.name}</Tag>
+              ))}
+            </Space>
+          ) : (
+            '-'
+          ),
       },
       {
         title: 'Seniority',
