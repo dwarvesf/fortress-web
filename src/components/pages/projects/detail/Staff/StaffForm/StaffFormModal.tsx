@@ -57,11 +57,16 @@ export const StaffFormModal = (props: Props) => {
     try {
       setIsSubmitting(true)
 
+      const formValues: StaffFormValues = {
+        ...values,
+        leftDate: values.status !== 'inactive' ? '' : values.leftDate,
+      }
+
       if (!isEditing) {
-        await client.createProjectMember(projectId as string, values)
+        await client.createProjectMember(projectId as string, formValues)
       } else {
         await client.updateProjectMember(projectId as string, {
-          ...values,
+          ...formValues,
           projectSlotID,
         })
       }
