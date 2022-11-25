@@ -1,37 +1,49 @@
-import {
-  Form,
-  Row,
-  Col,
-  Input,
-  Button,
-  DatePicker,
-  notification,
-  Space,
-} from 'antd'
+import { Row, Col, Button, notification, Space, Typography } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
-import { AsyncSelect } from 'components/common/Select'
-import { renderEmployeeOption } from 'components/common/Select/renderers/employeeOption'
-import { renderStatusOption } from 'components/common/Select/renderers/statusOption'
 import { PageHeader } from 'components/common/PageHeader'
-import { SELECT_BOX_DATE_FORMAT, SERVER_DATE_FORMAT } from 'constants/date'
-import { projectTypes } from 'constants/projectTypes'
+import { SERVER_DATE_FORMAT } from 'constants/date'
 import { ROUTES } from 'constants/routes'
-import { GET_PATHS, client } from 'libs/apis'
+import { client } from 'libs/apis'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
-import { theme } from 'styles'
-import { PkgHandlerProjectCreateProjectInput } from 'types/schema'
+import { useCallback, useState } from 'react'
 import {
-  transformEmployeeDataToSelectOption,
-  transformMetadataToSelectOption,
-} from 'utils/select'
+  ModelPosition,
+  ModelSeniority,
+  PkgHandlerProjectAssignMemberInput,
+  PkgHandlerProjectCreateProjectInput,
+  ViewPosition,
+  ViewProjectMember,
+} from 'types/schema'
 import { format } from 'date-fns'
+import { ProjectForm } from 'components/pages/projects/ProjectForm'
+import { PlusCircleOutlined } from '@ant-design/icons'
+import { useDisclosure } from '@dwarvesf/react-hooks'
+import { ProjectMemberModal } from 'components/pages/projects/ProjectMemberModal'
+import { DeploymentType, deploymentTypes } from 'constants/deploymentTypes'
+
+import { StaffTable } from 'components/pages/projects/detail/Staff/StaffTable'
 
 const CreateNewProjectPage = () => {
   const [form] = useForm()
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
 
   const { push } = useRouter()
+
+  const [memberData, setMemberData] = useState<
+    PkgHandlerProjectAssignMemberInput[]
+  >([])
+
+  const [memberTableData, setMemberTableData] = useState<ViewProjectMember[]>(
+    [],
+  )
+
+  const {
+    isOpen: isAddNewMemberDialogOpen,
+    onOpen: openAddNewMemberDialog,
+    onClose: closeAddNewMemberDialog,
+  } = useDisclosure()
+
+  console.log(memberTableData)
 
   const onSubmit = async (
     values: Required<PkgHandlerProjectCreateProjectInput>,
@@ -64,7 +76,7 @@ const CreateNewProjectPage = () => {
       clientEmail: values.clientEmail,
       countryID: values.countryID,
       deliveryManagerID: values.deliveryManagerID || '',
-      members: [],
+      members: memberData,
       name: values.name,
       projectEmail: values.projectEmail,
       startDate: values.startDate
@@ -75,206 +87,122 @@ const CreateNewProjectPage = () => {
     }
   }
 
+  const getPositionsFromIDs = (
+    data: ModelPosition[],
+    positionStrs: string[],
+  ) => {
+    const result: ViewPosition[] = []
+    ;(data || []).forEach((d) => {
+      if (d.id && positionStrs.includes(d.id)) {
+        result.push({
+          code: d.code,
+          id: d.id,
+          name: d.name,
+        })
+      }
+    })
+
+    return result
+  }
+
+  const getSeniorityFromID = (data: ModelSeniority[], seniorityID: string) => {
+    return data?.find((d) => d.id === seniorityID)
+  }
+
+  const transformMemberDataToTable = useCallback(
+    async (
+      memberData: PkgHandlerProjectAssignMemberInput,
+    ): Promise<ViewProjectMember> => {
+      const { data: employeeData } = await client.getEmployee(
+        memberData.employeeID!,
+      )
+      const { data: positionMetadata } = await client.getPositionsMetadata()
+      const { data: seniorityMetadata } = await client.getSenioritiesMetadata()
+
+      return {
+        avatar: employeeData.avatar,
+        deploymentType:
+          deploymentTypes[memberData.deploymentType as DeploymentType],
+        displayName: employeeData.displayName,
+        employeeID: memberData.employeeID,
+        fullName: employeeData.fullName,
+        isLead: memberData.isLead,
+        joinedDate: memberData.joinedDate,
+        leftDate: memberData.leftDate,
+        positions: getPositionsFromIDs(
+          positionMetadata || [],
+          memberData.positions,
+        ),
+        rate: memberData.rate,
+        seniority: getSeniorityFromID(
+          seniorityMetadata || [],
+          memberData.seniorityID,
+        ),
+        status: memberData.status,
+      }
+    },
+    [],
+  )
+
   return (
-    <Space direction="vertical" size={24} style={{ width: '100%' }}>
-      <PageHeader title="New project" />
-      <Row>
-        <Col span={24} lg={{ span: 16 }}>
-          <Form
-            form={form}
-            onFinish={(values) => {
-              onSubmit(values as Required<PkgHandlerProjectCreateProjectInput>)
-            }}
-          >
-            <Row gutter={24}>
-              <Col span={24} md={{ span: 12 }}>
-                <Form.Item
-                  label="Project name"
-                  name="name"
-                  rules={[
-                    { required: true, message: 'Please input project name' },
-                    {
-                      max: 99,
-                      message: 'Display name must be less than 100 characters',
-                    },
-                  ]}
-                >
-                  <Input type="text" placeholder="Enter project name" />
-                </Form.Item>
-              </Col>
+    <>
+      <Space direction="vertical" size={24} style={{ width: '100%' }}>
+        <PageHeader title="New project" />
+        <Row>
+          <Col span={24} lg={{ span: 16 }}>
+            <ProjectForm form={form} onSubmit={onSubmit} />
 
-              <Col span={24} md={{ span: 12 }}>
-                <Form.Item
-                  label="Status"
-                  name="status"
-                  rules={[{ required: true, message: 'Please select status' }]}
-                >
-                  <AsyncSelect
-                    bordered={false}
-                    optionGetter={async () => {
-                      const { data } = await client.getProjectStatusMetadata()
-                      return data.map(transformMetadataToSelectOption)
-                    }}
-                    swrKeys={[
-                      GET_PATHS.getProjectStatusMetadata,
-                      'create-new-project',
-                    ]}
-                    placeholder="Select project status"
-                    customOptionRenderer={renderStatusOption}
-                  />
-                </Form.Item>
-              </Col>
+            <Space
+              align="center"
+              style={{
+                justifyContent: 'space-between',
+                width: '100%',
+                marginBottom: 16,
+              }}
+            >
+              <Typography.Title level={4}>Members</Typography.Title>
+              <Button
+                type="primary"
+                icon={<PlusCircleOutlined />}
+                onClick={openAddNewMemberDialog}
+              >
+                Add New
+              </Button>
+            </Space>
 
-              <Col span={24} md={{ span: 12 }}>
-                <Form.Item
-                  label="Account manager"
-                  name="accountManagerID"
-                  rules={[
-                    {
-                      required: true,
-                      message: 'Please select account manager',
-                    },
-                  ]}
-                >
-                  <AsyncSelect
-                    bordered={false}
-                    optionGetter={async () => {
-                      const { data } = await client.getEmployees({
-                        page: 1,
-                        size: 1000,
-                        preload: false,
-                      })
-                      return (data || []).map(
-                        transformEmployeeDataToSelectOption,
-                      )
-                    }}
-                    swrKeys={[
-                      GET_PATHS.getEmployees,
-                      'create-new-project',
-                      'account-manager',
-                    ]}
-                    placeholder="Select account manager"
-                    customOptionRenderer={renderEmployeeOption}
-                  />
-                </Form.Item>
-              </Col>
+            <StaffTable
+              data={memberTableData}
+              isLoading={false}
+              onAfterAction={() => {}}
+            />
 
-              <Col span={24} md={{ span: 12 }}>
-                <Form.Item
-                  label="Country"
-                  name="countryID"
-                  rules={[{ required: true, message: 'Please select country' }]}
-                >
-                  <AsyncSelect
-                    bordered={false}
-                    optionGetter={async () => {
-                      const { data } = await client.getCountryMetadata()
-                      return data.map(transformMetadataToSelectOption)
-                    }}
-                    swrKeys={[
-                      GET_PATHS.getCountryMetadata,
-                      'create-new-project',
-                    ]}
-                    placeholder="Select project country"
-                  />
-                </Form.Item>
-              </Col>
-              <Col span={24} md={{ span: 12 }}>
-                <Form.Item label="Delivery manager" name="deliveryManagerID">
-                  <AsyncSelect
-                    bordered={false}
-                    optionGetter={async () => {
-                      const { data } = await client.getEmployees({
-                        page: 1,
-                        size: 1000,
-                        preload: false,
-                      })
-                      return (data || []).map(
-                        transformEmployeeDataToSelectOption,
-                      )
-                    }}
-                    swrKeys={[
-                      GET_PATHS.getEmployees,
-                      'create-new-project',
-                      'delivery-manager',
-                    ]}
-                    placeholder="Select delivery manager"
-                    customOptionRenderer={renderEmployeeOption}
-                  />
-                </Form.Item>
-              </Col>
-
-              <Col span={24} md={{ span: 12 }}>
-                <Form.Item label="Start date" name="startDate">
-                  <DatePicker
-                    className="bg-white"
-                    format={SELECT_BOX_DATE_FORMAT}
-                    style={{ width: '100%', borderColor: theme.colors.white }}
-                    placeholder="Select start date"
-                  />
-                </Form.Item>
-              </Col>
-
-              <Col span={24} md={{ span: 12 }}>
-                <Form.Item
-                  label="Project email"
-                  name="projectEmail"
-                  rules={[
-                    { required: true, message: 'Please input project email' },
-                    { type: 'email', message: 'Wrong email format' },
-                  ]}
-                >
-                  <Input type="email" placeholder="Enter project email" />
-                </Form.Item>
-              </Col>
-
-              <Col span={24} md={{ span: 12 }}>
-                <Form.Item
-                  label="Client email"
-                  name="clientEmail"
-                  rules={[
-                    { required: true, message: 'Please input client email' },
-                    { type: 'email', message: 'Wrong email format' },
-                  ]}
-                >
-                  <Input type="email" placeholder="Enter client email" />
-                </Form.Item>
-              </Col>
-
-              <Col span={24} md={{ span: 12 }}>
-                <Form.Item
-                  label="Type"
-                  name="type"
-                  rules={[{ required: true, message: 'Please select type' }]}
-                >
-                  <AsyncSelect
-                    bordered={false}
-                    optionGetter={() =>
-                      Promise.resolve(
-                        Object.keys(projectTypes).map((key) => ({
-                          value: key,
-                          label: projectTypes[key as keyof typeof projectTypes],
-                        })),
-                      )
-                    }
-                    swrKeys={GET_PATHS.getAccountStatusMetadata}
-                    placeholder="Select type"
-                  />
-                </Form.Item>
-              </Col>
-            </Row>
             <Button
               type="primary"
               htmlType="submit"
               loading={isSubmitting}
-              style={{ marginTop: 16 }}
+              style={{ marginTop: 24 }}
+              onClick={form.submit}
             >
               Submit
             </Button>
-          </Form>
-        </Col>
-      </Row>
-    </Space>
+          </Col>
+        </Row>
+      </Space>
+      <ProjectMemberModal
+        isOpen={isAddNewMemberDialogOpen}
+        onClose={closeAddNewMemberDialog}
+        onAfterSubmit={() => {
+          memberData.map((d) =>
+            transformMemberDataToTable(d).then((r) => {
+              setMemberTableData([...memberTableData, r])
+            }),
+          )
+          console.log(memberTableData)
+        }}
+        memberData={memberData}
+        setMemberData={setMemberData}
+      />
+    </>
   )
 }
 

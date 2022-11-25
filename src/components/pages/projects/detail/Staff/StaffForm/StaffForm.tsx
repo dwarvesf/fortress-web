@@ -66,7 +66,7 @@ export const StaffForm = (props: Props) => {
                 const { data } = await client.getEmployees({
                   page: 1,
                   size: 1000,
-                  workingStatus: 'full-time',
+                  // workingStatus: 'full-time',
                   preload: false,
                 })
 

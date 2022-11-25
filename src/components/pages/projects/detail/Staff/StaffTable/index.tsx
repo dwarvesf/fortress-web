@@ -36,6 +36,7 @@ export const StaffTable = ({
           ) : (
             '-'
           ),
+        fixed: 'left',
       },
       {
         title: 'Positions',
@@ -81,6 +82,7 @@ export const StaffTable = ({
         render: (value) => (
           <Actions data={value} onAfterAction={onAfterAction} />
         ),
+        fixed: 'right',
       },
     ] as ColumnsType<ViewProjectMember>
   }, [onAfterAction])
