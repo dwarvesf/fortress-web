@@ -2,6 +2,7 @@ import { Spin, Tabs } from 'antd'
 import { PageHeader } from 'components/common/PageHeader'
 import { General } from 'components/pages/projects/detail/General'
 import { Staff } from 'components/pages/projects/detail/Staff'
+import { WorkUnits } from 'components/pages/projects/detail/WorkUnits'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { useTabWithQuery } from 'hooks/useTabWithQuery'
 import { client, GET_PATHS } from 'libs/apis'
@@ -12,7 +13,7 @@ const Default = () => {
     query: { id },
   } = useRouter()
 
-  const { tabKey = '1', setTabKey } = useTabWithQuery()
+  const { tabKey = 'general', setTabKey } = useTabWithQuery()
 
   const { data, loading } = useFetchWithCache([GET_PATHS.getProjects, id], () =>
     client.getProject(id as string),
@@ -31,27 +32,32 @@ const Default = () => {
         onTabClick={setTabKey}
         items={[
           {
-            key: '1',
+            key: 'general',
             label: 'General',
             children: <General data={project} />,
           },
           {
-            key: '2',
+            key: 'staff',
             label: 'Staff',
             children: <Staff data={project} />,
           },
           {
-            key: '3',
+            key: 'performance',
             label: 'Performance',
             children: 'Performance',
           },
           {
-            key: '4',
+            key: 'work-units',
+            label: 'Work Units',
+            children: <WorkUnits data={project} />,
+          },
+          {
+            key: 'stakeholders',
             label: 'Stakeholders',
             children: 'Stakeholders',
           },
           {
-            key: '5',
+            key: 'documents',
             label: 'Document',
             children: 'Document',
           },

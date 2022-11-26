@@ -1,4 +1,4 @@
-import { Col, Input, Pagination, Row, Space, Tag } from 'antd'
+import { Col, Input, Pagination, Row, Space, Tag, Tooltip } from 'antd'
 import { ROUTES } from 'constants/routes'
 import { PageHeader } from 'components/common/PageHeader'
 import { useMemo } from 'react'
@@ -114,21 +114,25 @@ const Default = () => {
           <Row justify="end" gutter={[8, 8]}>
             <Col>
               <EmployeeLink id={value.id}>
-                <Button
-                  type="text-primary"
-                  size="small"
-                  icon={<EyeOutlined />}
-                />
+                <Tooltip title="View Detail">
+                  <Button
+                    type="text-primary"
+                    size="small"
+                    icon={<EyeOutlined />}
+                  />
+                </Tooltip>
               </EmployeeLink>
             </Col>
             <Col>
               <Link href={ROUTES.EDIT_EMPLOYEE(value.id)}>
                 <a>
-                  <Button
-                    type="text-primary"
-                    size="small"
-                    icon={<EditOutlined />}
-                  />
+                  <Tooltip title="Edit">
+                    <Button
+                      type="text-primary"
+                      size="small"
+                      icon={<EditOutlined />}
+                    />
+                  </Tooltip>
                 </a>
               </Link>
             </Col>

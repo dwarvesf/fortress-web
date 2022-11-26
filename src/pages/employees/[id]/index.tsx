@@ -12,7 +12,7 @@ const Default = () => {
     query: { id },
   } = useRouter()
 
-  const { tabKey = '1', setTabKey } = useTabWithQuery()
+  const { tabKey = 'general', setTabKey } = useTabWithQuery()
 
   const { data, loading } = useFetchWithCache(
     [GET_PATHS.getEmployees, id],
@@ -32,12 +32,12 @@ const Default = () => {
         onTabClick={setTabKey}
         items={[
           {
-            key: '1',
+            key: 'general',
             label: 'General',
             children: <General data={employee} />,
           },
           {
-            key: '2',
+            key: 'document',
             label: 'Document',
             children: 'Document',
           },

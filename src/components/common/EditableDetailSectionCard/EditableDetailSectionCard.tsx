@@ -1,6 +1,6 @@
 import { EditOutlined } from '@ant-design/icons'
 import { noop } from '@dwarvesf/react-utils'
-import { Card, CardProps } from 'antd'
+import { Card, CardProps, Tooltip } from 'antd'
 import { Button } from '../Button'
 
 interface Props extends CardProps {
@@ -9,18 +9,20 @@ interface Props extends CardProps {
 
 const SectionEditButton = ({ onClick }: { onClick: () => void }) => {
   return (
-    <Button
-      type="text-primary"
-      size="small"
-      onClick={onClick}
-      icon={
-        <EditOutlined
-          style={{
-            fontSize: 16,
-          }}
-        />
-      }
-    />
+    <Tooltip title="Edit">
+      <Button
+        type="text-primary"
+        size="small"
+        onClick={onClick}
+        icon={
+          <EditOutlined
+            style={{
+              fontSize: 16,
+            }}
+          />
+        }
+      />
+    </Tooltip>
   )
 }
 
