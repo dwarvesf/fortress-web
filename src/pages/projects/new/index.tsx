@@ -5,7 +5,7 @@ import { SERVER_DATE_FORMAT } from 'constants/date'
 import { ROUTES } from 'constants/routes'
 import { client } from 'libs/apis'
 import { useRouter } from 'next/router'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import {
   ModelPosition,
   ModelSeniority,
@@ -13,6 +13,9 @@ import {
   PkgHandlerProjectCreateProjectInput,
   ViewPosition,
   ViewProjectMember,
+  ViewEmployeeData,
+  ViewPositionResponse,
+  ViewSeniorityResponse,
 } from 'types/schema'
 import { format } from 'date-fns'
 import { ProjectForm } from 'components/pages/projects/ProjectForm'
@@ -20,30 +23,51 @@ import { PlusCircleOutlined } from '@ant-design/icons'
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { ProjectMemberModal } from 'components/pages/projects/ProjectMemberModal'
 import { DeploymentType, deploymentTypes } from 'constants/deploymentTypes'
-
 import { StaffTable } from 'components/pages/projects/detail/Staff/StaffTable'
+
+const getPositionsFromIDs = (data: ModelPosition[], positionStrs: string[]) => {
+  const result: ViewPosition[] = []
+  ;(data || []).forEach((d) => {
+    if (d.id && positionStrs.includes(d.id)) {
+      result.push({
+        code: d.code,
+        id: d.id,
+        name: d.name,
+      })
+    }
+  })
+
+  return result
+}
+
+const getSeniorityFromID = (data: ModelSeniority[], seniorityID: string) => {
+  return data?.find((d) => d.id === seniorityID)
+}
 
 const CreateNewProjectPage = () => {
   const [form] = useForm()
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
-
   const { push } = useRouter()
 
   const [memberData, setMemberData] = useState<
     PkgHandlerProjectAssignMemberInput[]
   >([])
-
   const [memberTableData, setMemberTableData] = useState<ViewProjectMember[]>(
     [],
   )
+
+  // storing metadata
+  const [employeeData, setEmployeeData] = useState<ViewEmployeeData>({})
+  const [senioritiesData, setSenioritiesData] = useState<ViewSeniorityResponse>(
+    {},
+  )
+  const [positionsData, setPositionsData] = useState<ViewPositionResponse>({})
 
   const {
     isOpen: isAddNewMemberDialogOpen,
     onOpen: openAddNewMemberDialog,
     onClose: closeAddNewMemberDialog,
   } = useDisclosure()
-
-  console.log(memberTableData)
 
   const onSubmit = async (
     values: Required<PkgHandlerProjectCreateProjectInput>,
@@ -87,38 +111,8 @@ const CreateNewProjectPage = () => {
     }
   }
 
-  const getPositionsFromIDs = (
-    data: ModelPosition[],
-    positionStrs: string[],
-  ) => {
-    const result: ViewPosition[] = []
-    ;(data || []).forEach((d) => {
-      if (d.id && positionStrs.includes(d.id)) {
-        result.push({
-          code: d.code,
-          id: d.id,
-          name: d.name,
-        })
-      }
-    })
-
-    return result
-  }
-
-  const getSeniorityFromID = (data: ModelSeniority[], seniorityID: string) => {
-    return data?.find((d) => d.id === seniorityID)
-  }
-
-  const transformMemberDataToTable = useCallback(
-    async (
-      memberData: PkgHandlerProjectAssignMemberInput,
-    ): Promise<ViewProjectMember> => {
-      const { data: employeeData } = await client.getEmployee(
-        memberData.employeeID!,
-      )
-      const { data: positionMetadata } = await client.getPositionsMetadata()
-      const { data: seniorityMetadata } = await client.getSenioritiesMetadata()
-
+  const transformMemberDataToTableData = useCallback(
+    (memberData: PkgHandlerProjectAssignMemberInput): ViewProjectMember => {
       return {
         avatar: employeeData.avatar,
         deploymentType:
@@ -130,19 +124,27 @@ const CreateNewProjectPage = () => {
         joinedDate: memberData.joinedDate,
         leftDate: memberData.leftDate,
         positions: getPositionsFromIDs(
-          positionMetadata || [],
+          positionsData.data || [],
           memberData.positions,
         ),
         rate: memberData.rate,
         seniority: getSeniorityFromID(
-          seniorityMetadata || [],
+          senioritiesData.data || [],
           memberData.seniorityID,
         ),
         status: memberData.status,
       }
     },
-    [],
+    [employeeData, positionsData, senioritiesData],
   )
+
+  // generate data table when new member data added
+  useEffect(() => {
+    memberData.forEach((d) => {
+      const tableData = transformMemberDataToTableData(d)
+      setMemberTableData([...memberTableData, tableData])
+    })
+  }, [JSON.stringify({ memberData, transformMemberDataToTableData })]) // eslint-disable-line
 
   return (
     <>
@@ -151,13 +153,14 @@ const CreateNewProjectPage = () => {
         <Row>
           <Col span={24} lg={{ span: 16 }}>
             <ProjectForm form={form} onSubmit={onSubmit} />
+          </Col>
 
+          <Col span={24}>
             <Space
               align="center"
               style={{
                 justifyContent: 'space-between',
                 width: '100%',
-                marginBottom: 16,
               }}
             >
               <Typography.Title level={4}>Members</Typography.Title>
@@ -175,7 +178,9 @@ const CreateNewProjectPage = () => {
               isLoading={false}
               onAfterAction={() => {}}
             />
+          </Col>
 
+          <Col span={24}>
             <Button
               type="primary"
               htmlType="submit"
@@ -191,16 +196,17 @@ const CreateNewProjectPage = () => {
       <ProjectMemberModal
         isOpen={isAddNewMemberDialogOpen}
         onClose={closeAddNewMemberDialog}
-        onAfterSubmit={() => {
-          memberData.map((d) =>
-            transformMemberDataToTable(d).then((r) => {
-              setMemberTableData([...memberTableData, r])
-            }),
-          )
-          console.log(memberTableData)
-        }}
         memberData={memberData}
         setMemberData={setMemberData}
+        getDataOnSubmit={(
+          e: ViewEmployeeData,
+          s: ViewSeniorityResponse,
+          p: ViewPositionResponse,
+        ) => {
+          setEmployeeData(e)
+          setSenioritiesData(s)
+          setPositionsData(p)
+        }}
       />
     </>
   )

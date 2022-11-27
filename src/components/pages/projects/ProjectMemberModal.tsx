@@ -1,7 +1,12 @@
 import { Modal, notification } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
 import { Dispatch, SetStateAction, useState } from 'react'
-import { PkgHandlerProjectAssignMemberInput } from 'types/schema'
+import {
+  PkgHandlerProjectAssignMemberInput,
+  ViewEmployeeData,
+  ViewPositionResponse,
+  ViewSeniorityResponse,
+} from 'types/schema'
 import { StaffForm, StaffFormValues } from './detail/Staff/StaffForm/StaffForm'
 
 interface Props {
@@ -9,9 +14,13 @@ interface Props {
   isEditing?: boolean
   initialValues?: PkgHandlerProjectAssignMemberInput
   onClose: () => void
-  onAfterSubmit: () => void
   memberData: PkgHandlerProjectAssignMemberInput[]
   setMemberData: Dispatch<SetStateAction<PkgHandlerProjectAssignMemberInput[]>>
+  getDataOnSubmit: (
+    e: ViewEmployeeData,
+    s: ViewSeniorityResponse,
+    p: ViewPositionResponse,
+  ) => void
 }
 
 export const ProjectMemberModal = (props: Props) => {
@@ -24,9 +33,9 @@ export const ProjectMemberModal = (props: Props) => {
     isEditing = false,
     initialValues,
     onClose,
-    onAfterSubmit,
     memberData,
     setMemberData,
+    getDataOnSubmit,
   } = props
 
   const onSubmit = async (values: StaffFormValues) => {
@@ -34,23 +43,22 @@ export const ProjectMemberModal = (props: Props) => {
       setIsSubmitting(true)
 
       const newData = transformDataToSend(values)
-
       setMemberData([...memberData, newData])
 
       notification.success({
-        message: `Member ${isEditing ? 'updated' : 'created'} successfully!`,
+        message: `Member ${isEditing ? 'updated' : 'assign'} successfully!`,
       })
 
-      onAfterSubmit()
       onClose()
     } catch (error: any) {
       notification.error({
         message:
           error?.message ||
-          `Could not ${isEditing ? 'update' : 'create'} the member!`,
+          `Could not ${isEditing ? 'update' : 'assign'} the member!`,
       })
     } finally {
       setIsSubmitting(false)
+      form.resetFields()
     }
   }
 
@@ -81,12 +89,13 @@ export const ProjectMemberModal = (props: Props) => {
       onOk={form.submit}
       okButtonProps={{ loading: isSubmitting }}
       destroyOnClose
-      title={`${isEditing ? 'Edit' : 'Create New'} Member`}
+      title={`${isEditing ? 'Edit' : 'Assign'} member`}
     >
       <StaffForm
         form={form}
         initialValues={initialValues}
         onSubmit={onSubmit}
+        getDataOnSubmit={getDataOnSubmit}
       />
     </Modal>
   )
