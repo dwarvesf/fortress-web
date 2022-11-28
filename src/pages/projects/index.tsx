@@ -3,7 +3,7 @@ import { ROUTES } from 'constants/routes'
 import { PageHeader } from 'components/common/PageHeader'
 import { useMemo } from 'react'
 import Table, { ColumnsType } from 'antd/lib/table'
-import { EditOutlined, EyeOutlined } from '@ant-design/icons'
+import { EyeOutlined } from '@ant-design/icons'
 import Link from 'next/link'
 import { capitalizeFirstLetter } from 'utils/string'
 import { AvatarArray } from 'components/common/AvatarArray'
@@ -107,7 +107,7 @@ const Default = () => {
                 </Tooltip>
               </ProjectLink>
             </Col>
-            <Col>
+            {/* <Col>
               <Link href={ROUTES.EDIT_PROJECT(value.id)}>
                 <a>
                   <Tooltip title="Edit">
@@ -119,7 +119,7 @@ const Default = () => {
                   </Tooltip>
                 </a>
               </Link>
-            </Col>
+            </Col> */}
           </Row>
         ),
         fixed: 'right',

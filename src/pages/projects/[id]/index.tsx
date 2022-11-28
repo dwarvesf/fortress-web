@@ -37,8 +37,8 @@ const Default = () => {
             children: <General data={project} />,
           },
           {
-            key: 'member',
-            label: 'Member',
+            key: 'members',
+            label: 'Members',
             children: <Member data={project} />,
           },
           {
