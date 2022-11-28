@@ -116,8 +116,8 @@ export const Actions = ({
             joinedDate: rowData.joinedDate
               ? format(new Date(rowData.joinedDate), SERVER_DATE_FORMAT)
               : undefined,
-            leftDate: rowData.joinedDate
-              ? format(new Date(rowData.joinedDate), SERVER_DATE_FORMAT)
+            leftDate: rowData.leftDate
+              ? format(new Date(rowData.leftDate), SERVER_DATE_FORMAT)
               : undefined,
             seniorityID: rowData.seniority?.id || '',
           }}
