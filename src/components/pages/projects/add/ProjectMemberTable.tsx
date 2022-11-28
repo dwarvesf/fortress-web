@@ -16,7 +16,7 @@ import {
   ViewSeniorityResponse,
 } from 'types/schema'
 import { capitalizeFirstLetter } from 'utils/string'
-import { ProjectStaffStatus, projectStaffStatuses } from 'constants/status'
+import { ProjectMemberStatus, projectMemberStatuses } from 'constants/status'
 import { Actions } from './Actions'
 
 export const ProjectMemberTable = ({
@@ -82,7 +82,7 @@ export const ProjectMemberTable = ({
         key: 'status',
         dataIndex: 'status',
         render: (value) =>
-          value ? projectStaffStatuses[value as ProjectStaffStatus] : '-',
+          value ? projectMemberStatuses[value as ProjectMemberStatus] : '-',
       },
       {
         title: 'Joined Date',

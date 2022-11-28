@@ -1,7 +1,7 @@
 import { Spin, Tabs } from 'antd'
 import { PageHeader } from 'components/common/PageHeader'
 import { General } from 'components/pages/projects/detail/General'
-import { Staff } from 'components/pages/projects/detail/Staff'
+import { Member } from 'components/pages/projects/detail/Member'
 import { WorkUnits } from 'components/pages/projects/detail/WorkUnits'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { useTabWithQuery } from 'hooks/useTabWithQuery'
@@ -37,9 +37,9 @@ const Default = () => {
             children: <General data={project} />,
           },
           {
-            key: 'staff',
-            label: 'Staff',
-            children: <Staff data={project} />,
+            key: 'member',
+            label: 'Member',
+            children: <Member data={project} />,
           },
           {
             key: 'performance',

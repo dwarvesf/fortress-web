@@ -13,13 +13,13 @@ export const employeeStatuses: Record<EmployeeStatus, string> = {
   contractor: 'Contractor',
 }
 
-export type ProjectStaffStatus =
+export type ProjectMemberStatus =
   | 'pending'
   | 'on-boarding'
   | 'active'
   | 'inactive'
 
-export const projectStaffStatuses: Record<ProjectStaffStatus, string> = {
+export const projectMemberStatuses: Record<ProjectMemberStatus, string> = {
   pending: 'Pending',
   'on-boarding': 'On Boarding',
   active: 'Active',

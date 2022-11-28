@@ -4,18 +4,18 @@ import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { client, GET_PATHS } from 'libs/apis'
 import { useRouter } from 'next/router'
 import { useMemo, useState } from 'react'
-import { StaffForm, StaffFormValues } from './StaffForm'
+import { MemberForm, MemberFormValues } from '.'
 
 interface Props {
   isOpen: boolean
   isEditing?: boolean
-  initialValues?: StaffFormValues
+  initialValues?: MemberFormValues
   projectSlotID?: string
   onClose: () => void
   onAfterSubmit: () => void
 }
 
-export const StaffFormModal = (props: Props) => {
+export const MemberFormModal = (props: Props) => {
   const {
     query: { id: projectId },
   } = useRouter()
@@ -33,9 +33,9 @@ export const StaffFormModal = (props: Props) => {
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const { data: allData } = useFetchWithCache(
-    [GET_PATHS.getProjectStaffList, projectId],
+    [GET_PATHS.getProjectMemberList, projectId],
     () =>
-      client.getProjectStaffList(projectId as string, {
+      client.getProjectMemberList(projectId as string, {
         page: 1,
         size: 999,
       }),
@@ -53,11 +53,11 @@ export const StaffFormModal = (props: Props) => {
       .filter((id) => id !== initialEmployeeID)
   }, [allMembers, initialEmployeeID])
 
-  const onSubmit = async (values: StaffFormValues) => {
+  const onSubmit = async (values: MemberFormValues) => {
     try {
       setIsSubmitting(true)
 
-      const formValues: StaffFormValues = {
+      const formValues: MemberFormValues = {
         ...values,
         leftDate: values.status !== 'inactive' ? '' : values.leftDate,
       }
@@ -100,7 +100,7 @@ export const StaffFormModal = (props: Props) => {
       destroyOnClose
       title={`${isEditing ? 'Edit' : 'Create New'} Member`}
     >
-      <StaffForm
+      <MemberForm
         form={form}
         initialValues={initialValues}
         excludedEmployeeIds={excludedEmployeeIds}

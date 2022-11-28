@@ -8,13 +8,13 @@ import {
   ViewPositionResponse,
   ViewSeniorityResponse,
 } from 'types/schema'
-import { StaffForm, StaffFormValues } from '../detail/Staff/StaffForm/StaffForm'
+import { MemberForm, MemberFormValues } from '../detail/Member/MemberForm'
 
 interface Props {
   isOpen: boolean
   isEditing?: boolean
   rowIndex?: number
-  initialValues?: StaffFormValues
+  initialValues?: MemberFormValues
   onClose: () => void
   memberData: PkgHandlerProjectAssignMemberInput[]
   setMemberData: Dispatch<SetStateAction<PkgHandlerProjectAssignMemberInput[]>>
@@ -41,7 +41,7 @@ export const ProjectMemberModal = (props: Props) => {
     getDataOnSubmit,
   } = props
 
-  const onSubmit = async (values: StaffFormValues) => {
+  const onSubmit = async (values: MemberFormValues) => {
     try {
       setIsSubmitting(true)
 
@@ -110,7 +110,7 @@ export const ProjectMemberModal = (props: Props) => {
       destroyOnClose
       title={`${isEditing ? 'Edit' : 'Assign'} member`}
     >
-      <StaffForm
+      <MemberForm
         isAssigning
         form={form}
         initialValues={initialValues}

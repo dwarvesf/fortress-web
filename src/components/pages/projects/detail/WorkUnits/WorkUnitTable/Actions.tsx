@@ -66,7 +66,7 @@ export const Actions = ({
         </Col>
       </Row>
       {/* {isEditDialogOpen && (
-        <StaffFormModal
+        <MemberFormModal
           isEditing
           isOpen={isEditDialogOpen}
           onClose={closeEditDialog}

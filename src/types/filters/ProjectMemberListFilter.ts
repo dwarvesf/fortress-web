@@ -1,6 +1,6 @@
 import { Pagination } from './Pagination'
 
-export class ProjectStaffListFilter extends Pagination {
+export class ProjectMemberListFilter extends Pagination {
   status?: string
 
   constructor(status = '') {

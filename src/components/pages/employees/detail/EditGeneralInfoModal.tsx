@@ -158,6 +158,7 @@ export const EditGeneralInfoModal = (props: Props) => {
                     page: 1,
                     size: 1000,
                     preload: false,
+                    workingStatus: ['full-time'],
                   })
                   return (data || []).map(transformEmployeeDataToSelectOption)
                 }}

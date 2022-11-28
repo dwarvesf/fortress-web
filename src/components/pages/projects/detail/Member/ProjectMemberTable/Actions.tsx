@@ -8,7 +8,7 @@ import { client } from 'libs/apis'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { ViewProjectMember } from 'types/schema'
-import { StaffFormModal } from '../StaffForm/StaffFormModal'
+import { MemberFormModal } from '../MemberForm/MemberFormModal'
 
 export const Actions = ({
   data,
@@ -88,7 +88,7 @@ export const Actions = ({
         </Col>
       </Row>
       {isEditDialogOpen && (
-        <StaffFormModal
+        <MemberFormModal
           isEditing
           isOpen={isEditDialogOpen}
           onClose={closeEditDialog}

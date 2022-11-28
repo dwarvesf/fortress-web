@@ -339,8 +339,8 @@ export const WorkUnits = (props: Props) => {
     loading: isActiveLoading,
     mutate: mutateActive,
   } = useFetchWithCache(
-    [GET_PATHS.getProjectStaffList(project.id || ''), activeFilter],
-    // () => client.getProjectStaffList(project.id || '', activeFilter),
+    [GET_PATHS.getProjectMemberList(project.id || ''), activeFilter],
+    // () => client.getProjectMemberList(project.id || '', activeFilter),
     () => ({ data: mockData.active }),
   )
   // eslint-disable-next-line
@@ -351,8 +351,8 @@ export const WorkUnits = (props: Props) => {
     loading: isArchivedLoading,
     mutate: mutateArchived,
   } = useFetchWithCache(
-    [GET_PATHS.getProjectStaffList(project.id || ''), archivedFilter],
-    // () => client.getProjectStaffList(project.id || '', archivedFilter),
+    [GET_PATHS.getProjectMemberList(project.id || ''), archivedFilter],
+    // () => client.getProjectMemberList(project.id || '', archivedFilter),
     () => ({ data: mockData.archived }),
   )
   // eslint-disable-next-line
@@ -418,7 +418,7 @@ export const WorkUnits = (props: Props) => {
         </Card>
       </Space>
       {/* {isAddNewWorkUnitDialogOpen && (
-        <StaffFormModal
+        <MemberFormModal
           key={tabKey}
           isOpen={isAddNewWorkUnitDialogOpen}
           onClose={closeAddNewWorkUnitDialog}

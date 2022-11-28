@@ -9,42 +9,42 @@ import { useFilter } from 'hooks/useFilter'
 import { useTabWithQuery } from 'hooks/useTabWithQuery'
 import { client, GET_PATHS } from 'libs/apis'
 import { useMemo } from 'react'
-import { ProjectStaffListFilter } from 'types/filters/ProjectStaffListFilter'
+import { ProjectMemberListFilter } from 'types/filters/ProjectMemberListFilter'
 import { ViewProjectData } from 'types/schema'
-import { StaffFormModal } from './StaffForm/StaffFormModal'
-import { StaffTable } from './StaffTable'
+import { MemberFormModal } from './MemberForm/MemberFormModal'
+import { ProjectMemberTable } from './ProjectMemberTable'
 
 interface Props {
   data: ViewProjectData
 }
 
-export const Staff = (props: Props) => {
+export const Member = (props: Props) => {
   const { data: project } = props
 
   const { filter: allFilter, setFilter: setAllFilter } = useFilter(
-    new ProjectStaffListFilter(),
+    new ProjectMemberListFilter(),
   )
   const { filter: pendingFilter, setFilter: setPendingFilter } = useFilter(
-    new ProjectStaffListFilter('pending'),
+    new ProjectMemberListFilter('pending'),
   )
   const { filter: onboardingFilter, setFilter: setOnboardingFilter } =
-    useFilter(new ProjectStaffListFilter('on-boarding'))
+    useFilter(new ProjectMemberListFilter('on-boarding'))
   const { filter: activeFilter, setFilter: setActiveFilter } = useFilter(
-    new ProjectStaffListFilter('active'),
+    new ProjectMemberListFilter('active'),
   )
   const { filter: inactiveFilter, setFilter: setInactiveFilter } = useFilter(
-    new ProjectStaffListFilter('inactive'),
+    new ProjectMemberListFilter('inactive'),
   )
 
-  const { tabKey, setTabKey } = useTabWithQuery({ queryKey: 'staffTab' })
+  const { tabKey, setTabKey } = useTabWithQuery({ queryKey: 'memberTab' })
 
   const {
     data: allData,
     loading: isAllLoading,
     mutate: mutateAll,
   } = useFetchWithCache(
-    [GET_PATHS.getProjectStaffList(project.id || ''), allFilter],
-    () => client.getProjectStaffList(project.id || '', allFilter),
+    [GET_PATHS.getProjectMemberList(project.id || ''), allFilter],
+    () => client.getProjectMemberList(project.id || '', allFilter),
   )
   // eslint-disable-next-line
   const allMembers = allData?.data || []
@@ -54,8 +54,8 @@ export const Staff = (props: Props) => {
     loading: isPendingLoading,
     mutate: mutatePending,
   } = useFetchWithCache(
-    [GET_PATHS.getProjectStaffList(project.id || ''), pendingFilter],
-    () => client.getProjectStaffList(project.id || '', pendingFilter),
+    [GET_PATHS.getProjectMemberList(project.id || ''), pendingFilter],
+    () => client.getProjectMemberList(project.id || '', pendingFilter),
   )
   // eslint-disable-next-line
   const pendingMembers = pendingData?.data || []
@@ -65,8 +65,8 @@ export const Staff = (props: Props) => {
     loading: isOnboardingLoading,
     mutate: mutateOnboarding,
   } = useFetchWithCache(
-    [GET_PATHS.getProjectStaffList(project.id || ''), onboardingFilter],
-    () => client.getProjectStaffList(project.id || '', onboardingFilter),
+    [GET_PATHS.getProjectMemberList(project.id || ''), onboardingFilter],
+    () => client.getProjectMemberList(project.id || '', onboardingFilter),
   )
   // eslint-disable-next-line
   const onboardingMembers = onboardingData?.data || []
@@ -76,8 +76,8 @@ export const Staff = (props: Props) => {
     loading: isActiveLoading,
     mutate: mutateActive,
   } = useFetchWithCache(
-    [GET_PATHS.getProjectStaffList(project.id || ''), activeFilter],
-    () => client.getProjectStaffList(project.id || '', activeFilter),
+    [GET_PATHS.getProjectMemberList(project.id || ''), activeFilter],
+    () => client.getProjectMemberList(project.id || '', activeFilter),
   )
   // eslint-disable-next-line
   const activeMembers = activeData?.data || []
@@ -87,8 +87,8 @@ export const Staff = (props: Props) => {
     loading: isInactiveLoading,
     mutate: mutateInactive,
   } = useFetchWithCache(
-    [GET_PATHS.getProjectStaffList(project.id || ''), inactiveFilter],
-    () => client.getProjectStaffList(project.id || '', inactiveFilter),
+    [GET_PATHS.getProjectMemberList(project.id || ''), inactiveFilter],
+    () => client.getProjectMemberList(project.id || '', inactiveFilter),
   )
   // eslint-disable-next-line
   const inactiveMembers = inactiveData?.data || []
@@ -210,7 +210,7 @@ export const Staff = (props: Props) => {
                 key: '',
                 label: `All (${allMembers.length})`,
                 children: (
-                  <StaffTable
+                  <ProjectMemberTable
                     data={allMembers}
                     isLoading={isAllLoading}
                     onAfterAction={mutate}
@@ -221,7 +221,7 @@ export const Staff = (props: Props) => {
                 key: 'pending',
                 label: `Pending (${pendingMembers.length})`,
                 children: (
-                  <StaffTable
+                  <ProjectMemberTable
                     data={pendingMembers}
                     isLoading={isPendingLoading}
                     onAfterAction={mutate}
@@ -232,7 +232,7 @@ export const Staff = (props: Props) => {
                 key: 'on-boarding',
                 label: `On-boarding (${onboardingMembers.length})`,
                 children: (
-                  <StaffTable
+                  <ProjectMemberTable
                     data={onboardingMembers}
                     isLoading={isOnboardingLoading}
                     onAfterAction={mutate}
@@ -243,7 +243,7 @@ export const Staff = (props: Props) => {
                 key: 'active',
                 label: `Active (${activeMembers.length})`,
                 children: (
-                  <StaffTable
+                  <ProjectMemberTable
                     data={activeMembers}
                     isLoading={isActiveLoading}
                     onAfterAction={mutate}
@@ -254,7 +254,7 @@ export const Staff = (props: Props) => {
                 key: 'inactive',
                 label: `Inactive (${inactiveMembers.length})`,
                 children: (
-                  <StaffTable
+                  <ProjectMemberTable
                     data={inactiveMembers}
                     isLoading={isInactiveLoading}
                     onAfterAction={mutate}
@@ -267,7 +267,7 @@ export const Staff = (props: Props) => {
         {paginationRender}
       </Space>
       {isAddNewMemberDialogOpen && (
-        <StaffFormModal
+        <MemberFormModal
           key={tabKey}
           isOpen={isAddNewMemberDialogOpen}
           onClose={closeAddNewMemberDialog}
