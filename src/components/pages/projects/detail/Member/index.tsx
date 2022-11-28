@@ -12,7 +12,7 @@ import { useMemo } from 'react'
 import { ProjectMemberListFilter } from 'types/filters/ProjectMemberListFilter'
 import { ViewProjectData } from 'types/schema'
 import { MemberFormModal } from './MemberForm/MemberFormModal'
-import { MemberDetailTable } from './MemberDetailTable'
+import { ProjectMemberListTable } from './ProjectMemberListTable'
 
 interface Props {
   data: ViewProjectData
@@ -210,7 +210,7 @@ export const Member = (props: Props) => {
                 key: '',
                 label: `All (${allMembers.length})`,
                 children: (
-                  <MemberDetailTable
+                  <ProjectMemberListTable
                     data={allMembers}
                     isLoading={isAllLoading}
                     onAfterAction={mutate}
@@ -221,7 +221,7 @@ export const Member = (props: Props) => {
                 key: 'pending',
                 label: `Pending (${pendingMembers.length})`,
                 children: (
-                  <MemberDetailTable
+                  <ProjectMemberListTable
                     data={pendingMembers}
                     isLoading={isPendingLoading}
                     onAfterAction={mutate}
@@ -232,7 +232,7 @@ export const Member = (props: Props) => {
                 key: 'on-boarding',
                 label: `On-boarding (${onboardingMembers.length})`,
                 children: (
-                  <MemberDetailTable
+                  <ProjectMemberListTable
                     data={onboardingMembers}
                     isLoading={isOnboardingLoading}
                     onAfterAction={mutate}
@@ -243,7 +243,7 @@ export const Member = (props: Props) => {
                 key: 'active',
                 label: `Active (${activeMembers.length})`,
                 children: (
-                  <MemberDetailTable
+                  <ProjectMemberListTable
                     data={activeMembers}
                     isLoading={isActiveLoading}
                     onAfterAction={mutate}
@@ -254,7 +254,7 @@ export const Member = (props: Props) => {
                 key: 'inactive',
                 label: `Inactive (${inactiveMembers.length})`,
                 children: (
-                  <MemberDetailTable
+                  <ProjectMemberListTable
                     data={inactiveMembers}
                     isLoading={isInactiveLoading}
                     onAfterAction={mutate}
