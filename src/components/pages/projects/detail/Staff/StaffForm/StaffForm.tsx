@@ -208,7 +208,10 @@ export const StaffForm = (props: Props) => {
             label="Joined Date"
             name="joinedDate"
             rules={[
-              { required: isAssigning, message: 'Please select joined date' },
+              {
+                required: isAssigning && status !== 'pending',
+                message: 'Please select joined date',
+              },
             ]}
           >
             <Input
