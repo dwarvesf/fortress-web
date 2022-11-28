@@ -12,22 +12,22 @@ import {
   transformMetadataToSelectOption,
 } from 'utils/select'
 import { DeploymentType, deploymentTypes } from 'constants/deploymentTypes'
-import { ProjectStaffStatus, projectStaffStatuses } from 'constants/status'
+import { ProjectMemberStatus, projectMemberStatuses } from 'constants/status'
 import { renderEmployeeOption } from 'components/common/Select/renderers/employeeOption'
 import { FormInstance } from 'antd/es/form/Form'
 import { useEffect } from 'react'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { theme } from 'styles'
 
-export type StaffFormValues =
+export type MemberFormValues =
   Partial<GithubComDwarvesfFortressApiPkgHandlerProjectAssignMemberInput>
 
 interface Props {
   isAssigning?: boolean
   form: FormInstance<any>
-  initialValues?: StaffFormValues
+  initialValues?: MemberFormValues
   excludedEmployeeIds?: string[]
-  onSubmit: (values: StaffFormValues) => void
+  onSubmit: (values: MemberFormValues) => void
   getDataOnSubmit?: (
     e: ViewEmployeeListDataResponse & Meta,
     s: ViewSeniorityResponse,
@@ -35,7 +35,7 @@ interface Props {
   ) => void
 }
 
-export const StaffForm = (props: Props) => {
+export const MemberForm = (props: Props) => {
   const {
     isAssigning = false,
     form,
@@ -46,21 +46,21 @@ export const StaffForm = (props: Props) => {
   } = props
 
   const employeeID = Form.useWatch('employeeID', form)
-  const status: ProjectStaffStatus = Form.useWatch('status', form)
+  const status: ProjectMemberStatus = Form.useWatch('status', form)
 
   const { data: employeesData, loading: isEmployeesDataLoading } =
     useFetchWithCache(
-      [GET_PATHS.getEmployees, excludedEmployeeIds.join(''), 'staff-form'],
+      [GET_PATHS.getEmployees, excludedEmployeeIds.join(''), 'member-form'],
       () => client.getEmployees({ page: 1, size: 1000 }),
     )
 
   const { data: senioritiesData, loading: isSenioritiesDataLoading } =
-    useFetchWithCache([GET_PATHS.getSeniorityMetadata, 'staff-form'], () =>
+    useFetchWithCache([GET_PATHS.getSeniorityMetadata, 'member-form'], () =>
       client.getSenioritiesMetadata(),
     )
 
   const { data: positionsData, loading: isPositionsDataLoading } =
-    useFetchWithCache([GET_PATHS.getPositionMetadata, 'staff-form'], () =>
+    useFetchWithCache([GET_PATHS.getPositionMetadata, 'member-form'], () =>
       client.getPositionsMetadata(),
     )
 
@@ -273,7 +273,7 @@ export const StaffForm = (props: Props) => {
           >
             <Select
               placeholder="Select status"
-              options={Object.keys(projectStaffStatuses)
+              options={Object.keys(projectMemberStatuses)
                 .filter((status) => {
                   if (isAssigning && status === 'inactive') {
                     return false
@@ -287,7 +287,7 @@ export const StaffForm = (props: Props) => {
                 })
                 .map((status) => {
                   return {
-                    label: projectStaffStatuses[status as ProjectStaffStatus],
+                    label: projectMemberStatuses[status as ProjectMemberStatus],
                     value: status,
                   }
                 })}

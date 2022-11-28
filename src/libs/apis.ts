@@ -1,6 +1,6 @@
 import { EmployeeListFilter } from 'types/filters/EmployeeListFilter'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
-import { ProjectStaffListFilter } from 'types/filters/ProjectStaffListFilter'
+import { ProjectMemberListFilter } from 'types/filters/ProjectMemberListFilter'
 import {
   ViewAuthData,
   ViewProfileData,
@@ -47,7 +47,7 @@ export const GET_PATHS = {
   getUsers: '/users',
   getEmployees: '/employees',
   getProjects: '/projects',
-  getProjectStaffList: (id: string) => `/projects/${id}/members`,
+  getProjectMemberList: (id: string) => `/projects/${id}/members`,
   getAccountStatusMetadata: '/metadata/account-statuses',
   getPositionMetadata: '/metadata/positions',
   getAccountRoleMetadata: '/metadata/account-roles',
@@ -155,9 +155,9 @@ class Client {
     })
   }
 
-  public getProjectStaffList(
+  public getProjectMemberList(
     projectId: string,
-    filter: ProjectStaffListFilter,
+    filter: ProjectMemberListFilter,
   ) {
     const queryString = qs.stringify(filter)
 
