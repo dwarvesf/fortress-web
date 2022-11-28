@@ -45,7 +45,7 @@ export const Actions = ({
       setIsLoading(true)
 
       const rowIndex = tableData.findIndex(
-        (d) => d.employeeID === rowData.employeeID,
+        (d) => JSON.stringify(d) === JSON.stringify(rowData),
       )
 
       const currentMemberData = memberData
@@ -103,7 +103,7 @@ export const Actions = ({
         <ProjectMemberModal
           isEditing
           rowIndex={tableData.findIndex(
-            (d) => d.employeeID === rowData.employeeID,
+            (d) => JSON.stringify(d) === JSON.stringify(rowData),
           )}
           isOpen={isEditDialogOpen}
           onClose={closeEditDialog}

@@ -106,7 +106,7 @@ export const ProjectMemberTable = ({
 
   return (
     <Table
-      rowKey={(row) => row.projectSlotID || '-'}
+      rowKey={(row, rowIndex) => row.employeeID || String(rowIndex)}
       columns={columns}
       dataSource={data}
       pagination={false}
