@@ -3,7 +3,7 @@ import { useForm } from 'antd/lib/form/Form'
 import { PageHeader } from 'components/common/PageHeader'
 import { SERVER_DATE_FORMAT } from 'constants/date'
 import { ROUTES } from 'constants/routes'
-import { client } from 'libs/apis'
+import { client, Meta } from 'libs/apis'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useState } from 'react'
 import {
@@ -16,14 +16,15 @@ import {
   ViewEmployeeData,
   ViewPositionResponse,
   ViewSeniorityResponse,
+  ViewEmployeeListDataResponse,
 } from 'types/schema'
 import { format } from 'date-fns'
-import { ProjectForm } from 'components/pages/projects/ProjectForm'
+import { ProjectForm } from 'components/pages/projects/add/ProjectForm'
 import { PlusCircleOutlined } from '@ant-design/icons'
 import { useDisclosure } from '@dwarvesf/react-hooks'
-import { ProjectMemberModal } from 'components/pages/projects/ProjectMemberModal'
+import { ProjectMemberModal } from 'components/pages/projects/add/ProjectMemberModal'
 import { DeploymentType, deploymentTypes } from 'constants/deploymentTypes'
-import { StaffTable } from 'components/pages/projects/detail/Staff/StaffTable'
+import { ProjectMemberTable } from 'components/pages/projects/add/ProjectMemberTable'
 
 const getPositionsFromIDs = (data: ModelPosition[], positionStrs: string[]) => {
   const result: ViewPosition[] = []
@@ -44,6 +45,10 @@ const getSeniorityFromID = (data: ModelSeniority[], seniorityID: string) => {
   return data?.find((d) => d.id === seniorityID)
 }
 
+const getEmployeeFromID = (data: ViewEmployeeData[], id: string) => {
+  return data?.find((d) => d.id === id)
+}
+
 const CreateNewProjectPage = () => {
   const [form] = useForm()
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
@@ -57,7 +62,9 @@ const CreateNewProjectPage = () => {
   )
 
   // storing metadata
-  const [employeeData, setEmployeeData] = useState<ViewEmployeeData>({})
+  const [employeeData, setEmployeeData] = useState<
+    ViewEmployeeListDataResponse & Meta
+  >({})
   const [senioritiesData, setSenioritiesData] = useState<ViewSeniorityResponse>(
     {},
   )
@@ -114,12 +121,21 @@ const CreateNewProjectPage = () => {
   const transformMemberDataToTableData = useCallback(
     (memberData: PkgHandlerProjectAssignMemberInput): ViewProjectMember => {
       return {
-        avatar: employeeData.avatar,
+        avatar: getEmployeeFromID(
+          employeeData.data || [],
+          memberData?.employeeID || '',
+        )?.avatar,
         deploymentType:
           deploymentTypes[memberData.deploymentType as DeploymentType],
-        displayName: employeeData.displayName,
+        displayName: getEmployeeFromID(
+          employeeData.data || [],
+          memberData?.employeeID || '',
+        )?.displayName,
         employeeID: memberData.employeeID,
-        fullName: employeeData.fullName,
+        fullName: getEmployeeFromID(
+          employeeData.data || [],
+          memberData?.employeeID || '',
+        )?.fullName,
         isLead: memberData.isLead,
         joinedDate: memberData.joinedDate,
         leftDate: memberData.leftDate,
@@ -140,10 +156,15 @@ const CreateNewProjectPage = () => {
 
   // generate data table when new member data added
   useEffect(() => {
+    setMemberTableData([])
+    const newMemberTableData: ViewProjectMember[] = []
+
     memberData.forEach((d) => {
       const tableData = transformMemberDataToTableData(d)
-      setMemberTableData([...memberTableData, tableData])
+      newMemberTableData.push(tableData)
     })
+
+    setMemberTableData(newMemberTableData)
   }, [JSON.stringify({ memberData, transformMemberDataToTableData })]) // eslint-disable-line
 
   return (
@@ -173,10 +194,19 @@ const CreateNewProjectPage = () => {
               </Button>
             </Space>
 
-            <StaffTable
+            <ProjectMemberTable
               data={memberTableData}
-              isLoading={false}
-              onAfterAction={() => {}}
+              memberData={memberData}
+              setMemberData={setMemberData}
+              getDataOnSubmit={(
+                e: ViewEmployeeListDataResponse & Meta,
+                s: ViewSeniorityResponse,
+                p: ViewPositionResponse,
+              ) => {
+                setEmployeeData(e)
+                setSenioritiesData(s)
+                setPositionsData(p)
+              }}
             />
           </Col>
 
@@ -199,7 +229,7 @@ const CreateNewProjectPage = () => {
         memberData={memberData}
         setMemberData={setMemberData}
         getDataOnSubmit={(
-          e: ViewEmployeeData,
+          e: ViewEmployeeListDataResponse & Meta,
           s: ViewSeniorityResponse,
           p: ViewPositionResponse,
         ) => {

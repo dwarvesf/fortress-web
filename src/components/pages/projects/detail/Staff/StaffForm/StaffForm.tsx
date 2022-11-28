@@ -1,8 +1,8 @@
 import { Checkbox, Col, Form, Input, Row, Select } from 'antd'
-import { client, GET_PATHS } from 'libs/apis'
+import { client, GET_PATHS, Meta } from 'libs/apis'
 import {
   GithubComDwarvesfFortressApiPkgHandlerProjectAssignMemberInput,
-  ViewEmployeeData,
+  ViewEmployeeListDataResponse,
   ViewPositionResponse,
   ViewSeniorityResponse,
 } from 'types/schema'
@@ -15,10 +15,7 @@ import { DeploymentType, deploymentTypes } from 'constants/deploymentTypes'
 import { ProjectStaffStatus, projectStaffStatuses } from 'constants/status'
 import { renderEmployeeOption } from 'components/common/Select/renderers/employeeOption'
 import { FormInstance } from 'antd/es/form/Form'
-import {
-  // Dispatch, SetStateAction,
-  useEffect,
-} from 'react'
+import { useEffect } from 'react'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { theme } from 'styles'
 
@@ -31,7 +28,7 @@ interface Props {
   excludedEmployeeIds?: string[]
   onSubmit: (values: StaffFormValues) => void
   getDataOnSubmit?: (
-    e: ViewEmployeeData,
+    e: ViewEmployeeListDataResponse & Meta,
     s: ViewSeniorityResponse,
     p: ViewPositionResponse,
   ) => void
@@ -85,14 +82,7 @@ export const StaffForm = (props: Props) => {
       form={form}
       onFinish={async (values) => {
         if (typeof getDataOnSubmit === 'function') {
-          if (values.employeeID) {
-            const { data: employeeData } = await client.getEmployee(
-              values.employeeID,
-            )
-            getDataOnSubmit(employeeData, senioritiesData!, positionsData!)
-          } else {
-            getDataOnSubmit({}, senioritiesData!, positionsData!)
-          }
+          getDataOnSubmit(employeesData!, senioritiesData!, positionsData!)
         }
         onSubmit(values)
       }}

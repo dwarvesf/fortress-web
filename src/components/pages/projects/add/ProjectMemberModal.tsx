@@ -1,23 +1,25 @@
 import { Modal, notification } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
+import { Meta } from 'libs/apis'
 import { Dispatch, SetStateAction, useState } from 'react'
 import {
   PkgHandlerProjectAssignMemberInput,
-  ViewEmployeeData,
+  ViewEmployeeListDataResponse,
   ViewPositionResponse,
   ViewSeniorityResponse,
 } from 'types/schema'
-import { StaffForm, StaffFormValues } from './detail/Staff/StaffForm/StaffForm'
+import { StaffForm, StaffFormValues } from '../detail/Staff/StaffForm/StaffForm'
 
 interface Props {
   isOpen: boolean
   isEditing?: boolean
-  initialValues?: PkgHandlerProjectAssignMemberInput
+  rowIndex?: number
+  initialValues?: StaffFormValues
   onClose: () => void
   memberData: PkgHandlerProjectAssignMemberInput[]
   setMemberData: Dispatch<SetStateAction<PkgHandlerProjectAssignMemberInput[]>>
-  getDataOnSubmit: (
-    e: ViewEmployeeData,
+  getDataOnSubmit?: (
+    e: ViewEmployeeListDataResponse & Meta,
     s: ViewSeniorityResponse,
     p: ViewPositionResponse,
   ) => void
@@ -31,6 +33,7 @@ export const ProjectMemberModal = (props: Props) => {
   const {
     isOpen,
     isEditing = false,
+    rowIndex,
     initialValues,
     onClose,
     memberData,
@@ -43,10 +46,24 @@ export const ProjectMemberModal = (props: Props) => {
       setIsSubmitting(true)
 
       const newData = transformDataToSend(values)
-      setMemberData([...memberData, newData])
+
+      if (!isEditing) {
+        setMemberData([...memberData, newData])
+      } else {
+        const currentMemberData = memberData
+
+        const newMemberData = currentMemberData.map((item, j) => {
+          if (j === rowIndex) {
+            return newData
+          }
+          return item
+        })
+
+        setMemberData(newMemberData)
+      }
 
       notification.success({
-        message: `Member ${isEditing ? 'updated' : 'assign'} successfully!`,
+        message: `Member ${isEditing ? 'updated' : 'assigned'} successfully!`,
       })
 
       onClose()
@@ -58,7 +75,9 @@ export const ProjectMemberModal = (props: Props) => {
       })
     } finally {
       setIsSubmitting(false)
-      form.resetFields()
+      if (!isEditing) {
+        form.resetFields()
+      }
     }
   }
 
