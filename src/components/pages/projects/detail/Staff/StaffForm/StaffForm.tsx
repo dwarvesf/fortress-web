@@ -80,7 +80,7 @@ export const StaffForm = (props: Props) => {
   return (
     <Form
       form={form}
-      onFinish={async (values) => {
+      onFinish={(values) => {
         if (typeof getDataOnSubmit === 'function') {
           getDataOnSubmit(employeesData!, senioritiesData!, positionsData!)
         }
