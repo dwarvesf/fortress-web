@@ -24,6 +24,16 @@ interface Props {
 export const ProjectForm = (props: Props) => {
   const { form, initialValues, onSubmit } = props
 
+  const employeeOptionGetter = async () => {
+    const { data } = await client.getEmployees({
+      page: 1,
+      size: 1000,
+      preload: false,
+      workingStatus: ['full-time'],
+    })
+    return (data || []).map(transformEmployeeDataToSelectOption)
+  }
+
   return (
     <Form
       form={form}
@@ -84,14 +94,7 @@ export const ProjectForm = (props: Props) => {
           >
             <AsyncSelect
               bordered={false}
-              optionGetter={async () => {
-                const { data } = await client.getEmployees({
-                  page: 1,
-                  size: 1000,
-                  preload: false,
-                })
-                return (data || []).map(transformEmployeeDataToSelectOption)
-              }}
+              optionGetter={employeeOptionGetter}
               swrKeys={[
                 GET_PATHS.getEmployees,
                 'create-new-project',
@@ -124,14 +127,7 @@ export const ProjectForm = (props: Props) => {
           <Form.Item label="Delivery manager" name="deliveryManagerID">
             <AsyncSelect
               bordered={false}
-              optionGetter={async () => {
-                const { data } = await client.getEmployees({
-                  page: 1,
-                  size: 1000,
-                  preload: false,
-                })
-                return (data || []).map(transformEmployeeDataToSelectOption)
-              }}
+              optionGetter={employeeOptionGetter}
               swrKeys={[
                 GET_PATHS.getEmployees,
                 'create-new-project',

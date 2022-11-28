@@ -51,7 +51,12 @@ export const MemberForm = (props: Props) => {
   const { data: employeesData, loading: isEmployeesDataLoading } =
     useFetchWithCache(
       [GET_PATHS.getEmployees, excludedEmployeeIds.join(''), 'member-form'],
-      () => client.getEmployees({ page: 1, size: 1000 }),
+      () =>
+        client.getEmployees({
+          page: 1,
+          size: 1000,
+          workingStatus: ['probation', 'full-time'],
+        }),
     )
 
   const { data: senioritiesData, loading: isSenioritiesDataLoading } =
