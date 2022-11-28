@@ -3,24 +3,36 @@ import { ColumnsType } from 'antd/lib/table'
 import { AvatarWithName } from 'components/common/AvatarWithName'
 import { DATE_FORMAT } from 'constants/date'
 import { format } from 'date-fns'
-import { useMemo } from 'react'
+import { Meta } from 'libs/apis'
+import { Dispatch, SetStateAction, useMemo } from 'react'
 import {
   ModelPosition,
   ModelSeniority,
+  PkgHandlerProjectAssignMemberInput,
+  ViewEmployeeListDataResponse,
   ViewPosition,
+  ViewPositionResponse,
   ViewProjectMember,
+  ViewSeniorityResponse,
 } from 'types/schema'
 import { capitalizeFirstLetter } from 'utils/string'
+import { ProjectStaffStatus, projectStaffStatuses } from 'constants/status'
 import { Actions } from './Actions'
 
-export const StaffTable = ({
+export const ProjectMemberTable = ({
   data,
-  isLoading,
-  onAfterAction,
+  memberData,
+  setMemberData,
+  getDataOnSubmit,
 }: {
   data: ViewProjectMember[]
-  isLoading: boolean
-  onAfterAction: () => void
+  memberData: PkgHandlerProjectAssignMemberInput[]
+  setMemberData: Dispatch<SetStateAction<PkgHandlerProjectAssignMemberInput[]>>
+  getDataOnSubmit?: (
+    e: ViewEmployeeListDataResponse & Meta,
+    s: ViewSeniorityResponse,
+    p: ViewPositionResponse,
+  ) => void
 }) => {
   const columns = useMemo(() => {
     return [
@@ -66,31 +78,37 @@ export const StaffTable = ({
         render: (value) => (value ? capitalizeFirstLetter(value) : '-'),
       },
       {
+        title: 'Status',
+        key: 'status',
+        dataIndex: 'status',
+        render: (value) =>
+          value ? projectStaffStatuses[value as ProjectStaffStatus] : '-',
+      },
+      {
         title: 'Joined Date',
         key: 'joinedDate',
         dataIndex: 'joinedDate',
         render: (value) => (value ? format(new Date(value), DATE_FORMAT) : '-'),
       },
       {
-        title: 'Left Date',
-        key: 'leftDate',
-        dataIndex: 'leftDate',
-        render: (value) => (value ? format(new Date(value), DATE_FORMAT) : '-'),
-      },
-      {
         key: 'action',
         render: (value) => (
-          <Actions data={value} onAfterAction={onAfterAction} />
+          <Actions
+            rowData={value}
+            getDataOnSubmit={getDataOnSubmit}
+            tableData={data}
+            memberData={memberData}
+            setMemberData={setMemberData}
+          />
         ),
         fixed: 'right',
       },
     ] as ColumnsType<ViewProjectMember>
-  }, [onAfterAction])
+  }, [data, memberData, getDataOnSubmit, setMemberData])
 
   return (
     <Table
-      loading={isLoading}
-      rowKey={(row) => row.projectSlotID || '-'}
+      rowKey={(row, rowIndex) => row.employeeID || String(rowIndex)}
       columns={columns}
       dataSource={data}
       pagination={false}

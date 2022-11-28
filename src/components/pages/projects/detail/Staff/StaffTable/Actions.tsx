@@ -100,8 +100,8 @@ export const Actions = ({
             joinedDate: data.joinedDate
               ? format(new Date(data.joinedDate), SERVER_DATE_FORMAT)
               : undefined,
-            leftDate: data.joinedDate
-              ? format(new Date(data.joinedDate), SERVER_DATE_FORMAT)
+            leftDate: data.leftDate
+              ? format(new Date(data.leftDate), SERVER_DATE_FORMAT)
               : undefined,
             seniorityID: data.seniority?.id || '',
           }}

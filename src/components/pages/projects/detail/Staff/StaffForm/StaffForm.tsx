@@ -1,8 +1,13 @@
 import { Checkbox, Col, Form, Input, Row, Select } from 'antd'
-import { client, GET_PATHS } from 'libs/apis'
-import { GithubComDwarvesfFortressApiPkgHandlerProjectAssignMemberInput } from 'types/schema'
-import { AsyncSelect } from 'components/common/Select'
+import { client, GET_PATHS, Meta } from 'libs/apis'
 import {
+  GithubComDwarvesfFortressApiPkgHandlerProjectAssignMemberInput,
+  ViewEmployeeListDataResponse,
+  ViewPositionResponse,
+  ViewSeniorityResponse,
+} from 'types/schema'
+import {
+  searchFilterOption,
   transformEmployeeDataToSelectOption,
   transformMetadataToSelectOption,
 } from 'utils/select'
@@ -11,22 +16,53 @@ import { ProjectStaffStatus, projectStaffStatuses } from 'constants/status'
 import { renderEmployeeOption } from 'components/common/Select/renderers/employeeOption'
 import { FormInstance } from 'antd/es/form/Form'
 import { useEffect } from 'react'
+import { useFetchWithCache } from 'hooks/useFetchWithCache'
+import { theme } from 'styles'
 
 export type StaffFormValues =
   Partial<GithubComDwarvesfFortressApiPkgHandlerProjectAssignMemberInput>
 
 interface Props {
+  isAssigning?: boolean
   form: FormInstance<any>
   initialValues?: StaffFormValues
   excludedEmployeeIds?: string[]
   onSubmit: (values: StaffFormValues) => void
+  getDataOnSubmit?: (
+    e: ViewEmployeeListDataResponse & Meta,
+    s: ViewSeniorityResponse,
+    p: ViewPositionResponse,
+  ) => void
 }
 
 export const StaffForm = (props: Props) => {
-  const { form, initialValues, excludedEmployeeIds = [], onSubmit } = props
+  const {
+    isAssigning = false,
+    form,
+    initialValues,
+    excludedEmployeeIds = [],
+    onSubmit,
+    getDataOnSubmit,
+  } = props
 
   const employeeID = Form.useWatch('employeeID', form)
   const status: ProjectStaffStatus = Form.useWatch('status', form)
+
+  const { data: employeesData, loading: isEmployeesDataLoading } =
+    useFetchWithCache(
+      [GET_PATHS.getEmployees, excludedEmployeeIds.join(''), 'staff-form'],
+      () => client.getEmployees({ page: 1, size: 1000 }),
+    )
+
+  const { data: senioritiesData, loading: isSenioritiesDataLoading } =
+    useFetchWithCache([GET_PATHS.getSeniorityMetadata, 'staff-form'], () =>
+      client.getSenioritiesMetadata(),
+    )
+
+  const { data: positionsData, loading: isPositionsDataLoading } =
+    useFetchWithCache([GET_PATHS.getPositionMetadata, 'staff-form'], () =>
+      client.getPositionsMetadata(),
+    )
 
   // Set status to active if user selected an employee
   // We don't allow pending status if employeeID is available
@@ -46,7 +82,12 @@ export const StaffForm = (props: Props) => {
   return (
     <Form
       form={form}
-      onFinish={onSubmit}
+      onFinish={(values) => {
+        if (typeof getDataOnSubmit === 'function') {
+          getDataOnSubmit(employeesData!, senioritiesData!, positionsData!)
+        }
+        onSubmit(values)
+      }}
       initialValues={{
         ...initialValues,
       }}
@@ -57,28 +98,35 @@ export const StaffForm = (props: Props) => {
             label="Member"
             name="employeeID"
             required={status !== 'pending'}
-            rules={[{ required: status !== 'pending' }]}
+            rules={[
+              {
+                required: status !== 'pending',
+                message: 'Please select member',
+              },
+            ]}
           >
-            <AsyncSelect
-              placeholder="Select a member"
-              swrKeys={[GET_PATHS.getEmployees, excludedEmployeeIds.join('')]}
-              optionGetter={async () => {
-                const { data } = await client.getEmployees({
-                  page: 1,
-                  size: 1000,
-                  workingStatus: 'full-time',
-                  preload: false,
-                })
-
-                return (data || [])
-                  .filter(
-                    (employee) =>
-                      !excludedEmployeeIds.includes(employee?.id || ''),
-                  )
-                  .map(transformEmployeeDataToSelectOption)
+            <Select
+              style={{
+                background: theme.colors.white,
               }}
-              customOptionRenderer={renderEmployeeOption}
-            />
+              placeholder={
+                isEmployeesDataLoading ? 'Fetching data' : 'Select a member'
+              }
+              loading={isEmployeesDataLoading}
+              disabled={isEmployeesDataLoading}
+              showSearch
+              showArrow
+              filterOption={searchFilterOption}
+              maxTagCount="responsive"
+            >
+              {(employeesData?.data || [])
+                .filter(
+                  (employee) =>
+                    !excludedEmployeeIds.includes(employee?.id || ''),
+                )
+                .map(transformEmployeeDataToSelectOption)
+                .map(renderEmployeeOption)}
+            </Select>
           </Form.Item>
         </Col>
         <Col span={24} md={{ span: 12 }}>
@@ -86,16 +134,24 @@ export const StaffForm = (props: Props) => {
             label="Seniority"
             name="seniorityID"
             required
-            rules={[{ required: true }]}
+            rules={[{ required: true, message: 'Please select seniority' }]}
           >
-            <AsyncSelect
-              placeholder="Select seniority"
-              swrKeys={[GET_PATHS.getSeniorityMetadata]}
-              optionGetter={async () =>
-                ((await client.getSenioritiesMetadata()).data || []).map(
-                  transformMetadataToSelectOption,
-                )
+            <Select
+              style={{
+                background: theme.colors.white,
+              }}
+              placeholder={
+                isSenioritiesDataLoading ? 'Fetching data' : 'Select seniority'
               }
+              loading={isSenioritiesDataLoading}
+              disabled={isSenioritiesDataLoading}
+              showSearch
+              showArrow
+              filterOption={searchFilterOption}
+              maxTagCount="responsive"
+              options={senioritiesData?.data?.map(
+                transformMetadataToSelectOption,
+              )}
             />
           </Form.Item>
         </Col>
@@ -104,17 +160,26 @@ export const StaffForm = (props: Props) => {
             label="Positions"
             name="positions"
             required
-            rules={[{ required: true }]}
+            rules={[{ required: true, message: 'Please select positions' }]}
           >
-            <AsyncSelect
-              placeholder="Select positions"
+            <Select
               mode="multiple"
-              swrKeys={[GET_PATHS.getPositionMetadata]}
-              optionGetter={async () =>
-                ((await client.getPositionsMetadata()).data || []).map(
-                  transformMetadataToSelectOption,
-                )
+              style={{
+                background: theme.colors.white,
+                overflow: 'auto',
+              }}
+              placeholder={
+                isPositionsDataLoading ? 'Fetching data' : 'Select positions'
               }
+              loading={isPositionsDataLoading}
+              disabled={isPositionsDataLoading}
+              showSearch
+              showArrow
+              filterOption={searchFilterOption}
+              maxTagCount="responsive"
+              options={positionsData?.data?.map(
+                transformMetadataToSelectOption,
+              )}
             />
           </Form.Item>
         </Col>
@@ -123,7 +188,9 @@ export const StaffForm = (props: Props) => {
             label="Deployment Type"
             name="deploymentType"
             required
-            rules={[{ required: true }]}
+            rules={[
+              { required: true, message: 'Please select deployment type' },
+            ]}
           >
             <Select
               placeholder="Select deployment type"
@@ -137,7 +204,16 @@ export const StaffForm = (props: Props) => {
           </Form.Item>
         </Col>
         <Col span={24} md={{ span: 12 }}>
-          <Form.Item label="Joined Date" name="joinedDate">
+          <Form.Item
+            label="Joined Date"
+            name="joinedDate"
+            rules={[
+              {
+                required: isAssigning && status !== 'pending',
+                message: 'Please select joined date',
+              },
+            ]}
+          >
             <Input
               type="date"
               placeholder="Select joined date"
@@ -145,26 +221,33 @@ export const StaffForm = (props: Props) => {
             />
           </Form.Item>
         </Col>
-        <Col span={24} md={{ span: 12 }}>
-          <Form.Item
-            label="Left Date"
-            name="leftDate"
-            rules={[{ required: status === 'inactive' }]}
-          >
-            <Input
-              type="date"
-              placeholder="Select left date"
-              className="bordered"
-              disabled={status !== 'inactive'}
-            />
-          </Form.Item>
-        </Col>
+        {!isAssigning && (
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item
+              label="Left Date"
+              name="leftDate"
+              rules={[
+                {
+                  required: status === 'inactive',
+                  message: 'Please select left date',
+                },
+              ]}
+            >
+              <Input
+                type="date"
+                placeholder="Select left date"
+                className="bordered"
+                disabled={status !== 'inactive'}
+              />
+            </Form.Item>
+          </Col>
+        )}
         <Col span={24} md={{ span: 12 }}>
           <Form.Item
             label="Rate"
             name="rate"
             required
-            rules={[{ required: true }]}
+            rules={[{ required: true, message: 'Please input rate' }]}
           >
             <Input
               type="number"
@@ -183,11 +266,19 @@ export const StaffForm = (props: Props) => {
           </Form.Item>
         </Col>
         <Col span={24} md={{ span: 12 }}>
-          <Form.Item label="Status" name="status">
+          <Form.Item
+            label="Status"
+            name="status"
+            rules={[{ required: isAssigning, message: 'Please select status' }]}
+          >
             <Select
               placeholder="Select status"
               options={Object.keys(projectStaffStatuses)
                 .filter((status) => {
+                  if (isAssigning && status === 'inactive') {
+                    return false
+                  }
+
                   if (employeeID) {
                     return status !== 'pending'
                   }
