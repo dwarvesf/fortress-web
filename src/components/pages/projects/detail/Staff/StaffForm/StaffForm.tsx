@@ -23,6 +23,7 @@ export type StaffFormValues =
   Partial<GithubComDwarvesfFortressApiPkgHandlerProjectAssignMemberInput>
 
 interface Props {
+  isAssigning?: boolean
   form: FormInstance<any>
   initialValues?: StaffFormValues
   excludedEmployeeIds?: string[]
@@ -36,6 +37,7 @@ interface Props {
 
 export const StaffForm = (props: Props) => {
   const {
+    isAssigning = false,
     form,
     initialValues,
     excludedEmployeeIds = [],
@@ -96,7 +98,12 @@ export const StaffForm = (props: Props) => {
             label="Member"
             name="employeeID"
             required={status !== 'pending'}
-            rules={[{ required: status !== 'pending' }]}
+            rules={[
+              {
+                required: status !== 'pending',
+                message: 'Please select member',
+              },
+            ]}
           >
             <Select
               style={{
@@ -127,7 +134,7 @@ export const StaffForm = (props: Props) => {
             label="Seniority"
             name="seniorityID"
             required
-            rules={[{ required: true }]}
+            rules={[{ required: true, message: 'Please select seniority' }]}
           >
             <Select
               style={{
@@ -153,7 +160,7 @@ export const StaffForm = (props: Props) => {
             label="Positions"
             name="positions"
             required
-            rules={[{ required: true }]}
+            rules={[{ required: true, message: 'Please select positions' }]}
           >
             <Select
               mode="multiple"
@@ -181,7 +188,9 @@ export const StaffForm = (props: Props) => {
             label="Deployment Type"
             name="deploymentType"
             required
-            rules={[{ required: true }]}
+            rules={[
+              { required: true, message: 'Please select deployment type' },
+            ]}
           >
             <Select
               placeholder="Select deployment type"
@@ -195,7 +204,13 @@ export const StaffForm = (props: Props) => {
           </Form.Item>
         </Col>
         <Col span={24} md={{ span: 12 }}>
-          <Form.Item label="Joined Date" name="joinedDate">
+          <Form.Item
+            label="Joined Date"
+            name="joinedDate"
+            rules={[
+              { required: isAssigning, message: 'Please select joined date' },
+            ]}
+          >
             <Input
               type="date"
               placeholder="Select joined date"
@@ -203,26 +218,33 @@ export const StaffForm = (props: Props) => {
             />
           </Form.Item>
         </Col>
-        <Col span={24} md={{ span: 12 }}>
-          <Form.Item
-            label="Left Date"
-            name="leftDate"
-            rules={[{ required: status === 'inactive' }]}
-          >
-            <Input
-              type="date"
-              placeholder="Select left date"
-              className="bordered"
-              disabled={status !== 'inactive'}
-            />
-          </Form.Item>
-        </Col>
+        {!isAssigning && (
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item
+              label="Left Date"
+              name="leftDate"
+              rules={[
+                {
+                  required: status === 'inactive',
+                  message: 'Please select left date',
+                },
+              ]}
+            >
+              <Input
+                type="date"
+                placeholder="Select left date"
+                className="bordered"
+                disabled={status !== 'inactive'}
+              />
+            </Form.Item>
+          </Col>
+        )}
         <Col span={24} md={{ span: 12 }}>
           <Form.Item
             label="Rate"
             name="rate"
             required
-            rules={[{ required: true }]}
+            rules={[{ required: true, message: 'Please input rate' }]}
           >
             <Input
               type="number"
@@ -241,11 +263,19 @@ export const StaffForm = (props: Props) => {
           </Form.Item>
         </Col>
         <Col span={24} md={{ span: 12 }}>
-          <Form.Item label="Status" name="status">
+          <Form.Item
+            label="Status"
+            name="status"
+            rules={[{ required: isAssigning, message: 'Please select status' }]}
+          >
             <Select
               placeholder="Select status"
               options={Object.keys(projectStaffStatuses)
                 .filter((status) => {
+                  if (isAssigning && status === 'inactive') {
+                    return false
+                  }
+
                   if (employeeID) {
                     return status !== 'pending'
                   }

@@ -16,6 +16,7 @@ import {
   ViewSeniorityResponse,
 } from 'types/schema'
 import { capitalizeFirstLetter } from 'utils/string'
+import { ProjectStaffStatus, projectStaffStatuses } from 'constants/status'
 import { Actions } from './Actions'
 
 export const ProjectMemberTable = ({
@@ -77,15 +78,16 @@ export const ProjectMemberTable = ({
         render: (value) => (value ? capitalizeFirstLetter(value) : '-'),
       },
       {
+        title: 'Status',
+        key: 'status',
+        dataIndex: 'status',
+        render: (value) =>
+          value ? projectStaffStatuses[value as ProjectStaffStatus] : '-',
+      },
+      {
         title: 'Joined Date',
         key: 'joinedDate',
         dataIndex: 'joinedDate',
-        render: (value) => (value ? format(new Date(value), DATE_FORMAT) : '-'),
-      },
-      {
-        title: 'Left Date',
-        key: 'leftDate',
-        dataIndex: 'leftDate',
         render: (value) => (value ? format(new Date(value), DATE_FORMAT) : '-'),
       },
       {

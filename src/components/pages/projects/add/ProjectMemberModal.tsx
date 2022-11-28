@@ -111,6 +111,7 @@ export const ProjectMemberModal = (props: Props) => {
       title={`${isEditing ? 'Edit' : 'Assign'} member`}
     >
       <StaffForm
+        isAssigning
         form={form}
         initialValues={initialValues}
         onSubmit={onSubmit}
