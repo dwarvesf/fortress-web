@@ -1,4 +1,4 @@
-import { Modal, notification } from 'antd'
+import { Button, Modal, notification, Row } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { client, GET_PATHS } from 'libs/apis'
@@ -11,6 +11,7 @@ interface Props {
   isEditing?: boolean
   initialValues?: MemberFormValues
   projectSlotID?: string
+  projectMemberID?: string
   onClose: () => void
   onAfterSubmit: () => void
 }
@@ -25,12 +26,13 @@ export const MemberFormModal = (props: Props) => {
     isEditing = false,
     initialValues,
     projectSlotID = '',
+    projectMemberID = '',
     onClose,
     onAfterSubmit,
   } = props
 
   const [form] = useForm()
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   const { data: allData } = useFetchWithCache(
     [GET_PATHS.getProjectMemberList, projectId],
@@ -55,7 +57,7 @@ export const MemberFormModal = (props: Props) => {
 
   const onSubmit = async (values: MemberFormValues) => {
     try {
-      setIsSubmitting(true)
+      setIsLoading(true)
 
       const formValues: MemberFormValues = {
         ...values,
@@ -84,21 +86,59 @@ export const MemberFormModal = (props: Props) => {
           `Could not ${isEditing ? 'update' : 'create'} the member!`,
       })
     } finally {
-      setIsSubmitting(false)
+      setIsLoading(false)
     }
+  }
+
+  const onUnassign = async () => {
+    try {
+      setIsLoading(true)
+
+      await client.unassignProjectMember(projectId as string, projectMemberID)
+
+      notification.success({
+        message: `Member unassigned successfully!`,
+      })
+
+      onClose()
+      onAfterSubmit()
+    } catch (error: any) {
+      notification.error({
+        message: error?.message || `Could not unassign the member!`,
+      })
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const onCancel = () => {
+    onClose()
+    form.resetFields()
   }
 
   return (
     <Modal
       open={isOpen}
-      onCancel={() => {
-        onClose()
-        form.resetFields()
-      }}
-      onOk={form.submit}
-      okButtonProps={{ loading: isSubmitting }}
       destroyOnClose
+      onCancel={onCancel}
       title={`${isEditing ? 'Edit' : 'Create New'} Member`}
+      footer={
+        <Row justify="space-between">
+          <span>
+            {isEditing && initialValues?.status !== 'pending' && (
+              <Button onClick={onUnassign} loading={isLoading}>
+                Unassign
+              </Button>
+            )}
+          </span>
+          <Row>
+            <Button onClick={onCancel}>Cancel</Button>
+            <Button onClick={form.submit} loading={isLoading} type="primary">
+              OK
+            </Button>
+          </Row>
+        </Row>
+      }
     >
       <MemberForm
         form={form}

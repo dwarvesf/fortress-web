@@ -342,6 +342,18 @@ class Client {
     )
   }
 
+  public unassignProjectMember(projectId: string, memberId: string) {
+    return fetcher<any>(
+      `${BASE_URL}/projects/${projectId}/members/${memberId}`,
+      {
+        method: 'PUT',
+        headers: {
+          ...this.privateHeaders,
+        },
+      },
+    )
+  }
+
   public updateProjectGeneralInfo(
     id: string,
     data: Partial<PkgHandlerProjectUpdateGeneralInfoInput>,
