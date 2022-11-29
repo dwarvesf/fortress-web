@@ -4,6 +4,7 @@ import { Avatar, Button, Col, Row, Space } from 'antd'
 import { DataRows } from 'components/common/DataRows'
 import { EditableDetailSectionCard } from 'components/common/EditableDetailSectionCard'
 import { PageHeader } from 'components/common/PageHeader'
+import { EditProfileAvatarModal } from 'components/pages/profile/EditProfileAvatarModal'
 import { EditProfileInfoModal } from 'components/pages/profile/EditProfileInfoModal'
 import { useAuthContext } from 'context/auth'
 
@@ -13,6 +14,12 @@ const Default = () => {
     isOpen: isEditProfileInfoDialogOpen,
     onOpen: openEditProfileInfoDialog,
     onClose: closeEditProfileInfoDialog,
+  } = useDisclosure()
+
+  const {
+    isOpen: isEditAvatarDialogOpen,
+    onOpen: openEditAvatarDialog,
+    onClose: closeEditAvatarDialog,
   } = useDisclosure()
 
   return (
@@ -25,7 +32,7 @@ const Default = () => {
               onEdit={openEditProfileInfoDialog}
               title="General Info"
             >
-              <Row gutter={24}>
+              <Row gutter={[24, 24]}>
                 <Col span={24} lg={{ span: 8 }}>
                   <Space
                     direction="vertical"
@@ -37,7 +44,11 @@ const Default = () => {
                       icon={<FileImageOutlined />}
                       src={user?.avatar}
                     />
-                    <Button type="primary" icon={<EditOutlined />} disabled>
+                    <Button
+                      type="primary"
+                      icon={<EditOutlined />}
+                      onClick={openEditAvatarDialog}
+                    >
                       Edit
                     </Button>
                   </Space>
@@ -71,6 +82,12 @@ const Default = () => {
         isOpen={isEditProfileInfoDialogOpen}
         initialValues={user || {}}
         onClose={closeEditProfileInfoDialog}
+        onAfterSubmit={revalidate}
+      />
+
+      <EditProfileAvatarModal
+        isOpen={isEditAvatarDialogOpen}
+        onClose={closeEditAvatarDialog}
         onAfterSubmit={revalidate}
       />
     </>
