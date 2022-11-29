@@ -1,4 +1,5 @@
 import { PlusCircleOutlined } from '@ant-design/icons'
+import { useDisclosure } from '@dwarvesf/react-hooks'
 import { Card, Space, Tabs } from 'antd'
 import { Button } from 'components/common/Button'
 import { ProjectWorkUnitStatus } from 'constants/status'
@@ -8,6 +9,7 @@ import { useTabWithQuery } from 'hooks/useTabWithQuery'
 import { client, GET_PATHS } from 'libs/apis'
 import { ProjectWorkUnitListFilter } from 'types/filters/ProjectWorkUnitListFilter'
 import { ViewProjectData } from 'types/schema'
+import { WorkUnitModal } from './WorkUnitModal'
 import { WorkUnitTable } from './WorkUnitTable'
 
 interface Props {
@@ -48,11 +50,11 @@ export const WorkUnits = (props: Props) => {
   // eslint-disable-next-line
   const archivedWorkUnits = archivedData?.data || []
 
-  // const {
-  //   isOpen: isAddNewWorkUnitDialogOpen,
-  //   onOpen: openAddNewWorkUnitDialog,
-  //   onClose: closeAddNewWorkUnitDialog,
-  // } = useDisclosure()
+  const {
+    isOpen: isAddNewWorkUnitDialogOpen,
+    onOpen: openAddNewWorkUnitDialog,
+    onClose: closeAddNewWorkUnitDialog,
+  } = useDisclosure()
 
   const onTabChange = (tabKey: string) => {
     setTabKey(tabKey)
@@ -75,7 +77,7 @@ export const WorkUnits = (props: Props) => {
               <Button
                 type="primary"
                 icon={<PlusCircleOutlined />}
-                // onClick={openAddNewWorkUnitDialog}
+                onClick={openAddNewWorkUnitDialog}
               >
                 Add New
               </Button>
@@ -107,17 +109,14 @@ export const WorkUnits = (props: Props) => {
           />
         </Card>
       </Space>
-      {/* {isAddNewWorkUnitDialogOpen && (
-        <MemberFormModal
+      {isAddNewWorkUnitDialogOpen && (
+        <WorkUnitModal
           key={tabKey}
           isOpen={isAddNewWorkUnitDialogOpen}
           onClose={closeAddNewWorkUnitDialog}
           onAfterSubmit={mutate}
-          initialValues={{
-            
-          }}
         />
-      )} */}
+      )}
     </>
   )
 }

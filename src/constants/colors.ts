@@ -17,4 +17,5 @@ export const statusColors: Record<string, TagProps['color']> = {
   draft: '',
   'in-progress': 'gold',
   done: 'green',
+  archived: 'gold',
 }
