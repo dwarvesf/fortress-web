@@ -1,6 +1,7 @@
 import { EmployeeListFilter } from 'types/filters/EmployeeListFilter'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
 import { ProjectMemberListFilter } from 'types/filters/ProjectMemberListFilter'
+import { ProjectWorkUnitListFilter } from 'types/filters/ProjectWorkUnitListFilter'
 import {
   ViewAuthData,
   ViewProfileData,
@@ -32,6 +33,7 @@ import {
   ViewUpdateProjectGeneralInfoResponse,
   PkgHandlerProjectUpdateContactInfoInput,
   ViewUpdateProjectContactInfoResponse,
+  ViewWorkUnit,
 } from 'types/schema'
 import qs from 'qs'
 import fetcher from './fetcher'
@@ -382,6 +384,22 @@ class Client {
           ...this.privateHeaders,
         },
         body: JSON.stringify(data),
+      },
+    )
+  }
+
+  public getProjectWorkUnits(
+    projectId: string,
+    filter: ProjectWorkUnitListFilter,
+  ) {
+    const queryString = qs.stringify(filter)
+
+    return fetcher<Response<ViewWorkUnit[]>>(
+      `${BASE_URL}/projects/${projectId}/work-units?${queryString}`,
+      {
+        headers: {
+          ...this.privateHeaders,
+        },
       },
     )
   }

@@ -80,6 +80,15 @@ export interface GithubComDwarvesfFortressApiPkgHandlerProjectCreateProjectInput
   type?: string
 }
 
+export interface GithubComDwarvesfFortressApiPkgHandlerProjectCreateWorkUnitBody {
+  members?: string[]
+  name: string
+  stacks: string[]
+  status: string
+  type: string
+  url?: string
+}
+
 export interface GithubComDwarvesfFortressApiPkgHandlerProjectUpdateContactInfoInput {
   accountManagerID: string
   clientEmail?: string
@@ -240,6 +249,15 @@ export interface PkgHandlerProjectCreateProjectInput {
   type?: string
 }
 
+export interface PkgHandlerProjectCreateWorkUnitBody {
+  members?: string[]
+  name: string
+  stacks: string[]
+  status: string
+  type: string
+  url?: string
+}
+
 export interface PkgHandlerProjectUpdateContactInfoInput {
   accountManagerID: string
   clientEmail?: string
@@ -295,6 +313,14 @@ export interface ViewBasicCountryInfo {
   name?: string
 }
 
+export interface ViewBasicMember {
+  avatar?: string
+  employeeID?: string
+  name?: string
+  projectMemberID?: string
+  projectSlotID?: string
+}
+
 export interface ViewBasicProjectHeadInfo {
   avatar?: string
   displayName?: string
@@ -331,6 +357,7 @@ export interface ViewCreateMemberData {
   positions?: ViewPosition[]
   projectMemberID?: string
   projectSlotID?: string
+  seniority?: ModelSeniority
   status?: string
 }
 
@@ -353,6 +380,14 @@ export interface ViewCreateProjectData {
   status?: string
   type?: string
   updatedAt?: string
+}
+
+export interface ViewEmployeeContentData {
+  url?: string
+}
+
+export interface ViewEmployeeContentDataResponse {
+  data?: ViewEmployeeContentData
 }
 
 export interface ViewEmployeeData {
@@ -402,6 +437,10 @@ export interface ViewEmployeeProjectData {
 export interface ViewErrorResponse {
   error?: string
   errors?: ViewApiError[]
+}
+
+export interface ViewListWorkUnitResponse {
+  data?: ViewWorkUnit[]
 }
 
 export interface ViewMessageResponse {
@@ -486,7 +525,6 @@ export interface ViewProjectMember {
   isLead?: boolean
   joinedDate?: string
   leftDate?: string
-  position?: string
   positions?: ViewPosition[]
   projectMemberID?: string
   projectSlotID?: string
@@ -624,4 +662,19 @@ export interface ViewUpdatedProject {
   status?: string
   type?: string
   updatedAt?: string
+}
+
+export interface ViewWorkUnit {
+  id?: string
+  members?: ViewBasicMember[]
+  name?: string
+  projectID?: string
+  stacks?: ViewMetaData[]
+  status?: string
+  type?: string
+  url?: string
+}
+
+export interface ViewWorkUnitResponse {
+  data?: ViewWorkUnit
 }
