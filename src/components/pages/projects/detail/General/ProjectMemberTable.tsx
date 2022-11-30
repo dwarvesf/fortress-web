@@ -5,13 +5,18 @@ import { useMemo } from 'react'
 import { ModelPosition, ViewPosition, ViewProjectMember } from 'types/schema'
 import { capitalizeFirstLetter } from 'utils/string'
 
-export const MemberTable = ({ data }: { data: ViewProjectMember[] }) => {
+export const ProjectMemberTable = ({ data }: { data: ViewProjectMember[] }) => {
   const columns = useMemo(() => {
     return [
       {
         title: 'Name',
         key: 'name',
-        render: (value) => <AvatarWithName user={value} />,
+        render: (value) => (
+          <Space>
+            <AvatarWithName user={value} />
+            {value.isLead && <Tag color="red">Lead</Tag>}
+          </Space>
+        ),
       },
       {
         title: 'Positions',

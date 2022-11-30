@@ -14,7 +14,7 @@ import { ViewProjectData } from 'types/schema'
 import { transformMetadataToSelectOption } from 'utils/select'
 import { EditProjectContactInfoModal } from './EditProjectContactInfoModal'
 import { EditProjectGeneralInfoModal } from './EditProjectGeneralInfoModal'
-import { MemberTable } from './MemberTable'
+import { ProjectMemberTable } from './ProjectMemberTable'
 
 interface Props {
   data: ViewProjectData
@@ -162,7 +162,7 @@ export const General = (props: Props) => {
           </Col>
           <Col span={24} lg={{ span: 16 }}>
             <Card title="Members" bodyStyle={{ padding: '1px 0 0' }}>
-              <MemberTable data={data.members || []} />
+              <ProjectMemberTable data={data.members || []} />
             </Card>
           </Col>
         </Row>
