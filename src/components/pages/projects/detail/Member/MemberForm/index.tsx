@@ -12,7 +12,11 @@ import {
   transformMetadataToSelectOption,
 } from 'utils/select'
 import { DeploymentType, deploymentTypes } from 'constants/deploymentTypes'
-import { ProjectMemberStatus, projectMemberStatuses } from 'constants/status'
+import {
+  EmployeeStatus,
+  ProjectMemberStatus,
+  projectMemberStatuses,
+} from 'constants/status'
 import { renderEmployeeOption } from 'components/common/Select/renderers/employeeOption'
 import { FormInstance } from 'antd/es/form/Form'
 import { useEffect } from 'react'
@@ -55,7 +59,7 @@ export const MemberForm = (props: Props) => {
         client.getEmployees({
           page: 1,
           size: 1000,
-          workingStatus: ['probation', 'full-time'],
+          workingStatus: [EmployeeStatus.PROBATION, EmployeeStatus.FULLTIME],
         }),
     )
 
@@ -72,17 +76,20 @@ export const MemberForm = (props: Props) => {
   // Set status to active if user selected an employee
   // We don't allow pending status if employeeID is available
   useEffect(() => {
-    if (employeeID && status === 'pending') {
-      form.setFieldValue('status', 'active')
+    if (employeeID && status === ProjectMemberStatus.PENDING) {
+      form.setFieldValue('status', ProjectMemberStatus.ACTIVE)
     }
   }, [employeeID]) // eslint-disable-line
 
   // Left date is only input-able if status === inactive
   useEffect(() => {
-    if (status === 'inactive') {
+    if (status === ProjectMemberStatus.INACTIVE) {
       form.setFieldValue('leftDate', '')
     }
   }, [status]) // eslint-disable-line
+
+  const isPending = status === ProjectMemberStatus.PENDING
+  const isInactive = status === ProjectMemberStatus.INACTIVE
 
   return (
     <Form
@@ -102,10 +109,10 @@ export const MemberForm = (props: Props) => {
           <Form.Item
             label="Member"
             name="employeeID"
-            required={status !== 'pending'}
+            required={!isPending}
             rules={[
               {
-                required: status !== 'pending',
+                required: !isPending,
                 message: 'Please select member',
               },
             ]}
@@ -214,7 +221,7 @@ export const MemberForm = (props: Props) => {
             name="joinedDate"
             rules={[
               {
-                required: isAssigning && status !== 'pending',
+                required: isAssigning && !isPending,
                 message: 'Please select joined date',
               },
             ]}
@@ -233,7 +240,7 @@ export const MemberForm = (props: Props) => {
               name="leftDate"
               rules={[
                 {
-                  required: status === 'inactive',
+                  required: isInactive,
                   message: 'Please select left date',
                 },
               ]}
@@ -242,7 +249,7 @@ export const MemberForm = (props: Props) => {
                 type="date"
                 placeholder="Select left date"
                 className="bordered"
-                disabled={status !== 'inactive'}
+                disabled={!isInactive}
               />
             </Form.Item>
           </Col>
@@ -280,12 +287,12 @@ export const MemberForm = (props: Props) => {
               placeholder="Select status"
               options={Object.keys(projectMemberStatuses)
                 .filter((status) => {
-                  if (isAssigning && status === 'inactive') {
+                  if (isAssigning && status === ProjectMemberStatus.INACTIVE) {
                     return false
                   }
 
                   if (employeeID) {
-                    return status !== 'pending'
+                    return !isPending
                   }
 
                   return true

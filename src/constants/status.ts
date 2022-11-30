@@ -1,34 +1,39 @@
-export type EmployeeStatus =
-  | 'left'
-  | 'on-boarding'
-  | 'probation'
-  | 'full-time'
-  | 'contractor'
+export enum EmployeeStatus {
+  LEFT = 'left',
+  ONBOARDING = 'on-boarding',
+  PROBATION = 'probation',
+  FULLTIME = 'full-time',
+  CONTRACTOR = 'contractor',
+}
 
 export const employeeStatuses: Record<EmployeeStatus, string> = {
-  left: 'Left',
-  'on-boarding': 'On Boarding',
-  probation: 'Probation',
-  'full-time': 'Full-time',
-  contractor: 'Contractor',
+  [EmployeeStatus.LEFT]: 'Left',
+  [EmployeeStatus.ONBOARDING]: 'On Boarding',
+  [EmployeeStatus.PROBATION]: 'Probation',
+  [EmployeeStatus.FULLTIME]: 'Full-time',
+  [EmployeeStatus.CONTRACTOR]: 'Contractor',
 }
 
-export type ProjectMemberStatus =
-  | 'pending'
-  | 'on-boarding'
-  | 'active'
-  | 'inactive'
+export enum ProjectMemberStatus {
+  PENDING = 'pending',
+  ONBOARDING = 'on-boarding',
+  ACTIVE = 'active',
+  INACTIVE = 'inactive',
+}
 
 export const projectMemberStatuses: Record<ProjectMemberStatus, string> = {
-  pending: 'Pending',
-  'on-boarding': 'On Boarding',
-  active: 'Active',
-  inactive: 'Inactive',
+  [ProjectMemberStatus.PENDING]: 'Pending',
+  [ProjectMemberStatus.ONBOARDING]: 'On Boarding',
+  [ProjectMemberStatus.ACTIVE]: 'Active',
+  [ProjectMemberStatus.INACTIVE]: 'Inactive',
 }
 
-export type WorkUnitStatus = 'active' | 'archived'
+export enum ProjectWorkUnitStatus {
+  ACTIVE = 'active',
+  ARCHIVED = 'archived',
+}
 
-export const workUnitStatuses: Record<WorkUnitStatus, string> = {
-  active: 'Active',
-  archived: 'Archived',
+export const projectWorkUnitStatuses: Record<ProjectWorkUnitStatus, string> = {
+  [ProjectWorkUnitStatus.ACTIVE]: 'Active',
+  [ProjectWorkUnitStatus.ARCHIVED]: 'Archived',
 }

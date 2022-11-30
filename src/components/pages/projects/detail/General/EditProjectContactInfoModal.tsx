@@ -7,6 +7,7 @@ import { AsyncSelect } from 'components/common/Select'
 import { renderEmployeeOption } from 'components/common/Select/renderers/employeeOption'
 import { transformEmployeeDataToSelectOption } from 'utils/select'
 import { useRouter } from 'next/router'
+import { EmployeeStatus } from 'constants/status'
 
 type ProjectContactInfoFormValues =
   Partial<PkgHandlerProjectUpdateContactInfoInput>
@@ -52,8 +53,8 @@ export const EditProjectContactInfoModal = (props: Props) => {
     const { data } = await client.getEmployees({
       page: 1,
       size: 1000,
-      workingStatus: ['full-time'],
       preload: false,
+      workingStatus: [EmployeeStatus.FULLTIME],
     })
     return (data || []).map(transformEmployeeDataToSelectOption)
   }

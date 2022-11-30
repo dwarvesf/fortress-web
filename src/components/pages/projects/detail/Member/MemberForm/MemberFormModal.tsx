@@ -1,5 +1,6 @@
 import { Button, Modal, notification, Row } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
+import { ProjectMemberStatus } from 'constants/status'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { client, GET_PATHS } from 'libs/apis'
 import { useRouter } from 'next/router'
@@ -61,7 +62,8 @@ export const MemberFormModal = (props: Props) => {
 
       const formValues: MemberFormValues = {
         ...values,
-        leftDate: values.status !== 'inactive' ? '' : values.leftDate,
+        leftDate:
+          values.status !== ProjectMemberStatus.INACTIVE ? '' : values.leftDate,
       }
 
       if (!isEditing) {
@@ -125,11 +127,12 @@ export const MemberFormModal = (props: Props) => {
       footer={
         <Row justify="space-between">
           <span>
-            {isEditing && initialValues?.status !== 'pending' && (
-              <Button onClick={onUnassign} loading={isLoading}>
-                Unassign
-              </Button>
-            )}
+            {isEditing &&
+              initialValues?.status !== ProjectMemberStatus.PENDING && (
+                <Button onClick={onUnassign} loading={isLoading}>
+                  Unassign
+                </Button>
+              )}
           </span>
           <Row>
             <Button onClick={onCancel}>Cancel</Button>

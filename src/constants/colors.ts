@@ -1,5 +1,9 @@
 import { TagProps } from 'antd'
 
+// Unfortunately we cannot use a stricter type for the key here (yet)
+// because it's a collection of employee/project/project member statuses,
+// some of which are metadata we need to fetch from the BE. So we'll
+// just leave this as something generic (string) for now.
 export const statusColors: Record<string, TagProps['color']> = {
   active: 'green',
   probation: 'green',

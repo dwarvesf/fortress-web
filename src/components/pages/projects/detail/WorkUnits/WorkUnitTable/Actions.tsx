@@ -6,6 +6,7 @@ import { RiInboxArchiveLine, RiInboxUnarchiveLine } from 'react-icons/ri'
 import { useState } from 'react'
 import { client } from 'libs/apis'
 import { useRouter } from 'next/router'
+import { ProjectWorkUnitStatus } from 'constants/status'
 
 export const Actions = ({
   data,
@@ -25,10 +26,9 @@ export const Actions = ({
   // } = useDisclosure()
 
   const [isLoading, setIsLoading] = useState(false)
+  const isArchiving = data.status === ProjectWorkUnitStatus.ACTIVE
 
   const onArchiveUnarchive = async () => {
-    const isArchiving = data.status === 'active'
-
     try {
       setIsLoading(true)
 
@@ -73,16 +73,12 @@ export const Actions = ({
           </Tooltip>
         </Col>
         <Col>
-          <Tooltip title={data.status === 'archived' ? 'Unarchive' : 'Archive'}>
+          <Tooltip title={isArchiving ? 'Archive' : 'Unarchive'}>
             <Button
               type="text-primary"
               size="small"
               icon={
-                data.status === 'archived' ? (
-                  <RiInboxUnarchiveLine />
-                ) : (
-                  <RiInboxArchiveLine />
-                )
+                isArchiving ? <RiInboxArchiveLine /> : <RiInboxUnarchiveLine />
               }
               onClick={onArchiveUnarchive}
               loading={isLoading}

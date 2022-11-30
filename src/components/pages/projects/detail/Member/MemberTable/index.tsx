@@ -13,7 +13,7 @@ import {
 import { capitalizeFirstLetter } from 'utils/string'
 import { Actions } from './Actions'
 
-export const ProjectMemberTable = ({
+export const MemberTable = ({
   data,
   isLoading,
   onAfterAction,

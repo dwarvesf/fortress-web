@@ -3,6 +3,7 @@ import { Col, Form, Input, Modal, notification, Row, Select } from 'antd'
 import { AvatarWithName } from 'components/common/AvatarWithName'
 import { AsyncSelect } from 'components/common/Select'
 import { renderEmployeeOption } from 'components/common/Select/renderers/employeeOption'
+import { EmployeeStatus } from 'constants/status'
 import { GET_PATHS, client } from 'libs/apis'
 import { useRouter } from 'next/router'
 import { ReactNode, useState } from 'react'
@@ -158,7 +159,7 @@ export const EditGeneralInfoModal = (props: Props) => {
                     page: 1,
                     size: 1000,
                     preload: false,
-                    workingStatus: ['full-time'],
+                    workingStatus: [EmployeeStatus.FULLTIME],
                   })
                   return (data || []).map(transformEmployeeDataToSelectOption)
                 }}
