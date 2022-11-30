@@ -3,6 +3,8 @@ import { useDisclosure } from '@dwarvesf/react-hooks'
 import { Card, Pagination, Row, Space, Tabs } from 'antd'
 import { Button } from 'components/common/Button'
 import { SERVER_DATE_FORMAT } from 'constants/date'
+import { DeploymentType } from 'constants/deploymentTypes'
+import { ProjectMemberStatus } from 'constants/status'
 import { format } from 'date-fns'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { useFilter } from 'hooks/useFilter'
@@ -12,7 +14,7 @@ import { useMemo } from 'react'
 import { ProjectMemberListFilter } from 'types/filters/ProjectMemberListFilter'
 import { ViewProjectData } from 'types/schema'
 import { MemberFormModal } from './MemberForm/MemberFormModal'
-import { ProjectMemberTable } from './ProjectMemberTable'
+import { MemberTable } from './MemberTable'
 
 interface Props {
   data: ViewProjectData
@@ -25,15 +27,15 @@ export const Member = (props: Props) => {
     new ProjectMemberListFilter(),
   )
   const { filter: pendingFilter, setFilter: setPendingFilter } = useFilter(
-    new ProjectMemberListFilter('pending'),
+    new ProjectMemberListFilter(ProjectMemberStatus.ACTIVE),
   )
   const { filter: onboardingFilter, setFilter: setOnboardingFilter } =
-    useFilter(new ProjectMemberListFilter('on-boarding'))
+    useFilter(new ProjectMemberListFilter(ProjectMemberStatus.ONBOARDING))
   const { filter: activeFilter, setFilter: setActiveFilter } = useFilter(
-    new ProjectMemberListFilter('active'),
+    new ProjectMemberListFilter(ProjectMemberStatus.ACTIVE),
   )
   const { filter: inactiveFilter, setFilter: setInactiveFilter } = useFilter(
-    new ProjectMemberListFilter('inactive'),
+    new ProjectMemberListFilter(ProjectMemberStatus.INACTIVE),
   )
 
   const { tabKey, setTabKey } = useTabWithQuery({ queryKey: 'memberTab' })
@@ -122,28 +124,28 @@ export const Member = (props: Props) => {
     let setFilter: any
 
     switch (tabKey) {
-      case 'pending': {
+      case ProjectMemberStatus.PENDING: {
         filter = pendingFilter
         data = pendingData
         setFilter = setPendingFilter
 
         break
       }
-      case 'on-boarding': {
+      case ProjectMemberStatus.ONBOARDING: {
         filter = onboardingFilter
         data = onboardingData
         setFilter = setOnboardingFilter
 
         break
       }
-      case 'active': {
+      case ProjectMemberStatus.ACTIVE: {
         filter = activeFilter
         data = activeData
         setFilter = setActiveFilter
 
         break
       }
-      case 'inactive': {
+      case ProjectMemberStatus.INACTIVE: {
         filter = inactiveFilter
         data = inactiveData
         setFilter = setInactiveFilter
@@ -210,7 +212,7 @@ export const Member = (props: Props) => {
                 key: '',
                 label: `All (${allMembers.length})`,
                 children: (
-                  <ProjectMemberTable
+                  <MemberTable
                     data={allMembers}
                     isLoading={isAllLoading}
                     onAfterAction={mutate}
@@ -218,10 +220,10 @@ export const Member = (props: Props) => {
                 ),
               },
               {
-                key: 'pending',
+                key: ProjectMemberStatus.PENDING,
                 label: `Pending (${pendingMembers.length})`,
                 children: (
-                  <ProjectMemberTable
+                  <MemberTable
                     data={pendingMembers}
                     isLoading={isPendingLoading}
                     onAfterAction={mutate}
@@ -229,10 +231,10 @@ export const Member = (props: Props) => {
                 ),
               },
               {
-                key: 'on-boarding',
+                key: ProjectMemberStatus.ONBOARDING,
                 label: `On-boarding (${onboardingMembers.length})`,
                 children: (
-                  <ProjectMemberTable
+                  <MemberTable
                     data={onboardingMembers}
                     isLoading={isOnboardingLoading}
                     onAfterAction={mutate}
@@ -240,10 +242,10 @@ export const Member = (props: Props) => {
                 ),
               },
               {
-                key: 'active',
+                key: ProjectMemberStatus.ACTIVE,
                 label: `Active (${activeMembers.length})`,
                 children: (
-                  <ProjectMemberTable
+                  <MemberTable
                     data={activeMembers}
                     isLoading={isActiveLoading}
                     onAfterAction={mutate}
@@ -251,10 +253,10 @@ export const Member = (props: Props) => {
                 ),
               },
               {
-                key: 'inactive',
+                key: ProjectMemberStatus.INACTIVE,
                 label: `Inactive (${inactiveMembers.length})`,
                 children: (
-                  <ProjectMemberTable
+                  <MemberTable
                     data={inactiveMembers}
                     isLoading={isInactiveLoading}
                     onAfterAction={mutate}
@@ -276,12 +278,12 @@ export const Member = (props: Props) => {
             employeeID: '',
             positions: [],
             seniorityID: '',
-            deploymentType: 'official',
+            deploymentType: DeploymentType.OFFICIAL,
             joinedDate: format(new Date(), SERVER_DATE_FORMAT),
             leftDate: undefined,
             rate: 0,
             discount: 0,
-            status: tabKey || 'pending',
+            status: tabKey || ProjectMemberStatus.PENDING,
             isLead: false,
           }}
         />

@@ -1,6 +1,7 @@
 import { PlusCircleOutlined } from '@ant-design/icons'
 import { Card, Space, Tabs } from 'antd'
 import { Button } from 'components/common/Button'
+import { ProjectWorkUnitStatus } from 'constants/status'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { useFilter } from 'hooks/useFilter'
 import { useTabWithQuery } from 'hooks/useTabWithQuery'
@@ -17,10 +18,10 @@ export const WorkUnits = (props: Props) => {
   const { data: project } = props
 
   const { filter: activeFilter } = useFilter(
-    new ProjectWorkUnitListFilter('active'),
+    new ProjectWorkUnitListFilter(ProjectWorkUnitStatus.ACTIVE),
   )
   const { filter: archivedFilter } = useFilter(
-    new ProjectWorkUnitListFilter('archived'),
+    new ProjectWorkUnitListFilter(ProjectWorkUnitStatus.ARCHIVED),
   )
 
   const { tabKey, setTabKey } = useTabWithQuery({ queryKey: 'workUnitsTab' })
@@ -81,7 +82,7 @@ export const WorkUnits = (props: Props) => {
             }
             items={[
               {
-                key: 'active',
+                key: ProjectWorkUnitStatus.ACTIVE,
                 label: `Active (${activeWorkUnits.length})`,
                 children: (
                   <WorkUnitTable
@@ -92,7 +93,7 @@ export const WorkUnits = (props: Props) => {
                 ),
               },
               {
-                key: 'archived',
+                key: ProjectWorkUnitStatus.ARCHIVED,
                 label: `Archived (${archivedWorkUnits.length})`,
                 children: (
                   <WorkUnitTable
@@ -113,16 +114,7 @@ export const WorkUnits = (props: Props) => {
           onClose={closeAddNewWorkUnitDialog}
           onAfterSubmit={mutate}
           initialValues={{
-            employeeID: '',
-            positions: [],
-            seniorityID: '',
-            deploymentType: 'official',
-            joinedDate: format(new Date(), SERVER_DATE_FORMAT),
-            leftDate: undefined,
-            rate: 0,
-            discount: 0,
-            status: tabKey || 'pending',
-            isLead: false,
+            
           }}
         />
       )} */}

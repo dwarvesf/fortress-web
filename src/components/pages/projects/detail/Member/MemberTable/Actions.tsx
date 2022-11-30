@@ -3,6 +3,7 @@ import { useDisclosure } from '@dwarvesf/react-hooks'
 import { Col, Modal, notification, Row, Tooltip } from 'antd'
 import { Button } from 'components/common/Button'
 import { SERVER_DATE_FORMAT } from 'constants/date'
+import { ProjectMemberStatus } from 'constants/status'
 import { format } from 'date-fns'
 import { client } from 'libs/apis'
 import { useRouter } from 'next/router'
@@ -59,7 +60,7 @@ export const Actions = ({
     })
   }
 
-  if (data.status === 'inactive') {
+  if (data.status === ProjectMemberStatus.INACTIVE) {
     return null
   }
 

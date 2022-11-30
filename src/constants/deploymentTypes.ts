@@ -1,6 +1,9 @@
-export type DeploymentType = 'official' | 'shadow'
+export enum DeploymentType {
+  OFFICIAL = 'official',
+  SHADOW = 'shadow',
+}
 
 export const deploymentTypes: Record<DeploymentType, string> = {
-  official: 'Official',
-  shadow: 'Shadow',
+  [DeploymentType.OFFICIAL]: 'Official',
+  [DeploymentType.SHADOW]: 'Shadow',
 }

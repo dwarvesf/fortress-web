@@ -5,7 +5,7 @@ import { useMemo } from 'react'
 import { ModelPosition, ViewPosition, ViewProjectMember } from 'types/schema'
 import { capitalizeFirstLetter } from 'utils/string'
 
-export const ProjectMemberTable = ({ data }: { data: ViewProjectMember[] }) => {
+export const MemberTable = ({ data }: { data: ViewProjectMember[] }) => {
   const columns = useMemo(() => {
     return [
       {
