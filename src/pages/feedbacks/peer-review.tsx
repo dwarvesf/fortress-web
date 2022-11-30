@@ -1,9 +1,9 @@
-import { Pagination, Row, Space, Table } from 'antd'
+import { Pagination, Row, Space, Table, Tag } from 'antd'
 import { PageHeader } from 'components/common/PageHeader'
 import { Button } from 'components/common/Button'
 import { ColumnsType } from 'antd/lib/table'
-import { StatusColumn } from 'components/pages/PeerReview/StatusColumn'
-import { ActionColumn } from 'components/pages/PeerReview/ActionColumn'
+import { ProgressColumn } from 'components/pages/PeerReview/ProgressColumn'
+import { Actions } from 'components/pages/PeerReview/Actions'
 
 export interface PeerReviewData {
   id?: string
@@ -43,27 +43,27 @@ const columns: ColumnsType<PeerReviewData> = [
     key: 'time',
     dataIndex: 'time',
     render: (value) => value || '-',
-    width: '25%',
+    fixed: 'left',
   },
   {
     title: 'Done',
     key: 'done',
     dataIndex: 'done',
-    render: (_, record) => <StatusColumn record={record} />,
-    width: '30%',
+    render: (_, record) => <ProgressColumn record={record} />,
+    width: '40%',
   },
   {
     title: 'Status',
     key: 'status',
     dataIndex: 'status',
-    render: (value) => value || '-',
-    width: '25%',
+    render: (value) => <Tag>{value || '-'}</Tag>,
   },
   {
-    title: 'Action',
-    key: 'action',
-    dataIndex: 'action',
-    render: () => <ActionColumn />,
+    title: '',
+    key: 'actions',
+    dataIndex: 'actions',
+    render: () => <Actions />,
+    fixed: 'right',
   },
 ]
 

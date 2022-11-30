@@ -5,7 +5,7 @@ interface Props {
   record: PeerReviewData
 }
 
-export const StatusColumn = (props: Props) => {
+export const ProgressColumn = (props: Props) => {
   const {
     record: { totalCompletedSurveys = 0, totalParticipants = 0 },
   } = props
