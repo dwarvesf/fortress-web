@@ -117,6 +117,20 @@ export interface GithubComDwarvesfFortressApiPkgHandlerProjectUpdateMemberInput 
   status: string
 }
 
+export interface GithubComDwarvesfFortressApiPkgHandlerProjectUpdateWorkUnitBody {
+  members?: string[]
+  name: string
+  stacks: string[]
+  type: string
+  url?: string
+}
+
+export interface GithubComDwarvesfFortressApiPkgHandlerProjectUpdateWorkUnitInput {
+  body?: GithubComDwarvesfFortressApiPkgHandlerProjectUpdateWorkUnitBody
+  projectID?: string
+  workUnitID?: string
+}
+
 export interface GormDeletedAt {
   time?: string
   /** Valid is true if Time is not NULL */
@@ -284,6 +298,20 @@ export interface PkgHandlerProjectUpdateMemberInput {
   rate: number
   seniorityID: string
   status: string
+}
+
+export interface PkgHandlerProjectUpdateWorkUnitBody {
+  members?: string[]
+  name: string
+  stacks: string[]
+  type: string
+  url?: string
+}
+
+export interface PkgHandlerProjectUpdateWorkUnitInput {
+  body?: PkgHandlerProjectUpdateWorkUnitBody
+  projectID?: string
+  workUnitID?: string
 }
 
 export interface ViewAccountRoleResponse {

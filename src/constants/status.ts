@@ -25,3 +25,10 @@ export const projectMemberStatuses: Record<ProjectMemberStatus, string> = {
   active: 'Active',
   inactive: 'Inactive',
 }
+
+export type WorkUnitStatus = 'active' | 'archived'
+
+export const workUnitStatuses: Record<WorkUnitStatus, string> = {
+  active: 'Active',
+  archived: 'Archived',
+}

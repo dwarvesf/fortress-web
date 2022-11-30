@@ -1,21 +1,22 @@
 import { EditOutlined } from '@ant-design/icons'
-import { Col, Row, Tooltip } from 'antd'
+import { Col, notification, Row, Tooltip } from 'antd'
 import { Button } from 'components/common/Button'
-// import { useRouter } from 'next/router'
-// import { useState } from 'react'
-import { ViewProjectMember } from 'types/schema'
+import { ViewWorkUnit } from 'types/schema'
 import { RiInboxArchiveLine, RiInboxUnarchiveLine } from 'react-icons/ri'
+import { useState } from 'react'
+import { client } from 'libs/apis'
+import { useRouter } from 'next/router'
 
 export const Actions = ({
   data,
   onAfterAction,
 }: {
-  data: ViewProjectMember
+  data: ViewWorkUnit
   onAfterAction: () => void
 }) => {
-  // const {
-  //   query: { id: projectId },
-  // } = useRouter()
+  const {
+    query: { id: projectId },
+  } = useRouter()
 
   // const {
   //   isOpen: isEditDialogOpen,
@@ -23,16 +24,39 @@ export const Actions = ({
   //   onClose: closeEditDialog,
   // } = useDisclosure()
 
-  // const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
-  const onArchive = () => {
-    console.log('Archive')
-    onAfterAction()
-  }
+  const onArchiveUnarchive = async () => {
+    const isArchiving = data.status === 'active'
 
-  const onUnarchive = () => {
-    console.log('Unarchive')
-    onAfterAction()
+    try {
+      setIsLoading(true)
+
+      if (isArchiving) {
+        await client.archiveProjectWorkUnit(projectId as string, data.id || '')
+      } else {
+        await client.unarchiveProjectWorkUnit(
+          projectId as string,
+          data.id || '',
+        )
+      }
+
+      notification.success({
+        message: `Work unit ${
+          isArchiving ? 'archived' : 'unarchived'
+        } successfully!`,
+      })
+
+      onAfterAction()
+    } catch (error: any) {
+      notification.error({
+        message:
+          error?.message ||
+          `Could not ${isArchiving ? 'archive' : 'unarchive'} this work unit!`,
+      })
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -60,7 +84,8 @@ export const Actions = ({
                   <RiInboxArchiveLine />
                 )
               }
-              onClick={data.status === 'archived' ? onUnarchive : onArchive}
+              onClick={onArchiveUnarchive}
+              loading={isLoading}
             />
           </Tooltip>
         </Col>

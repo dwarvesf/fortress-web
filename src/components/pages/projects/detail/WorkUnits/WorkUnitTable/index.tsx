@@ -2,7 +2,7 @@ import { Space, Table, Tag } from 'antd'
 import { ColumnsType } from 'antd/lib/table'
 import { AvatarArray } from 'components/common/AvatarArray'
 import { useMemo } from 'react'
-import { ViewStack } from 'types/schema'
+import { ViewStack, ViewWorkUnit } from 'types/schema'
 import { capitalizeFirstLetter } from 'utils/string'
 import { Actions } from './Actions'
 
@@ -65,13 +65,13 @@ export const WorkUnitTable = ({
           <Actions data={value} onAfterAction={onAfterAction} />
         ),
       },
-    ] as ColumnsType<any>
+    ] as ColumnsType<ViewWorkUnit>
   }, [onAfterAction])
 
   return (
     <Table
       loading={isLoading}
-      rowKey={(row) => row.projectSlotID || '-'}
+      rowKey={(row) => row.id || '-'}
       columns={columns}
       dataSource={data}
       pagination={false}

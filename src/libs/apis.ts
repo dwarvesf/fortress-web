@@ -403,6 +403,30 @@ class Client {
       },
     )
   }
+
+  public archiveProjectWorkUnit(projectId: string, workUnitId: string) {
+    return fetcher(
+      `${BASE_URL}/projects/${projectId}/work-units/${workUnitId}/archive`,
+      {
+        method: 'PUT',
+        headers: {
+          ...this.privateHeaders,
+        },
+      },
+    )
+  }
+
+  public unarchiveProjectWorkUnit(projectId: string, workUnitId: string) {
+    return fetcher(
+      `${BASE_URL}/projects/${projectId}/work-units/${workUnitId}/unarchive`,
+      {
+        method: 'PUT',
+        headers: {
+          ...this.privateHeaders,
+        },
+      },
+    )
+  }
 }
 
 const client = new Client()
