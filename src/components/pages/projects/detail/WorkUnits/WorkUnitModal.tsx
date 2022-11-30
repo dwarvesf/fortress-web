@@ -1,7 +1,8 @@
 import { Modal, notification } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
+import { client } from 'libs/apis'
 // import { client } from 'libs/apis'
-// import { useRouter } from 'next/router'
+import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { PkgHandlerProjectCreateWorkUnitBody } from 'types/schema'
 import { WorkUnitForm } from './WorkUnitForm'
@@ -9,19 +10,21 @@ import { WorkUnitForm } from './WorkUnitForm'
 interface Props {
   isOpen: boolean
   isEditing?: boolean
+  //   rowID?: string
   initialValues?: PkgHandlerProjectCreateWorkUnitBody
   onClose: () => void
   onAfterSubmit: () => void
 }
 
 export const WorkUnitModal = (props: Props) => {
-  //   const {
-  //     query: { id: projectId },
-  //   } = useRouter()
+  const {
+    query: { id: projectId },
+  } = useRouter()
 
   const {
     isOpen,
     isEditing = false,
+    // rowID,
     initialValues,
     onClose,
     onAfterSubmit,
@@ -33,10 +36,13 @@ export const WorkUnitModal = (props: Props) => {
   const onSubmit = async (values: PkgHandlerProjectCreateWorkUnitBody) => {
     try {
       setIsSubmitting(true)
-
       console.log(values)
 
-      // Bind create or edit API
+      if (!isEditing) {
+        await client.addProjectWorkUnit(projectId as string, values)
+      }
+
+      // Bind edit API
 
       notification.success({
         message: `Work unit ${isEditing ? 'updated' : 'created'} successfully!`,

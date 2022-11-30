@@ -18,7 +18,12 @@ interface Props {
 }
 
 export const WorkUnitForm = (props: Props) => {
-  const { initialValues, isEditing = false, form, onSubmit } = props
+  const {
+    initialValues = { status: 'Active' },
+    isEditing = false,
+    form,
+    onSubmit,
+  } = props
 
   const {
     query: { id: projectId },

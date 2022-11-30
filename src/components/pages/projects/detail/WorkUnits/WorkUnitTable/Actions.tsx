@@ -61,6 +61,8 @@ export const Actions = ({
     }
   }
 
+  console.log(data)
+
   return (
     <>
       <Row justify="end" gutter={[8, 8]}>
@@ -91,8 +93,14 @@ export const Actions = ({
       {isEditWorkUnitDialogOpen && (
         <WorkUnitModal
           isEditing
-          // TODO: transform table data to form data
-          // initialValues={data}
+          initialValues={{
+            name: data.name || '',
+            type: data.type || '',
+            status: data.status || 'Active',
+            members: (data.members || []).map((m) => m.employeeID || ''),
+            stacks: (data.stacks || []).map((m) => m.id || ''),
+          }}
+          // rowID={data.id}
           isOpen={isEditWorkUnitDialogOpen}
           onClose={closeEditWorkUnitDialog}
           onAfterSubmit={onAfterAction}

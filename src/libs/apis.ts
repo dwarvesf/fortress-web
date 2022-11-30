@@ -35,6 +35,7 @@ import {
   ViewUpdateProjectContactInfoResponse,
   ViewWorkUnit,
   ViewEmployeeContentData,
+  PkgHandlerProjectCreateWorkUnitBody,
 } from 'types/schema'
 import qs from 'qs'
 import fetcher from './fetcher'
@@ -446,6 +447,22 @@ class Client {
         method: 'POST',
         headers: this.formDataHeaders,
         body: file,
+      },
+    )
+  }
+
+  public addProjectWorkUnit(
+    projectId: string,
+    data: PkgHandlerProjectCreateWorkUnitBody,
+  ) {
+    return fetcher<Response<ViewWorkUnit[]>>(
+      `${BASE_URL}/projects/${projectId}/work-units`,
+      {
+        method: 'POST',
+        headers: {
+          ...this.privateHeaders,
+        },
+        body: JSON.stringify(data),
       },
     )
   }
