@@ -37,3 +37,11 @@ export const projectWorkUnitStatuses: Record<ProjectWorkUnitStatus, string> = {
   [ProjectWorkUnitStatus.ACTIVE]: 'Active',
   [ProjectWorkUnitStatus.ARCHIVED]: 'Archived',
 }
+
+export type PeerReviewStatus = 'draft' | 'in-progress' | 'done'
+
+export const peerReviewStatuses: Record<PeerReviewStatus, string> = {
+  draft: 'Draft',
+  'in-progress': 'In progress',
+  done: 'Done',
+}

@@ -12,4 +12,7 @@ export const ROUTES = {
   FEEDBACKS: '/feedbacks',
   CONFIG: '/config',
   PROFILE: '/profile',
+  PEER_REVIEW: '/feedbacks/peer-review',
+  ENGAGEMENT: '/feedbacks/engagement',
+  WORKLOAD: '/feedbacks/workload',
 }
