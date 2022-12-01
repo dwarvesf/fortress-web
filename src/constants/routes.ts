@@ -15,4 +15,5 @@ export const ROUTES = {
   PEER_REVIEW: '/feedbacks/peer-review',
   ENGAGEMENT: '/feedbacks/engagement',
   WORKLOAD: '/feedbacks/workload',
+  PEER_REVIEW_EVENT_DETAIL: (id: string) => `/feedbacks/peer-review/${id}`,
 }
