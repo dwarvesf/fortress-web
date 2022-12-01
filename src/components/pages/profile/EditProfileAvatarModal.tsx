@@ -89,11 +89,10 @@ export const EditProfileAvatarModal = (props: Props) => {
               setIsRendering(true)
             }
             if (info.file.status === 'done') {
-              setTimeout(() => {
-                setIsRendering(false)
+              setIsRendering(false)
 
+              setTimeout(() => {
                 // I put these inside a setTimeout because the thumbUrl is initially '' even when status is 'done'
-                // setSelectedAvatarSrc(info.file.thumbUrl!)
                 onSubmit(info.file.originFileObj as File)
               })
 
@@ -101,6 +100,7 @@ export const EditProfileAvatarModal = (props: Props) => {
                 message: `${info.file.name} loaded successfully`,
               })
             } else if (info.file.status === 'error') {
+              setIsRendering(false)
               notification.error({
                 message: `Couldn't load ${info.file.name} file.`,
               })
