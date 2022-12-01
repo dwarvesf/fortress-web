@@ -18,12 +18,12 @@ export const EditProfileAvatarModal = (props: Props) => {
   const { user } = useAuthContext()
 
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isRendering, setIsRendering] = useState(false)
+  const [isUploading, setIsUploading] = useState(false)
 
   const onSubmit = async (file: File) => {
     try {
       setIsSubmitting(true)
-      setIsRendering(true)
+      setIsUploading(true)
 
       const formData = new FormData()
 
@@ -34,7 +34,7 @@ export const EditProfileAvatarModal = (props: Props) => {
       notification.success({ message: 'Profile avatar updated successfully!' })
 
       onAfterSubmit()
-      setTimeout(() => setIsRendering(false), 500)
+      setTimeout(() => setIsUploading(false), 500)
     } catch (error: any) {
       notification.error({
         message: error?.message || 'Could not update profile info',
@@ -66,7 +66,7 @@ export const EditProfileAvatarModal = (props: Props) => {
         <Avatar
           size={200}
           src={
-            isRendering ? (
+            isUploading ? (
               <Spin size="large" style={{ color: 'red' }} />
             ) : (
               <Image
@@ -81,7 +81,6 @@ export const EditProfileAvatarModal = (props: Props) => {
         <Upload
           name="file"
           accept="image/*"
-          headers={{ authorization: 'authorization-text' }}
           maxCount={1}
           itemRender={() => null}
           customRequest={(options) => {
