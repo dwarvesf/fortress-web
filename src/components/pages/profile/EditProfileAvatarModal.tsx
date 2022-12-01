@@ -19,25 +19,21 @@ export const EditProfileAvatarModal = (props: Props) => {
   const { user } = useAuthContext()
   const [form] = useForm()
 
-  const [selectedAvatarSrc, setSelectedAvatarSrc] = useState<string>('')
-  const [selectedFile, setSelectedFile] = useState<File>()
-
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isRendering, setIsRendering] = useState(false)
 
-  const onSubmit = async () => {
+  const onSubmit = async (file: File) => {
     try {
       setIsSubmitting(true)
 
       const form = new FormData()
 
-      form.append('file', selectedFile as File, `${uuid4() as string}.png`)
+      form.append('file', file, `${uuid4() as string}.png`)
 
       await client.uploadProfileAvatar(form)
 
       notification.success({ message: 'Profile avatar updated successfully!' })
 
-      onClose()
       onAfterSubmit()
     } catch (error: any) {
       notification.error({
@@ -52,19 +48,14 @@ export const EditProfileAvatarModal = (props: Props) => {
     <Modal
       open={isOpen}
       onCancel={() => {
-        setSelectedAvatarSrc('')
         onClose()
         form.resetFields()
-      }}
-      onOk={() => {
-        onSubmit()
-        setTimeout(() => setSelectedAvatarSrc(''), 1000)
       }}
       okButtonProps={{ loading: isSubmitting }}
       title="Edit profile avatar"
       style={{ maxWidth: 400 }}
-      okText="Save"
       destroyOnClose
+      footer={null}
     >
       <Space
         direction="vertical"
@@ -82,7 +73,7 @@ export const EditProfileAvatarModal = (props: Props) => {
               <Spin size="large" style={{ color: 'red' }} />
             ) : (
               <Image
-                src={selectedAvatarSrc || user?.avatar}
+                src={user?.avatar}
                 style={{ objectFit: 'cover', height: '100%' }}
                 height={200}
                 preview={false}
@@ -102,12 +93,12 @@ export const EditProfileAvatarModal = (props: Props) => {
                 setIsRendering(false)
 
                 // I put these inside a setTimeout because the thumbUrl is initially '' even when status is 'done'
-                setSelectedAvatarSrc(info.file.thumbUrl!)
-                setSelectedFile(info.file.originFileObj)
-              }, 1000)
+                // setSelectedAvatarSrc(info.file.thumbUrl!)
+                onSubmit(info.file.originFileObj as File)
+              })
 
               notification.success({
-                message: `${info.file.name} file loaded successfully`,
+                message: `${info.file.name} loaded successfully`,
               })
             } else if (info.file.status === 'error') {
               notification.error({
