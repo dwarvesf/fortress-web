@@ -1,4 +1,3 @@
-import { UserOutlined } from '@ant-design/icons'
 import { Space, Col, Row, Avatar, Select, notification } from 'antd'
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { AvatarWithName } from 'components/common/AvatarWithName'
@@ -77,11 +76,15 @@ export const General = (props: Props) => {
                     size={24}
                     style={{ justifyContent: 'center' }}
                   >
-                    <Avatar
-                      size={128}
-                      icon={<UserOutlined />}
-                      src={data.avatar}
-                    />
+                    <Avatar size={128} src={data.avatar}>
+                      {data.avatar === '' && (
+                        <span style={{ fontSize: 50 }}>
+                          {(data.fullName || data.displayName)
+                            ?.slice(0, 1)
+                            .toUpperCase()}
+                        </span>
+                      )}
+                    </Avatar>
                     <Select
                       loading={isLoading}
                       style={{ width: '100%' }}

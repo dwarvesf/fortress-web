@@ -1,4 +1,4 @@
-import { EditOutlined, FileImageOutlined } from '@ant-design/icons'
+import { EditOutlined } from '@ant-design/icons'
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { Avatar, Button, Col, Image, Row, Space } from 'antd'
 import { DataRows } from 'components/common/DataRows'
@@ -43,20 +43,31 @@ const Default = () => {
                   >
                     <Avatar
                       size={128}
-                      icon={<FileImageOutlined />}
                       src={
-                        <Image
-                          src={user?.avatar}
-                          height={128}
-                          preview={{
-                            mask: (
-                              <span style={{ fontSize: 16 }}>View avatar</span>
-                            ),
-                          }}
-                        />
+                        user?.avatar && (
+                          <Image
+                            src={user?.avatar}
+                            height={128}
+                            preview={{
+                              mask: (
+                                <span style={{ fontSize: 16 }}>
+                                  View avatar
+                                </span>
+                              ),
+                            }}
+                          />
+                        )
                       }
                       style={{ border: `2px solid ${theme.colors.primary}` }}
-                    />
+                    >
+                      {user?.avatar === '' && (
+                        <span style={{ fontSize: 20 }}>
+                          {(user.fullName || user.displayName)
+                            ?.slice(0, 1)
+                            .toUpperCase()}
+                        </span>
+                      )}
+                    </Avatar>
                     <Button
                       type="primary"
                       icon={<EditOutlined />}
