@@ -20,7 +20,10 @@ import { PeerReviewEventDetailActions } from 'components/pages/PeerReview/PeerRe
 import { ProgressColumn } from 'components/pages/PeerReview/ProgressColumn'
 import { statusColors } from 'constants/colors'
 import { peerReviewStatuses } from 'constants/status'
-import { PeerReviewDetail, peerReviewEvent } from './mockData'
+import {
+  PeerReviewDetail,
+  peerReviewEvent,
+} from '../../../../components/pages/PeerReview/mockData'
 
 const columns: ColumnsType<PeerReviewDetail> = [
   {
