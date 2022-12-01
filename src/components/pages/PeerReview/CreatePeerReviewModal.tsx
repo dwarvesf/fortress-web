@@ -20,7 +20,7 @@ export const CreatePeerReviewModal = (props: Props) => {
       setIsSubmitting(true)
 
       notification.success({
-        message: 'Create peer performance review successfully!',
+        message: 'Peer performance review event created successfully!',
       })
 
       onClose()
