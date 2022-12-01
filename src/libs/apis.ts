@@ -34,6 +34,7 @@ import {
   PkgHandlerProjectUpdateContactInfoInput,
   ViewUpdateProjectContactInfoResponse,
   ViewWorkUnit,
+  ViewEmployeeContentData,
 } from 'types/schema'
 import qs from 'qs'
 import fetcher from './fetcher'
@@ -43,6 +44,8 @@ const BASE_URL = process.env.BASE_URL
 export interface Response<T> {
   data: T
 }
+
+type Headers = Record<string, string>
 
 // keys for swr
 export const GET_PATHS = {
@@ -73,6 +76,14 @@ class Client {
 
   privateHeaders: HeadersInit = {
     ...this.headers,
+  }
+
+  public get formDataHeaders(): Headers {
+    const cloned = Object.assign({}, this.privateHeaders) as Headers
+    // Browsers will auto-set Content-Type and other things when formData is used
+    // Content-Type must not be present for form data to work
+    delete cloned['Content-Type']
+    return cloned
   }
 
   public setAuthToken(token: string) {
@@ -424,6 +435,17 @@ class Client {
         headers: {
           ...this.privateHeaders,
         },
+      },
+    )
+  }
+
+  public uploadProfileAvatar(file: FormData) {
+    return fetcher<Response<ViewEmployeeContentData>>(
+      `${BASE_URL}/profile/upload-avatar`,
+      {
+        method: 'POST',
+        headers: this.formDataHeaders,
+        body: file,
       },
     )
   }

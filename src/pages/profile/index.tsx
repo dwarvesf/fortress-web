@@ -1,18 +1,27 @@
-import { EditOutlined, FileImageOutlined } from '@ant-design/icons'
+import { EditOutlined } from '@ant-design/icons'
 import { useDisclosure } from '@dwarvesf/react-hooks'
-import { Avatar, Button, Col, Row, Space } from 'antd'
+import { Avatar, Button, Col, Image, Row, Space } from 'antd'
 import { DataRows } from 'components/common/DataRows'
 import { EditableDetailSectionCard } from 'components/common/EditableDetailSectionCard'
 import { PageHeader } from 'components/common/PageHeader'
+import { EditProfileAvatarModal } from 'components/pages/profile/EditProfileAvatarModal'
 import { EditProfileInfoModal } from 'components/pages/profile/EditProfileInfoModal'
 import { useAuthContext } from 'context/auth'
+import { theme } from 'styles'
 
 const Default = () => {
   const { user, revalidate } = useAuthContext()
+
   const {
     isOpen: isEditProfileInfoDialogOpen,
     onOpen: openEditProfileInfoDialog,
     onClose: closeEditProfileInfoDialog,
+  } = useDisclosure()
+
+  const {
+    isOpen: isEditAvatarDialogOpen,
+    onOpen: openEditAvatarDialog,
+    onClose: closeEditAvatarDialog,
   } = useDisclosure()
 
   return (
@@ -25,7 +34,7 @@ const Default = () => {
               onEdit={openEditProfileInfoDialog}
               title="General Info"
             >
-              <Row gutter={24}>
+              <Row gutter={[24, 24]}>
                 <Col span={24} lg={{ span: 8 }}>
                   <Space
                     direction="vertical"
@@ -34,10 +43,36 @@ const Default = () => {
                   >
                     <Avatar
                       size={128}
-                      icon={<FileImageOutlined />}
-                      src={user?.avatar}
-                    />
-                    <Button type="primary" icon={<EditOutlined />} disabled>
+                      src={
+                        user?.avatar && (
+                          <Image
+                            src={user?.avatar}
+                            height={128}
+                            preview={{
+                              mask: (
+                                <span style={{ fontSize: 16 }}>
+                                  View avatar
+                                </span>
+                              ),
+                            }}
+                          />
+                        )
+                      }
+                      style={{ border: `2px solid ${theme.colors.primary}` }}
+                    >
+                      {user?.avatar === '' && (
+                        <span style={{ fontSize: 20 }}>
+                          {(user.fullName || user.displayName)
+                            ?.slice(0, 1)
+                            .toUpperCase()}
+                        </span>
+                      )}
+                    </Avatar>
+                    <Button
+                      type="primary"
+                      icon={<EditOutlined />}
+                      onClick={openEditAvatarDialog}
+                    >
                       Edit
                     </Button>
                   </Space>
@@ -71,6 +106,12 @@ const Default = () => {
         isOpen={isEditProfileInfoDialogOpen}
         initialValues={user || {}}
         onClose={closeEditProfileInfoDialog}
+        onAfterSubmit={revalidate}
+      />
+
+      <EditProfileAvatarModal
+        isOpen={isEditAvatarDialogOpen}
+        onClose={closeEditAvatarDialog}
         onAfterSubmit={revalidate}
       />
     </>

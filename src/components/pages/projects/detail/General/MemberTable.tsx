@@ -1,9 +1,9 @@
 import { Space, Tag } from 'antd'
 import Table, { ColumnsType } from 'antd/lib/table'
 import { AvatarWithName } from 'components/common/AvatarWithName'
+import { DeploymentType, deploymentTypes } from 'constants/deploymentTypes'
 import { useMemo } from 'react'
 import { ModelPosition, ViewPosition, ViewProjectMember } from 'types/schema'
-import { capitalizeFirstLetter } from 'utils/string'
 
 export const MemberTable = ({ data }: { data: ViewProjectMember[] }) => {
   const columns = useMemo(() => {
@@ -40,7 +40,7 @@ export const MemberTable = ({ data }: { data: ViewProjectMember[] }) => {
         title: 'Deployment Type',
         key: 'deploymentType',
         dataIndex: 'deploymentType',
-        render: (value) => capitalizeFirstLetter(value),
+        render: (value) => deploymentTypes[value as DeploymentType],
       },
     ] as ColumnsType<ViewProjectMember>
   }, [])

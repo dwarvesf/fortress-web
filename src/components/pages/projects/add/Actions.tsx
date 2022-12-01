@@ -113,8 +113,7 @@ export const Actions = ({
           onClose={closeEditDialog}
           initialValues={{
             ...rowData,
-            deploymentType:
-              rowData.deploymentType === 'Shadow' ? 'shadow' : 'official',
+            deploymentType: rowData.deploymentType,
             positions:
               rowData.positions?.map((position) => position.id || '') || [],
             joinedDate: rowData.joinedDate

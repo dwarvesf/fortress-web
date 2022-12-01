@@ -18,11 +18,13 @@ export const AvatarWithName = (props: Props) => {
   return isLink ? (
     <EmployeeLink id={user.id || user.employeeID || ''}>
       <Space direction="horizontal">
-        <Avatar
-          src={user.avatar}
-          size={avatarSize}
-          icon={!name && name?.slice(0, 1)}
-        />
+        <Avatar src={user.avatar} size={avatarSize}>
+          {user?.avatar === '' && (
+            <span style={{ fontSize: 16 }}>
+              {name?.slice(0, 1).toUpperCase()}
+            </span>
+          )}
+        </Avatar>
         <span>{name}</span>
       </Space>
     </EmployeeLink>
