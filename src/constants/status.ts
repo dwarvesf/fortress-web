@@ -38,10 +38,14 @@ export const projectWorkUnitStatuses: Record<ProjectWorkUnitStatus, string> = {
   [ProjectWorkUnitStatus.ARCHIVED]: 'Archived',
 }
 
-export type PeerReviewStatus = 'draft' | 'in-progress' | 'done'
+export enum PeerReviewStatus {
+  DRAFT = 'draft',
+  INPROGRESS = 'in-progress',
+  DONE = 'done',
+}
 
 export const peerReviewStatuses: Record<PeerReviewStatus, string> = {
-  draft: 'Draft',
-  'in-progress': 'In progress',
-  done: 'Done',
+  [PeerReviewStatus.DRAFT]: 'Draft',
+  [PeerReviewStatus.INPROGRESS]: 'In progress',
+  [PeerReviewStatus.DONE]: 'Done',
 }
