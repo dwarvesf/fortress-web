@@ -7,6 +7,7 @@ import { PageHeader } from 'components/common/PageHeader'
 import { EditProfileAvatarModal } from 'components/pages/profile/EditProfileAvatarModal'
 import { EditProfileInfoModal } from 'components/pages/profile/EditProfileInfoModal'
 import { useAuthContext } from 'context/auth'
+import { theme } from 'styles'
 
 const Default = () => {
   const { user, revalidate } = useAuthContext()
@@ -43,7 +44,18 @@ const Default = () => {
                     <Avatar
                       size={128}
                       icon={<FileImageOutlined />}
-                      src={<Image src={user?.avatar} height={128} />}
+                      src={
+                        <Image
+                          src={user?.avatar}
+                          height={128}
+                          preview={{
+                            mask: (
+                              <span style={{ fontSize: 16 }}>View avatar</span>
+                            ),
+                          }}
+                        />
+                      }
+                      style={{ border: `2px solid ${theme.colors.primary}` }}
                     />
                     <Button
                       type="primary"
