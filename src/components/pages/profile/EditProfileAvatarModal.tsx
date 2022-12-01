@@ -1,22 +1,12 @@
-import { FileImageOutlined, EditOutlined } from '@ant-design/icons'
-import { Avatar, Form, Modal, notification, Space, Upload } from 'antd'
+import { EditOutlined } from '@ant-design/icons'
+import { Avatar, Modal, notification, Space, Upload, Image, Spin } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
 import { Button } from 'components/common/Button'
 import { useAuthContext } from 'context/auth'
 import { client } from 'libs/apis'
 import { useState } from 'react'
 import { theme } from 'styles'
-import { ViewEmployeeData } from 'types/schema'
-
-type ProfileInfoFormValues = Pick<
-  ViewEmployeeData,
-  | 'phoneNumber'
-  | 'discordID'
-  | 'githubID'
-  | 'personalEmail'
-  | 'teamEmail'
-  | 'notionID'
->
+import { v4 as uuid4 } from 'uuid'
 
 interface Props {
   isOpen: boolean
@@ -26,18 +16,26 @@ interface Props {
 
 export const EditProfileAvatarModal = (props: Props) => {
   const { isOpen, onClose, onAfterSubmit } = props
-
   const { user } = useAuthContext()
-
   const [form] = useForm()
-  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const onSubmit = async (values: ProfileInfoFormValues) => {
+  const [selectedAvatarSrc, setSelectedAvatarSrc] = useState<string>('')
+  const [selectedFile, setSelectedFile] = useState<File>()
+
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isRendering, setIsRendering] = useState(false)
+
+  const onSubmit = async () => {
     try {
       setIsSubmitting(true)
-      await client.updateProfile(values)
 
-      notification.success({ message: 'Profile info updated successfully!' })
+      const form = new FormData()
+
+      form.append('file', selectedFile as File, `${uuid4() as string}.png`)
+
+      await client.uploadProfileAvatar(form)
+
+      notification.success({ message: 'Profile avatar updated successfully!' })
 
       onClose()
       onAfterSubmit()
@@ -54,75 +52,94 @@ export const EditProfileAvatarModal = (props: Props) => {
     <Modal
       open={isOpen}
       onCancel={() => {
+        setSelectedAvatarSrc('')
         onClose()
         form.resetFields()
       }}
-      onOk={form.submit}
+      onOk={() => {
+        onSubmit()
+        setTimeout(() => setSelectedAvatarSrc(''), 1000)
+      }}
       okButtonProps={{ loading: isSubmitting }}
-      destroyOnClose
-      title="Edit Profile"
+      title="Edit profile avatar"
       style={{ maxWidth: 400 }}
+      okText="Save"
+      destroyOnClose
     >
-      <Form form={form} onFinish={onSubmit}>
-        <Space
-          direction="vertical"
-          style={{
-            justifyContent: 'center',
-            alignItems: 'center',
-            width: '100%',
-            height: 300,
+      <Space
+        direction="vertical"
+        style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: '100%',
+          height: 300,
+        }}
+      >
+        <Avatar
+          size={200}
+          src={
+            isRendering ? (
+              <Spin size="large" style={{ color: 'red' }} />
+            ) : (
+              <Image
+                src={selectedAvatarSrc || user?.avatar}
+                style={{ objectFit: 'cover', height: '100%' }}
+                height={200}
+                preview={false}
+              />
+            )
+          }
+        />
+        <Upload
+          name="file"
+          headers={{ authorization: 'authorization-text' }}
+          onChange={async (info) => {
+            if (info.file.status !== 'uploading') {
+              setIsRendering(true)
+            }
+            if (info.file.status === 'done') {
+              setTimeout(() => {
+                setIsRendering(false)
+
+                // I put these inside a setTimeout because the thumbUrl is initially '' even when status is 'done'
+                setSelectedAvatarSrc(info.file.thumbUrl!)
+                setSelectedFile(info.file.originFileObj)
+              }, 1000)
+
+              notification.success({
+                message: `${info.file.name} file loaded successfully`,
+              })
+            } else if (info.file.status === 'error') {
+              notification.error({
+                message: `Couldn't load ${info.file.name} file.`,
+              })
+            }
           }}
+          beforeUpload={(file) => {
+            const isImg =
+              file.type === 'image/png' ||
+              file.type === 'image/jpeg' ||
+              file.type === 'image/jpg'
+            if (!isImg) {
+              notification.error({
+                message: `${file.name} is not a png file`,
+              })
+            }
+            return isImg || Upload.LIST_IGNORE
+          }}
+          maxCount={1}
+          listType="picture"
+          itemRender={() => null}
         >
-          <Avatar size={175} icon={<FileImageOutlined />} src={user?.avatar} />
-          <Upload
-            name="file"
-            headers={{ authorization: 'authorization-text' }}
-            onChange={async (info) => {
-              if (info.file.status !== 'uploading') {
-                console.log(info.file, info.fileList)
-              }
-              if (info.file.status === 'done') {
-                const form = new FormData()
-
-                form.append('files', info.fileList[0].originFileObj as File)
-
-                // test
-                await client.uploadProfileAvatar(form)
-
-                notification.success({
-                  message: `${info.file.name} file uploaded successfully`,
-                })
-              } else if (info.file.status === 'error') {
-                notification.error({
-                  message: `${info.file.name} file upload failed.`,
-                })
-              }
-            }}
-            beforeUpload={(file) => {
-              const isImg =
-                file.type === 'image/png' ||
-                file.type === 'image/jpeg' ||
-                file.type === 'image/jpg'
-              if (!isImg) {
-                notification.error({
-                  message: `${file.name} is not a png file`,
-                })
-              }
-              return isImg || Upload.LIST_IGNORE
-            }}
-            maxCount={1}
-            // itemRender={() => null}
+          <Button
+            type="link"
+            style={{ color: theme.colors.primary }}
+            icon={<EditOutlined />}
           >
-            <Button
-              type="link"
-              style={{ color: theme.colors.primary }}
-              icon={<EditOutlined />}
-            >
-              Edit
-            </Button>
-          </Upload>
-        </Space>
-      </Form>
+            Edit
+          </Button>
+        </Upload>
+      </Space>
     </Modal>
   )
 }

@@ -23,7 +23,6 @@ import { ProjectForm } from 'components/pages/projects/add/ProjectForm'
 import { PlusCircleOutlined } from '@ant-design/icons'
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { ProjectMemberModal } from 'components/pages/projects/add/ProjectMemberModal'
-import { DeploymentType, deploymentTypes } from 'constants/deploymentTypes'
 import { ProjectMemberTable } from 'components/pages/projects/add/ProjectMemberTable'
 
 const getPositionsFromIDs = (data: ModelPosition[], positionStrs: string[]) => {
@@ -125,8 +124,7 @@ const CreateNewProjectPage = () => {
           employeeData.data || [],
           memberData?.employeeID || '',
         )?.avatar,
-        deploymentType:
-          deploymentTypes[memberData.deploymentType as DeploymentType],
+        deploymentType: memberData.deploymentType,
         displayName: getEmployeeFromID(
           employeeData.data || [],
           memberData?.employeeID || '',
@@ -182,6 +180,7 @@ const CreateNewProjectPage = () => {
               style={{
                 justifyContent: 'space-between',
                 width: '100%',
+                marginBottom: 24,
               }}
             >
               <Typography.Title level={4}>Members</Typography.Title>

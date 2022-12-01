@@ -15,8 +15,8 @@ import {
   ViewProjectMember,
   ViewSeniorityResponse,
 } from 'types/schema'
-import { capitalizeFirstLetter } from 'utils/string'
 import { ProjectMemberStatus, projectMemberStatuses } from 'constants/status'
+import { DeploymentType, deploymentTypes } from 'constants/deploymentTypes'
 import { Actions } from './Actions'
 
 export const ProjectMemberTable = ({
@@ -42,7 +42,7 @@ export const ProjectMemberTable = ({
         render: (value) =>
           value.displayName ? (
             <Space>
-              <AvatarWithName user={value} />
+              <AvatarWithName user={value} isLink={false} />
               {value.isLead && <Tag color="red">Lead</Tag>}
             </Space>
           ) : (
@@ -75,7 +75,8 @@ export const ProjectMemberTable = ({
         title: 'Deployment Type',
         key: 'deploymentType',
         dataIndex: 'deploymentType',
-        render: (value) => (value ? capitalizeFirstLetter(value) : '-'),
+        render: (value) =>
+          value ? deploymentTypes[value as DeploymentType] : '-',
       },
       {
         title: 'Status',

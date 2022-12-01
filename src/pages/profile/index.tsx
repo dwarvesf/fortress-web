@@ -1,6 +1,6 @@
 import { EditOutlined, FileImageOutlined } from '@ant-design/icons'
 import { useDisclosure } from '@dwarvesf/react-hooks'
-import { Avatar, Button, Col, Row, Space } from 'antd'
+import { Avatar, Button, Col, Image, Row, Space } from 'antd'
 import { DataRows } from 'components/common/DataRows'
 import { EditableDetailSectionCard } from 'components/common/EditableDetailSectionCard'
 import { PageHeader } from 'components/common/PageHeader'
@@ -10,6 +10,7 @@ import { useAuthContext } from 'context/auth'
 
 const Default = () => {
   const { user, revalidate } = useAuthContext()
+
   const {
     isOpen: isEditProfileInfoDialogOpen,
     onOpen: openEditProfileInfoDialog,
@@ -42,7 +43,7 @@ const Default = () => {
                     <Avatar
                       size={128}
                       icon={<FileImageOutlined />}
-                      src={user?.avatar}
+                      src={<Image src={user?.avatar} height={128} />}
                     />
                     <Button
                       type="primary"
