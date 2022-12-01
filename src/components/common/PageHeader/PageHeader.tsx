@@ -1,4 +1,4 @@
-import { Col, Row, Space, Typography } from 'antd'
+import { Col, Row, Typography } from 'antd'
 
 interface Props {
   title: React.ReactNode
@@ -11,9 +11,7 @@ export const PageHeader = (props: Props) => {
   return (
     <Row gutter={[16, 16]} justify="space-between">
       <Col>
-        <Space align="center">
-          <Typography.Title level={3}>{title}</Typography.Title>
-        </Space>
+        <Typography.Title level={3}>{title}</Typography.Title>
       </Col>
       {rightRender && (
         <Col>
