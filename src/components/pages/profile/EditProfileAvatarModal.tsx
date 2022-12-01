@@ -1,6 +1,5 @@
 import { EditOutlined } from '@ant-design/icons'
 import { Avatar, Modal, notification, Space, Upload, Image, Spin } from 'antd'
-import { useForm } from 'antd/lib/form/Form'
 import { Button } from 'components/common/Button'
 import { useAuthContext } from 'context/auth'
 import { client } from 'libs/apis'
@@ -17,7 +16,6 @@ interface Props {
 export const EditProfileAvatarModal = (props: Props) => {
   const { isOpen, onClose, onAfterSubmit } = props
   const { user } = useAuthContext()
-  const [form] = useForm()
 
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isRendering, setIsRendering] = useState(false)
@@ -25,16 +23,18 @@ export const EditProfileAvatarModal = (props: Props) => {
   const onSubmit = async (file: File) => {
     try {
       setIsSubmitting(true)
+      setIsRendering(true)
 
-      const form = new FormData()
+      const formData = new FormData()
 
-      form.append('file', file, `${uuid4() as string}.png`)
+      formData.append('file', file, `${uuid4() as string}.png`)
 
-      await client.uploadProfileAvatar(form)
+      await client.uploadProfileAvatar(formData)
 
       notification.success({ message: 'Profile avatar updated successfully!' })
 
       onAfterSubmit()
+      setTimeout(() => setIsRendering(false), 500)
     } catch (error: any) {
       notification.error({
         message: error?.message || 'Could not update profile info',
@@ -47,10 +47,7 @@ export const EditProfileAvatarModal = (props: Props) => {
   return (
     <Modal
       open={isOpen}
-      onCancel={() => {
-        onClose()
-        form.resetFields()
-      }}
+      onCancel={onClose}
       okButtonProps={{ loading: isSubmitting }}
       title="Edit profile avatar"
       style={{ maxWidth: 400 }}
@@ -83,44 +80,13 @@ export const EditProfileAvatarModal = (props: Props) => {
         />
         <Upload
           name="file"
+          accept="image/*"
           headers={{ authorization: 'authorization-text' }}
-          onChange={async (info) => {
-            if (info.file.status !== 'uploading') {
-              setIsRendering(true)
-            }
-            if (info.file.status === 'done') {
-              setIsRendering(false)
-
-              setTimeout(() => {
-                // I put these inside a setTimeout because the thumbUrl is initially '' even when status is 'done'
-                onSubmit(info.file.originFileObj as File)
-              })
-
-              notification.success({
-                message: `${info.file.name} loaded successfully`,
-              })
-            } else if (info.file.status === 'error') {
-              setIsRendering(false)
-              notification.error({
-                message: `Couldn't load ${info.file.name} file.`,
-              })
-            }
-          }}
-          beforeUpload={(file) => {
-            const isImg =
-              file.type === 'image/png' ||
-              file.type === 'image/jpeg' ||
-              file.type === 'image/jpg'
-            if (!isImg) {
-              notification.error({
-                message: `${file.name} is not a png file`,
-              })
-            }
-            return isImg || Upload.LIST_IGNORE
-          }}
           maxCount={1}
-          listType="picture"
           itemRender={() => null}
+          customRequest={(options) => {
+            onSubmit(options.file as File)
+          }}
         >
           <Button
             type="link"
