@@ -1,4 +1,4 @@
-import { EditOutlined } from '@ant-design/icons'
+import { UploadOutlined } from '@ant-design/icons'
 import { Avatar, Modal, notification, Space, Upload, Image, Spin } from 'antd'
 import { Button } from 'components/common/Button'
 import { useAuthContext } from 'context/auth'
@@ -90,9 +90,9 @@ export const EditProfileAvatarModal = (props: Props) => {
           <Button
             type="link"
             style={{ color: theme.colors.primary }}
-            icon={<EditOutlined />}
+            icon={<UploadOutlined />}
           >
-            Edit
+            Upload image
           </Button>
         </Upload>
       </Space>
