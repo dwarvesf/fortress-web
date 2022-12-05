@@ -5,6 +5,8 @@ import {
   Dropdown,
   Input,
   Menu,
+  Modal,
+  notification,
   Pagination,
   Row,
   Space,
@@ -15,11 +17,13 @@ import { ColumnsType } from 'antd/lib/table'
 import { AvatarArray } from 'components/common/AvatarArray'
 import { AvatarWithName } from 'components/common/AvatarWithName'
 import { PeerReviewEventLink } from 'components/common/DetailLink'
+import { NameArray } from 'components/common/NameArray'
 import { PageHeader } from 'components/common/PageHeader'
 import { PeerReviewEventDetailActions } from 'components/pages/PeerReview/PeerReviewEventDetailActions'
 import { ProgressColumn } from 'components/pages/PeerReview/ProgressColumn'
 import { statusColors } from 'constants/colors'
 import { peerReviewStatuses } from 'constants/status'
+import React, { useState } from 'react'
 import {
   PeerReviewDetail,
   peerReviewEvent,
@@ -62,6 +66,54 @@ const columns: ColumnsType<PeerReviewDetail> = [
 
 const Default = () => {
   const { time, status, peerReviews = [] } = peerReviewEvent
+  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([])
+  const [isLoading, setIsLoading] = useState(false)
+
+  const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
+    setSelectedRowKeys(newSelectedRowKeys)
+  }
+
+  const onSendServey = async () => {
+    try {
+      setIsLoading(true)
+
+      notification.success({
+        message: 'Peer performance servey sent successfully!',
+      })
+
+      setSelectedRowKeys([])
+    } catch (error: any) {
+      notification.error({
+        message: error?.message || 'Could not send peer performance servey',
+      })
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const confirmSendServey = () => {
+    const selectedPeerReviews = peerReviews.filter((each) =>
+      selectedRowKeys.includes(each.id || ''),
+    )
+    const participants = selectedPeerReviews.flatMap(
+      (each) => each.participants || [],
+    )
+    if (participants.length === 0) {
+      return
+    }
+
+    Modal.confirm({
+      title: 'Send servey',
+      content: (
+        <>
+          Do you want to send peer review feedback to{' '}
+          <NameArray employees={participants} />?
+        </>
+      ),
+      okText: 'Send',
+      onOk: onSendServey,
+    })
+  }
 
   return (
     <Space direction="vertical" size={24} style={{ width: '100%' }}>
@@ -87,7 +139,14 @@ const Default = () => {
               <Input placeholder="Search by name..." bordered />
             </Col>
             <Col>
-              <Button type="primary">Send</Button>
+              <Button
+                type="primary"
+                disabled={!selectedRowKeys.length || isLoading}
+                loading={isLoading}
+                onClick={confirmSendServey}
+              >
+                Send
+              </Button>
             </Col>
             <Col style={{ display: 'flex', alignItems: 'center' }}>
               <Dropdown
@@ -111,6 +170,8 @@ const Default = () => {
         columns={columns}
         rowSelection={{
           type: 'checkbox',
+          selectedRowKeys,
+          onChange: onSelectChange,
         }}
         rowKey={(row) => row.id as string}
         pagination={false}
