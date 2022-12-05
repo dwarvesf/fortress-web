@@ -1,7 +1,7 @@
 import { Col, Row, Typography } from 'antd'
 
 interface Props {
-  title: string
+  title: React.ReactNode
   rightRender?: React.ReactNode
 }
 

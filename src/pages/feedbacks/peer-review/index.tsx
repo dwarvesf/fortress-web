@@ -51,9 +51,12 @@ const columns: ColumnsType<PeerReviewData> = [
   },
   {
     title: 'Done',
-    key: 'done',
-    dataIndex: 'done',
-    render: (_, record) => <ProgressColumn record={record} />,
+    render: (value: PeerReviewData) => (
+      <ProgressColumn
+        done={value.totalCompletedSurveys}
+        total={value.totalParticipants}
+      />
+    ),
     width: '40%',
   },
   {
@@ -68,7 +71,7 @@ const columns: ColumnsType<PeerReviewData> = [
     title: '',
     key: 'actions',
     dataIndex: 'actions',
-    render: () => <Actions />,
+    render: (_, record) => <Actions record={record} />,
     fixed: 'right',
   },
 ]
