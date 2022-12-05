@@ -5,7 +5,7 @@ interface Props {
   numOfVisibleName?: number
 }
 
-export const DisplayName = ({ employees, numOfVisibleName = 3 }: Props) => {
+export const NameArray = ({ employees, numOfVisibleName = 3 }: Props) => {
   const displayNames = employees
     .slice(0, numOfVisibleName)
     .map((each) => <strong>{each.displayName}</strong>)

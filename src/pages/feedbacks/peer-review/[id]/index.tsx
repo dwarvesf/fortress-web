@@ -17,8 +17,8 @@ import { ColumnsType } from 'antd/lib/table'
 import { AvatarArray } from 'components/common/AvatarArray'
 import { AvatarWithName } from 'components/common/AvatarWithName'
 import { PeerReviewEventLink } from 'components/common/DetailLink'
+import { NameArray } from 'components/common/NameArray'
 import { PageHeader } from 'components/common/PageHeader'
-import { DisplayName } from 'components/pages/PeerReview/DisplayName'
 import { PeerReviewEventDetailActions } from 'components/pages/PeerReview/PeerReviewEventDetailActions'
 import { ProgressColumn } from 'components/pages/PeerReview/ProgressColumn'
 import { statusColors } from 'constants/colors'
@@ -107,7 +107,7 @@ const Default = () => {
       content: (
         <>
           Do you want to send peer review feedback to{' '}
-          <DisplayName employees={participants} />?
+          <NameArray employees={participants} />?
         </>
       ),
       okText: 'Send',
