@@ -18,12 +18,12 @@ import { AvatarArray } from 'components/common/AvatarArray'
 import { AvatarWithName } from 'components/common/AvatarWithName'
 import { PeerReviewEventLink } from 'components/common/DetailLink'
 import { PageHeader } from 'components/common/PageHeader'
+import { DisplayName } from 'components/pages/PeerReview/DisplayName'
 import { PeerReviewEventDetailActions } from 'components/pages/PeerReview/PeerReviewEventDetailActions'
 import { ProgressColumn } from 'components/pages/PeerReview/ProgressColumn'
 import { statusColors } from 'constants/colors'
 import { peerReviewStatuses } from 'constants/status'
 import React, { useState } from 'react'
-import { ViewEmployeeData } from 'types/schema'
 import {
   PeerReviewDetail,
   peerReviewEvent,
@@ -63,36 +63,6 @@ const columns: ColumnsType<PeerReviewDetail> = [
     fixed: 'right',
   },
 ]
-
-const DisplayName = ({
-  employees,
-  numOfVisibleName = 3,
-}: {
-  employees: ViewEmployeeData[]
-  numOfVisibleName?: number
-}) => {
-  const displayNames = employees
-    .slice(0, numOfVisibleName)
-    .map((each) => <strong>{each.displayName}</strong>)
-  const displayValues = [
-    ...displayNames,
-    ...(employees.length > numOfVisibleName
-      ? [`+${employees.length - numOfVisibleName} more pleople`]
-      : []),
-  ]
-
-  return (
-    <>
-      {displayValues.reduce((prev, curr, index) => (
-        <>
-          {prev}
-          {index === displayValues.length - 1 ? ' and ' : ', '}
-          {curr}
-        </>
-      ))}
-    </>
-  )
-}
 
 const Default = () => {
   const { time, status, peerReviews = [] } = peerReviewEvent
