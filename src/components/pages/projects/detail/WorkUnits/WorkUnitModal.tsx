@@ -10,7 +10,7 @@ import { WorkUnitForm } from './WorkUnitForm'
 interface Props {
   isOpen: boolean
   isEditing?: boolean
-  //   rowID?: string
+  rowID?: string
   initialValues?: PkgHandlerProjectCreateWorkUnitBody
   onClose: () => void
   onAfterSubmit: () => void
@@ -24,7 +24,7 @@ export const WorkUnitModal = (props: Props) => {
   const {
     isOpen,
     isEditing = false,
-    // rowID,
+    rowID,
     initialValues,
     onClose,
     onAfterSubmit,
@@ -36,13 +36,16 @@ export const WorkUnitModal = (props: Props) => {
   const onSubmit = async (values: PkgHandlerProjectCreateWorkUnitBody) => {
     try {
       setIsSubmitting(true)
-      console.log(values)
 
       if (!isEditing) {
         await client.addProjectWorkUnit(projectId as string, values)
+      } else {
+        await client.editProjectWorkUnit(
+          projectId as string,
+          rowID as string,
+          values,
+        )
       }
-
-      // Bind edit API
 
       notification.success({
         message: `Work unit ${isEditing ? 'updated' : 'created'} successfully!`,
@@ -71,7 +74,7 @@ export const WorkUnitModal = (props: Props) => {
       onOk={form.submit}
       okButtonProps={{ loading: isSubmitting }}
       destroyOnClose
-      title={`${isEditing ? 'Edit' : 'Create New'} Work unit`}
+      title={`${isEditing ? 'Edit' : 'Create new'} Work unit`}
     >
       <WorkUnitForm
         isEditing={isEditing}

@@ -34,7 +34,7 @@ export const MemberTable = ({
               {value.isLead && <Tag color="red">Lead</Tag>}
             </Space>
           ) : (
-            '-'
+            'TBD'
           ),
         fixed: 'left',
       },

@@ -36,6 +36,8 @@ import {
   ViewWorkUnit,
   ViewEmployeeContentData,
   PkgHandlerProjectCreateWorkUnitBody,
+  PkgHandlerProjectUpdateWorkUnitBody,
+  ViewMessageResponse,
 } from 'types/schema'
 import qs from 'qs'
 import fetcher from './fetcher'
@@ -445,7 +447,9 @@ class Client {
       `${BASE_URL}/profile/upload-avatar`,
       {
         method: 'POST',
-        headers: this.formDataHeaders,
+        headers: {
+          ...this.formDataHeaders,
+        },
         body: file,
       },
     )
@@ -459,6 +463,23 @@ class Client {
       `${BASE_URL}/projects/${projectId}/work-units`,
       {
         method: 'POST',
+        headers: {
+          ...this.privateHeaders,
+        },
+        body: JSON.stringify(data),
+      },
+    )
+  }
+
+  public editProjectWorkUnit(
+    projectId: string,
+    workUnitId: string,
+    data: PkgHandlerProjectUpdateWorkUnitBody,
+  ) {
+    return fetcher<ViewMessageResponse>(
+      `${BASE_URL}/projects/${projectId}/work-units/${workUnitId}`,
+      {
+        method: 'PUT',
         headers: {
           ...this.privateHeaders,
         },

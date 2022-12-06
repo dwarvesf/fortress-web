@@ -2,6 +2,11 @@ import { Form, Row, Col, Input, FormInstance } from 'antd'
 import { AsyncSelect } from 'components/common/Select'
 import { renderEmployeeOption } from 'components/common/Select/renderers/employeeOption'
 import { renderStatusOption } from 'components/common/Select/renderers/statusOption'
+import {
+  ProjectWorkUnitStatus,
+  projectWorkUnitStatuses,
+} from 'constants/status'
+import { WorkUnitType, workUnitTypes } from 'constants/workUnitTypes'
 import { client, GET_PATHS } from 'libs/apis'
 import { useRouter } from 'next/router'
 import { PkgHandlerProjectCreateWorkUnitBody } from 'types/schema'
@@ -18,19 +23,18 @@ interface Props {
 }
 
 export const WorkUnitForm = (props: Props) => {
-  const {
-    initialValues = { status: 'Active' },
-    isEditing = false,
-    form,
-    onSubmit,
-  } = props
+  const { initialValues, isEditing = false, form, onSubmit } = props
 
   const {
     query: { id: projectId },
   } = useRouter()
 
   return (
-    <Form form={form} initialValues={initialValues} onFinish={onSubmit}>
+    <Form
+      form={form}
+      initialValues={{ ...initialValues, status: ProjectWorkUnitStatus.ACTIVE }}
+      onFinish={onSubmit}
+    >
       <Row gutter={24}>
         <Col span={24} md={{ span: 12 }}>
           <Form.Item
@@ -60,37 +64,23 @@ export const WorkUnitForm = (props: Props) => {
 
         <Col span={24}>
           <Form.Item label="Members" name="members">
-            {/* TODO: update api is ready */}
             <AsyncSelect
               mode="multiple"
               maxTagCount={undefined}
               optionGetter={async () => {
-                const { data: activeMembers } =
-                  await client.getProjectMemberList(projectId as string, {
+                const { data } = await client.getProjectMemberList(
+                  projectId as string,
+                  {
                     page: 1,
                     size: 1000,
                     status: 'active',
-                  })
+                    preload: false,
+                  },
+                )
 
-                const { data: inactiveMembers } =
-                  await client.getProjectMemberList(projectId as string, {
-                    page: 1,
-                    size: 1000,
-                    status: 'inactive',
-                  })
-
-                const { data: onBoardingMembers } =
-                  await client.getProjectMemberList(projectId as string, {
-                    page: 1,
-                    size: 1000,
-                    status: 'on-boarding',
-                  })
-
-                return [
-                  ...(activeMembers || []),
-                  ...(inactiveMembers || []),
-                  ...(onBoardingMembers || []),
-                ].map(transformProjectMemberDataToSelectOption)
+                return (data || [])
+                  .filter((d) => d.employeeID !== '')
+                  .map(transformProjectMemberDataToSelectOption)
               }}
               swrKeys={[
                 GET_PATHS.getEmployees,
@@ -105,9 +95,9 @@ export const WorkUnitForm = (props: Props) => {
 
         <Col span={24}>
           <Form.Item
-            label="Stack"
+            label="Tech stack"
             name="stacks"
-            rules={[{ required: true, message: 'Please select stack' }]}
+            rules={[{ required: true, message: 'Please select tech stack' }]}
           >
             <AsyncSelect
               mode="multiple"
@@ -117,27 +107,30 @@ export const WorkUnitForm = (props: Props) => {
                 projectId as string,
                 'work-unit-stack',
               ]}
-              optionGetter={async () =>
-                ((await client.getStackMetadata()).data || []).map(
-                  transformMetadataToSelectOption,
-                )
-              }
+              optionGetter={async () => {
+                const { data } = await client.getStackMetadata()
+                return data?.map(transformMetadataToSelectOption) || []
+              }}
             />
           </Form.Item>
         </Col>
 
         <Col span={24} md={{ span: isEditing ? 24 : 12 }}>
-          <Form.Item label="Type" name="type">
+          <Form.Item
+            label="Type"
+            name="type"
+            rules={[{ required: true, message: 'Please select type' }]}
+          >
             <AsyncSelect
               optionGetter={() =>
                 Promise.resolve(
-                  ['Repository', 'Team'].map((key) => ({
+                  Object.keys(workUnitTypes).map((key) => ({
                     value: key,
-                    label: key,
+                    label: workUnitTypes[key as WorkUnitType],
                   })),
                 )
               }
-              swrKeys="/work-unit/type"
+              swrKeys="work-unit-type"
               placeholder="Select work unit type"
             />
           </Form.Item>
@@ -149,15 +142,15 @@ export const WorkUnitForm = (props: Props) => {
               <AsyncSelect
                 optionGetter={() =>
                   Promise.resolve(
-                    ['Active', 'Archived'].map((key) => ({
+                    Object.keys(projectWorkUnitStatuses).map((key) => ({
                       value: key,
-                      label: key,
+                      label:
+                        projectWorkUnitStatuses[key as ProjectWorkUnitStatus],
                     })),
                   )
                 }
-                swrKeys="/work-unit/status"
+                swrKeys="work-unit-status"
                 placeholder="Select work unit status"
-                defaultValue="Active"
                 customOptionRenderer={renderStatusOption}
               />
             </Form.Item>

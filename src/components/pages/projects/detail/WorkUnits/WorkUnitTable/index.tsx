@@ -33,7 +33,7 @@ export const WorkUnitTable = ({
         title: 'Members',
         key: 'members',
         dataIndex: 'members',
-        render: (value) => <AvatarArray data={value} />,
+        render: (value) => <AvatarArray data={value || []} />,
       },
       {
         title: 'Stacks',

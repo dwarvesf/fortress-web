@@ -61,8 +61,6 @@ export const Actions = ({
     }
   }
 
-  console.log(data)
-
   return (
     <>
       <Row justify="end" gutter={[8, 8]}>
@@ -96,11 +94,11 @@ export const Actions = ({
           initialValues={{
             name: data.name || '',
             type: data.type || '',
-            status: data.status || 'Active',
+            status: data.status || ProjectWorkUnitStatus.ACTIVE,
             members: (data.members || []).map((m) => m.employeeID || ''),
-            stacks: (data.stacks || []).map((m) => m.id || ''),
+            stacks: (data.stacks || []).map((s) => s.id || ''),
           }}
-          // rowID={data.id}
+          rowID={data.id}
           isOpen={isEditWorkUnitDialogOpen}
           onClose={closeEditWorkUnitDialog}
           onAfterSubmit={onAfterAction}

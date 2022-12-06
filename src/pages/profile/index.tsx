@@ -81,17 +81,46 @@ const Default = () => {
                   <DataRows
                     data={[
                       {
-                        label: 'Fullname',
+                        label: 'Full name',
                         value: user?.fullName,
                       },
                       {
                         label: 'Team email',
-                        value: user?.teamEmail,
+                        value: (
+                          <a href={`mailto:${user?.teamEmail}`}>
+                            {user?.teamEmail}
+                          </a>
+                        ),
                       },
-                      { label: 'Personal email', value: user?.personalEmail },
-                      { label: 'Phone', value: user?.phoneNumber },
+                      {
+                        label: 'Personal email',
+                        value: (
+                          <a href={`mailto:${user?.personalEmail}`}>
+                            {user?.personalEmail}
+                          </a>
+                        ),
+                      },
+                      {
+                        label: 'Phone',
+                        value: (
+                          <a href={`tel:${user?.phoneNumber}`}>
+                            {user?.phoneNumber}
+                          </a>
+                        ),
+                      },
                       { label: 'Discord ID', value: user?.discordID },
-                      { label: 'Github ID', value: user?.githubID },
+                      {
+                        label: 'Github ID',
+                        value: (
+                          <a
+                            href={`https://github.com/${user?.githubID}`}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            {user?.githubID}
+                          </a>
+                        ),
+                      },
                       { label: 'Notion ID', value: user?.notionID },
                     ]}
                   />
