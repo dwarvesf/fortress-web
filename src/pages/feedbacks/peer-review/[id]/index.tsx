@@ -59,7 +59,9 @@ const columns: ColumnsType<PeerReviewDetail> = [
   },
   {
     title: '',
-    render: () => <PeerReviewEventDetailActions />,
+    render: (value: PeerReviewDetail) => (
+      <PeerReviewEventDetailActions peerReviewDetail={value} />
+    ),
     fixed: 'right',
   },
 ]
