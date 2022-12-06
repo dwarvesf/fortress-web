@@ -2,12 +2,12 @@ import { Pagination, Row, Space, Table, Tag } from 'antd'
 import { PageHeader } from 'components/common/PageHeader'
 import { Button } from 'components/common/Button'
 import { ColumnsType } from 'antd/lib/table'
-import { ProgressColumn } from 'components/pages/PeerReview/ProgressColumn'
-import { Actions } from 'components/pages/PeerReview/Actions'
+import { ProgressColumn } from 'components/pages/feedbacks/peer-review/ProgressColumn'
+import { Actions } from 'components/pages/feedbacks/peer-review/Actions'
 import { statusColors } from 'constants/colors'
 import { PeerReviewStatus, peerReviewStatuses } from 'constants/status'
 import { useDisclosure } from '@dwarvesf/react-hooks'
-import { CreatePeerReviewModal } from 'components/pages/PeerReview/CreatePeerReviewModal'
+import { CreatePeerReviewModal } from 'components/pages/feedbacks/peer-review/CreatePeerReviewModal'
 
 export interface PeerReviewData {
   id?: string
