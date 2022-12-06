@@ -1,7 +1,8 @@
 import { EyeOutlined } from '@ant-design/icons'
 import { Col, Row, Tooltip } from 'antd'
 import { Button } from 'components/common/Button'
-import { FeedbackInboxDetailLink } from 'components/common/DetailLink/FeedbackInboxDetailLink'
+import { ROUTES } from 'constants/routes'
+import Link from 'next/link'
 import { FeedbackInboxItem } from 'pages/feedbacks/inbox'
 
 interface Props {
@@ -16,11 +17,17 @@ export const Actions = (props: Props) => {
   return (
     <Row justify="end" gutter={[8, 8]}>
       <Col>
-        <FeedbackInboxDetailLink id={record.id}>
-          <Tooltip title="View">
-            <Button type="text-primary" size="small" icon={<EyeOutlined />} />
-          </Tooltip>
-        </FeedbackInboxDetailLink>
+        <Link
+          href={`${ROUTES.FEEDBACK_INBOX_DETAIL(record.id)}?type=${
+            record.type
+          }&subtype=${record.subtype}`}
+        >
+          <a>
+            <Tooltip title="View">
+              <Button type="text-primary" size="small" icon={<EyeOutlined />} />
+            </Tooltip>
+          </a>
+        </Link>
       </Col>
     </Row>
   )
