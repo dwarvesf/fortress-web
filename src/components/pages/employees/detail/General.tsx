@@ -1,4 +1,4 @@
-import { Space, Col, Row, Avatar, Select, notification } from 'antd'
+import { Space, Col, Row, Avatar, Select, notification, Tooltip } from 'antd'
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { AvatarWithName } from 'components/common/AvatarWithName'
 import { DataRows } from 'components/common/DataRows'
@@ -11,6 +11,8 @@ import { mutate } from 'swr'
 import { useState } from 'react'
 import { EmployeeStatus, employeeStatuses } from 'constants/status'
 import moment from 'moment'
+import { StarFilled } from '@ant-design/icons'
+import { theme } from 'styles'
 import { EditGeneralInfoModal } from './EditGeneralInfoModal'
 import { EditSkillsModal } from './EditSkillsModal'
 import { EditPersonalInfoModal } from './EditPersonalInfoModal'
@@ -168,7 +170,29 @@ export const General = (props: Props) => {
                       ?.map((position) => position.name)
                       .join(', '),
                   },
-                  { label: 'Chapter', value: data.chapter?.name },
+                  {
+                    label: 'Chapters',
+                    value: data.chapters?.map((chapter, id) =>
+                      chapter.leadID === data?.id ? (
+                        <>
+                          <Tooltip
+                            color={theme.colors.primary}
+                            title={`${chapter.name} lead`}
+                          >
+                            {chapter.name}{' '}
+                            <StarFilled
+                              style={{ color: theme.colors.primary }}
+                            />
+                          </Tooltip>
+                          {id !== (data.chapters?.length || 0) - 1 ? ', ' : ''}
+                        </>
+                      ) : (
+                        `${chapter.name}${
+                          id !== (data.chapters?.length || 0) - 1 ? ', ' : ''
+                        }`
+                      ),
+                    ),
+                  },
                   { label: 'Seniority', value: data.seniority?.name },
                   {
                     label: 'Stack',
@@ -227,7 +251,10 @@ export const General = (props: Props) => {
         onClose={closeEditSkillsDialog}
         isOpen={isEditSkillsDialogOpen}
         initialValues={{
-          chapter: data.chapter?.id,
+          chapters: (data.chapters || []).map((c) => c.id || ''),
+          leadingChapters: (data.chapters || [])
+            .filter((c) => c.leadID === data.id)
+            .map((c) => c.id || ''),
           positions: (data.positions || []).map((p) => p.id || ''),
           seniority: data.seniority?.id || '',
           stacks: (data.stacks || []).map((s) => s.id || ''),

@@ -1,10 +1,15 @@
-import { Col, Form, Modal, notification, Row } from 'antd'
+import { Col, Form, Modal, notification, Row, Select } from 'antd'
 import { AsyncSelect } from 'components/common/Select'
+import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { GET_PATHS, client } from 'libs/apis'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
+import { theme } from 'styles'
 import { PkgHandlerEmployeeUpdateSkillsInput } from 'types/schema'
-import { transformMetadataToSelectOption } from 'utils/select'
+import {
+  searchFilterOption,
+  transformMetadataToSelectOption,
+} from 'utils/select'
 
 interface Props {
   isOpen: boolean
@@ -19,6 +24,14 @@ export const EditSkillsModal = (props: Props) => {
 
   const [form] = Form.useForm()
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
+  const [selectedChapters, setSelectedChapters] = useState<string[]>(
+    initialValues?.chapters || [],
+  )
+
+  const { data } = useFetchWithCache(
+    [GET_PATHS.getChapterMetadata, 'chapter-lead', 'edit-skills'],
+    () => client.getChaptersMetadata(),
+  )
 
   const onSubmit = async (
     values: Required<PkgHandlerEmployeeUpdateSkillsInput>,
@@ -76,14 +89,47 @@ export const EditSkillsModal = (props: Props) => {
           </Col>
 
           <Col span={24}>
-            <Form.Item label="Chapter" name="chapter">
+            <Form.Item label="Chapters" name="chapters">
               <AsyncSelect
+                mode="multiple"
                 optionGetter={async () => {
                   const { data } = await client.getChaptersMetadata()
                   return data?.map(transformMetadataToSelectOption) || []
                 }}
                 swrKeys={[GET_PATHS.getChapterMetadata, 'edit-skills']}
-                placeholder="Select chapter"
+                placeholder="Select chapters"
+                onSelect={(o: string) => {
+                  setSelectedChapters([...selectedChapters, o])
+                }}
+                onDeselect={(o: string) => {
+                  const newSelectedChapters: string[] = []
+
+                  selectedChapters.forEach((c) => {
+                    if (c !== o) newSelectedChapters.push(c)
+                  })
+
+                  setSelectedChapters(newSelectedChapters)
+                }}
+              />
+            </Form.Item>
+          </Col>
+
+          <Col span={24}>
+            <Form.Item label="Leading chapters" name="leadingChapters">
+              <Select
+                mode="multiple"
+                style={{ background: theme.colors.white }}
+                placeholder="Select leading chapters"
+                showSearch
+                showArrow
+                options={
+                  data?.data
+                    ?.filter((d) => d.id && selectedChapters.includes(d.id))
+                    .map(transformMetadataToSelectOption) || []
+                }
+                filterOption={searchFilterOption}
+                maxTagCount="responsive"
+                allowClear
               />
             </Form.Item>
           </Col>
