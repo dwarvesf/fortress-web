@@ -170,6 +170,16 @@ const Default = () => {
     }
   }
 
+  const confirmMarkDone = () => {
+    Modal.confirm({
+      title: 'Mark done',
+      content: 'Do you want to mark this event as done?',
+      okText: 'Mark done',
+      okButtonProps: { loading: isLoading },
+      onOk: markDone,
+    })
+  }
+
   return (
     <Space direction="vertical" size={24} style={{ width: '100%' }}>
       <PageHeader
@@ -209,7 +219,7 @@ const Default = () => {
                   <Menu>
                     <Menu.Item
                       disabled={status !== PeerReviewStatus.INPROGRESS}
-                      onClick={markDone}
+                      onClick={confirmMarkDone}
                     >
                       Mark done
                     </Menu.Item>
