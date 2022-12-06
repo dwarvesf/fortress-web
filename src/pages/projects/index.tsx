@@ -93,7 +93,7 @@ const Default = () => {
       },
       {
         title: '',
-        key: 'action',
+        key: 'actions',
         render: (value) => (
           <Row justify="end" gutter={[8, 8]}>
             <Col>

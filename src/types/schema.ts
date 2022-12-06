@@ -343,10 +343,9 @@ export interface ViewBasicCountryInfo {
 
 export interface ViewBasicMember {
   avatar?: string
+  displayName?: string
   employeeID?: string
-  name?: string
-  projectMemberID?: string
-  projectSlotID?: string
+  fullName?: string
 }
 
 export interface ViewBasicProjectHeadInfo {

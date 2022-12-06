@@ -60,9 +60,9 @@ export const WorkUnitTable = ({
         ),
       },
       {
-        key: 'action',
+        key: 'actions',
         render: (value) => (
-          <Actions data={value} onAfterAction={onAfterAction} />
+          <Actions record={value} onAfterAction={onAfterAction} />
         ),
       },
     ] as ColumnsType<ViewWorkUnit>
