@@ -124,7 +124,7 @@ const Default = () => {
       setIsLoading(true)
 
       notification.success({
-        message: 'Peer performance review event deleted sent successfully!',
+        message: 'Peer performance review event deleted successfully!',
       })
 
       router.push(ROUTES.PEER_REVIEW)
@@ -149,6 +149,34 @@ const Default = () => {
       okText: 'Delete',
       okButtonProps: { loading: isLoading },
       onOk: onDelete,
+    })
+  }
+
+  const markDone = async () => {
+    try {
+      setIsLoading(true)
+
+      notification.success({
+        message: 'Peer performance review event marked as done successfully!',
+      })
+    } catch (error: any) {
+      notification.error({
+        message:
+          error?.message ||
+          'Could not mark peer performance review event as done',
+      })
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const confirmMarkDone = () => {
+    Modal.confirm({
+      title: 'Mark done',
+      content: 'Do you want to mark this event as done?',
+      okText: 'Mark done',
+      okButtonProps: { loading: isLoading },
+      onOk: markDone,
     })
   }
 
@@ -189,7 +217,12 @@ const Default = () => {
                 trigger={['click']}
                 overlay={
                   <Menu>
-                    <Menu.Item>Mark done</Menu.Item>
+                    <Menu.Item
+                      disabled={status !== PeerReviewStatus.INPROGRESS}
+                      onClick={confirmMarkDone}
+                    >
+                      Mark done
+                    </Menu.Item>
                     <Menu.Item
                       disabled={status !== PeerReviewStatus.DRAFT}
                       onClick={confirmDelete}
