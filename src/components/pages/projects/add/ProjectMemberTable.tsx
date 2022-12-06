@@ -92,7 +92,7 @@ export const ProjectMemberTable = ({
         render: (value) => (value ? format(new Date(value), DATE_FORMAT) : '-'),
       },
       {
-        key: 'action',
+        key: 'actions',
         render: (value) => (
           <Actions
             rowData={value}

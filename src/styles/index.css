@@ -4,3 +4,7 @@
 body a:hover {
   color: #e13f5e;
 }
+
+tr.not-read {
+  font-weight: bold;
+}

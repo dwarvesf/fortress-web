@@ -12,10 +12,10 @@ import { ViewProjectMember } from 'types/schema'
 import { MemberFormModal } from '../MemberForm/MemberFormModal'
 
 export const Actions = ({
-  data,
+  record,
   onAfterAction,
 }: {
-  data: ViewProjectMember
+  record: ViewProjectMember
   onAfterAction: () => void
 }) => {
   const {
@@ -35,7 +35,7 @@ export const Actions = ({
       setIsLoading(true)
       await client.deleteProjectMember(
         projectId as string,
-        data.employeeID || '',
+        record.employeeID || '',
       )
 
       notification.success({
@@ -60,7 +60,7 @@ export const Actions = ({
     })
   }
 
-  if (data.status === ProjectMemberStatus.INACTIVE) {
+  if (record.status === ProjectMemberStatus.INACTIVE) {
     return null
   }
 
@@ -93,19 +93,19 @@ export const Actions = ({
           isEditing
           isOpen={isEditDialogOpen}
           onClose={closeEditDialog}
-          projectSlotID={data.projectSlotID}
-          projectMemberID={data.employeeID}
+          projectSlotID={record.projectSlotID}
+          projectMemberID={record.employeeID}
           initialValues={{
-            ...data,
+            ...record,
             positions:
-              data.positions?.map((position) => position.id || '') || [],
-            joinedDate: data.joinedDate
-              ? format(new Date(data.joinedDate), SERVER_DATE_FORMAT)
+              record.positions?.map((position) => position.id || '') || [],
+            joinedDate: record.joinedDate
+              ? format(new Date(record.joinedDate), SERVER_DATE_FORMAT)
               : undefined,
-            leftDate: data.leftDate
-              ? format(new Date(data.leftDate), SERVER_DATE_FORMAT)
+            leftDate: record.leftDate
+              ? format(new Date(record.leftDate), SERVER_DATE_FORMAT)
               : undefined,
-            seniorityID: data.seniority?.id || '',
+            seniorityID: record.seniority?.id || '',
           }}
           onAfterSubmit={onAfterAction}
         />

@@ -78,9 +78,9 @@ export const MemberTable = ({
         render: (value) => (value ? format(new Date(value), DATE_FORMAT) : '-'),
       },
       {
-        key: 'action',
+        key: 'actions',
         render: (value) => (
-          <Actions data={value} onAfterAction={onAfterAction} />
+          <Actions record={value} onAfterAction={onAfterAction} />
         ),
         fixed: 'right',
       },

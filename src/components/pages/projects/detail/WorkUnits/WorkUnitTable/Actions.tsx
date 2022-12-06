@@ -11,10 +11,10 @@ import { useDisclosure } from '@dwarvesf/react-hooks'
 import { WorkUnitModal } from '../WorkUnitModal'
 
 export const Actions = ({
-  data,
+  record,
   onAfterAction,
 }: {
-  data: ViewWorkUnit
+  record: ViewWorkUnit
   onAfterAction: () => void
 }) => {
   const {
@@ -28,18 +28,21 @@ export const Actions = ({
   } = useDisclosure()
 
   const [isLoading, setIsLoading] = useState(false)
-  const isArchiving = data.status === ProjectWorkUnitStatus.ACTIVE
+  const isArchiving = record.status === ProjectWorkUnitStatus.ACTIVE
 
   const onArchiveUnarchive = async () => {
     try {
       setIsLoading(true)
 
       if (isArchiving) {
-        await client.archiveProjectWorkUnit(projectId as string, data.id || '')
+        await client.archiveProjectWorkUnit(
+          projectId as string,
+          record.id || '',
+        )
       } else {
         await client.unarchiveProjectWorkUnit(
           projectId as string,
-          data.id || '',
+          record.id || '',
         )
       }
 

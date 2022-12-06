@@ -12,8 +12,10 @@ export const ROUTES = {
   FEEDBACKS: '/feedbacks',
   CONFIG: '/config',
   PROFILE: '/profile',
+  INBOX: '/feedbacks/inbox',
   PEER_REVIEW: '/feedbacks/peer-review',
   ENGAGEMENT: '/feedbacks/engagement',
   WORKLOAD: '/feedbacks/workload',
   PEER_REVIEW_EVENT_DETAIL: (id: string) => `/feedbacks/peer-review/${id}`,
+  FEEDBACK_INBOX_DETAIL: (id: string) => `/feedbacks/inbox/${id}`,
 }

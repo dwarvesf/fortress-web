@@ -41,6 +41,7 @@ const items: MenuItem[] = [
   getItem('Projects', ROUTES.PROJECTS, <AppstoreFilled />),
   getItem('Employees', ROUTES.EMPLOYEES, <UserOutlined />),
   getItem('Feedbacks', ROUTES.FEEDBACKS, <WechatFilled />, [
+    getItem('Inbox', ROUTES.INBOX),
     getItem('Peer review', ROUTES.PEER_REVIEW),
     getItem('Engagement', ROUTES.ENGAGEMENT),
     getItem('Workload', ROUTES.WORKLOAD),
