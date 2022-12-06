@@ -19,15 +19,17 @@ import { AvatarWithName } from 'components/common/AvatarWithName'
 import { PeerReviewEventLink } from 'components/common/DetailLink'
 import { NameArray } from 'components/common/NameArray'
 import { PageHeader } from 'components/common/PageHeader'
-import { PeerReviewEventDetailActions } from 'components/pages/PeerReview/PeerReviewEventDetailActions'
-import { ProgressColumn } from 'components/pages/PeerReview/ProgressColumn'
+import { PeerReviewEventDetailActions } from 'components/pages/feedbacks/peer-review/PeerReviewEventDetailActions'
+import { ProgressColumn } from 'components/pages/feedbacks/peer-review/ProgressColumn'
 import { statusColors } from 'constants/colors'
-import { peerReviewStatuses } from 'constants/status'
+import { ROUTES } from 'constants/routes'
+import { PeerReviewStatus, peerReviewStatuses } from 'constants/status'
+import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import {
   PeerReviewDetail,
   peerReviewEvent,
-} from '../../../../components/pages/PeerReview/mockData'
+} from '../../../../components/pages/feedbacks/peer-review/mockData'
 
 const columns: ColumnsType<PeerReviewDetail> = [
   {
@@ -70,6 +72,7 @@ const Default = () => {
   const { time, status, peerReviews = [] } = peerReviewEvent
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([])
   const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter()
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     setSelectedRowKeys(newSelectedRowKeys)
@@ -117,6 +120,39 @@ const Default = () => {
     })
   }
 
+  const onDelete = async () => {
+    try {
+      setIsLoading(true)
+
+      notification.success({
+        message: 'Peer performance review event deleted sent successfully!',
+      })
+
+      router.push(ROUTES.PEER_REVIEW)
+    } catch (error: any) {
+      notification.error({
+        message:
+          error?.message || 'Could not delete peer performance review event',
+      })
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const confirmDelete = () => {
+    Modal.confirm({
+      title: 'Delete event',
+      content: (
+        <>
+          Do you want to delete <strong>{time}</strong> event?
+        </>
+      ),
+      okText: 'Delete',
+      okButtonProps: { loading: isLoading },
+      onOk: onDelete,
+    })
+  }
+
   return (
     <Space direction="vertical" size={24} style={{ width: '100%' }}>
       <PageHeader
@@ -157,7 +193,12 @@ const Default = () => {
                 overlay={
                   <Menu>
                     <Menu.Item>Mark done</Menu.Item>
-                    <Menu.Item>Delete</Menu.Item>
+                    <Menu.Item
+                      disabled={status !== PeerReviewStatus.DRAFT}
+                      onClick={confirmDelete}
+                    >
+                      Delete
+                    </Menu.Item>
                   </Menu>
                 }
               >
