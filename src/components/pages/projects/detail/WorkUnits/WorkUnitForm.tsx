@@ -1,4 +1,4 @@
-import { Form, Row, Col, Input, FormInstance } from 'antd'
+import { Form, Row, Col, Input, FormInstance, Select } from 'antd'
 import { AsyncSelect } from 'components/common/Select'
 import { renderEmployeeOption } from 'components/common/Select/renderers/employeeOption'
 import { renderStatusOption } from 'components/common/Select/renderers/statusOption'
@@ -9,8 +9,10 @@ import {
 import { WorkUnitType, workUnitTypes } from 'constants/workUnitTypes'
 import { client, GET_PATHS } from 'libs/apis'
 import { useRouter } from 'next/router'
+import { theme } from 'styles'
 import { PkgHandlerProjectCreateWorkUnitBody } from 'types/schema'
 import {
+  searchFilterOption,
   transformMetadataToSelectOption,
   transformProjectMemberDataToSelectOption,
 } from 'utils/select'
@@ -87,7 +89,7 @@ export const WorkUnitForm = (props: Props) => {
                 projectId as string,
                 'work-unit-member',
               ]}
-              placeholder="Select work unit's member"
+              placeholder="Select work unit's members"
               customOptionRenderer={renderEmployeeOption}
             />
           </Form.Item>
@@ -121,17 +123,17 @@ export const WorkUnitForm = (props: Props) => {
             name="type"
             rules={[{ required: true, message: 'Please select type' }]}
           >
-            <AsyncSelect
-              optionGetter={() =>
-                Promise.resolve(
-                  Object.keys(workUnitTypes).map((key) => ({
-                    value: key,
-                    label: workUnitTypes[key as WorkUnitType],
-                  })),
-                )
-              }
-              swrKeys="work-unit-type"
+            <Select
+              style={{ background: theme.colors.white }}
               placeholder="Select work unit type"
+              showSearch
+              showArrow
+              options={Object.keys(workUnitTypes).map((key) => ({
+                value: key,
+                label: workUnitTypes[key as WorkUnitType],
+              }))}
+              filterOption={searchFilterOption}
+              maxTagCount="responsive"
             />
           </Form.Item>
         </Col>
@@ -139,20 +141,22 @@ export const WorkUnitForm = (props: Props) => {
         {!isEditing && (
           <Col span={24} md={{ span: 12 }}>
             <Form.Item label="Status" name="status">
-              <AsyncSelect
-                optionGetter={() =>
-                  Promise.resolve(
-                    Object.keys(projectWorkUnitStatuses).map((key) => ({
-                      value: key,
-                      label:
-                        projectWorkUnitStatuses[key as ProjectWorkUnitStatus],
-                    })),
-                  )
-                }
-                swrKeys="work-unit-status"
+              <Select
+                style={{ background: theme.colors.white }}
                 placeholder="Select work unit status"
-                customOptionRenderer={renderStatusOption}
-              />
+                showSearch
+                showArrow
+                filterOption={searchFilterOption}
+                maxTagCount="responsive"
+              >
+                {Object.keys(projectWorkUnitStatuses)
+                  .map((key) => ({
+                    value: key,
+                    label:
+                      projectWorkUnitStatuses[key as ProjectWorkUnitStatus],
+                  }))
+                  .map(renderStatusOption)}
+              </Select>
             </Form.Item>
           </Col>
         )}

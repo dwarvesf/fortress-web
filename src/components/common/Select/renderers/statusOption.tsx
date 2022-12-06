@@ -6,8 +6,6 @@ const { Option } = Select
 
 export const renderStatusOption = (option: DefaultOptionType) => (
   <Option key={option.value} value={option.value} label={option.label}>
-    <Tag color={statusColors[String(option.value!).toLowerCase()]}>
-      {option.label || '-'}
-    </Tag>
+    <Tag color={statusColors[option.value!]}>{option.label || '-'}</Tag>
   </Option>
 )

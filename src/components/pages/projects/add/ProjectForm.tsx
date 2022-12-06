@@ -1,4 +1,4 @@
-import { Form, Row, Col, Input, DatePicker } from 'antd'
+import { Form, Row, Col, Input, DatePicker, Select } from 'antd'
 import { FormInstance } from 'antd/es/form/Form'
 import { AsyncSelect } from 'components/common/Select'
 import { renderEmployeeOption } from 'components/common/Select/renderers/employeeOption'
@@ -10,6 +10,7 @@ import { GET_PATHS, client } from 'libs/apis'
 import { theme } from 'styles'
 import { PkgHandlerProjectCreateProjectInput } from 'types/schema'
 import {
+  searchFilterOption,
   transformEmployeeDataToSelectOption,
   transformMetadataToSelectOption,
 } from 'utils/select'
@@ -183,18 +184,18 @@ export const ProjectForm = (props: Props) => {
             name="type"
             rules={[{ required: true, message: 'Please select type' }]}
           >
-            <AsyncSelect
+            <Select
               bordered={false}
-              optionGetter={() =>
-                Promise.resolve(
-                  Object.keys(projectTypes).map((key) => ({
-                    value: key,
-                    label: projectTypes[key as keyof typeof projectTypes],
-                  })),
-                )
-              }
-              swrKeys={GET_PATHS.getAccountStatusMetadata}
+              style={{ background: theme.colors.white }}
               placeholder="Select type"
+              showSearch
+              showArrow
+              options={Object.keys(projectTypes).map((key) => ({
+                value: key,
+                label: projectTypes[key as keyof typeof projectTypes],
+              }))}
+              filterOption={searchFilterOption}
+              maxTagCount="responsive"
             />
           </Form.Item>
         </Col>
