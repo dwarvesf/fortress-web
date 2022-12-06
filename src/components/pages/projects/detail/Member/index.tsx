@@ -27,7 +27,7 @@ export const Member = (props: Props) => {
     new ProjectMemberListFilter(),
   )
   const { filter: pendingFilter, setFilter: setPendingFilter } = useFilter(
-    new ProjectMemberListFilter(ProjectMemberStatus.ACTIVE),
+    new ProjectMemberListFilter(ProjectMemberStatus.PENDING),
   )
   const { filter: onboardingFilter, setFilter: setOnboardingFilter } =
     useFilter(new ProjectMemberListFilter(ProjectMemberStatus.ONBOARDING))

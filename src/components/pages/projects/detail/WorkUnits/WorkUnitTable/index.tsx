@@ -11,7 +11,7 @@ export const WorkUnitTable = ({
   isLoading,
   onAfterAction,
 }: {
-  data: any[]
+  data: ViewWorkUnit[]
   isLoading: boolean
   onAfterAction: () => void
 }) => {
@@ -21,6 +21,7 @@ export const WorkUnitTable = ({
         title: 'Name',
         key: 'name',
         dataIndex: 'name',
+        fixed: 'left',
       },
       {
         title: 'Type',
@@ -32,7 +33,7 @@ export const WorkUnitTable = ({
         title: 'Members',
         key: 'members',
         dataIndex: 'members',
-        render: (value) => <AvatarArray data={value} />,
+        render: (value) => <AvatarArray data={value || []} />,
       },
       {
         title: 'Stacks',
@@ -64,6 +65,7 @@ export const WorkUnitTable = ({
         render: (value) => (
           <Actions data={value} onAfterAction={onAfterAction} />
         ),
+        fixed: 'right',
       },
     ] as ColumnsType<ViewWorkUnit>
   }, [onAfterAction])

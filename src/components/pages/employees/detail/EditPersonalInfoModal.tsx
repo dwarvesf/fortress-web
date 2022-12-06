@@ -1,11 +1,21 @@
-import { Col, DatePicker, Form, Input, Modal, notification, Row } from 'antd'
-import { AsyncSelect } from 'components/common/Select'
+import {
+  Col,
+  DatePicker,
+  Form,
+  Input,
+  Modal,
+  notification,
+  Row,
+  Select,
+} from 'antd'
 import { client } from 'libs/apis'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { PkgHandlerEmployeeUpdatePersonalInfoInput } from 'types/schema'
 import moment from 'moment'
 import { SELECT_BOX_DATE_FORMAT } from 'constants/date'
+import { theme } from 'styles'
+import { searchFilterOption } from 'utils/select'
 
 interface Props {
   isOpen: boolean
@@ -83,17 +93,17 @@ export const EditPersonalInfoModal = (props: Props) => {
               name="gender"
               rules={[{ required: true, message: 'Please select gender' }]}
             >
-              <AsyncSelect
-                optionGetter={() =>
-                  Promise.resolve(
-                    ['Male', 'Female'].map((key) => ({
-                      value: key,
-                      label: key,
-                    })),
-                  )
-                }
-                swrKeys="metadata/genders"
+              <Select
+                style={{ background: theme.colors.white }}
                 placeholder="Select gender"
+                showSearch
+                showArrow
+                options={['Male', 'Female'].map((key) => ({
+                  value: key,
+                  label: key,
+                }))}
+                filterOption={searchFilterOption}
+                maxTagCount="responsive"
               />
             </Form.Item>
           </Col>

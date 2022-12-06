@@ -1,4 +1,4 @@
-import { Form, Row, Col, Input, Button, notification } from 'antd'
+import { Form, Row, Col, Input, Button, notification, Select } from 'antd'
 import { AsyncSelect } from 'components/common/Select'
 import { renderStatusOption } from 'components/common/Select/renderers/statusOption'
 import { ROUTES } from 'constants/routes'
@@ -7,8 +7,12 @@ import { client, GET_PATHS } from 'libs/apis'
 import { useRouter } from 'next/router'
 import { CreateEmployeeFormValues } from 'pages/employees/new'
 import { useState, useEffect } from 'react'
+import { theme } from 'styles'
 import { PkgHandlerEmployeeCreateEmployeeInput } from 'types/schema'
-import { transformMetadataToSelectOption } from 'utils/select'
+import {
+  searchFilterOption,
+  transformMetadataToSelectOption,
+} from 'utils/select'
 
 interface Props {
   initialValues?: CreateEmployeeFormValues
@@ -134,21 +138,22 @@ export const EmployeeForm = (props: Props) => {
             name="status"
             rules={[{ required: true, message: 'Please select status' }]}
           >
-            <AsyncSelect
+            <Select
               bordered={false}
-              optionGetter={() =>
-                Promise.resolve(
-                  Object.keys(employeeStatuses).map((key) => ({
-                    value: key,
-                    label:
-                      employeeStatuses[key as keyof typeof employeeStatuses],
-                  })),
-                )
-              }
-              swrKeys={GET_PATHS.getAccountStatusMetadata}
+              style={{ background: theme.colors.white }}
               placeholder="Select status"
-              customOptionRenderer={renderStatusOption}
-            />
+              showSearch
+              showArrow
+              filterOption={searchFilterOption}
+              maxTagCount="responsive"
+            >
+              {Object.keys(employeeStatuses)
+                .map((key) => ({
+                  value: key,
+                  label: employeeStatuses[key as keyof typeof employeeStatuses],
+                }))
+                .map(renderStatusOption)}
+            </Select>
           </Form.Item>
         </Col>
 

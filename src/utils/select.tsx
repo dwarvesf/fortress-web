@@ -1,5 +1,5 @@
 import { DefaultOptionType } from 'antd/lib/select'
-import { ViewEmployeeData } from 'types/schema'
+import { ViewEmployeeData, ViewProjectMember } from 'types/schema'
 
 export function transformMetadataToSelectOption(metaItem: {
   id?: string
@@ -24,6 +24,17 @@ export function transformEmployeeDataToSelectOption(
   return {
     value: id,
     label: metaItem,
+  }
+}
+
+export function transformProjectMemberDataToSelectOption(
+  metaItem: ViewProjectMember,
+) {
+  const { employeeID } = metaItem
+
+  return {
+    value: employeeID,
+    label: { ...metaItem, id: employeeID },
   }
 }
 

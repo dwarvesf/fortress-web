@@ -7,6 +7,8 @@ import { useState } from 'react'
 import { client } from 'libs/apis'
 import { useRouter } from 'next/router'
 import { ProjectWorkUnitStatus } from 'constants/status'
+import { useDisclosure } from '@dwarvesf/react-hooks'
+import { WorkUnitModal } from '../WorkUnitModal'
 
 export const Actions = ({
   data,
@@ -19,11 +21,11 @@ export const Actions = ({
     query: { id: projectId },
   } = useRouter()
 
-  // const {
-  //   isOpen: isEditDialogOpen,
-  //   onOpen: openEditDialog,
-  //   onClose: closeEditDialog,
-  // } = useDisclosure()
+  const {
+    isOpen: isEditWorkUnitDialogOpen,
+    onOpen: openEditWorkUnitDialog,
+    onClose: closeEditWorkUnitDialog,
+  } = useDisclosure()
 
   const [isLoading, setIsLoading] = useState(false)
   const isArchiving = data.status === ProjectWorkUnitStatus.ACTIVE
@@ -68,7 +70,7 @@ export const Actions = ({
               type="text-primary"
               size="small"
               icon={<EditOutlined />}
-              // onClick={openEditDialog}
+              onClick={openEditWorkUnitDialog}
             />
           </Tooltip>
         </Col>
@@ -86,27 +88,22 @@ export const Actions = ({
           </Tooltip>
         </Col>
       </Row>
-      {/* {isEditDialogOpen && (
-        <MemberFormModal
+      {isEditWorkUnitDialogOpen && (
+        <WorkUnitModal
           isEditing
-          isOpen={isEditDialogOpen}
-          onClose={closeEditDialog}
-          projectSlotID={data.projectSlotID}
           initialValues={{
-            ...data,
-            positions:
-              data.positions?.map((position) => position.id || '') || [],
-            joinedDate: data.joinedDate
-              ? format(new Date(data.joinedDate), SERVER_DATE_FORMAT)
-              : undefined,
-            leftDate: data.joinedDate
-              ? format(new Date(data.joinedDate), SERVER_DATE_FORMAT)
-              : undefined,
-            seniorityID: data.seniority?.id || '',
+            name: data.name || '',
+            type: data.type || '',
+            status: data.status || ProjectWorkUnitStatus.ACTIVE,
+            members: (data.members || []).map((m) => m.employeeID || ''),
+            stacks: (data.stacks || []).map((s) => s.id || ''),
           }}
+          rowID={data.id}
+          isOpen={isEditWorkUnitDialogOpen}
+          onClose={closeEditWorkUnitDialog}
           onAfterSubmit={onAfterAction}
         />
-      )} */}
+      )}
     </>
   )
 }

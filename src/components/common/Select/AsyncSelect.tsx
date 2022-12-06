@@ -48,7 +48,7 @@ export const AsyncSelect = (props: Props) => {
 
   return (
     <Select
-      style={{ background: theme.colors.white, overflow: 'auto', ...style }}
+      style={{ background: theme.colors.white, ...style }}
       placeholder={isLoading ? 'Fetching data' : placeholder}
       loading={isLoading}
       disabled={isLoading}

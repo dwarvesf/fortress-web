@@ -1,16 +1,12 @@
-import { useAsyncEffect } from '@dwarvesf/react-hooks'
-import { Col, Form, Input, Modal, notification, Row, Select } from 'antd'
-import { AvatarWithName } from 'components/common/AvatarWithName'
+import { Col, Form, Input, Modal, notification, Row } from 'antd'
 import { AsyncSelect } from 'components/common/Select'
 import { renderEmployeeOption } from 'components/common/Select/renderers/employeeOption'
 import { EmployeeStatus } from 'constants/status'
 import { GET_PATHS, client } from 'libs/apis'
 import { useRouter } from 'next/router'
-import { ReactNode, useState } from 'react'
+import { useState } from 'react'
 import { PkgHandlerEmployeeUpdateGeneralInfoInput } from 'types/schema'
 import { transformEmployeeDataToSelectOption } from 'utils/select'
-
-const { Option } = Select
 
 interface Props {
   isOpen: boolean
@@ -47,27 +43,6 @@ export const EditGeneralInfoModal = (props: Props) => {
       setIsSubmitting(false)
     }
   }
-
-  let defaultLineManager: ReactNode
-
-  useAsyncEffect(async () => {
-    if (initialValues?.lineManagerID) {
-      const { data } = await client.getEmployee(initialValues.lineManagerID)
-      defaultLineManager = (
-        <Option key={data.id} value={data.id} label={data.fullName}>
-          <AvatarWithName
-            isLink={false}
-            user={{
-              fullName: data.fullName,
-              id: data.id,
-              displayName: data.displayName,
-              avatar: data.avatar,
-            }}
-          />
-        </Option>
-      )
-    }
-  }, [])
 
   return (
     <Modal
@@ -166,7 +141,6 @@ export const EditGeneralInfoModal = (props: Props) => {
                 swrKeys={[GET_PATHS.getEmployees, 'line-manager']}
                 placeholder="Select line manager"
                 customOptionRenderer={renderEmployeeOption}
-                value={defaultLineManager}
               />
             </Form.Item>
           </Col>
