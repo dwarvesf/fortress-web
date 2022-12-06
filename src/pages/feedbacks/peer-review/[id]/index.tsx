@@ -1,4 +1,4 @@
-import { EllipsisOutlined, LeftOutlined } from '@ant-design/icons'
+import { EllipsisOutlined } from '@ant-design/icons'
 import {
   Button,
   Col,
@@ -16,7 +16,6 @@ import {
 import { ColumnsType } from 'antd/lib/table'
 import { AvatarArray } from 'components/common/AvatarArray'
 import { AvatarWithName } from 'components/common/AvatarWithName'
-import { PeerReviewEventLink } from 'components/common/DetailLink'
 import { NameArray } from 'components/common/NameArray'
 import { PageHeader } from 'components/common/PageHeader'
 import { PeerReviewEventDetailActions } from 'components/pages/feedbacks/peer-review/PeerReviewEventDetailActions'
@@ -29,7 +28,7 @@ import React, { useState } from 'react'
 import {
   PeerReviewDetail,
   peerReviewEvent,
-} from '../../../../components/pages/feedbacks/peer-review/mockData'
+} from 'components/pages/feedbacks/peer-review/mockData'
 
 const columns: ColumnsType<PeerReviewDetail> = [
   {
@@ -156,11 +155,9 @@ const Default = () => {
   return (
     <Space direction="vertical" size={24} style={{ width: '100%' }}>
       <PageHeader
+        backHref={ROUTES.PEER_REVIEW}
         title={
           <Space align="center">
-            <PeerReviewEventLink>
-              <LeftOutlined />
-            </PeerReviewEventLink>
             <span>{time}</span>
             {status && (
               <div style={{ display: 'flex' }}>

@@ -1,6 +1,6 @@
 import { Tabs } from 'antd'
 import { PageHeader } from 'components/common/PageHeader'
-import { FeedbackInputTable } from 'components/pages/feedbacks/FeedbackInboxTable'
+import { FeedbackInputTable } from 'components/pages/feedbacks/inbox/FeedbackInboxTable'
 import { useFilter } from 'hooks/useFilter'
 import { useTabWithQuery } from 'hooks/useTabWithQuery'
 import { FeedbackListFilter } from 'types/filters/FeedbackListFilter'
@@ -9,6 +9,7 @@ export interface FeedbackInboxItem {
   id: string
   topic: string
   type: string
+  subtype: string
   responses: number
   lastUpdated: string
   author: string
@@ -20,6 +21,7 @@ const mockData: FeedbackInboxItem[] = [
     id: '1',
     topic: 'Topic 1',
     type: 'survey',
+    subtype: 'peer-review',
     responses: 1,
     lastUpdated: '10/02/2021',
     author: 'Dwarves Team',
@@ -28,7 +30,8 @@ const mockData: FeedbackInboxItem[] = [
   {
     id: '2',
     topic: 'Topic 2',
-    type: 'appreciation',
+    type: 'survey',
+    subtype: 'work',
     responses: 1,
     lastUpdated: '10/02/2021',
     author: 'Dwarves Team',
@@ -38,6 +41,7 @@ const mockData: FeedbackInboxItem[] = [
     id: '3',
     topic: 'Topic 3',
     type: 'feedback',
+    subtype: 'appreciation',
     responses: 1,
     lastUpdated: '10/02/2021',
     author: 'Dwarves Team',
