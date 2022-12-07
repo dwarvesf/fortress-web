@@ -172,26 +172,33 @@ export const General = (props: Props) => {
                   },
                   {
                     label: 'Chapters',
-                    value: data.chapters?.map((chapter, id) =>
-                      chapter.leadID === data?.id ? (
-                        <>
-                          <Tooltip
-                            color={theme.colors.primary}
-                            title={`${chapter.name} lead`}
-                          >
-                            {chapter.name}{' '}
-                            <StarFilled
-                              style={{ color: theme.colors.primary }}
-                            />
-                          </Tooltip>
-                          {id !== (data.chapters?.length || 0) - 1 ? ', ' : ''}
-                        </>
-                      ) : (
-                        `${chapter.name}${
-                          id !== (data.chapters?.length || 0) - 1 ? ', ' : ''
-                        }`
-                      ),
-                    ),
+                    value:
+                      data.chapters && data.chapters.length
+                        ? data.chapters?.map((chapter, id) =>
+                            chapter.leadID === data?.id ? (
+                              <>
+                                <Tooltip
+                                  color={theme.colors.primary}
+                                  title={`${chapter.name} lead`}
+                                >
+                                  {chapter.name}{' '}
+                                  <StarFilled
+                                    style={{ color: theme.colors.primary }}
+                                  />
+                                </Tooltip>
+                                {id !== (data.chapters?.length || 0) - 1
+                                  ? ', '
+                                  : ''}
+                              </>
+                            ) : (
+                              `${chapter.name}${
+                                id !== (data.chapters?.length || 0) - 1
+                                  ? ', '
+                                  : ''
+                              }`
+                            ),
+                          )
+                        : null,
                   },
                   { label: 'Seniority', value: data.seniority?.name },
                   {
