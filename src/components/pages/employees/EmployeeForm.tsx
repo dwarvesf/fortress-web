@@ -88,18 +88,18 @@ export const EmployeeForm = (props: Props) => {
   }, [initialValues]) // eslint-disable-line
 
   return (
-    <Card>
-      <Form
-        form={form}
-        initialValues={initialValues}
-        onFinish={(values) => {
-          if (!isEditing) {
-            onCreateSubmit(
-              values as Required<PkgHandlerEmployeeCreateEmployeeInput>,
-            )
-          }
-        }}
-      >
+    <Form
+      form={form}
+      initialValues={initialValues}
+      onFinish={(values) => {
+        if (!isEditing) {
+          onCreateSubmit(
+            values as Required<PkgHandlerEmployeeCreateEmployeeInput>,
+          )
+        }
+      }}
+    >
+      <Card>
         <Row gutter={24}>
           <Col span={24} md={{ span: 12 }}>
             <Form.Item
@@ -272,15 +272,15 @@ export const EmployeeForm = (props: Props) => {
             </Form.Item>
           </Col>
         </Row>
-        <Button
-          type="primary"
-          htmlType="submit"
-          loading={isSubmitting}
-          style={{ marginTop: 16 }}
-        >
-          Submit
-        </Button>
-      </Form>
-    </Card>
+      </Card>
+      <Button
+        type="primary"
+        htmlType="submit"
+        loading={isSubmitting}
+        style={{ marginTop: 24 }}
+      >
+        Submit
+      </Button>
+    </Form>
   )
 }
