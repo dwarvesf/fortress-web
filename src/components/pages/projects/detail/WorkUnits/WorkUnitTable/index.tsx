@@ -33,14 +33,15 @@ export const WorkUnitTable = ({
         title: 'Members',
         key: 'members',
         dataIndex: 'members',
-        render: (value) => (value.length ? <AvatarArray data={value} /> : '-'),
+        render: (value) =>
+          value && value.length ? <AvatarArray data={value} /> : '-',
       },
       {
         title: 'Stacks',
         key: 'stacks',
         dataIndex: 'stacks',
         render: (value: ViewStack[]) =>
-          value.length ? (
+          value && value.length ? (
             <Space size={[0, 8]}>
               {value.map((stack) => (
                 <Tag key={stack.id}>{stack.name}</Tag>

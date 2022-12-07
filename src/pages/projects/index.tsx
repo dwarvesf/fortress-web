@@ -13,7 +13,7 @@ import { Button } from 'components/common/Button'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { client, GET_PATHS } from 'libs/apis'
-import { ViewProjectData } from 'types/schema'
+import { ViewProjectData, ViewProjectMember } from 'types/schema'
 import { useFilter } from 'hooks/useFilter'
 import debounce from 'lodash.debounce'
 import { transformMetadataToFilterOption } from 'utils/select'
@@ -71,13 +71,27 @@ const Default = () => {
         title: 'Lead',
         key: 'technicalLeads',
         dataIndex: 'technicalLeads',
-        render: (value) => (value.length ? <AvatarArray data={value} /> : '-'),
+        render: (value) =>
+          value && value.length ? <AvatarArray data={value} /> : '-',
       },
       {
         title: 'Members',
         key: 'members',
         dataIndex: 'members',
-        render: (value) => (value.length ? <AvatarArray data={value} /> : '-'),
+        render: (value) =>
+          value &&
+          value.filter(
+            (e: ViewProjectMember) => e.avatar && e.displayName && e.employeeID,
+          ).length ? (
+            <AvatarArray
+              data={value.filter(
+                (e: ViewProjectMember) =>
+                  e.avatar && e.displayName && e.employeeID,
+              )}
+            />
+          ) : (
+            '-'
+          ),
       },
       {
         title: 'Delivery Manager',

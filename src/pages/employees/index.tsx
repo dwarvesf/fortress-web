@@ -83,7 +83,7 @@ const Default = () => {
         key: 'positions',
         dataIndex: 'positions',
         render: (value) =>
-          value.length ? (
+          value && value.length ? (
             <Space size={[0, 8]}>
               {value.map((position: ModelPosition) => (
                 <Tag key={position.id}>{position.name}</Tag>
@@ -98,7 +98,7 @@ const Default = () => {
         key: 'projects',
         dataIndex: 'projects',
         render: (value) =>
-          value.length ? (
+          value && value.length ? (
             <Space size={[0, 8]}>
               {value.map((project: any) => (
                 <ProjectLink key={project.id} id={project.id}>
@@ -115,7 +115,7 @@ const Default = () => {
         key: 'stacks',
         dataIndex: 'stacks',
         render: (value) =>
-          value.length ? (
+          value && value.length ? (
             <Space size={[0, 8]}>
               {value?.map((stack: ViewStack) => (
                 <Tag key={stack.code}>{stack.name}</Tag>

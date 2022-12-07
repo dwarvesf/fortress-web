@@ -55,7 +55,7 @@ export const ProjectMemberTable = ({
         key: 'positions',
         dataIndex: 'positions',
         render: (value: ViewPosition[]) =>
-          value.length ? (
+          value && value.length ? (
             <Space size={[0, 8]}>
               {value.map((position: ModelPosition) => (
                 <Tag key={position.id}>{position.name}</Tag>
