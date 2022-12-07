@@ -100,6 +100,7 @@ export const Actions = ({
             status: record.status || ProjectWorkUnitStatus.ACTIVE,
             members: (record.members || []).map((m) => m.employeeID || ''),
             stacks: (record.stacks || []).map((s) => s.id || ''),
+            url: record.url || '',
           }}
           rowID={record.id}
           isOpen={isEditWorkUnitDialogOpen}
