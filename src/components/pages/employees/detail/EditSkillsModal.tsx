@@ -37,16 +37,28 @@ export const EditSkillsModal = (props: Props) => {
     values: Required<PkgHandlerEmployeeUpdateSkillsInput>,
   ) => {
     try {
-      setIsSubmitting(true)
+      if (
+        !(
+          values.leadingChapters &&
+          values.leadingChapters.every((l) => selectedChapters.includes(l))
+        ) &&
+        values.leadingChapters !== []
+      ) {
+        notification.error({
+          message: 'Leading chapters must be chosen from selected chapters!',
+        })
+      } else {
+        setIsSubmitting(true)
 
-      await client.updateEmployeeSkills(query.id as string, values)
+        await client.updateEmployeeSkills(query.id as string, values)
 
-      notification.success({
-        message: "Employee's skills successfully updated!",
-      })
+        notification.success({
+          message: "Employee's skills successfully updated!",
+        })
 
-      onClose()
-      onAfterSubmit()
+        onClose()
+        onAfterSubmit()
+      }
     } catch (error: any) {
       notification.error({
         message: error?.message || "Could not update employee's skills!",
@@ -98,6 +110,8 @@ export const EditSkillsModal = (props: Props) => {
                 }}
                 swrKeys={[GET_PATHS.getChapterMetadata, 'edit-skills']}
                 placeholder="Select chapters"
+                // Store selected chapters list to render options for selecting leading chapters
+                // since an employee has to be in chapter to become a chapter lead
                 onSelect={(o: string) => {
                   setSelectedChapters([...selectedChapters, o])
                 }}
@@ -119,8 +133,13 @@ export const EditSkillsModal = (props: Props) => {
               <Select
                 mode="multiple"
                 style={{ background: theme.colors.white }}
-                placeholder="Select leading chapters"
+                placeholder={
+                  selectedChapters.length === 0
+                    ? 'Please select chapters first'
+                    : 'Select leading chapters'
+                }
                 showSearch
+                disabled={selectedChapters.length === 0}
                 showArrow
                 options={
                   data?.data
