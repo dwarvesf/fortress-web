@@ -1,4 +1,4 @@
-import { Form, Row, Col, Input, Button, notification, Select } from 'antd'
+import { Form, Row, Col, Input, Button, notification, Select, Card } from 'antd'
 import { AsyncSelect } from 'components/common/Select'
 import { renderStatusOption } from 'components/common/Select/renderers/statusOption'
 import { ROUTES } from 'constants/routes'
@@ -88,194 +88,199 @@ export const EmployeeForm = (props: Props) => {
   }, [initialValues]) // eslint-disable-line
 
   return (
-    <Form
-      form={form}
-      initialValues={initialValues}
-      onFinish={(values) => {
-        if (!isEditing) {
-          onCreateSubmit(
-            values as Required<PkgHandlerEmployeeCreateEmployeeInput>,
-          )
-        }
-      }}
-    >
-      <Row gutter={24}>
-        <Col span={24} md={{ span: 12 }}>
-          <Form.Item
-            label="Full name"
-            name="fullName"
-            rules={[
-              { required: true, message: 'Please input full name' },
-              {
-                max: 99,
-                message: 'Full name must be less than 100 characters',
-              },
-            ]}
-          >
-            <Input
-              className="bordered"
-              type="text"
-              placeholder="Enter full name"
-            />
-          </Form.Item>
-        </Col>
-
-        <Col span={24} md={{ span: 12 }}>
-          <Form.Item
-            label="Display name"
-            name="displayName"
-            rules={[
-              { required: true, message: 'Please input display name' },
-              {
-                max: 99,
-                message: 'Display name must be less than 100 characters',
-              },
-            ]}
-          >
-            <Input
-              className="bordered"
-              type="text"
-              placeholder="Enter display name"
-            />
-          </Form.Item>
-        </Col>
-
-        <Col span={24} md={{ span: 12 }}>
-          <Form.Item
-            label="Status"
-            name="status"
-            rules={[{ required: true, message: 'Please select status' }]}
-          >
-            <Select
-              style={{ background: theme.colors.white }}
-              placeholder="Select status"
-              showSearch
-              showArrow
-              filterOption={searchFilterOption}
-              maxTagCount="responsive"
-            >
-              {Object.keys(employeeStatuses)
-                .map((key) => ({
-                  value: key,
-                  label: employeeStatuses[key as keyof typeof employeeStatuses],
-                }))
-                .map(renderStatusOption)}
-            </Select>
-          </Form.Item>
-        </Col>
-
-        <Col span={24} md={{ span: 12 }}>
-          <Form.Item
-            label="Team email"
-            name="teamEmail"
-            rules={[
-              { required: true, message: 'Please input team email' },
-              { type: 'email', message: 'Wrong email format' },
-            ]}
-          >
-            <Input
-              className="bordered"
-              type="email"
-              placeholder="Enter team email"
-            />
-          </Form.Item>
-        </Col>
-
-        <Col span={24} md={{ span: 12 }}>
-          <Form.Item
-            label="Personal email"
-            name="personalEmail"
-            rules={[
-              {
-                required: true,
-                message: 'Please input personal email',
-              },
-              { type: 'email', message: 'Wrong email format' },
-            ]}
-          >
-            <Input
-              className="bordered"
-              type="email"
-              placeholder="Enter email"
-            />
-          </Form.Item>
-        </Col>
-
-        <Col span={24} md={{ span: 12 }}>
-          <Form.Item
-            label="Positions"
-            name="positions"
-            rules={[{ required: true, message: 'Please select positions' }]}
-          >
-            <AsyncSelect
-              mode="multiple"
-              optionGetter={async () => {
-                const { data } = await client.getPositionsMetadata()
-                return data?.map(transformMetadataToSelectOption) || []
-              }}
-              swrKeys={GET_PATHS.getPositionMetadata}
-              placeholder="Select positions"
-            />
-          </Form.Item>
-        </Col>
-
-        <Col span={24} md={{ span: 12 }}>
-          <Form.Item
-            label="Seniority"
-            name="seniorityID"
-            rules={[{ required: true, message: 'Please select seniority' }]}
-          >
-            <AsyncSelect
-              optionGetter={async () => {
-                const { data } = await client.getSenioritiesMetadata()
-                return data?.map(transformMetadataToSelectOption) || []
-              }}
-              swrKeys={GET_PATHS.getSeniorityMetadata}
-              placeholder="Select seniority"
-            />
-          </Form.Item>
-        </Col>
-
-        <Col span={24} md={{ span: 12 }}>
-          <Form.Item
-            label="Salary"
-            name="salary"
-            rules={[{ required: true, message: 'Please input salary' }]}
-          >
-            <Input
-              className="bordered"
-              type="number"
-              placeholder="Enter salary"
-              min={0}
-            />
-          </Form.Item>
-        </Col>
-
-        <Col span={24} md={{ span: 12 }}>
-          <Form.Item
-            label="Account role"
-            name="roleID"
-            rules={[{ required: true, message: 'Please select account role' }]}
-          >
-            <AsyncSelect
-              optionGetter={async () => {
-                const { data } = await client.getAccountRolesMetadata()
-                return data?.map(transformMetadataToSelectOption) || []
-              }}
-              swrKeys={GET_PATHS.getAccountRoleMetadata}
-              placeholder="Select account role"
-            />
-          </Form.Item>
-        </Col>
-      </Row>
-      <Button
-        type="primary"
-        htmlType="submit"
-        loading={isSubmitting}
-        style={{ marginTop: 16 }}
+    <Card>
+      <Form
+        form={form}
+        initialValues={initialValues}
+        onFinish={(values) => {
+          if (!isEditing) {
+            onCreateSubmit(
+              values as Required<PkgHandlerEmployeeCreateEmployeeInput>,
+            )
+          }
+        }}
       >
-        Submit
-      </Button>
-    </Form>
+        <Row gutter={24}>
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item
+              label="Full name"
+              name="fullName"
+              rules={[
+                { required: true, message: 'Please input full name' },
+                {
+                  max: 99,
+                  message: 'Full name must be less than 100 characters',
+                },
+              ]}
+            >
+              <Input
+                className="bordered"
+                type="text"
+                placeholder="Enter full name"
+              />
+            </Form.Item>
+          </Col>
+
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item
+              label="Display name"
+              name="displayName"
+              rules={[
+                { required: true, message: 'Please input display name' },
+                {
+                  max: 99,
+                  message: 'Display name must be less than 100 characters',
+                },
+              ]}
+            >
+              <Input
+                className="bordered"
+                type="text"
+                placeholder="Enter display name"
+              />
+            </Form.Item>
+          </Col>
+
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item
+              label="Status"
+              name="status"
+              rules={[{ required: true, message: 'Please select status' }]}
+            >
+              <Select
+                style={{ background: theme.colors.white }}
+                placeholder="Select status"
+                showSearch
+                showArrow
+                filterOption={searchFilterOption}
+                maxTagCount="responsive"
+              >
+                {Object.keys(employeeStatuses)
+                  .map((key) => ({
+                    value: key,
+                    label:
+                      employeeStatuses[key as keyof typeof employeeStatuses],
+                  }))
+                  .map(renderStatusOption)}
+              </Select>
+            </Form.Item>
+          </Col>
+
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item
+              label="Team email"
+              name="teamEmail"
+              rules={[
+                { required: true, message: 'Please input team email' },
+                { type: 'email', message: 'Wrong email format' },
+              ]}
+            >
+              <Input
+                className="bordered"
+                type="email"
+                placeholder="Enter team email"
+              />
+            </Form.Item>
+          </Col>
+
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item
+              label="Personal email"
+              name="personalEmail"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please input personal email',
+                },
+                { type: 'email', message: 'Wrong email format' },
+              ]}
+            >
+              <Input
+                className="bordered"
+                type="email"
+                placeholder="Enter email"
+              />
+            </Form.Item>
+          </Col>
+
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item
+              label="Positions"
+              name="positions"
+              rules={[{ required: true, message: 'Please select positions' }]}
+            >
+              <AsyncSelect
+                mode="multiple"
+                optionGetter={async () => {
+                  const { data } = await client.getPositionsMetadata()
+                  return data?.map(transformMetadataToSelectOption) || []
+                }}
+                swrKeys={GET_PATHS.getPositionMetadata}
+                placeholder="Select positions"
+              />
+            </Form.Item>
+          </Col>
+
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item
+              label="Seniority"
+              name="seniorityID"
+              rules={[{ required: true, message: 'Please select seniority' }]}
+            >
+              <AsyncSelect
+                optionGetter={async () => {
+                  const { data } = await client.getSenioritiesMetadata()
+                  return data?.map(transformMetadataToSelectOption) || []
+                }}
+                swrKeys={GET_PATHS.getSeniorityMetadata}
+                placeholder="Select seniority"
+              />
+            </Form.Item>
+          </Col>
+
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item
+              label="Salary"
+              name="salary"
+              rules={[{ required: true, message: 'Please input salary' }]}
+            >
+              <Input
+                className="bordered"
+                type="number"
+                placeholder="Enter salary"
+                min={0}
+              />
+            </Form.Item>
+          </Col>
+
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item
+              label="Account role"
+              name="roleID"
+              rules={[
+                { required: true, message: 'Please select account role' },
+              ]}
+            >
+              <AsyncSelect
+                optionGetter={async () => {
+                  const { data } = await client.getAccountRolesMetadata()
+                  return data?.map(transformMetadataToSelectOption) || []
+                }}
+                swrKeys={GET_PATHS.getAccountRoleMetadata}
+                placeholder="Select account role"
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Button
+          type="primary"
+          htmlType="submit"
+          loading={isSubmitting}
+          style={{ marginTop: 16 }}
+        >
+          Submit
+        </Button>
+      </Form>
+    </Card>
   )
 }
