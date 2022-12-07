@@ -39,7 +39,8 @@ export interface GithubComDwarvesfFortressApiPkgHandlerEmployeeUpdatePersonalInf
 }
 
 export interface GithubComDwarvesfFortressApiPkgHandlerEmployeeUpdateSkillsInput {
-  chapter?: string
+  chapters: string[]
+  leadingChapters?: string[]
   positions: string[]
   seniority: string
   stacks: string[]
@@ -142,6 +143,7 @@ export interface ModelChapter {
   createdAt?: string
   deletedAt?: GormDeletedAt
   id?: string
+  lead_id?: string
   name?: string
   updatedAt?: string
 }
@@ -222,7 +224,8 @@ export interface PkgHandlerEmployeeUpdatePersonalInfoInput {
 }
 
 export interface PkgHandlerEmployeeUpdateSkillsInput {
-  chapter?: string
+  chapters: string[]
+  leadingChapters?: string[]
   positions: string[]
   seniority: string
   stacks: string[]
@@ -362,6 +365,13 @@ export interface ViewBasisEmployeeInfo {
   id?: string
 }
 
+export interface ViewChapter {
+  leadID?: string
+  code?: string
+  id?: string
+  name?: string
+}
+
 export interface ViewChapterResponse {
   data?: ModelChapter[]
 }
@@ -421,7 +431,7 @@ export interface ViewEmployeeData {
   address?: string
   avatar?: string
   birthday?: string
-  chapter?: ModelChapter
+  chapters?: ViewChapter[]
   createdAt?: string
   deletedAt?: GormDeletedAt
   discordID?: string
@@ -665,7 +675,7 @@ export interface ViewUpdateProjectStatusResponse {
 }
 
 export interface ViewUpdateSkillEmployeeData {
-  chapter?: ModelChapter
+  chapters?: ModelChapter[]
   createdAt?: string
   deletedAt?: GormDeletedAt
   id?: string

@@ -3,7 +3,7 @@ import { ROUTES } from 'constants/routes'
 import { PageHeader } from 'components/common/PageHeader'
 import { useMemo } from 'react'
 import Table, { ColumnsType } from 'antd/lib/table'
-import { EditOutlined, EyeOutlined } from '@ant-design/icons'
+import { EditOutlined, EyeOutlined, StarFilled } from '@ant-design/icons'
 import Link from 'next/link'
 import { AvatarWithName } from 'components/common/AvatarWithName'
 import { EmployeeLink, ProjectLink } from 'components/common/DetailLink'
@@ -11,9 +11,15 @@ import { Button } from 'components/common/Button'
 import { EmployeeListFilter } from 'types/filters/EmployeeListFilter'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { client, GET_PATHS } from 'libs/apis'
-import { ModelPosition, ViewEmployeeData, ViewStack } from 'types/schema'
+import {
+  ModelPosition,
+  ViewChapter,
+  ViewEmployeeData,
+  ViewStack,
+} from 'types/schema'
 import { useFilter } from 'hooks/useFilter'
 import debounce from 'lodash.debounce'
+import { theme } from 'styles'
 
 const Default = () => {
   const { filter, setFilter } = useFilter(new EmployeeListFilter())
@@ -103,6 +109,29 @@ const Default = () => {
           <Space size={[0, 8]}>
             {value?.map((stack: ViewStack) => (
               <Tag key={stack.code}>{stack.name}</Tag>
+            ))}
+          </Space>
+        ),
+      },
+      {
+        title: 'Chapters',
+        key: 'chapters',
+        render: (value) => (
+          <Space size={[0, 8]}>
+            {value?.chapters.map((chapter: ViewChapter) => (
+              <Tag key={chapter.id}>
+                {chapter.leadID === value.id ? (
+                  <Tooltip
+                    color={theme.colors.primary}
+                    title={`${chapter.name} lead`}
+                  >
+                    {chapter.name}{' '}
+                    <StarFilled style={{ color: theme.colors.primary }} />
+                  </Tooltip>
+                ) : (
+                  chapter.name
+                )}
+              </Tag>
             ))}
           </Space>
         ),

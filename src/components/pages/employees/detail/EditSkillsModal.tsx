@@ -1,10 +1,15 @@
-import { Col, Form, Modal, notification, Row } from 'antd'
+import { Col, Form, Modal, notification, Row, Select } from 'antd'
 import { AsyncSelect } from 'components/common/Select'
+import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { GET_PATHS, client } from 'libs/apis'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
+import { theme } from 'styles'
 import { PkgHandlerEmployeeUpdateSkillsInput } from 'types/schema'
-import { transformMetadataToSelectOption } from 'utils/select'
+import {
+  searchFilterOption,
+  transformMetadataToSelectOption,
+} from 'utils/select'
 
 interface Props {
   isOpen: boolean
@@ -19,21 +24,41 @@ export const EditSkillsModal = (props: Props) => {
 
   const [form] = Form.useForm()
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
+  const [selectedChapters, setSelectedChapters] = useState<string[]>(
+    initialValues?.chapters || [],
+  )
+
+  const { data } = useFetchWithCache(
+    [GET_PATHS.getChapterMetadata, 'chapter-lead', 'edit-skills'],
+    () => client.getChaptersMetadata(),
+  )
 
   const onSubmit = async (
     values: Required<PkgHandlerEmployeeUpdateSkillsInput>,
   ) => {
     try {
-      setIsSubmitting(true)
+      if (
+        !(
+          values.leadingChapters &&
+          values.leadingChapters.every((l) => selectedChapters.includes(l))
+        ) &&
+        values.leadingChapters !== []
+      ) {
+        notification.error({
+          message: 'Leading chapters must be chosen from selected chapters!',
+        })
+      } else {
+        setIsSubmitting(true)
 
-      await client.updateEmployeeSkills(query.id as string, values)
+        await client.updateEmployeeSkills(query.id as string, values)
 
-      notification.success({
-        message: "Employee's skills successfully updated!",
-      })
+        notification.success({
+          message: "Employee's skills successfully updated!",
+        })
 
-      onClose()
-      onAfterSubmit()
+        onClose()
+        onAfterSubmit()
+      }
     } catch (error: any) {
       notification.error({
         message: error?.message || "Could not update employee's skills!",
@@ -76,14 +101,54 @@ export const EditSkillsModal = (props: Props) => {
           </Col>
 
           <Col span={24}>
-            <Form.Item label="Chapter" name="chapter">
+            <Form.Item label="Chapters" name="chapters">
               <AsyncSelect
+                mode="multiple"
                 optionGetter={async () => {
                   const { data } = await client.getChaptersMetadata()
                   return data?.map(transformMetadataToSelectOption) || []
                 }}
                 swrKeys={[GET_PATHS.getChapterMetadata, 'edit-skills']}
-                placeholder="Select chapter"
+                placeholder="Select chapters"
+                // Store selected chapters list to render options for selecting leading chapters
+                // since an employee has to be in chapter to become a chapter lead
+                onSelect={(o: string) => {
+                  setSelectedChapters([...selectedChapters, o])
+                }}
+                onDeselect={(o: string) => {
+                  const newSelectedChapters: string[] = []
+
+                  selectedChapters.forEach((c) => {
+                    if (c !== o) newSelectedChapters.push(c)
+                  })
+
+                  setSelectedChapters(newSelectedChapters)
+                }}
+              />
+            </Form.Item>
+          </Col>
+
+          <Col span={24}>
+            <Form.Item label="Leading chapters" name="leadingChapters">
+              <Select
+                mode="multiple"
+                style={{ background: theme.colors.white }}
+                placeholder={
+                  selectedChapters.length === 0
+                    ? 'Please select chapters first'
+                    : 'Select leading chapters'
+                }
+                showSearch
+                disabled={selectedChapters.length === 0}
+                showArrow
+                options={
+                  data?.data
+                    ?.filter((d) => d.id && selectedChapters.includes(d.id))
+                    .map(transformMetadataToSelectOption) || []
+                }
+                filterOption={searchFilterOption}
+                maxTagCount="responsive"
+                allowClear
               />
             </Form.Item>
           </Col>
