@@ -1,4 +1,4 @@
-import { Col, Row, Space } from 'antd'
+import { Card, Col, Row, Space } from 'antd'
 import { PageHeader } from 'components/common/PageHeader'
 import { EmployeeForm } from 'components/pages/employees/EmployeeForm'
 
@@ -20,7 +20,9 @@ const CreateEmployeePage = () => {
       <PageHeader title="New employee" />
       <Row>
         <Col span={24} lg={{ span: 16 }}>
-          <EmployeeForm />
+          <Card>
+            <EmployeeForm />
+          </Card>
         </Col>
       </Row>
     </Space>

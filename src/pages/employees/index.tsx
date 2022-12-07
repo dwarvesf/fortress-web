@@ -33,7 +33,7 @@ const Default = () => {
     return [
       {
         title: 'Employee',
-        render: (value) => <AvatarWithName user={value} />,
+        render: (value) => (value ? <AvatarWithName user={value} /> : 'TBD'),
         fixed: 'left',
       },
       {
@@ -52,11 +52,14 @@ const Default = () => {
         title: 'Email',
         key: 'teamEmail',
         dataIndex: 'teamEmail',
-        render: (value) => (
-          <a href={`mailto:${value}`} target="_blank" rel="noreferrer">
-            {value}
-          </a>
-        ),
+        render: (value) =>
+          value ? (
+            <a href={`mailto:${value}`} target="_blank" rel="noreferrer">
+              {value}
+            </a>
+          ) : (
+            '-'
+          ),
       },
       {
         title: 'Github',
@@ -79,62 +82,74 @@ const Default = () => {
         title: 'Positions',
         key: 'positions',
         dataIndex: 'positions',
-        render: (value) => (
-          <Space size={[0, 8]}>
-            {value.map((position: ModelPosition) => (
-              <Tag key={position.id}>{position.name}</Tag>
-            ))}
-          </Space>
-        ),
+        render: (value) =>
+          value.length ? (
+            <Space size={[0, 8]}>
+              {value.map((position: ModelPosition) => (
+                <Tag key={position.id}>{position.name}</Tag>
+              ))}
+            </Space>
+          ) : (
+            '-'
+          ),
       },
       {
         title: 'Projects',
         key: 'projects',
         dataIndex: 'projects',
-        render: (value) => (
-          <Space size={[0, 8]}>
-            {value.map((project: any) => (
-              <ProjectLink key={project.id} id={project.id}>
-                <Tag>{project.name}</Tag>
-              </ProjectLink>
-            ))}
-          </Space>
-        ),
+        render: (value) =>
+          value.length ? (
+            <Space size={[0, 8]}>
+              {value.map((project: any) => (
+                <ProjectLink key={project.id} id={project.id}>
+                  <Tag>{project.name}</Tag>
+                </ProjectLink>
+              ))}
+            </Space>
+          ) : (
+            '-'
+          ),
       },
       {
         title: 'Stacks',
         key: 'stacks',
         dataIndex: 'stacks',
-        render: (value) => (
-          <Space size={[0, 8]}>
-            {value?.map((stack: ViewStack) => (
-              <Tag key={stack.code}>{stack.name}</Tag>
-            ))}
-          </Space>
-        ),
+        render: (value) =>
+          value.length ? (
+            <Space size={[0, 8]}>
+              {value?.map((stack: ViewStack) => (
+                <Tag key={stack.code}>{stack.name}</Tag>
+              ))}
+            </Space>
+          ) : (
+            '-'
+          ),
       },
       {
         title: 'Chapters',
         key: 'chapters',
-        render: (value) => (
-          <Space size={[0, 8]}>
-            {value?.chapters.map((chapter: ViewChapter) => (
-              <Tag key={chapter.id}>
-                {chapter.leadID === value.id ? (
-                  <Tooltip
-                    color={theme.colors.primary}
-                    title={`${chapter.name} lead`}
-                  >
-                    {chapter.name}{' '}
-                    <StarFilled style={{ color: theme.colors.primary }} />
-                  </Tooltip>
-                ) : (
-                  chapter.name
-                )}
-              </Tag>
-            ))}
-          </Space>
-        ),
+        render: (value) =>
+          value.chapters.length ? (
+            <Space size={[0, 8]}>
+              {value?.chapters.map((chapter: ViewChapter) => (
+                <Tag key={chapter.id}>
+                  {chapter.leadID === value.id ? (
+                    <Tooltip
+                      color={theme.colors.primary}
+                      title={`${chapter.name} lead`}
+                    >
+                      {chapter.name}{' '}
+                      <StarFilled style={{ color: theme.colors.primary }} />
+                    </Tooltip>
+                  ) : (
+                    chapter.name
+                  )}
+                </Tag>
+              ))}
+            </Space>
+          ) : (
+            '-'
+          ),
       },
       {
         title: '',
@@ -206,14 +221,16 @@ const Default = () => {
         pagination={false}
         scroll={{ x: 'max-content' }}
       />
-      <Row justify="end">
-        <Pagination
-          current={filter.page}
-          onChange={(page) => setFilter({ page })}
-          total={data?.total}
-          pageSize={filter.size}
-        />
-      </Row>
+      {data?.total && data?.total > filter.size && (
+        <Row justify="end">
+          <Pagination
+            current={filter.page}
+            onChange={(page) => setFilter({ page })}
+            total={data?.total}
+            pageSize={filter.size}
+          />
+        </Row>
+      )}
     </Space>
   )
 }

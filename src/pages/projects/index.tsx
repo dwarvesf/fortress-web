@@ -71,25 +71,25 @@ const Default = () => {
         title: 'Lead',
         key: 'technicalLeads',
         dataIndex: 'technicalLeads',
-        render: (value) => <AvatarArray data={value} />,
+        render: (value) => (value.length ? <AvatarArray data={value} /> : '-'),
       },
       {
         title: 'Members',
         key: 'members',
         dataIndex: 'members',
-        render: (value) => <AvatarArray data={value} />,
+        render: (value) => (value.length ? <AvatarArray data={value} /> : '-'),
       },
       {
         title: 'Delivery Manager',
         key: 'deliveryManager',
         dataIndex: 'deliveryManager',
-        render: (value) => (value ? <AvatarWithName user={value} /> : '-'),
+        render: (value) => (value ? <AvatarWithName user={value} /> : 'TBD'),
       },
       {
         title: 'Account Manager',
         key: 'accountManager',
         dataIndex: 'accountManager',
-        render: (value) => (value ? <AvatarWithName user={value} /> : '-'),
+        render: (value) => (value ? <AvatarWithName user={value} /> : 'TBD'),
       },
       {
         title: '',
@@ -169,14 +169,16 @@ const Default = () => {
           })
         }}
       />
-      <Row justify="end">
-        <Pagination
-          current={filter.page}
-          onChange={(page) => setFilter({ page })}
-          total={data?.total}
-          pageSize={filter.size}
-        />
-      </Row>
+      {data?.total && data?.total > filter.size && (
+        <Row justify="end">
+          <Pagination
+            current={filter.page}
+            onChange={(page) => setFilter({ page })}
+            total={data?.total}
+            pageSize={filter.size}
+          />
+        </Row>
+      )}
     </Space>
   )
 }

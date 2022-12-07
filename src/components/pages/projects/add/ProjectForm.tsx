@@ -57,7 +57,11 @@ export const ProjectForm = (props: Props) => {
               },
             ]}
           >
-            <Input type="text" placeholder="Enter project name" />
+            <Input
+              className="bordered"
+              type="text"
+              placeholder="Enter project name"
+            />
           </Form.Item>
         </Col>
 
@@ -68,7 +72,6 @@ export const ProjectForm = (props: Props) => {
             rules={[{ required: true, message: 'Please select status' }]}
           >
             <AsyncSelect
-              bordered={false}
               optionGetter={async () => {
                 const { data } = await client.getProjectStatusMetadata()
                 return data.map(transformMetadataToSelectOption)
@@ -95,7 +98,6 @@ export const ProjectForm = (props: Props) => {
             ]}
           >
             <AsyncSelect
-              bordered={false}
               optionGetter={employeeOptionGetter}
               swrKeys={[
                 GET_PATHS.getEmployees,
@@ -115,7 +117,6 @@ export const ProjectForm = (props: Props) => {
             rules={[{ required: true, message: 'Please select country' }]}
           >
             <AsyncSelect
-              bordered={false}
               optionGetter={async () => {
                 const { data } = await client.getCountryMetadata()
                 return data.map(transformMetadataToSelectOption)
@@ -128,7 +129,6 @@ export const ProjectForm = (props: Props) => {
         <Col span={24} md={{ span: 12 }}>
           <Form.Item label="Delivery manager" name="deliveryManagerID">
             <AsyncSelect
-              bordered={false}
               optionGetter={employeeOptionGetter}
               swrKeys={[
                 GET_PATHS.getEmployees,
@@ -144,7 +144,8 @@ export const ProjectForm = (props: Props) => {
         <Col span={24} md={{ span: 12 }}>
           <Form.Item label="Start date" name="startDate">
             <DatePicker
-              className="bg-white"
+              bordered
+              className="bg-white bordered"
               format={SELECT_BOX_DATE_FORMAT}
               style={{ width: '100%', borderColor: theme.colors.white }}
               placeholder="Select start date"
@@ -161,7 +162,11 @@ export const ProjectForm = (props: Props) => {
               { type: 'email', message: 'Wrong email format' },
             ]}
           >
-            <Input type="email" placeholder="Enter project email" />
+            <Input
+              className="bordered"
+              type="email"
+              placeholder="Enter project email"
+            />
           </Form.Item>
         </Col>
 
@@ -174,7 +179,11 @@ export const ProjectForm = (props: Props) => {
               { type: 'email', message: 'Wrong email format' },
             ]}
           >
-            <Input type="email" placeholder="Enter client email" />
+            <Input
+              className="bordered"
+              type="email"
+              placeholder="Enter client email"
+            />
           </Form.Item>
         </Col>
 
@@ -185,7 +194,6 @@ export const ProjectForm = (props: Props) => {
             rules={[{ required: true, message: 'Please select type' }]}
           >
             <Select
-              bordered={false}
               style={{ background: theme.colors.white }}
               placeholder="Select type"
               showSearch

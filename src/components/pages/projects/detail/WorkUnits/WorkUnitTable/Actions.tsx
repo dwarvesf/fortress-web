@@ -95,13 +95,13 @@ export const Actions = ({
         <WorkUnitModal
           isEditing
           initialValues={{
-            name: data.name || '',
-            type: data.type || '',
-            status: data.status || ProjectWorkUnitStatus.ACTIVE,
-            members: (data.members || []).map((m) => m.employeeID || ''),
-            stacks: (data.stacks || []).map((s) => s.id || ''),
+            name: record.name || '',
+            type: record.type || '',
+            status: record.status || ProjectWorkUnitStatus.ACTIVE,
+            members: (record.members || []).map((m) => m.employeeID || ''),
+            stacks: (record.stacks || []).map((s) => s.id || ''),
           }}
-          rowID={data.id}
+          rowID={record.id}
           isOpen={isEditWorkUnitDialogOpen}
           onClose={closeEditWorkUnitDialog}
           onAfterSubmit={onAfterAction}

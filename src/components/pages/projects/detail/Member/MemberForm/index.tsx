@@ -233,27 +233,24 @@ export const MemberForm = (props: Props) => {
             />
           </Form.Item>
         </Col>
-        {!isAssigning && (
-          <Col span={24} md={{ span: 12 }}>
-            <Form.Item
-              label="Left Date"
-              name="leftDate"
-              rules={[
-                {
-                  required: isInactive,
-                  message: 'Please select left date',
-                },
-              ]}
-            >
-              <Input
-                type="date"
-                placeholder="Select left date"
-                className="bordered"
-                disabled={!isInactive}
-              />
-            </Form.Item>
-          </Col>
-        )}
+        <Col span={24} md={{ span: 12 }}>
+          <Form.Item
+            label="Left Date"
+            name="leftDate"
+            rules={[
+              {
+                required: isInactive,
+                message: 'Please select left date',
+              },
+            ]}
+          >
+            <Input
+              type="date"
+              placeholder="Select left date"
+              className="bordered"
+            />
+          </Form.Item>
+        </Col>
         <Col span={24} md={{ span: 12 }}>
           <Form.Item
             label="Rate"
@@ -291,8 +288,8 @@ export const MemberForm = (props: Props) => {
                     return false
                   }
 
-                  if (employeeID) {
-                    return !isPending
+                  if (employeeID && status === ProjectMemberStatus.PENDING) {
+                    return false
                   }
 
                   return true

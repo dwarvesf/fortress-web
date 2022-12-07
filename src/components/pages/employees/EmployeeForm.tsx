@@ -112,7 +112,11 @@ export const EmployeeForm = (props: Props) => {
               },
             ]}
           >
-            <Input type="text" placeholder="Enter full name" />
+            <Input
+              className="bordered"
+              type="text"
+              placeholder="Enter full name"
+            />
           </Form.Item>
         </Col>
 
@@ -128,7 +132,11 @@ export const EmployeeForm = (props: Props) => {
               },
             ]}
           >
-            <Input type="text" placeholder="Enter display name" />
+            <Input
+              className="bordered"
+              type="text"
+              placeholder="Enter display name"
+            />
           </Form.Item>
         </Col>
 
@@ -139,7 +147,6 @@ export const EmployeeForm = (props: Props) => {
             rules={[{ required: true, message: 'Please select status' }]}
           >
             <Select
-              bordered={false}
               style={{ background: theme.colors.white }}
               placeholder="Select status"
               showSearch
@@ -166,7 +173,11 @@ export const EmployeeForm = (props: Props) => {
               { type: 'email', message: 'Wrong email format' },
             ]}
           >
-            <Input type="email" placeholder="Enter team email" />
+            <Input
+              className="bordered"
+              type="email"
+              placeholder="Enter team email"
+            />
           </Form.Item>
         </Col>
 
@@ -182,7 +193,11 @@ export const EmployeeForm = (props: Props) => {
               { type: 'email', message: 'Wrong email format' },
             ]}
           >
-            <Input type="email" placeholder="Enter email" />
+            <Input
+              className="bordered"
+              type="email"
+              placeholder="Enter email"
+            />
           </Form.Item>
         </Col>
 
@@ -193,7 +208,6 @@ export const EmployeeForm = (props: Props) => {
             rules={[{ required: true, message: 'Please select positions' }]}
           >
             <AsyncSelect
-              bordered={false}
               mode="multiple"
               optionGetter={async () => {
                 const { data } = await client.getPositionsMetadata()
@@ -212,7 +226,6 @@ export const EmployeeForm = (props: Props) => {
             rules={[{ required: true, message: 'Please select seniority' }]}
           >
             <AsyncSelect
-              bordered={false}
               optionGetter={async () => {
                 const { data } = await client.getSenioritiesMetadata()
                 return data?.map(transformMetadataToSelectOption) || []
@@ -229,7 +242,12 @@ export const EmployeeForm = (props: Props) => {
             name="salary"
             rules={[{ required: true, message: 'Please input salary' }]}
           >
-            <Input type="number" placeholder="Enter salary" min={0} />
+            <Input
+              className="bordered"
+              type="number"
+              placeholder="Enter salary"
+              min={0}
+            />
           </Form.Item>
         </Col>
 
@@ -240,7 +258,6 @@ export const EmployeeForm = (props: Props) => {
             rules={[{ required: true, message: 'Please select account role' }]}
           >
             <AsyncSelect
-              bordered={false}
               optionGetter={async () => {
                 const { data } = await client.getAccountRolesMetadata()
                 return data?.map(transformMetadataToSelectOption) || []

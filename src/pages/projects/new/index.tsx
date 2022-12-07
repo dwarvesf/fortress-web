@@ -1,4 +1,4 @@
-import { Row, Col, Button, notification, Space, Typography } from 'antd'
+import { Row, Col, Button, notification, Space, Typography, Card } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
 import { PageHeader } from 'components/common/PageHeader'
 import { SERVER_DATE_FORMAT } from 'constants/date'
@@ -169,9 +169,12 @@ const CreateNewProjectPage = () => {
     <>
       <Space direction="vertical" size={24} style={{ width: '100%' }}>
         <PageHeader title="New project" />
-        <Row>
+
+        <Row gutter={[0, 24]}>
           <Col span={24} lg={{ span: 16 }}>
-            <ProjectForm form={form} onSubmit={onSubmit} />
+            <Card>
+              <ProjectForm form={form} onSubmit={onSubmit} />
+            </Card>
           </Col>
 
           <Col span={24}>

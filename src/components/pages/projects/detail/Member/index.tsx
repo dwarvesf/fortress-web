@@ -162,14 +162,17 @@ export const Member = (props: Props) => {
     }
 
     return (
-      <Row justify="end">
-        <Pagination
-          current={filter.page}
-          onChange={(page) => setFilter({ page })}
-          total={data?.total}
-          pageSize={filter.size}
-        />
-      </Row>
+      data?.total &&
+      data?.total > filter.size && (
+        <Row justify="end">
+          <Pagination
+            current={filter.page}
+            onChange={(page) => setFilter({ page })}
+            total={data?.total}
+            pageSize={filter.size}
+          />
+        </Row>
+      )
     )
   }, [
     tabKey,
