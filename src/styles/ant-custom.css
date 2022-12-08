@@ -92,6 +92,10 @@
   padding: 8px 0;
 }
 
+.ant-card-head-wrapper {
+  height: 49px !important;
+}
+
 .ant-input.bordered {
   border: 1px solid #d9d9d9;
 }
