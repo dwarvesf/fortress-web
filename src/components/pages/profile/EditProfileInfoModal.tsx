@@ -100,8 +100,41 @@ export const EditProfileInfoModal = (props: Props) => {
             </Form.Item>
           </Col>
           <Col span={24} md={{ span: 12 }}>
-            <Form.Item label="Notion ID" name="notionID">
-              <Input placeholder="Enter Notion ID" className="bordered" />
+            <Form.Item label="Notion Email" name="notionID">
+              <Input placeholder="Enter Notion Email" className="bordered" />
+            </Form.Item>
+          </Col>
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item label="LinkedIn" name="linkedInID">
+              <Input placeholder="Enter LinkedIn" className="bordered" />
+            </Form.Item>
+          </Col>
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item
+              label="Shelter Address"
+              name="shelterAddress"
+              required
+              rules={[{ required: true }]}
+            >
+              <Input placeholder="Enter Shelter Address" className="bordered" />
+            </Form.Item>
+          </Col>
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item label="Permanent Address" name="permanentAddress">
+              <Input
+                placeholder="Enter Permanent Address"
+                className="bordered"
+              />
+            </Form.Item>
+          </Col>
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item label="Country" name="country">
+              <Input placeholder="Enter Country" className="bordered" />
+            </Form.Item>
+          </Col>
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item label="City" name="city">
+              <Input placeholder="Enter City" className="bordered" />
             </Form.Item>
           </Col>
         </Row>

@@ -1,4 +1,4 @@
-import { EditOutlined } from '@ant-design/icons'
+import { EditOutlined, GithubOutlined } from '@ant-design/icons'
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { Avatar, Button, Col, Image, Row, Space } from 'antd'
 import { DataRows } from 'components/common/DataRows'
@@ -81,11 +81,11 @@ const Default = () => {
                   <DataRows
                     data={[
                       {
-                        label: 'Full name',
+                        label: 'Full Name',
                         value: user?.fullName,
                       },
                       {
-                        label: 'Team email',
+                        label: 'Team Email',
                         value: (
                           <a href={`mailto:${user?.teamEmail}`}>
                             {user?.teamEmail}
@@ -93,7 +93,7 @@ const Default = () => {
                         ),
                       },
                       {
-                        label: 'Personal email',
+                        label: 'Personal Email',
                         value: (
                           <a href={`mailto:${user?.personalEmail}`}>
                             {user?.personalEmail}
@@ -117,11 +117,19 @@ const Default = () => {
                             target="_blank"
                             rel="noreferrer"
                           >
-                            {user?.githubID}
+                            <Space>
+                              <GithubOutlined />
+                              {user?.githubID}
+                            </Space>
                           </a>
                         ),
                       },
-                      { label: 'Notion ID', value: user?.notionID },
+                      { label: 'Notion Email', value: user?.notionID },
+                      { label: 'LinkedIn', value: '' },
+                      { label: 'Shelter Address', value: user?.address },
+                      { label: 'Permanent Address', value: '' },
+                      { label: 'Country', value: '' },
+                      { label: 'City', value: '' },
                     ]}
                   />
                 </Col>
