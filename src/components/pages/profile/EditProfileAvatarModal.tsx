@@ -49,7 +49,7 @@ export const EditProfileAvatarModal = (props: Props) => {
       open={isOpen}
       onCancel={onClose}
       okButtonProps={{ loading: isSubmitting }}
-      title="Edit profile avatar"
+      title="Edit Profile Avatar"
       style={{ maxWidth: 400 }}
       destroyOnClose
       footer={null}
@@ -60,7 +60,7 @@ export const EditProfileAvatarModal = (props: Props) => {
           justifyContent: 'center',
           alignItems: 'center',
           width: '100%',
-          height: 300,
+          padding: 24,
         }}
       >
         <Avatar
@@ -77,6 +77,10 @@ export const EditProfileAvatarModal = (props: Props) => {
               />
             )
           }
+          style={{
+            border: `3px solid ${theme.colors.primary}`,
+            marginBottom: 24,
+          }}
         />
         <Upload
           name="file"
@@ -87,11 +91,7 @@ export const EditProfileAvatarModal = (props: Props) => {
             onSubmit(options.file as File)
           }}
         >
-          <Button
-            type="link"
-            style={{ color: theme.colors.primary }}
-            icon={<UploadOutlined />}
-          >
+          <Button type="primary" icon={<UploadOutlined />}>
             Upload image
           </Button>
         </Upload>

@@ -1,6 +1,6 @@
 import { EditOutlined } from '@ant-design/icons'
 import { useDisclosure } from '@dwarvesf/react-hooks'
-import { Avatar, Button, Col, Image, Row, Space } from 'antd'
+import { Avatar, Col, Image, Row, Space } from 'antd'
 import { DataRows } from 'components/common/DataRows'
 import { EditableDetailSectionCard } from 'components/common/EditableDetailSectionCard'
 import { PageHeader } from 'components/common/PageHeader'
@@ -8,6 +8,7 @@ import { EditProfileAvatarModal } from 'components/pages/profile/EditProfileAvat
 import { EditProfileInfoModal } from 'components/pages/profile/EditProfileInfoModal'
 import { useAuthContext } from 'context/auth'
 import { theme } from 'styles'
+import { Button } from 'components/common/Button'
 
 const Default = () => {
   const { user, revalidate } = useAuthContext()
@@ -48,6 +49,7 @@ const Default = () => {
                           <Image
                             src={user?.avatar}
                             height={128}
+                            style={{ objectFit: 'cover' }}
                             preview={{
                               mask: (
                                 <span style={{ fontSize: 16 }}>
