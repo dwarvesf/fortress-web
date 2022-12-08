@@ -1,7 +1,7 @@
 import { List, Modal, Tag } from 'antd'
 import { AgreementLevel, agreementLevels } from 'constants/agreementLevel'
 import { statusColors } from 'constants/colors'
-import { ItemIndex } from './ItemIndex'
+import { ItemIndex } from '../../../../common/ItemIndex'
 
 interface Props {
   isOpen: boolean
@@ -27,9 +27,9 @@ export const EngagementSurveyPreviewModal = (props: Props) => {
         itemLayout="horizontal"
         dataSource={data}
         renderItem={(item, index) => (
-          <List.Item>
+          <List.Item style={{ alignItems: 'start' }}>
             <List.Item.Meta
-              avatar={<ItemIndex>{index + 1}</ItemIndex>}
+              avatar={<ItemIndex active>{index + 1}</ItemIndex>}
               title={<strong>{item.question}</strong>}
               description={values[`${item.name}_message`]}
             />

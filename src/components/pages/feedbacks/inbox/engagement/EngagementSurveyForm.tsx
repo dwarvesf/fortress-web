@@ -9,7 +9,7 @@ import { ROUTES } from 'constants/routes'
 import { useRouter } from 'next/router'
 import { useRef, useState } from 'react'
 import { EngagementSurveyPreviewModal } from './EngagementSurveyPreviewModal'
-import { ItemIndex } from './ItemIndex'
+import { ItemIndex } from '../../../../common/ItemIndex'
 
 const mockData = [
   {
@@ -68,6 +68,14 @@ const mockData = [
   },
 ]
 
+const buttonColor = {
+  'strongly-disagree': { background: '#ff4d4f', text: 'white' },
+  disagree: { background: '#ffd666', text: 'black' },
+  mixed: { background: '#788896', text: 'white' },
+  agree: { background: '#597ef7', text: 'white' },
+  'strongly-agree': { background: '#1aae9f', text: 'white' },
+}
+
 export const EngagementSurveyForm = () => {
   const { push } = useRouter()
   const [form] = useForm()
@@ -112,77 +120,93 @@ export const EngagementSurveyForm = () => {
       <Row>
         <Col lg={{ span: 16 }}>
           <Card>
-            <Form form={form} onFinish={onSubmit}>
+            <Form
+              form={form}
+              onFinish={onSubmit}
+              onValuesChange={(_, values) => {
+                setSubmittedValues({ ...values })
+              }}
+            >
               <Space direction="vertical" style={{ width: '100%' }}>
-                {mockData.map((field, index) => {
-                  return (
-                    <Row key={index} gutter={24} wrap={false}>
-                      <Col
-                        style={{
-                          height: 40,
-                          alignItems: 'center',
-                          display: 'flex',
-                        }}
+                {mockData.map((field, index) => (
+                  <Row key={index} gutter={24} wrap={false}>
+                    <Col
+                      style={{
+                        height: 40,
+                        alignItems: 'center',
+                        display: 'flex',
+                      }}
+                    >
+                      <ItemIndex active={submittedValues?.[field.name]}>
+                        {index + 1}
+                      </ItemIndex>
+                    </Col>
+                    <Col flex={1}>
+                      <Form.Item
+                        label={field.question}
+                        name={field.name}
+                        required
+                        rules={[
+                          {
+                            required: true,
+                            message: 'This question is required',
+                          },
+                        ]}
                       >
-                        <ItemIndex>{index + 1}</ItemIndex>
-                      </Col>
-                      <Col flex={1}>
-                        <Form.Item
-                          label={field.question}
-                          name={field.name}
-                          required
-                          rules={[
-                            {
-                              required: true,
-                              message: 'This question is required',
-                            },
-                          ]}
+                        <Radio.Group
+                          style={{
+                            width: '100%',
+                            display: 'grid',
+                            gridTemplateColumns: 'repeat(5, 1fr)',
+                            gap: '5px',
+                            textAlign: 'center',
+                          }}
                         >
-                          <Radio.Group
-                            buttonStyle="solid"
-                            style={{
-                              width: '100%',
-                              display: 'grid',
-                              gridTemplateColumns: 'repeat(5, 1fr)',
-                              gap: '5px',
-                              textAlign: 'center',
-                            }}
-                          >
-                            {(
-                              Object.keys(agreementLevels) as Array<
-                                keyof typeof agreementLevels
-                              >
-                            ).map((item) => (
-                              <Radio.Button
-                                value={item}
-                                key={item}
-                                style={{
-                                  display: 'flex',
-                                  height: '100%',
-                                  lineHeight: 1,
-                                  padding: '10px',
-                                  alignItems: 'center',
-                                  justifyContent: 'center',
-                                }}
-                              >
-                                {agreementLevels[item]}
-                              </Radio.Button>
-                            ))}
-                          </Radio.Group>
+                          {(
+                            Object.keys(agreementLevels) as Array<
+                              keyof typeof agreementLevels
+                            >
+                          ).map((item) => (
+                            <Radio.Button
+                              value={item}
+                              key={item}
+                              style={{
+                                display: 'flex',
+                                height: '100%',
+                                lineHeight: 1,
+                                padding: '10px',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                backgroundColor: buttonColor[item].background,
+                                color: buttonColor[item].text,
+                                borderRadius: '5px',
+                                borderWidth: 0,
+                                fontSize: 12,
+                                fontWeight: 700,
+                                overflow: 'hidden',
+                                opacity:
+                                  submittedValues?.[field.name] === item
+                                    ? 1
+                                    : 0.3,
+                              }}
+                            >
+                              {agreementLevels[item]}
+                            </Radio.Button>
+                          ))}
+                        </Radio.Group>
+                      </Form.Item>
+                      {showNote && (
+                        <Form.Item name={`${field.name}_message`}>
+                          <TextArea
+                            rows={3}
+                            bordered
+                            placeholder="Enter your message"
+                          />
                         </Form.Item>
-                        {showNote && (
-                          <Form.Item name={`${field.name}_message`}>
-                            <TextArea
-                              rows={3}
-                              bordered
-                              placeholder="Enter your message"
-                            />
-                          </Form.Item>
-                        )}
-                      </Col>
-                    </Row>
-                  )
-                })}
+                      )}
+                    </Col>
+                  </Row>
+                ))}
               </Space>
             </Form>
             <Space>

@@ -1,19 +1,5 @@
 import { Col, Modal, Row, Space, Tag } from 'antd'
-import styled from 'styled-components'
-
-const FieldIndex = styled.div`
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 0.75rem;
-  background-color: rgba(225, 63, 94, 0.3);
-  background-opacity: 0.1;
-  color: ${(props) => props.theme.colors.primary};
-  font-weight: bold;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 0.75rem;
-`
+import { ItemIndex } from 'components/common/ItemIndex'
 
 interface Props {
   isOpen: boolean
@@ -48,7 +34,7 @@ export const PeerPerformanceReviewPreviewModal = (props: Props) => {
           return (
             <Row key={index} gutter={24} wrap={false}>
               <Col>
-                <FieldIndex>{index}</FieldIndex>
+                <ItemIndex active>{index}</ItemIndex>
               </Col>
               <Col flex={1}>
                 <Space direction="vertical">
