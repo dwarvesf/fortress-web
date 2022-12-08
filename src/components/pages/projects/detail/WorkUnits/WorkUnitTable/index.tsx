@@ -33,14 +33,15 @@ export const WorkUnitTable = ({
         title: 'Members',
         key: 'members',
         dataIndex: 'members',
-        render: (value) => <AvatarArray data={value || []} />,
+        render: (value) =>
+          value && value.length ? <AvatarArray data={value} /> : '-',
       },
       {
         title: 'Stacks',
         key: 'stacks',
         dataIndex: 'stacks',
         render: (value: ViewStack[]) =>
-          value.length > 0 ? (
+          value && value.length ? (
             <Space size={[0, 8]}>
               {value.map((stack) => (
                 <Tag key={stack.id}>{stack.name}</Tag>
@@ -54,11 +55,14 @@ export const WorkUnitTable = ({
         title: 'URL',
         key: 'url',
         dataIndex: 'url',
-        render: (value) => (
-          <a href={value} target="_blank" rel="noreferrer">
-            {value}
-          </a>
-        ),
+        render: (value) =>
+          value ? (
+            <a href={value} target="_blank" rel="noreferrer">
+              {value}
+            </a>
+          ) : (
+            '-'
+          ),
       },
       {
         key: 'actions',

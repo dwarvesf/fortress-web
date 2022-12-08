@@ -11,24 +11,30 @@ export const MemberTable = ({ data }: { data: ViewProjectMember[] }) => {
       {
         title: 'Name',
         key: 'name',
-        render: (value) => (
-          <Space>
-            <AvatarWithName user={value} />
-            {value.isLead && <Tag color="red">Lead</Tag>}
-          </Space>
-        ),
+        render: (value) =>
+          value.displayName ? (
+            <Space>
+              <AvatarWithName user={value} />
+              {value.isLead && <Tag color="red">Lead</Tag>}
+            </Space>
+          ) : (
+            'TBD'
+          ),
       },
       {
         title: 'Positions',
         key: 'positions',
         dataIndex: 'positions',
-        render: (value: ViewPosition[]) => (
-          <Space size={[0, 8]}>
-            {value.map((position: ModelPosition) => (
-              <Tag key={position.id}>{position.name}</Tag>
-            ))}
-          </Space>
-        ),
+        render: (value: ViewPosition[]) =>
+          value && value.length ? (
+            <Space size={[0, 8]}>
+              {value.map((position: ModelPosition) => (
+                <Tag key={position.id}>{position.name}</Tag>
+              ))}
+            </Space>
+          ) : (
+            '-'
+          ),
       },
       {
         title: 'Seniority',
@@ -40,7 +46,8 @@ export const MemberTable = ({ data }: { data: ViewProjectMember[] }) => {
         title: 'Deployment Type',
         key: 'deploymentType',
         dataIndex: 'deploymentType',
-        render: (value) => deploymentTypes[value as DeploymentType],
+        render: (value) =>
+          value ? deploymentTypes[value as DeploymentType] : '-',
       },
     ] as ColumnsType<ViewProjectMember>
   }, [])

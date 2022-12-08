@@ -161,7 +161,7 @@ export const Member = (props: Props) => {
       }
     }
 
-    return (
+    return data?.total && data?.total > filter.size ? (
       <Row justify="end">
         <Pagination
           current={filter.page}
@@ -170,7 +170,7 @@ export const Member = (props: Props) => {
           pageSize={filter.size}
         />
       </Row>
-    )
+    ) : null
   }, [
     tabKey,
     allData,

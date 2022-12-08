@@ -139,7 +139,6 @@ export const EditSkillsModal = (props: Props) => {
                     : 'Select leading chapters'
                 }
                 showSearch
-                disabled={selectedChapters.length === 0}
                 showArrow
                 options={
                   data?.data

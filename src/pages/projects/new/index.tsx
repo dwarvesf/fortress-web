@@ -1,4 +1,4 @@
-import { Row, Col, Button, notification, Space, Typography } from 'antd'
+import { Row, Col, Button, notification, Space, Typography, Card } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
 import { PageHeader } from 'components/common/PageHeader'
 import { SERVER_DATE_FORMAT } from 'constants/date'
@@ -169,44 +169,47 @@ const CreateNewProjectPage = () => {
     <>
       <Space direction="vertical" size={24} style={{ width: '100%' }}>
         <PageHeader title="New project" />
-        <Row>
+
+        <Row gutter={[0, 24]}>
           <Col span={24} lg={{ span: 16 }}>
             <ProjectForm form={form} onSubmit={onSubmit} />
           </Col>
 
           <Col span={24}>
-            <Space
-              align="center"
-              style={{
-                justifyContent: 'space-between',
-                width: '100%',
-                marginBottom: 24,
-              }}
-            >
-              <Typography.Title level={4}>Members</Typography.Title>
-              <Button
-                type="primary"
-                icon={<PlusCircleOutlined />}
-                onClick={openAddNewMemberDialog}
+            <Card>
+              <Space
+                align="center"
+                style={{
+                  justifyContent: 'space-between',
+                  width: '100%',
+                  marginBottom: 24,
+                }}
               >
-                Add New
-              </Button>
-            </Space>
+                <Typography.Title level={4}>Members</Typography.Title>
+                <Button
+                  type="primary"
+                  icon={<PlusCircleOutlined />}
+                  onClick={openAddNewMemberDialog}
+                >
+                  Add New
+                </Button>
+              </Space>
 
-            <ProjectMemberTable
-              data={memberTableData}
-              memberData={memberData}
-              setMemberData={setMemberData}
-              getDataOnSubmit={(
-                e: ViewEmployeeListDataResponse & Meta,
-                s: ViewSeniorityResponse,
-                p: ViewPositionResponse,
-              ) => {
-                setEmployeeData(e)
-                setSenioritiesData(s)
-                setPositionsData(p)
-              }}
-            />
+              <ProjectMemberTable
+                data={memberTableData}
+                memberData={memberData}
+                setMemberData={setMemberData}
+                getDataOnSubmit={(
+                  e: ViewEmployeeListDataResponse & Meta,
+                  s: ViewSeniorityResponse,
+                  p: ViewPositionResponse,
+                ) => {
+                  setEmployeeData(e)
+                  setSenioritiesData(s)
+                  setPositionsData(p)
+                }}
+              />
+            </Card>
           </Col>
 
           <Col span={24}>
@@ -214,7 +217,6 @@ const CreateNewProjectPage = () => {
               type="primary"
               htmlType="submit"
               loading={isSubmitting}
-              style={{ marginTop: 24 }}
               onClick={form.submit}
             >
               Submit
