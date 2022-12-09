@@ -53,7 +53,7 @@ export const PeerPerformanceReviewModal = (props: Props) => {
           return (
             <Row key={index} gutter={24} wrap={false}>
               <Col>
-                <ItemIndex active>{index}</ItemIndex>
+                <ItemIndex active>{index + 1}</ItemIndex>
               </Col>
               <Col flex={1}>
                 <Space direction="vertical">
