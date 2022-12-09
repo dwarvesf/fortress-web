@@ -1,4 +1,4 @@
-import { EditOutlined, GithubOutlined } from '@ant-design/icons'
+import { EditOutlined, LinkOutlined } from '@ant-design/icons'
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { Avatar, Button, Col, Image, Row, Space } from 'antd'
 import { DataRows } from 'components/common/DataRows'
@@ -108,7 +108,23 @@ const Default = () => {
                           </a>
                         ),
                       },
-                      { label: 'Discord ID', value: user?.discordID },
+                      {
+                        label: 'Discord ID',
+                        value: user?.discordID ? (
+                          <a
+                            href={`https://discord.com/channels/@me/${user.discordID}`}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            <Space>
+                              {user.discordID}
+                              <LinkOutlined />
+                            </Space>
+                          </a>
+                        ) : (
+                          ''
+                        ),
+                      },
                       {
                         label: 'Github ID',
                         value: (
@@ -118,8 +134,8 @@ const Default = () => {
                             rel="noreferrer"
                           >
                             <Space>
-                              <GithubOutlined />
                               {user?.githubID}
+                              <LinkOutlined />
                             </Space>
                           </a>
                         ),
