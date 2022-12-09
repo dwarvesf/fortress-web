@@ -1,24 +1,43 @@
 import { Col, Modal, Row, Space, Tag } from 'antd'
 import { ItemIndex } from 'components/common/ItemIndex'
+import { Button } from 'components/common/Button'
 
 interface Props {
+  isPreviewing?: boolean
   isOpen: boolean
   values: any
   data: any
   onCancel: () => void
-  onOk: () => void
+  onOk?: () => void
 }
 
-export const PeerPerformanceReviewPreviewModal = (props: Props) => {
-  const { isOpen, values = {}, data = [], onCancel, onOk } = props
+export const PeerPerformanceReviewModal = (props: Props) => {
+  const {
+    isPreviewing = true,
+    isOpen,
+    values = {},
+    data = [],
+    onCancel,
+    onOk,
+  } = props
 
   return (
     <Modal
       open={isOpen}
-      onCancel={onCancel}
-      okText="Send"
-      onOk={onOk}
       width={768}
+      onCancel={onCancel}
+      footer={
+        isPreviewing
+          ? [
+              <Button type="default" onClick={onCancel}>
+                Cancel
+              </Button>,
+              <Button type="primary" onClick={onOk}>
+                Send
+              </Button>,
+            ]
+          : null
+      }
       title={
         <Space direction="vertical">
           <Space>
@@ -34,7 +53,7 @@ export const PeerPerformanceReviewPreviewModal = (props: Props) => {
           return (
             <Row key={index} gutter={24} wrap={false}>
               <Col>
-                <ItemIndex active>{index}</ItemIndex>
+                <ItemIndex active>{index + 1}</ItemIndex>
               </Col>
               <Col flex={1}>
                 <Space direction="vertical">
