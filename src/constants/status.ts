@@ -60,3 +60,18 @@ export const peerReviewServeyStatuses: Record<PeerReviewServeyStatus, string> =
     [PeerReviewServeyStatus.DONE]: 'Done',
     [PeerReviewServeyStatus.SENT]: 'Sent',
   }
+
+export enum MemberPeerReviewsStatuses {
+  DONE = 'done',
+  SENT = 'sent',
+  DRAFT = 'draft',
+}
+
+export const memberPeerReviewsStatuses: Record<
+  MemberPeerReviewsStatuses,
+  string
+> = {
+  [MemberPeerReviewsStatuses.DONE]: 'Done',
+  [MemberPeerReviewsStatuses.SENT]: 'Sent',
+  [MemberPeerReviewsStatuses.DRAFT]: 'Draft',
+}
