@@ -361,14 +361,15 @@ export interface ViewBasicProjectHeadInfo {
 
 export interface ViewBasisEmployeeInfo {
   avatar?: string
+  displayName?: string
   fullName?: string
   id?: string
 }
 
 export interface ViewChapter {
-  leadID?: string
   code?: string
   id?: string
+  leadID?: string
   name?: string
 }
 
@@ -476,6 +477,42 @@ export interface ViewErrorResponse {
   errors?: ViewApiError[]
 }
 
+export interface ViewFeedback {
+  author?: ViewBasisEmployeeInfo
+  employeeID?: string
+  eventID?: string
+  isRead?: boolean
+  lastUpdated?: string
+  projectID?: string
+  reviewerID?: string
+  status?: string
+  subtype?: string
+  title?: string
+  topicID?: string
+  type?: string
+}
+
+export interface ViewFeedbackDetail {
+  answers?: ViewQuestionAnswer[]
+  employeeID?: string
+  eventID?: string
+  reviewerID?: string
+  status?: string
+  topicID?: string
+}
+
+export interface ViewFeedbackDetailResponse {
+  data?: ViewFeedbackDetail
+}
+
+export interface ViewGetQuestionResponse {
+  data?: ViewQuestion[]
+}
+
+export interface ViewListFeedbackResponse {
+  data?: ViewFeedback[]
+}
+
 export interface ViewListWorkUnitResponse {
   data?: ViewWorkUnit[]
 }
@@ -572,6 +609,24 @@ export interface ViewProjectMember {
 
 export interface ViewProjectMemberListResponse {
   data?: ViewProjectMember[]
+}
+
+export interface ViewQuestion {
+  category?: string
+  content?: string
+  id?: string
+  order?: number
+  subcategory?: string
+  type?: string
+}
+
+export interface ViewQuestionAnswer {
+  answer?: string
+  content?: string
+  eventQuestionID?: string
+  note?: string
+  order?: number
+  type?: string
 }
 
 export interface ViewRole {
