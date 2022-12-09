@@ -55,8 +55,9 @@ const PeerReviewPage = () => {
   const { filter, setFilter } = useFilter(
     new SurveyListFilter(FeedbackSubtype.PEER_REVIEW),
   )
-  const { data, loading } = useFetchWithCache([GET_PATHS.getSurveys], () =>
-    client.getSurveys(filter),
+  const { data, loading } = useFetchWithCache(
+    [GET_PATHS.getSurveys, filter],
+    () => client.getSurveys(filter),
   )
 
   return (
