@@ -1,4 +1,4 @@
-import { EditOutlined } from '@ant-design/icons'
+import { EditOutlined, LinkOutlined } from '@ant-design/icons'
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { Avatar, Col, Image, Row, Space } from 'antd'
 import { DataRows } from 'components/common/DataRows'
@@ -83,11 +83,11 @@ const Default = () => {
                   <DataRows
                     data={[
                       {
-                        label: 'Full name',
+                        label: 'Full Name',
                         value: user?.fullName,
                       },
                       {
-                        label: 'Team email',
+                        label: 'Team Email',
                         value: (
                           <a href={`mailto:${user?.teamEmail}`}>
                             {user?.teamEmail}
@@ -95,7 +95,7 @@ const Default = () => {
                         ),
                       },
                       {
-                        label: 'Personal email',
+                        label: 'Personal Email',
                         value: (
                           <a href={`mailto:${user?.personalEmail}`}>
                             {user?.personalEmail}
@@ -110,7 +110,23 @@ const Default = () => {
                           </a>
                         ),
                       },
-                      { label: 'Discord ID', value: user?.discordID },
+                      {
+                        label: 'Discord ID',
+                        value: user?.discordID ? (
+                          <a
+                            href={`https://discord.com/channels/@me/${user.discordID}`}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            <Space>
+                              {user.discordID}
+                              <LinkOutlined />
+                            </Space>
+                          </a>
+                        ) : (
+                          ''
+                        ),
+                      },
                       {
                         label: 'Github ID',
                         value: (
@@ -119,11 +135,19 @@ const Default = () => {
                             target="_blank"
                             rel="noreferrer"
                           >
-                            {user?.githubID}
+                            <Space>
+                              {user?.githubID}
+                              <LinkOutlined />
+                            </Space>
                           </a>
                         ),
                       },
-                      { label: 'Notion ID', value: user?.notionID },
+                      { label: 'Notion Email', value: user?.notionID },
+                      { label: 'LinkedIn', value: '' },
+                      { label: 'Shelter Address', value: user?.address },
+                      { label: 'Permanent Address', value: '' },
+                      { label: 'Country', value: '' },
+                      { label: 'City', value: '' },
                     ]}
                   />
                 </Col>
