@@ -8,7 +8,7 @@ import { PageHeader } from 'components/common/PageHeader'
 import { ROUTES } from 'constants/routes'
 import { useRouter } from 'next/router'
 import { useRef, useState } from 'react'
-import { PeerPerformanceReviewPreviewModal } from './PeerPerformanceReviewPreviewModal'
+import { PeerPerformanceReviewModal } from './PeerPerformanceReviewModal'
 
 const mockData = [
   {
@@ -166,7 +166,7 @@ export const PeerFormanceReviewForm = () => {
         </Row>
       </Space>
       {isPreviewDialogOpen && (
-        <PeerPerformanceReviewPreviewModal
+        <PeerPerformanceReviewModal
           data={mockData}
           values={submittedValues}
           isOpen={isPreviewDialogOpen}

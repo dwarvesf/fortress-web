@@ -4,7 +4,7 @@ import { Col, Modal, notification, Row, Tooltip } from 'antd'
 import { Button } from 'components/common/Button'
 import { MemberPeerReviewsStatuses } from 'constants/status'
 import { useState } from 'react'
-import { MemberPeerReviewsModal } from './MemberPeerReviewsModal'
+import { PeerPerformanceReviewModal } from '../inbox/peer-review/PeerPerformanceReviewModal'
 import { MemberPeerReviewDetail } from './mockData'
 
 interface Props {
@@ -123,10 +123,11 @@ export const MemberPeerReviewsAction = (props: Props) => {
         </Tooltip>
       </Col>
 
-      <MemberPeerReviewsModal
-        questionData={mockData}
-        peerReviewData={memberPeerReviewDetail}
-        values={new Array(7).fill('Lorem Ipsum')}
+      <PeerPerformanceReviewModal
+        data={mockData}
+        isPreviewing={false}
+        // peerReviewData={memberPeerReviewDetail}
+        values={new Array(8).fill('Lorem Ipsum')}
         isOpen={isPreviewDialogOpen}
         onCancel={closePreviewDialog}
       />
