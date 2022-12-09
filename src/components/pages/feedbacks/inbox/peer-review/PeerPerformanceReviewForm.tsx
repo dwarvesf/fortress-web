@@ -3,11 +3,11 @@ import { Card, Col, Form, Row, Space } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
 import TextArea from 'antd/lib/input/TextArea'
 import { Button } from 'components/common/Button'
+import { ItemIndex } from 'components/common/ItemIndex'
 import { PageHeader } from 'components/common/PageHeader'
 import { ROUTES } from 'constants/routes'
 import { useRouter } from 'next/router'
 import { useRef, useState } from 'react'
-import styled from 'styled-components'
 import { PeerPerformanceReviewPreviewModal } from './PeerPerformanceReviewPreviewModal'
 
 const mockData = [
@@ -50,21 +50,6 @@ const mockData = [
     name: '7',
   },
 ]
-
-const FieldIndex = styled.div`
-  margin-top: 0.75rem;
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 0.75rem;
-  background-color: rgba(225, 63, 94, 0.3);
-  background-opacity: 0.1;
-  color: ${(props) => props.theme.colors.primary};
-  font-weight: bold;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 0.75rem;
-`
 
 const Field = (props: any) => {
   const { type, ...rest } = props
@@ -127,13 +112,27 @@ export const PeerFormanceReviewForm = () => {
         <Row>
           <Col lg={{ span: 16 }}>
             <Card>
-              <Form form={form} onFinish={onSubmit}>
+              <Form
+                form={form}
+                onFinish={onSubmit}
+                onValuesChange={(_, values) => {
+                  setSubmittedValues({ ...values })
+                }}
+              >
                 <Space direction="vertical" style={{ width: '100%' }}>
                   {mockData.map((field, index) => {
                     return (
                       <Row key={index} gutter={24} wrap={false}>
-                        <Col>
-                          <FieldIndex>{index + 1}</FieldIndex>
+                        <Col
+                          style={{
+                            height: 40,
+                            alignItems: 'center',
+                            display: 'flex',
+                          }}
+                        >
+                          <ItemIndex active={submittedValues?.[field.name]}>
+                            {index + 1}
+                          </ItemIndex>
                         </Col>
                         <Col flex={1}>
                           <Form.Item
