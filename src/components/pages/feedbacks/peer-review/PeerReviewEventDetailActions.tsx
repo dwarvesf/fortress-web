@@ -2,7 +2,7 @@ import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons'
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { Col, Modal, notification, Row, Tooltip } from 'antd'
 import { Button } from 'components/common/Button'
-import { ROUTES } from 'constants/routes'
+import { MemberPeerReviewsLink } from 'components/common/DetailLink/MemberPeerReviewsLink'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { AddParticipantsModal } from './AddParticipantsModal'
@@ -21,7 +21,7 @@ export const PeerReviewEventDetailActions = (props: Props) => {
   } = useDisclosure()
   const [isLoading, setIsLoading] = useState(false)
 
-  const { push, query } = useRouter()
+  const { query } = useRouter()
 
   const onDelete = async () => {
     try {
@@ -58,21 +58,14 @@ export const PeerReviewEventDetailActions = (props: Props) => {
   return (
     <Row justify="end" gutter={[8, 8]}>
       <Col>
-        <Tooltip title="View">
-          <Button
-            type="text-primary"
-            size="small"
-            icon={<EyeOutlined />}
-            onClick={() =>
-              push(
-                ROUTES.MEMBER_PEER_REVIEWS(
-                  query.id as string,
-                  peerReviewDetail.employee?.id!,
-                ),
-              )
-            }
-          />
-        </Tooltip>
+        <MemberPeerReviewsLink
+          id={query.id as string}
+          memberId={peerReviewDetail.employee?.id!}
+        >
+          <Tooltip title="View">
+            <Button type="text-primary" size="small" icon={<EyeOutlined />} />
+          </Tooltip>
+        </MemberPeerReviewsLink>
       </Col>
       <Col>
         <Tooltip title="Edit">
