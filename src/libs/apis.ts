@@ -2,6 +2,7 @@ import { EmployeeListFilter } from 'types/filters/EmployeeListFilter'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
 import { ProjectMemberListFilter } from 'types/filters/ProjectMemberListFilter'
 import { ProjectWorkUnitListFilter } from 'types/filters/ProjectWorkUnitListFilter'
+import { SurveyListFilter } from 'types/filters/SurveyListFilter'
 import {
   ViewAuthData,
   ViewProfileData,
@@ -38,6 +39,7 @@ import {
   PkgHandlerProjectCreateWorkUnitBody,
   PkgHandlerProjectUpdateWorkUnitBody,
   ViewMessageResponse,
+  ViewListSurveyResponse,
 } from 'types/schema'
 import qs from 'qs'
 import fetcher from './fetcher'
@@ -64,6 +66,7 @@ export const GET_PATHS = {
   getStackMetadata: '/metadata/stacks',
   getCountryMetadata: '/metadata/countries',
   getChapterMetadata: '/metadata/chapters',
+  getSurveys: '/surveys',
 }
 export interface Meta {
   page?: number
@@ -484,6 +487,17 @@ class Client {
           ...this.privateHeaders,
         },
         body: JSON.stringify(data),
+      },
+    )
+  }
+
+  public getSurveys(filter: SurveyListFilter) {
+    const queryString = qs.stringify(filter)
+
+    return fetcher<ViewListSurveyResponse & Meta>(
+      `${BASE_URL}/surveys?${queryString}`,
+      {
+        headers: { ...this.privateHeaders },
       },
     )
   }

@@ -8,54 +8,25 @@ import { statusColors } from 'constants/colors'
 import { PeerReviewStatus, peerReviewStatuses } from 'constants/status'
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { CreatePeerReviewModal } from 'components/pages/feedbacks/peer-review/CreatePeerReviewModal'
+import { useFetchWithCache } from 'hooks/useFetchWithCache'
+import { client, GET_PATHS } from 'libs/apis'
+import { useFilter } from 'hooks/useFilter'
+import { SurveyListFilter } from 'types/filters/SurveyListFilter'
+import { FeedbackSubtype } from 'constants/feedbackTypes'
+import { ViewSurvey } from 'types/schema'
 
-export interface PeerReviewData {
-  id?: string
-  time?: string
-  status?: string
-  totalCompletedSurveys?: number
-  totalParticipants?: number
-}
-
-const peerReviewData: PeerReviewData[] = [
-  {
-    id: '1',
-    time: 'Q1/Q2, 2022',
-    status: PeerReviewStatus.DRAFT,
-    totalCompletedSurveys: 0,
-    totalParticipants: 50,
-  },
-  {
-    id: '2',
-    time: 'Q2/Q3, 2022',
-    status: PeerReviewStatus.INPROGRESS,
-    totalCompletedSurveys: 50,
-    totalParticipants: 50,
-  },
-  {
-    id: '3',
-    time: 'Q1/Q2, 2022',
-    status: PeerReviewStatus.DONE,
-    totalCompletedSurveys: 49,
-    totalParticipants: 50,
-  },
-]
-
-const columns: ColumnsType<PeerReviewData> = [
+const columns: ColumnsType<ViewSurvey> = [
   {
     title: 'Time',
-    key: 'time',
-    dataIndex: 'time',
+    key: 'title',
+    dataIndex: 'title',
     render: (value) => value || '-',
     fixed: 'left',
   },
   {
     title: 'Done',
-    render: (value: PeerReviewData) => (
-      <ProgressColumn
-        done={value.totalCompletedSurveys}
-        total={value.totalParticipants}
-      />
+    render: (value: ViewSurvey) => (
+      <ProgressColumn done={value.count?.done} total={value.count?.total} />
     ),
     width: '40%',
   },
@@ -69,9 +40,7 @@ const columns: ColumnsType<PeerReviewData> = [
   },
   {
     title: '',
-    key: 'actions',
-    dataIndex: 'actions',
-    render: (_, record) => <Actions record={record} />,
+    render: (value: ViewSurvey) => <Actions record={value} />,
     fixed: 'right',
   },
 ]
@@ -82,6 +51,13 @@ const PeerReviewPage = () => {
     onOpen: openCreatePeerReviewModal,
     onClose: closeCreatePeerReviewModal,
   } = useDisclosure()
+
+  const { filter, setFilter } = useFilter(
+    new SurveyListFilter(FeedbackSubtype.PEER_REVIEW),
+  )
+  const { data, loading } = useFetchWithCache([GET_PATHS.getSurveys], () =>
+    client.getSurveys(filter),
+  )
 
   return (
     <Space direction="vertical" size={24} style={{ width: '100%' }}>
@@ -94,14 +70,21 @@ const PeerReviewPage = () => {
         }
       />
       <Table
-        dataSource={peerReviewData}
+        dataSource={data?.data || []}
         columns={columns}
+        loading={loading}
         rowKey={(row) => row.id as string}
         pagination={false}
         scroll={{ x: 'max-content' }}
       />
       <Row justify="end">
-        <Pagination current={1} onChange={() => {}} total={1} pageSize={10} />
+        <Pagination
+          current={filter.page}
+          onChange={(page) => setFilter({ page })}
+          total={data?.total}
+          pageSize={filter.size}
+          hideOnSinglePage
+        />
       </Row>
 
       <CreatePeerReviewModal
