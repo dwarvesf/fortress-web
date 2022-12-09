@@ -46,6 +46,17 @@ export interface GithubComDwarvesfFortressApiPkgHandlerEmployeeUpdateSkillsInput
   stacks: string[]
 }
 
+export interface GithubComDwarvesfFortressApiPkgHandlerFeedbackBasicEventQuestionInput {
+  answer?: string
+  eventQuestionID: string
+  note?: string
+}
+
+export interface GithubComDwarvesfFortressApiPkgHandlerFeedbackSubmitBody {
+  answers: GithubComDwarvesfFortressApiPkgHandlerFeedbackBasicEventQuestionInput[]
+  status: string
+}
+
 export interface GithubComDwarvesfFortressApiPkgHandlerProfileUpdateInfoInput {
   discordID?: string
   githubID?: string
@@ -229,6 +240,17 @@ export interface PkgHandlerEmployeeUpdateSkillsInput {
   positions: string[]
   seniority: string
   stacks: string[]
+}
+
+export interface PkgHandlerFeedbackBasicEventQuestionInput {
+  answer?: string
+  eventQuestionID: string
+  note?: string
+}
+
+export interface PkgHandlerFeedbackSubmitBody {
+  answers: PkgHandlerFeedbackBasicEventQuestionInput[]
+  status: string
 }
 
 export interface PkgHandlerProfileUpdateInfoInput {
@@ -481,15 +503,21 @@ export interface ViewFeedback {
   author?: ViewBasisEmployeeInfo
   employeeID?: string
   eventID?: string
+  eventReviewerID?: string
   isRead?: boolean
   lastUpdated?: string
   projectID?: string
-  reviewerID?: string
   status?: string
   subtype?: string
   title?: string
   topicID?: string
   type?: string
+}
+
+export interface ViewFeedbackCount {
+  done?: number
+  sent?: number
+  total?: number
 }
 
 export interface ViewFeedbackDetail {
@@ -511,6 +539,14 @@ export interface ViewGetQuestionResponse {
 
 export interface ViewListFeedbackResponse {
   data?: ViewFeedback[]
+}
+
+export interface ViewListSurveyDetailResponse {
+  data?: ViewSurveyDetail[]
+}
+
+export interface ViewListSurveyResponse {
+  data?: ViewSurvey[]
 }
 
 export interface ViewListWorkUnitResponse {
@@ -647,6 +683,41 @@ export interface ViewStack {
 
 export interface ViewStackResponse {
   data?: ModelChapter[]
+}
+
+export interface ViewSubmitFeedback {
+  answers?: ViewQuestionAnswer[]
+  employeeID?: string
+  eventID?: string
+  reviewerID?: string
+  status?: string
+  topicID?: string
+}
+
+export interface ViewSubmitFeedbackResponse {
+  data?: ViewSubmitFeedback
+}
+
+export interface ViewSurvey {
+  count?: ViewFeedbackCount
+  endDate?: string
+  id?: string
+  startDate?: string
+  status?: string
+  subtype?: string
+  title?: string
+  type?: string
+}
+
+export interface ViewSurveyDetail {
+  count?: ViewFeedbackCount
+  employee?: ViewBasisEmployeeInfo
+  eventID?: string
+  participants?: ViewBasisEmployeeInfo[]
+  subtype?: string
+  title?: string
+  topicID?: string
+  type?: string
 }
 
 export interface ViewUpdateEmployeeStatusResponse {

@@ -3,11 +3,11 @@ import { Col, Modal, notification, Row, Tooltip } from 'antd'
 import { Button } from 'components/common/Button'
 import { PeerReviewEventLink } from 'components/common/DetailLink'
 import { PeerReviewStatus } from 'constants/status'
-import { PeerReviewData } from 'pages/feedbacks/peer-review'
 import { useState } from 'react'
+import { ViewSurvey } from 'types/schema'
 
 interface Props {
-  record: PeerReviewData
+  record: ViewSurvey
 }
 
 export const Actions = (props: Props) => {
@@ -36,7 +36,7 @@ export const Actions = (props: Props) => {
       title: 'Delete event',
       content: (
         <>
-          Do you want to delete <strong>{record.time}</strong> event?
+          Do you want to delete <strong>{record.title}</strong> event?
         </>
       ),
       okText: 'Delete',
