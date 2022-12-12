@@ -3,7 +3,7 @@ import { workloadAverageColors } from 'constants/colors'
 import {
   WorkloadAverageStatus,
   workloadAverageStatuses,
-} from 'constants/workloadAverageStatus'
+} from 'constants/status'
 import { WorkloadAverageIcon } from './WorkloadAverageIcon'
 
 const evaluations = [

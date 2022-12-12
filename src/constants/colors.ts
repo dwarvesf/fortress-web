@@ -1,5 +1,5 @@
 import { TagProps } from 'antd'
-import { WorkloadAverageStatus } from 'constants/workloadAverageStatus'
+import { WorkloadAverageStatus } from 'constants/status'
 
 // Unfortunately we cannot use a stricter type for the key here (yet)
 // because it's a collection of employee/project/project member statuses,

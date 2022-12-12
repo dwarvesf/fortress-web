@@ -7,7 +7,7 @@ import { Actions } from 'components/pages/feedbacks/workload'
 import { SettingFilled } from '@ant-design/icons'
 import { theme } from 'styles'
 import { WorkloadAverage } from 'components/pages/feedbacks/workload/WorkloadAverage'
-import { WorkloadAverageStatus } from 'constants/workloadAverageStatus'
+import { WorkloadAverageStatus } from 'constants/status'
 
 const mockWorkloadAverageData = [
   {

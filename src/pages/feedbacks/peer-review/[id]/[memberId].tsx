@@ -5,7 +5,7 @@ import { PageHeader } from 'components/common/PageHeader'
 import { statusColors } from 'constants/colors'
 import { ROUTES } from 'constants/routes'
 import {
-  MemberPeerReviewStatuses,
+  MemberPeerReviewStatus,
   memberPeerReviewStatuses,
 } from 'constants/status'
 import { useRouter } from 'next/router'
@@ -37,7 +37,7 @@ const columns: ColumnsType<MemberPeerReviewDetail> = [
     title: 'Status',
     key: 'status',
     dataIndex: 'status',
-    render: (value: MemberPeerReviewStatuses) => (
+    render: (value: MemberPeerReviewStatus) => (
       <Tag color={statusColors[value]}>
         {memberPeerReviewStatuses[value] || '-'}
       </Tag>
@@ -77,7 +77,13 @@ const MemberPeerReviewsPage = () => {
         scroll={{ x: 'max-content' }}
       />
       <Row justify="end">
-        <Pagination current={1} onChange={() => {}} total={1} pageSize={10} />
+        <Pagination
+          current={1}
+          onChange={() => {}}
+          total={1}
+          pageSize={10}
+          hideOnSinglePage
+        />
       </Row>
     </Space>
   )
