@@ -1,4 +1,4 @@
-import { Space, Table } from 'antd'
+import { Pagination, Row, Space, Table } from 'antd'
 import { PageHeader } from 'components/common/PageHeader'
 import { Button } from 'components/common/Button'
 import { ColumnsType } from 'antd/lib/table'
@@ -132,9 +132,18 @@ const WorkloadPage = () => {
           dataSource={mockWorkloadData.data || []}
           columns={columns}
           rowKey={(row) => row.id as string}
-          pagination={false}
           scroll={{ x: 'max-content' }}
-        />
+        >
+          <Row justify="end">
+            <Pagination
+              current={1}
+              onChange={() => {}}
+              total={1}
+              pageSize={10}
+              hideOnSinglePage
+            />
+          </Row>
+        </Table>
       </Space>
 
       <ToggleSendSurveysModal
