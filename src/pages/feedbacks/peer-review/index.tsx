@@ -55,9 +55,12 @@ const PeerReviewPage = () => {
   const { filter, setFilter } = useFilter(
     new SurveyListFilter(FeedbackSubtype.PEER_REVIEW),
   )
-  const { data, loading } = useFetchWithCache(
-    [GET_PATHS.getSurveys, filter],
-    () => client.getSurveys(filter),
+  const {
+    data,
+    loading,
+    mutate: mutateSurveys,
+  } = useFetchWithCache([GET_PATHS.getSurveys, filter], () =>
+    client.getSurveys(filter),
   )
 
   return (
@@ -90,9 +93,11 @@ const PeerReviewPage = () => {
 
       <CreatePeerReviewModal
         isOpen={isCreatePeerReviewModalOpen}
-        initialValues={{ quarters: 'Q1,Q2', year: 2022 }}
+        initialValues={{ quarter: 'q1,q2', year: 2022 }}
         onClose={closeCreatePeerReviewModal}
-        onAfterSubmit={() => {}}
+        onAfterSubmit={() => {
+          mutateSurveys()
+        }}
       />
     </Space>
   )

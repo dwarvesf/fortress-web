@@ -9,7 +9,7 @@
  * ---------------------------------------------------------------
  */
 
-export interface GithubComDwarvesfFortressApiPkgHandlerEmployeeCreateEmployeeInput {
+export interface EmployeeCreateEmployeeInput {
   displayName?: string
   fullName: string
   personalEmail: string
@@ -21,7 +21,7 @@ export interface GithubComDwarvesfFortressApiPkgHandlerEmployeeCreateEmployeeInp
   teamEmail: string
 }
 
-export interface GithubComDwarvesfFortressApiPkgHandlerEmployeeUpdateGeneralInfoInput {
+export interface EmployeeUpdateGeneralInfoInput {
   discordID?: string
   email: string
   fullName: string
@@ -31,14 +31,14 @@ export interface GithubComDwarvesfFortressApiPkgHandlerEmployeeUpdateGeneralInfo
   phone: string
 }
 
-export interface GithubComDwarvesfFortressApiPkgHandlerEmployeeUpdatePersonalInfoInput {
+export interface EmployeeUpdatePersonalInfoInput {
   address: string
   dob: string
   gender: string
   personalEmail: string
 }
 
-export interface GithubComDwarvesfFortressApiPkgHandlerEmployeeUpdateSkillsInput {
+export interface EmployeeUpdateSkillsInput {
   chapters: string[]
   leadingChapters?: string[]
   positions: string[]
@@ -46,113 +46,36 @@ export interface GithubComDwarvesfFortressApiPkgHandlerEmployeeUpdateSkillsInput
   stacks: string[]
 }
 
-export interface GithubComDwarvesfFortressApiPkgHandlerFeedbackBasicEventQuestionInput {
+export interface FeedbackBasicEventQuestionInput {
   answer?: string
   eventQuestionID: string
   note?: string
 }
 
-export interface GithubComDwarvesfFortressApiPkgHandlerFeedbackSubmitBody {
-  answers: GithubComDwarvesfFortressApiPkgHandlerFeedbackBasicEventQuestionInput[]
-  status: string
-}
-
-export interface GithubComDwarvesfFortressApiPkgHandlerProfileUpdateInfoInput {
-  discordID?: string
-  githubID?: string
-  notionID?: string
-  personalEmail: string
-  phoneNumber: string
-  teamEmail: string
-}
-
-export interface GithubComDwarvesfFortressApiPkgHandlerProjectAssignMemberInput {
-  deploymentType: string
-  discount?: number
-  employeeID?: string
-  isLead?: boolean
-  joinedDate?: string
-  leftDate?: string
-  positions: string[]
-  rate: number
-  seniorityID: string
-  status: string
-}
-
-export interface GithubComDwarvesfFortressApiPkgHandlerProjectCreateProjectInput {
-  accountManagerID: string
-  clientEmail?: string
-  countryID: string
-  deliveryManagerID?: string
-  members?: GithubComDwarvesfFortressApiPkgHandlerProjectAssignMemberInput[]
-  name: string
-  projectEmail?: string
-  startDate?: string
-  status: string
-  type?: string
-}
-
-export interface GithubComDwarvesfFortressApiPkgHandlerProjectCreateWorkUnitBody {
-  members?: string[]
-  name: string
-  stacks: string[]
-  status: string
+export interface FeedbackCreateSurveyFeedbackInput {
+  quarter: string
   type: string
-  url?: string
+  year: number
 }
 
-export interface GithubComDwarvesfFortressApiPkgHandlerProjectUpdateContactInfoInput {
-  accountManagerID: string
-  clientEmail?: string
-  deliveryManagerID?: string
-  projectEmail?: string
+export interface FeedbackPerformanceReviewInput {
+  participants: string[]
+  topicID: string
 }
 
-export interface GithubComDwarvesfFortressApiPkgHandlerProjectUpdateGeneralInfoInput {
-  countryID: string
-  name: string
-  stacks?: string[]
-  startDate?: string
+export interface FeedbackPerformanceReviewListInput {
+  reviewList: FeedbackPerformanceReviewInput[]
 }
 
-export interface GithubComDwarvesfFortressApiPkgHandlerProjectUpdateMemberInput {
-  deploymentType: string
-  discount?: number
-  employeeID?: string
-  isLead?: boolean
-  joinedDate?: string
-  leftDate?: string
-  positions: string[]
-  projectSlotID: string
-  rate: number
-  seniorityID: string
-  status: string
-}
-
-export interface GithubComDwarvesfFortressApiPkgHandlerProjectUpdateWorkUnitBody {
-  members?: string[]
-  name: string
-  stacks: string[]
-  type: string
-  url?: string
-}
-
-export interface GithubComDwarvesfFortressApiPkgHandlerProjectUpdateWorkUnitInput {
-  body?: GithubComDwarvesfFortressApiPkgHandlerProjectUpdateWorkUnitBody
-  projectID?: string
-  workUnitID?: string
-}
-
-export interface GormDeletedAt {
-  time?: string
-  /** Valid is true if Time is not NULL */
-  valid?: boolean
+export interface FeedbackSubmitBody {
+  answers: FeedbackBasicEventQuestionInput[]
+  status: ModelEventReviewerStatus
 }
 
 export interface ModelChapter {
   code?: string
   createdAt?: string
-  deletedAt?: GormDeletedAt
+  deletedAt?: string
   id?: string
   lead_id?: string
   name?: string
@@ -163,25 +86,46 @@ export interface ModelCountry {
   cities?: string[]
   code?: string
   createdAt?: string
-  deletedAt?: GormDeletedAt
+  deletedAt?: string
   id?: string
   name?: string
   updatedAt?: string
+}
+
+export enum ModelEventReviewerStatus {
+  EventReviewerStatusNone = 'none',
+  EventReviewerStatusNew = 'new',
+  EventReviewerStatusDraft = 'draft',
+  EventReviewerStatusDone = 'done',
+}
+
+export enum ModelHeadPosition {
+  HeadPositionTechnicalLead = 'technical-lead',
+  HeadPositionDeliveryManager = 'delivery-manager',
+  HeadPositionAccountManager = 'account-manager',
+  HeadPositionSalePerson = 'sale-person',
 }
 
 export interface ModelPosition {
   code?: string
   createdAt?: string
-  deletedAt?: GormDeletedAt
+  deletedAt?: string
   id?: string
   name?: string
   updatedAt?: string
 }
 
+export enum ModelProjectStatus {
+  ProjectStatusOnBoarding = 'on-boarding',
+  ProjectStatusActive = 'active',
+  ProjectStatusPaused = 'paused',
+  ProjectStatusClosed = 'closed',
+}
+
 export interface ModelRole {
   code?: string
   createdAt?: string
-  deletedAt?: GormDeletedAt
+  deletedAt?: string
   id?: string
   name?: string
   updatedAt?: string
@@ -190,7 +134,7 @@ export interface ModelRole {
 export interface ModelSeniority {
   code?: string
   createdAt?: string
-  deletedAt?: GormDeletedAt
+  deletedAt?: string
   id?: string
   name?: string
   updatedAt?: string
@@ -199,61 +143,28 @@ export interface ModelSeniority {
 export interface ModelStack {
   code?: string
   createdAt?: string
-  deletedAt?: GormDeletedAt
+  deletedAt?: string
   id?: string
   name?: string
   updatedAt?: string
 }
 
-export interface PkgHandlerEmployeeCreateEmployeeInput {
-  displayName?: string
-  fullName: string
-  personalEmail: string
-  positions: string[]
-  roleID: string
-  salary: number
-  seniorityID: string
-  status: string
-  teamEmail: string
+export enum ModelWorkUnitType {
+  WorkUnitTypeDevelopment = 'development',
+  WorkUnitTypeManagement = 'management',
+  WorkUnitTypeTraining = 'training',
+  WorkUnitTypeLearning = 'learning',
 }
 
-export interface PkgHandlerEmployeeUpdateGeneralInfoInput {
-  discordID?: string
-  email: string
-  fullName: string
-  githubID?: string
-  lineManagerID?: string
-  notionID?: string
-  phone: string
+export enum ModelWorkingStatus {
+  WorkingStatusOnBoarding = 'on-boarding',
+  WorkingStatusLeft = 'left',
+  WorkingStatusProbation = 'probation',
+  WorkingStatusFullTime = 'full-time',
+  WorkingStatusContractor = 'contractor',
 }
 
-export interface PkgHandlerEmployeeUpdatePersonalInfoInput {
-  address: string
-  dob: string
-  gender: string
-  personalEmail: string
-}
-
-export interface PkgHandlerEmployeeUpdateSkillsInput {
-  chapters: string[]
-  leadingChapters?: string[]
-  positions: string[]
-  seniority: string
-  stacks: string[]
-}
-
-export interface PkgHandlerFeedbackBasicEventQuestionInput {
-  answer?: string
-  eventQuestionID: string
-  note?: string
-}
-
-export interface PkgHandlerFeedbackSubmitBody {
-  answers: PkgHandlerFeedbackBasicEventQuestionInput[]
-  status: string
-}
-
-export interface PkgHandlerProfileUpdateInfoInput {
+export interface ProfileUpdateInfoInput {
   discordID?: string
   githubID?: string
   notionID?: string
@@ -262,7 +173,7 @@ export interface PkgHandlerProfileUpdateInfoInput {
   teamEmail: string
 }
 
-export interface PkgHandlerProjectAssignMemberInput {
+export interface ProjectAssignMemberInput {
   deploymentType: string
   discount?: number
   employeeID?: string
@@ -275,12 +186,12 @@ export interface PkgHandlerProjectAssignMemberInput {
   status: string
 }
 
-export interface PkgHandlerProjectCreateProjectInput {
+export interface ProjectCreateProjectInput {
   accountManagerID: string
   clientEmail?: string
   countryID: string
   deliveryManagerID?: string
-  members?: PkgHandlerProjectAssignMemberInput[]
+  members?: ProjectAssignMemberInput[]
   name: string
   projectEmail?: string
   startDate?: string
@@ -288,7 +199,7 @@ export interface PkgHandlerProjectCreateProjectInput {
   type?: string
 }
 
-export interface PkgHandlerProjectCreateWorkUnitBody {
+export interface ProjectCreateWorkUnitBody {
   members?: string[]
   name: string
   stacks: string[]
@@ -297,21 +208,21 @@ export interface PkgHandlerProjectCreateWorkUnitBody {
   url?: string
 }
 
-export interface PkgHandlerProjectUpdateContactInfoInput {
+export interface ProjectUpdateContactInfoInput {
   accountManagerID: string
   clientEmail?: string
   deliveryManagerID?: string
   projectEmail?: string
 }
 
-export interface PkgHandlerProjectUpdateGeneralInfoInput {
+export interface ProjectUpdateGeneralInfoInput {
   countryID: string
   name: string
   stacks?: string[]
   startDate?: string
 }
 
-export interface PkgHandlerProjectUpdateMemberInput {
+export interface ProjectUpdateMemberInput {
   deploymentType: string
   discount?: number
   employeeID?: string
@@ -325,16 +236,16 @@ export interface PkgHandlerProjectUpdateMemberInput {
   status: string
 }
 
-export interface PkgHandlerProjectUpdateWorkUnitBody {
+export interface ProjectUpdateWorkUnitBody {
   members?: string[]
   name: string
   stacks: string[]
-  type: string
+  type: ModelWorkUnitType
   url?: string
 }
 
-export interface PkgHandlerProjectUpdateWorkUnitInput {
-  body?: PkgHandlerProjectUpdateWorkUnitBody
+export interface ProjectUpdateWorkUnitInput {
+  body?: ProjectUpdateWorkUnitBody
   projectID?: string
   workUnitID?: string
 }
@@ -366,6 +277,13 @@ export interface ViewBasicCountryInfo {
   name?: string
 }
 
+export interface ViewBasicEmployeeInfo {
+  avatar?: string
+  displayName?: string
+  fullName?: string
+  id?: string
+}
+
 export interface ViewBasicMember {
   avatar?: string
   displayName?: string
@@ -378,14 +296,7 @@ export interface ViewBasicProjectHeadInfo {
   displayName?: string
   employeeID?: string
   fullName?: string
-  position?: string
-}
-
-export interface ViewBasisEmployeeInfo {
-  avatar?: string
-  displayName?: string
-  fullName?: string
-  id?: string
+  position?: ModelHeadPosition
 }
 
 export interface ViewChapter {
@@ -430,7 +341,7 @@ export interface ViewCreateProjectData {
   clientEmail?: string
   country?: ViewBasicCountryInfo
   createdAt?: string
-  deletedAt?: GormDeletedAt
+  deletedAt?: string
   deliveryManager?: ViewProjectHead
   id?: string
   members?: ViewCreateMemberData[]
@@ -456,7 +367,7 @@ export interface ViewEmployeeData {
   birthday?: string
   chapters?: ViewChapter[]
   createdAt?: string
-  deletedAt?: GormDeletedAt
+  deletedAt?: string
   discordID?: string
   displayName?: string
   /** basic info */
@@ -467,7 +378,7 @@ export interface ViewEmployeeData {
   id?: string
   joinedDate?: string
   leftDate?: string
-  lineManager?: ViewBasisEmployeeInfo
+  lineManager?: ViewBasicEmployeeInfo
   mbti?: string
   notionID?: string
   personalEmail?: string
@@ -478,7 +389,7 @@ export interface ViewEmployeeData {
   seniority?: ModelSeniority
   stacks?: ViewStack[]
   /** working info */
-  status?: string
+  status?: ModelWorkingStatus
   teamEmail?: string
   updatedAt?: string
 }
@@ -499,8 +410,16 @@ export interface ViewErrorResponse {
   errors?: ViewApiError[]
 }
 
+export interface ViewFeedBackReviewDetail {
+  employee?: ViewBasicEmployeeInfo
+  questions?: ViewQuestionAnswer[]
+  relationship?: string
+  reviewer?: ViewBasicEmployeeInfo
+  topicName?: string
+}
+
 export interface ViewFeedback {
-  author?: ViewBasisEmployeeInfo
+  author?: ViewBasicEmployeeInfo
   employeeID?: string
   eventID?: string
   eventReviewerID?: string
@@ -524,13 +443,18 @@ export interface ViewFeedbackDetail {
   answers?: ViewQuestionAnswer[]
   employeeID?: string
   eventID?: string
-  reviewerID?: string
+  reviewer?: ViewBasicEmployeeInfo
   status?: string
+  title?: string
   topicID?: string
 }
 
 export interface ViewFeedbackDetailResponse {
   data?: ViewFeedbackDetail
+}
+
+export interface ViewFeedbackReviewDetailResponse {
+  data?: ViewFeedBackReviewDetail
 }
 
 export interface ViewGetQuestionResponse {
@@ -597,7 +521,7 @@ export interface ViewProjectData {
   clientEmail?: string
   country?: ViewBasicCountryInfo
   createdAt?: string
-  deletedAt?: GormDeletedAt
+  deletedAt?: string
   deliveryManager?: ViewProjectHead
   endDate?: string
   id?: string
@@ -689,8 +613,9 @@ export interface ViewSubmitFeedback {
   answers?: ViewQuestionAnswer[]
   employeeID?: string
   eventID?: string
-  reviewerID?: string
+  reviewer?: ViewBasicEmployeeInfo
   status?: string
+  title?: string
   topicID?: string
 }
 
@@ -710,13 +635,25 @@ export interface ViewSurvey {
 }
 
 export interface ViewSurveyDetail {
-  count?: ViewFeedbackCount
-  employee?: ViewBasisEmployeeInfo
+  author?: ViewBasicEmployeeInfo
+  endDate?: string
   eventID?: string
-  participants?: ViewBasisEmployeeInfo[]
+  startDate?: string
+  status?: string
   subtype?: string
   title?: string
-  topicID?: string
+  topics?: ViewTopic[]
+  type?: string
+}
+
+export interface ViewTopic {
+  count?: ViewFeedbackCount
+  employee?: ViewBasicEmployeeInfo
+  eventID?: string
+  id?: string
+  participants?: ViewBasicEmployeeInfo[]
+  subtype?: string
+  title?: string
   type?: string
 }
 
@@ -730,13 +667,13 @@ export interface ViewUpdateGeneralEmployeeResponse {
 
 export interface ViewUpdateGeneralInfoEmployeeData {
   createdAt?: string
-  deletedAt?: GormDeletedAt
+  deletedAt?: string
   discordID?: string
   /** basic info */
   fullName?: string
   githubID?: string
   id?: string
-  lineManager?: ViewBasisEmployeeInfo
+  lineManager?: ViewBasicEmployeeInfo
   notionID?: string
   phoneNumber?: string
   teamEmail?: string
@@ -747,7 +684,7 @@ export interface ViewUpdatePersonalEmployeeData {
   address?: string
   birthday?: string
   createdAt?: string
-  deletedAt?: GormDeletedAt
+  deletedAt?: string
   gender?: string
   id?: string
   personalEmail?: string
@@ -760,7 +697,7 @@ export interface ViewUpdatePersonalEmployeeResponse {
 
 export interface ViewUpdateProfileInfoData {
   createdAt?: string
-  deletedAt?: GormDeletedAt
+  deletedAt?: string
   discordID?: string
   githubID?: string
   id?: string
@@ -803,7 +740,7 @@ export interface ViewUpdateProjectStatusResponse {
 export interface ViewUpdateSkillEmployeeData {
   chapters?: ModelChapter[]
   createdAt?: string
-  deletedAt?: GormDeletedAt
+  deletedAt?: string
   id?: string
   positions?: ModelPosition[]
   seniority?: ModelSeniority
@@ -817,7 +754,7 @@ export interface ViewUpdateSkillsEmployeeResponse {
 
 export interface ViewUpdatedProject {
   createdAt?: string
-  deletedAt?: GormDeletedAt
+  deletedAt?: string
   endDate?: string
   id?: string
   name?: string

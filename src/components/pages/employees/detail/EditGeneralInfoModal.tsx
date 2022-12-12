@@ -5,12 +5,12 @@ import { EmployeeStatus } from 'constants/status'
 import { GET_PATHS, client } from 'libs/apis'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import { PkgHandlerEmployeeUpdateGeneralInfoInput } from 'types/schema'
+import { EmployeeUpdateGeneralInfoInput } from 'types/schema'
 import { transformEmployeeDataToSelectOption } from 'utils/select'
 
 interface Props {
   isOpen: boolean
-  initialValues?: PkgHandlerEmployeeUpdateGeneralInfoInput
+  initialValues?: EmployeeUpdateGeneralInfoInput
   onClose: () => void
   onAfterSubmit: () => void
 }
@@ -22,9 +22,7 @@ export const EditGeneralInfoModal = (props: Props) => {
   const [form] = Form.useForm()
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
 
-  const onSubmit = async (
-    values: Required<PkgHandlerEmployeeUpdateGeneralInfoInput>,
-  ) => {
+  const onSubmit = async (values: Required<EmployeeUpdateGeneralInfoInput>) => {
     try {
       setIsSubmitting(true)
       await client.updateEmployeeGeneralInfo(query.id as string, values)
