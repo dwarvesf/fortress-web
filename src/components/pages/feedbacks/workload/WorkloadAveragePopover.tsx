@@ -9,7 +9,6 @@ import { WorkloadAverageIcon } from './WorkloadAverageIcon'
 const evaluations = [
   {
     evaluation: WorkloadAverageStatuses.ALL_BORING_STUFF,
-    color: 'strongly-disagree',
     value: 10,
   },
   { evaluation: WorkloadAverageStatuses.NOTHING_NEW, value: 12 },
