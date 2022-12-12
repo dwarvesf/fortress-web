@@ -2,7 +2,7 @@ import { DeleteOutlined, EyeOutlined } from '@ant-design/icons'
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { Col, Modal, notification, Row, Tooltip } from 'antd'
 import { Button } from 'components/common/Button'
-import { MemberPeerReviewsStatuses } from 'constants/status'
+import { MemberPeerReviewStatuses } from 'constants/status'
 import { useState } from 'react'
 import { PeerPerformanceReviewModal } from '../inbox/peer-review/PeerPerformanceReviewModal'
 import { MemberPeerReviewDetail } from './mockData'
@@ -104,7 +104,7 @@ export const MemberPeerReviewsAction = (props: Props) => {
             icon={<EyeOutlined />}
             onClick={openPreviewDialog}
             disabled={
-              memberPeerReviewDetail.status !== MemberPeerReviewsStatuses.DONE
+              memberPeerReviewDetail.status !== MemberPeerReviewStatuses.DONE
             }
           />
         </Tooltip>
@@ -117,7 +117,7 @@ export const MemberPeerReviewsAction = (props: Props) => {
             icon={<DeleteOutlined />}
             onClick={confirmDelete}
             disabled={
-              memberPeerReviewDetail.status !== MemberPeerReviewsStatuses.DRAFT
+              memberPeerReviewDetail.status !== MemberPeerReviewStatuses.DRAFT
             }
           />
         </Tooltip>

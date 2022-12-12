@@ -221,16 +221,15 @@ const Default = () => {
         pagination={false}
         scroll={{ x: 'max-content' }}
       />
-      {data?.total && data?.total > filter.size ? (
-        <Row justify="end">
-          <Pagination
-            current={filter.page}
-            onChange={(page) => setFilter({ page })}
-            total={data?.total}
-            pageSize={filter.size}
-          />
-        </Row>
-      ) : null}
+      <Row justify="end">
+        <Pagination
+          current={filter.page}
+          onChange={(page) => setFilter({ page })}
+          total={data?.total}
+          pageSize={filter.size}
+          hideOnSinglePage
+        />
+      </Row>
     </Space>
   )
 }

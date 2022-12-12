@@ -161,16 +161,17 @@ export const Member = (props: Props) => {
       }
     }
 
-    return data?.total && data?.total > filter.size ? (
+    return (
       <Row justify="end">
         <Pagination
           current={filter.page}
           onChange={(page) => setFilter({ page })}
           total={data?.total}
           pageSize={filter.size}
+          hideOnSinglePage
         />
       </Row>
-    ) : null
+    )
   }, [
     tabKey,
     allData,

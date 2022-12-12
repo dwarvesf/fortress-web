@@ -183,16 +183,15 @@ const Default = () => {
           })
         }}
       />
-      {data?.total && data?.total > filter.size ? (
-        <Row justify="end">
-          <Pagination
-            current={filter.page}
-            onChange={(page) => setFilter({ page })}
-            total={data?.total}
-            pageSize={filter.size}
-          />
-        </Row>
-      ) : null}
+      <Row justify="end">
+        <Pagination
+          current={filter.page}
+          onChange={(page) => setFilter({ page })}
+          total={data?.total}
+          pageSize={filter.size}
+          hideOnSinglePage
+        />
+      </Row>
     </Space>
   )
 }
