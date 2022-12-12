@@ -21,7 +21,7 @@ export const ToggleSendSurveysModal = (props: Props) => {
     mockSendSurveyData.map((d) => d.checked),
   )
 
-  const setCheckedList = (index: number) => {
+  const toggleCheckedList = (index: number) => {
     const newCheckedList: boolean[] = []
 
     checkedList.forEach((c, i) => {
@@ -57,7 +57,7 @@ export const ToggleSendSurveysModal = (props: Props) => {
             <Typography.Text>{d.projectName}</Typography.Text>
             <Switch
               checked={checkedList[i]}
-              onChange={() => setCheckedList(i)}
+              onChange={() => toggleCheckedList(i)}
             />
           </Col>
         ))}
