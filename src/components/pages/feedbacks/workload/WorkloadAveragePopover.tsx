@@ -1,20 +1,20 @@
 import { Col, Row } from 'antd'
 import { workloadAverageColors } from 'constants/colors'
 import {
-  WorkloadAverageStatuses,
+  WorkloadAverageStatus,
   workloadAverageStatuses,
 } from 'constants/workloadAverageStatus'
 import { WorkloadAverageIcon } from './WorkloadAverageIcon'
 
 const evaluations = [
   {
-    evaluation: WorkloadAverageStatuses.ALL_BORING_STUFF,
+    evaluation: WorkloadAverageStatus.ALL_BORING_STUFF,
     value: 10,
   },
-  { evaluation: WorkloadAverageStatuses.NOTHING_NEW, value: 12 },
-  { evaluation: WorkloadAverageStatuses.NOT_MUCH, value: 24 },
-  { evaluation: WorkloadAverageStatuses.FEW_THINGS, value: 15 },
-  { evaluation: WorkloadAverageStatuses.A_LOT, value: 9 },
+  { evaluation: WorkloadAverageStatus.NOTHING_NEW, value: 12 },
+  { evaluation: WorkloadAverageStatus.NOT_MUCH, value: 24 },
+  { evaluation: WorkloadAverageStatus.FEW_THINGS, value: 15 },
+  { evaluation: WorkloadAverageStatus.A_LOT, value: 9 },
 ]
 
 export const WorkloadAveragePopover = () => {

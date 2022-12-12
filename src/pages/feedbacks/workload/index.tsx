@@ -7,16 +7,16 @@ import { Actions } from 'components/pages/feedbacks/workload'
 import { SettingFilled } from '@ant-design/icons'
 import { theme } from 'styles'
 import { WorkloadAverage } from 'components/pages/feedbacks/workload/WorkloadAverage'
-import { WorkloadAverageStatuses } from 'constants/workloadAverageStatus'
+import { WorkloadAverageStatus } from 'constants/workloadAverageStatus'
 
 const mockWorkloadAverageData = [
   {
     title: 'Development',
-    average: WorkloadAverageStatuses.ALL_BORING_STUFF,
+    average: WorkloadAverageStatus.ALL_BORING_STUFF,
   },
-  { title: 'Management', average: WorkloadAverageStatuses.FEW_THINGS },
-  { title: 'Learning', average: WorkloadAverageStatuses.NOTHING_NEW },
-  { title: 'Training', average: WorkloadAverageStatuses.A_LOT },
+  { title: 'Management', average: WorkloadAverageStatus.FEW_THINGS },
+  { title: 'Learning', average: WorkloadAverageStatus.NOTHING_NEW },
+  { title: 'Training', average: WorkloadAverageStatus.A_LOT },
 ]
 
 const mockWorkloadData = {

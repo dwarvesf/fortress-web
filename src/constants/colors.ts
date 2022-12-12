@@ -1,5 +1,5 @@
 import { TagProps } from 'antd'
-import { WorkloadAverageStatuses } from 'constants/workloadAverageStatus'
+import { WorkloadAverageStatus } from 'constants/workloadAverageStatus'
 
 // Unfortunately we cannot use a stricter type for the key here (yet)
 // because it's a collection of employee/project/project member statuses,
@@ -36,9 +36,9 @@ export const engagementColors = {
 }
 
 export const workloadAverageColors = {
-  [WorkloadAverageStatuses.ALL_BORING_STUFF]: '#ff4d4f',
-  [WorkloadAverageStatuses.NOTHING_NEW]: '#ffd666',
-  [WorkloadAverageStatuses.NOT_MUCH]: '#788896',
-  [WorkloadAverageStatuses.FEW_THINGS]: '#597ef7',
-  [WorkloadAverageStatuses.A_LOT]: '#1aae9f',
+  [WorkloadAverageStatus.ALL_BORING_STUFF]: '#ff4d4f',
+  [WorkloadAverageStatus.NOTHING_NEW]: '#ffd666',
+  [WorkloadAverageStatus.NOT_MUCH]: '#788896',
+  [WorkloadAverageStatus.FEW_THINGS]: '#597ef7',
+  [WorkloadAverageStatus.A_LOT]: '#1aae9f',
 }
