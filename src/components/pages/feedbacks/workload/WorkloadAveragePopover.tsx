@@ -21,7 +21,7 @@ export const WorkloadAveragePopover = () => {
   return (
     <>
       <span style={{ fontSize: 17 }}>
-        <strong>3.2</strong>/<strong>5</strong>
+        <strong>3.2</strong>/5
       </span>
       <Row style={{ maxWidth: 200, marginTop: 8 }} gutter={[0, 8]}>
         {evaluations.map((e, i) => (
