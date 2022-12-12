@@ -251,7 +251,13 @@ const Default = () => {
         scroll={{ x: 'max-content' }}
       />
       <Row justify="end">
-        <Pagination current={1} onChange={() => {}} total={1} pageSize={10} />
+        <Pagination
+          current={1}
+          onChange={() => {}}
+          total={1}
+          pageSize={10}
+          hideOnSinglePage
+        />
       </Row>
     </Space>
   )

@@ -8,6 +8,7 @@ import { agreementLevels } from 'constants/agreementLevel'
 import { ROUTES } from 'constants/routes'
 import { useRouter } from 'next/router'
 import { useRef, useState } from 'react'
+import { engagementColors } from 'constants/colors'
 import { EngagementSurveyPreviewModal } from './EngagementSurveyPreviewModal'
 import { ItemIndex } from '../../../../common/ItemIndex'
 
@@ -67,14 +68,6 @@ const mockData = [
     name: 'question_12',
   },
 ]
-
-const buttonColor = {
-  'strongly-disagree': { background: '#ff4d4f', text: 'white' },
-  disagree: { background: '#ffd666', text: 'black' },
-  mixed: { background: '#788896', text: 'white' },
-  agree: { background: '#597ef7', text: 'white' },
-  'strongly-agree': { background: '#1aae9f', text: 'white' },
-}
 
 export const EngagementSurveyForm = () => {
   const { push } = useRouter()
@@ -177,8 +170,9 @@ export const EngagementSurveyForm = () => {
                                 padding: '10px',
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                backgroundColor: buttonColor[item].background,
-                                color: buttonColor[item].text,
+                                backgroundColor:
+                                  engagementColors[item].background,
+                                color: engagementColors[item].text,
                                 borderRadius: '5px',
                                 borderWidth: 0,
                                 fontSize: 12,
