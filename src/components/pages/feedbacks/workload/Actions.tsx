@@ -1,10 +1,9 @@
 import { EyeOutlined } from '@ant-design/icons'
 import { Row, Tooltip } from 'antd'
 import { Button } from 'components/common/Button'
-import { ViewSurvey } from 'types/schema'
 
 interface Props {
-  record: ViewSurvey
+  record: any
 }
 
 export const Actions = (props: Props) => {
