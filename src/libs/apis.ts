@@ -1,8 +1,3 @@
-import { EmployeeListFilter } from 'types/filters/EmployeeListFilter'
-import { ProjectListFilter } from 'types/filters/ProjectListFilter'
-import { ProjectMemberListFilter } from 'types/filters/ProjectMemberListFilter'
-import { ProjectWorkUnitListFilter } from 'types/filters/ProjectWorkUnitListFilter'
-import { SurveyListFilter } from 'types/filters/SurveyListFilter'
 import {
   ViewAuthData,
   ViewProfileData,
@@ -41,7 +36,16 @@ import {
   ViewMessageResponse,
   ViewListSurveyResponse,
   FeedbackCreateSurveyFeedbackInput,
+  ViewListFeedbackResponse,
+  ViewFeedbackDetailResponse,
+  FeedbackSubmitBody,
 } from 'types/schema'
+import { EmployeeListFilter } from 'types/filters/EmployeeListFilter'
+import { ProjectListFilter } from 'types/filters/ProjectListFilter'
+import { ProjectMemberListFilter } from 'types/filters/ProjectMemberListFilter'
+import { ProjectWorkUnitListFilter } from 'types/filters/ProjectWorkUnitListFilter'
+import { FeedbackListFilter } from 'types/filters/FeedbackListFilter'
+import { SurveyListFilter } from 'types/filters/SurveyListFilter'
 import qs from 'qs'
 import fetcher from './fetcher'
 
@@ -59,6 +63,7 @@ export const GET_PATHS = {
   getEmployees: '/employees',
   getProjects: '/projects',
   getProjectMemberList: (id: string) => `/projects/${id}/members`,
+  getFeedbacks: '/feedbacks',
   getAccountStatusMetadata: '/metadata/account-statuses',
   getPositionMetadata: '/metadata/positions',
   getAccountRoleMetadata: '/metadata/account-roles',
@@ -481,6 +486,47 @@ class Client {
       `${BASE_URL}/projects/${projectId}/work-units/${workUnitId}`,
       {
         method: 'PUT',
+        headers: {
+          ...this.privateHeaders,
+        },
+        body: JSON.stringify(data),
+      },
+    )
+  }
+
+  public getPersonalFeedbacks(filter: FeedbackListFilter) {
+    const queryString = qs.stringify(filter)
+
+    return fetcher<ViewListFeedbackResponse>(
+      `${BASE_URL}/feedbacks?${queryString}`,
+      {
+        headers: {
+          ...this.privateHeaders,
+        },
+      },
+    )
+  }
+
+  public getPersonalFeedback(eventID: string, topicID: string) {
+    return fetcher<ViewFeedbackDetailResponse>(
+      `${BASE_URL}/feedbacks/${eventID}/topics/${topicID}`,
+      {
+        headers: {
+          ...this.privateHeaders,
+        },
+      },
+    )
+  }
+
+  public submitPersonalFeedback(
+    eventID: string,
+    topicID: string,
+    data: FeedbackSubmitBody,
+  ) {
+    return fetcher<ViewFeedbackDetailResponse>(
+      `${BASE_URL}/feedbacks/${eventID}/topics/${topicID}/submit`,
+      {
+        method: 'POST',
         headers: {
           ...this.privateHeaders,
         },

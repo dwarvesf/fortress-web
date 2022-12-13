@@ -1,8 +1,11 @@
-import { Table } from 'antd'
+import { Table, Tag } from 'antd'
 import { ColumnsType } from 'antd/lib/table'
+import classNames from 'classnames'
+import { statusColors } from 'constants/colors'
 import { FeedbackType, feedbackTypes } from 'constants/feedbackTypes'
-import { FeedbackInboxItem } from 'pages/feedbacks/inbox'
+import { feedbackStatuses } from 'constants/status'
 import { useMemo } from 'react'
+import { ModelEventReviewerStatus, ViewFeedback } from 'types/schema'
 import { Actions } from './Actions'
 
 export const FeedbackInputTable = ({
@@ -10,7 +13,7 @@ export const FeedbackInputTable = ({
   isLoading,
   onAfterAction,
 }: {
-  data: FeedbackInboxItem[]
+  data: ViewFeedback[]
   isLoading?: boolean
   onAfterAction?: () => void
 }) => {
@@ -19,7 +22,7 @@ export const FeedbackInputTable = ({
       {
         title: 'Topic',
         key: 'topic',
-        dataIndex: 'topic',
+        dataIndex: 'title',
         fixed: 'left',
       },
       {
@@ -28,10 +31,18 @@ export const FeedbackInputTable = ({
         dataIndex: 'type',
         render: (value: FeedbackType) => feedbackTypes[value],
       },
+      // {
+      //   title: 'Responses',
+      //   key: 'responses',
+      //   dataIndex: 'responses',
+      // },
       {
-        title: 'Responses',
-        key: 'responses',
-        dataIndex: 'responses',
+        title: 'Status',
+        key: 'status',
+        dataIndex: 'status',
+        render: (value: ModelEventReviewerStatus) => (
+          <Tag color={statusColors[value]}>{feedbackStatuses[value]}</Tag>
+        ),
       },
       {
         title: 'Last updated',
@@ -42,6 +53,7 @@ export const FeedbackInputTable = ({
         title: 'Author',
         key: 'author',
         dataIndex: 'author',
+        render: (value) => value.displayName || '-',
       },
       {
         key: 'actions',
@@ -50,14 +62,16 @@ export const FeedbackInputTable = ({
         ),
         fixed: 'right',
       },
-    ] as ColumnsType<FeedbackInboxItem>
+    ] as ColumnsType<ViewFeedback>
   }, [onAfterAction])
 
   return (
     <Table
       loading={isLoading}
-      rowKey={(row) => row.id || '-'}
-      rowClassName={(row) => (!row.read ? 'not-read' : '')}
+      rowKey={(row) => row.topicID || '-'}
+      rowClassName={(row) =>
+        classNames('inbox-row', { 'not-read': !row.isRead })
+      }
       columns={columns}
       dataSource={data}
       pagination={false}

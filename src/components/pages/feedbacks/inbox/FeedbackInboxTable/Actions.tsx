@@ -3,10 +3,10 @@ import { Col, Row, Tooltip } from 'antd'
 import { Button } from 'components/common/Button'
 import { ROUTES } from 'constants/routes'
 import Link from 'next/link'
-import { FeedbackInboxItem } from 'pages/feedbacks/inbox'
+import { ViewFeedback } from 'types/schema'
 
 interface Props {
-  record: FeedbackInboxItem
+  record: ViewFeedback
   onAfterAction?: () => void
 }
 
@@ -18,9 +18,9 @@ export const Actions = (props: Props) => {
     <Row justify="end" gutter={[8, 8]}>
       <Col>
         <Link
-          href={`${ROUTES.FEEDBACK_INBOX_DETAIL(record.id)}?type=${
+          href={`${ROUTES.FEEDBACK_INBOX_DETAIL(record.topicID || '')}?type=${
             record.type
-          }&subtype=${record.subtype}`}
+          }&subtype=${record.subtype}&eventID=${record.eventID}`}
         >
           <a>
             <Tooltip title="View">

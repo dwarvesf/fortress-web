@@ -15,6 +15,7 @@ export const ItemIndex = (props: Props) => {
       style={{
         fontSize: 12,
         fontWeight: 700,
+        transition: '0.3s all',
         ...(active
           ? {
               backgroundColor: 'rgba(225, 63, 94, 0.3)',

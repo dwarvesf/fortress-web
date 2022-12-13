@@ -1,12 +1,14 @@
-import { Col, Modal, Row, Space, Tag } from 'antd'
+import { Col, Modal, Row, Space } from 'antd'
 import { ItemIndex } from 'components/common/ItemIndex'
 import { Button } from 'components/common/Button'
+import { ViewBasicEmployeeInfo, ViewQuestionAnswer } from 'types/schema'
 
 interface Props {
   isPreviewing?: boolean
   isOpen: boolean
-  values: any
-  data: any
+  answers: ViewQuestionAnswer[]
+  reviewer: ViewBasicEmployeeInfo
+  title: string
   onCancel: () => void
   onOk?: () => void
 }
@@ -15,8 +17,9 @@ export const PeerPerformanceReviewModal = (props: Props) => {
   const {
     isPreviewing = true,
     isOpen,
-    values = {},
-    data = [],
+    answers = [],
+    reviewer,
+    title,
     onCancel,
     onOk,
   } = props
@@ -41,15 +44,15 @@ export const PeerPerformanceReviewModal = (props: Props) => {
       title={
         <Space direction="vertical">
           <Space>
-            <span>Jame Doe</span>
-            <Tag>Line Manager</Tag>
+            <span>{reviewer.displayName}</span>
+            {/* <Tag>{reviewer.}</Tag> */}
           </Space>
-          <small>John Doe - Peer review Q1/Q2 2022</small>
+          <small>{title}</small>
         </Space>
       }
     >
       <Space direction="vertical" style={{ width: '100%' }} size={24}>
-        {data.map((field: any, index: any) => {
+        {answers.map((answer, index: number) => {
           return (
             <Row key={index} gutter={24} wrap={false}>
               <Col>
@@ -58,9 +61,9 @@ export const PeerPerformanceReviewModal = (props: Props) => {
               <Col flex={1}>
                 <Space direction="vertical">
                   <div>
-                    <b>{field.question}</b>
+                    <b>{answer.content}</b>
                   </div>
-                  <div>{values[field.name]}</div>
+                  <div>{answer.answer || '-'}</div>
                 </Space>
               </Col>
             </Row>

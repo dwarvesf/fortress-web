@@ -1,74 +1,83 @@
-import { Tabs } from 'antd'
+import { Pagination, Row, Tabs } from 'antd'
 import { PageHeader } from 'components/common/PageHeader'
 import { FeedbackInputTable } from 'components/pages/feedbacks/inbox/FeedbackInboxTable'
+import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { useFilter } from 'hooks/useFilter'
 import { useTabWithQuery } from 'hooks/useTabWithQuery'
+import { client, GET_PATHS } from 'libs/apis'
+import { useMemo } from 'react'
 import { FeedbackListFilter } from 'types/filters/FeedbackListFilter'
-
-export interface FeedbackInboxItem {
-  id: string
-  topic: string
-  type: string
-  subtype: string
-  responses: number
-  lastUpdated: string
-  author: string
-  read: boolean
-}
-
-const mockData: FeedbackInboxItem[] = [
-  {
-    id: '1',
-    topic: 'Topic 1',
-    type: 'survey',
-    subtype: 'peer-review',
-    responses: 1,
-    lastUpdated: '10/02/2021',
-    author: 'Dwarves Team',
-    read: false,
-  },
-  {
-    id: '2',
-    topic: 'Topic 2',
-    type: 'survey',
-    subtype: 'work',
-    responses: 1,
-    lastUpdated: '10/02/2021',
-    author: 'Dwarves Team',
-    read: true,
-  },
-  {
-    id: '3',
-    topic: 'Topic 3',
-    type: 'feedback',
-    subtype: 'appreciation',
-    responses: 1,
-    lastUpdated: '10/02/2021',
-    author: 'Dwarves Team',
-    read: true,
-  },
-  {
-    id: '4',
-    topic: 'Employee engagement survey Q1/Q2, 2022',
-    type: 'survey',
-    subtype: 'engagement',
-    responses: 1,
-    lastUpdated: '10/02/2021',
-    author: 'Dwarves Team',
-    read: false,
-  },
-]
+import { ModelEventReviewerStatus } from 'types/schema'
 
 const Default = () => {
   const { tabKey, setTabKey } = useTabWithQuery({ queryKey: 'inbox' })
 
-  // @ts-ignore
-  // eslint-disable-next-line
-  const { filter, setFilter } = useFilter({ ...new FeedbackListFilter() })
-
   const onTabChange = (tabKey: string) => {
     setTabKey(tabKey)
   }
+
+  const { filter: allFilter, setFilter: setAllFilter } = useFilter({
+    ...new FeedbackListFilter(),
+  })
+  const { filter: draftFilter, setFilter: setDraftFilter } = useFilter({
+    ...new FeedbackListFilter(
+      ModelEventReviewerStatus.EventReviewerStatusDraft,
+    ),
+  })
+
+  const { data: allData, loading: isAllLoading } = useFetchWithCache(
+    [GET_PATHS.getFeedbacks, allFilter],
+    () => client.getPersonalFeedbacks(allFilter),
+  )
+  const allFeedbacks = allData?.data || []
+
+  const { data: draftData, loading: isDraftLoading } = useFetchWithCache(
+    [GET_PATHS.getFeedbacks, draftFilter],
+    () => client.getPersonalFeedbacks(draftFilter),
+  )
+  const draftFeedbacks = draftData?.data || []
+
+  const paginationRender = useMemo(() => {
+    let filter: any
+    let data: any
+    let setFilter: any
+
+    switch (tabKey) {
+      case ModelEventReviewerStatus.EventReviewerStatusDraft: {
+        filter = draftFilter
+        data = draftData
+        setFilter = setDraftFilter
+
+        break
+      }
+      default: {
+        filter = allFilter
+        data = allData
+        setFilter = setAllFilter
+
+        break
+      }
+    }
+
+    return data?.total && data?.total > filter.size ? (
+      <Row justify="end">
+        <Pagination
+          current={filter.page}
+          onChange={(page) => setFilter({ page })}
+          total={data?.total}
+          pageSize={filter.size}
+        />
+      </Row>
+    ) : null
+  }, [
+    tabKey,
+    allData,
+    draftData,
+    allFilter,
+    draftFilter,
+    setAllFilter,
+    setDraftFilter,
+  ])
 
   return (
     <>
@@ -79,39 +88,40 @@ const Default = () => {
         items={[
           {
             key: 'inbox',
-            label: `Inbox (${mockData.length})`,
+            label: `Inbox (${allFeedbacks.length})`,
             children: (
               <FeedbackInputTable
-                data={mockData}
-                // isLoading={isAllLoading}
+                data={allFeedbacks}
+                isLoading={isAllLoading}
                 // onAfterAction={mutate}
               />
             ),
           },
-          {
-            key: 'sent',
-            label: `Sent`,
-            children: (
-              <FeedbackInputTable
-                data={[]}
-                // isLoading={isPendingLoading}
-                // onAfterAction={mutate}
-              />
-            ),
-          },
+          // {
+          //   key: 'sent',
+          //   label: `Sent`,
+          //   children: (
+          //     <FeedbackInputTable
+          //       data={[]}
+          //       // isLoading={isPendingLoading}
+          //       // onAfterAction={mutate}
+          //     />
+          //   ),
+          // },
           {
             key: 'draft',
-            label: `Draft (4)`,
+            label: `Draft (${draftFeedbacks.length})`,
             children: (
               <FeedbackInputTable
-                data={mockData}
-                // isLoading={isInactiveLoading}
+                data={draftFeedbacks}
+                isLoading={isDraftLoading}
                 // onAfterAction={mutate}
               />
             ),
           },
         ]}
       />
+      {paginationRender}
     </>
   )
 }
