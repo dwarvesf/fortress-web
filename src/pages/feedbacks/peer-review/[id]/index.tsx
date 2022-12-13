@@ -23,14 +23,15 @@ import { ProgressColumn } from 'components/pages/feedbacks/peer-review/ProgressC
 import { statusColors } from 'constants/colors'
 import { ROUTES } from 'constants/routes'
 import { PeerReviewStatus, peerReviewStatuses } from 'constants/status'
+import { useFetchWithCache } from 'hooks/useFetchWithCache'
+import { useFilter } from 'hooks/useFilter'
+import { client, GET_PATHS } from 'libs/apis'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
-import {
-  PeerReviewDetail,
-  peerReviewEvent,
-} from 'components/pages/feedbacks/peer-review/mockData'
+import { SurveyDetailFilter } from 'types/filters/SurveyDetailFilter'
+import { ViewTopic } from 'types/schema'
 
-const columns: ColumnsType<PeerReviewDetail> = [
+const columns: ColumnsType<ViewTopic> = [
   {
     title: 'Employee',
     key: 'employee',
@@ -46,21 +47,17 @@ const columns: ColumnsType<PeerReviewDetail> = [
   },
   {
     title: 'Completed',
-    render: (value: PeerReviewDetail) => (
-      <ProgressColumn
-        done={value.totalCompletedSurveys}
-        total={value.totalParticipants}
-      />
+    render: (value: ViewTopic) => (
+      <ProgressColumn done={value.count?.done} total={value.count?.total} />
     ),
   },
   {
     title: 'Sent',
-    render: (value: PeerReviewDetail) =>
-      `${value.totalSentSurveys}/${value.totalParticipants}`,
+    render: (value: ViewTopic) => `${value.count?.sent}/${value.count?.total}`,
   },
   {
     title: '',
-    render: (value: PeerReviewDetail) => (
+    render: (value: ViewTopic) => (
       <PeerReviewEventDetailActions peerReviewDetail={value} />
     ),
     fixed: 'right',
@@ -68,7 +65,16 @@ const columns: ColumnsType<PeerReviewDetail> = [
 ]
 
 const Default = () => {
-  const { time, status, peerReviews = [] } = peerReviewEvent
+  const {
+    query: { id },
+  } = useRouter()
+  const peerReviewId = id as string
+  const { filter, setFilter } = useFilter(new SurveyDetailFilter())
+  const { data, loading } = useFetchWithCache(
+    [GET_PATHS.getSurveyDetail(peerReviewId), peerReviewId, filter],
+    () => client.getSurveyDetail(peerReviewId, filter),
+  )
+  const { title, status, topics: peerReviews = [] } = data?.data || {}
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
@@ -143,7 +149,7 @@ const Default = () => {
       title: 'Delete event',
       content: (
         <>
-          Do you want to delete <strong>{time}</strong> event?
+          Do you want to delete <strong>{title}</strong> event?
         </>
       ),
       okText: 'Delete',
@@ -186,11 +192,11 @@ const Default = () => {
         backHref={ROUTES.PEER_REVIEW}
         title={
           <Space align="center">
-            <span>{time}</span>
+            <span>{title}</span>
             {status && (
               <div style={{ display: 'flex' }}>
                 <Tag color={statusColors[status]}>
-                  {peerReviewStatuses[status] || '-'}
+                  {peerReviewStatuses[status as PeerReviewStatus] || '-'}
                 </Tag>
               </div>
             )}
@@ -247,15 +253,16 @@ const Default = () => {
           onChange: onSelectChange,
         }}
         rowKey={(row) => row.id as string}
+        loading={loading}
         pagination={false}
         scroll={{ x: 'max-content' }}
       />
       <Row justify="end">
         <Pagination
-          current={1}
-          onChange={() => {}}
-          total={1}
-          pageSize={10}
+          current={filter.page}
+          onChange={(page) => setFilter({ page })}
+          total={data?.total}
+          pageSize={filter.size}
           hideOnSinglePage
         />
       </Row>

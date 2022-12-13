@@ -8,37 +8,38 @@ import {
   ViewAccountRoleResponse,
   ViewPositionResponse,
   ViewSeniorityResponse,
-  EmployeeCreateEmployeeInput,
-  ProfileUpdateInfoInput,
+  RequestCreateEmployeeInput,
+  RequestUpdateInfoInput,
   ViewProjectData,
   ViewProjectMemberListResponse,
-  EmployeeUpdateGeneralInfoInput,
+  RequestUpdateEmployeeGeneralInfoInput,
   ViewUpdateGeneralEmployeeResponse,
-  EmployeeUpdateSkillsInput,
+  RequestUpdateSkillsInput,
   ViewUpdateSkillsEmployeeResponse,
   ViewStackResponse,
   ViewChapterResponse,
-  EmployeeUpdatePersonalInfoInput,
+  RequestUpdatePersonalInfoInput,
   ViewUpdatePersonalEmployeeResponse,
   ViewProjectMember,
-  ProjectUpdateMemberInput,
-  ProjectAssignMemberInput,
-  ProjectCreateProjectInput,
+  RequestUpdateMemberInput,
+  RequestAssignMemberInput,
+  RequestCreateProjectInput,
   ViewCreateProjectData,
-  ProjectUpdateGeneralInfoInput,
+  RequestUpdateProjectGeneralInfoInput,
   ViewUpdateProjectGeneralInfoResponse,
-  ProjectUpdateContactInfoInput,
+  RequestUpdateContactInfoInput,
   ViewUpdateProjectContactInfoResponse,
   ViewWorkUnit,
   ViewEmployeeContentData,
-  ProjectCreateWorkUnitBody,
-  ProjectUpdateWorkUnitBody,
+  RequestCreateWorkUnitBody,
+  RequestUpdateWorkUnitBody,
   ViewMessageResponse,
   ViewListSurveyResponse,
-  FeedbackCreateSurveyFeedbackInput,
+  RequestCreateSurveyFeedbackInput,
   ViewListFeedbackResponse,
   ViewFeedbackDetailResponse,
-  FeedbackSubmitBody,
+  RequestSubmitBody,
+  ViewListSurveyDetailResponse,
 } from 'types/schema'
 import { EmployeeListFilter } from 'types/filters/EmployeeListFilter'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
@@ -46,6 +47,7 @@ import { ProjectMemberListFilter } from 'types/filters/ProjectMemberListFilter'
 import { ProjectWorkUnitListFilter } from 'types/filters/ProjectWorkUnitListFilter'
 import { FeedbackListFilter } from 'types/filters/FeedbackListFilter'
 import { SurveyListFilter } from 'types/filters/SurveyListFilter'
+import { SurveyDetailFilter } from 'types/filters/SurveyDetailFilter'
 import qs from 'qs'
 import fetcher from './fetcher'
 
@@ -73,6 +75,7 @@ export const GET_PATHS = {
   getCountryMetadata: '/metadata/countries',
   getChapterMetadata: '/metadata/chapters',
   getSurveys: '/surveys',
+  getSurveyDetail: (id: string) => `/surveys/${id}`,
 }
 export interface Meta {
   page?: number
@@ -125,7 +128,7 @@ class Client {
     })
   }
 
-  public updateProfile(data: Partial<ProfileUpdateInfoInput>) {
+  public updateProfile(data: Partial<RequestUpdateInfoInput>) {
     return fetcher<Response<ViewProfileData>>(`${BASE_URL}/profile`, {
       headers: { ...this.privateHeaders },
       method: 'PUT',
@@ -255,7 +258,7 @@ class Client {
     })
   }
 
-  public createNewEmployee(data: EmployeeCreateEmployeeInput) {
+  public createNewEmployee(data: RequestCreateEmployeeInput) {
     return fetcher<Response<ViewEmployeeData>>(`${BASE_URL}/employees`, {
       method: 'POST',
       headers: {
@@ -267,7 +270,7 @@ class Client {
 
   public updateEmployeeGeneralInfo(
     id: string,
-    data: EmployeeUpdateGeneralInfoInput,
+    data: RequestUpdateEmployeeGeneralInfoInput,
   ) {
     return fetcher<ViewUpdateGeneralEmployeeResponse>(
       `${BASE_URL}/employees/${id}/general-info`,
@@ -281,7 +284,7 @@ class Client {
     )
   }
 
-  public updateEmployeeSkills(id: string, data: EmployeeUpdateSkillsInput) {
+  public updateEmployeeSkills(id: string, data: RequestUpdateSkillsInput) {
     return fetcher<ViewUpdateSkillsEmployeeResponse>(
       `${BASE_URL}/employees/${id}/skills`,
       {
@@ -296,7 +299,7 @@ class Client {
 
   public updateEmployeePersonalInfo(
     id: string,
-    data: EmployeeUpdatePersonalInfoInput,
+    data: RequestUpdatePersonalInfoInput,
   ) {
     return fetcher<ViewUpdatePersonalEmployeeResponse>(
       `${BASE_URL}/employees/${id}/personal-info`,
@@ -310,7 +313,7 @@ class Client {
     )
   }
 
-  public createNewProject(data: ProjectCreateProjectInput) {
+  public createNewProject(data: RequestCreateProjectInput) {
     return fetcher<Response<ViewCreateProjectData>>(`${BASE_URL}/projects`, {
       method: 'POST',
       headers: {
@@ -322,7 +325,7 @@ class Client {
 
   public createProjectMember(
     projectId: string,
-    data: Partial<ProjectAssignMemberInput>,
+    data: Partial<RequestAssignMemberInput>,
   ) {
     return fetcher<Response<ViewProjectMember>>(
       `${BASE_URL}/projects/${projectId}/members`,
@@ -338,7 +341,7 @@ class Client {
 
   public updateProjectMember(
     projectId: string,
-    data: Partial<ProjectUpdateMemberInput>,
+    data: Partial<RequestUpdateMemberInput>,
   ) {
     return fetcher<Response<ViewProjectMember>>(
       `${BASE_URL}/projects/${projectId}/members`,
@@ -378,7 +381,7 @@ class Client {
 
   public updateProjectGeneralInfo(
     id: string,
-    data: Partial<ProjectUpdateGeneralInfoInput>,
+    data: Partial<RequestUpdateProjectGeneralInfoInput>,
   ) {
     return fetcher<ViewUpdateProjectGeneralInfoResponse>(
       `${BASE_URL}/projects/${id}/general-info`,
@@ -394,7 +397,7 @@ class Client {
 
   public updateProjectContactInfo(
     id: string,
-    data: Partial<ProjectUpdateContactInfoInput>,
+    data: Partial<RequestUpdateContactInfoInput>,
   ) {
     return fetcher<ViewUpdateProjectContactInfoResponse>(
       `${BASE_URL}/projects/${id}/contact-info`,
@@ -463,7 +466,7 @@ class Client {
 
   public addProjectWorkUnit(
     projectId: string,
-    data: ProjectCreateWorkUnitBody,
+    data: RequestCreateWorkUnitBody,
   ) {
     return fetcher<Response<ViewWorkUnit[]>>(
       `${BASE_URL}/projects/${projectId}/work-units`,
@@ -480,7 +483,7 @@ class Client {
   public editProjectWorkUnit(
     projectId: string,
     workUnitId: string,
-    data: ProjectUpdateWorkUnitBody,
+    data: RequestUpdateWorkUnitBody,
   ) {
     return fetcher<ViewMessageResponse>(
       `${BASE_URL}/projects/${projectId}/work-units/${workUnitId}`,
@@ -521,7 +524,7 @@ class Client {
   public submitPersonalFeedback(
     eventID: string,
     topicID: string,
-    data: FeedbackSubmitBody,
+    data: RequestSubmitBody,
   ) {
     return fetcher<ViewFeedbackDetailResponse>(
       `${BASE_URL}/feedbacks/${eventID}/topics/${topicID}/submit`,
@@ -546,7 +549,7 @@ class Client {
     )
   }
 
-  public createSurvey(data: FeedbackCreateSurveyFeedbackInput) {
+  public createSurvey(data: RequestCreateSurveyFeedbackInput) {
     return fetcher<ViewMessageResponse>(`${BASE_URL}/surveys`, {
       method: 'POST',
       headers: {
@@ -554,6 +557,17 @@ class Client {
       },
       body: JSON.stringify(data),
     })
+  }
+
+  public getSurveyDetail(id: string, filter: SurveyDetailFilter) {
+    const queryString = qs.stringify(filter)
+
+    return fetcher<ViewListSurveyDetailResponse & Meta>(
+      `${BASE_URL}/surveys/${id}?${queryString}`,
+      {
+        headers: { ...this.privateHeaders },
+      },
+    )
   }
 }
 

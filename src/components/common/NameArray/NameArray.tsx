@@ -1,7 +1,7 @@
-import { ViewEmployeeData } from 'types/schema'
+import { ViewBasicEmployeeInfo } from 'types/schema'
 
 interface Props {
-  employees: ViewEmployeeData[]
+  employees: ViewBasicEmployeeInfo[]
   numOfVisibleName?: number
 }
 

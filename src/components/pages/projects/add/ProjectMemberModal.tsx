@@ -3,7 +3,7 @@ import { useForm } from 'antd/lib/form/Form'
 import { Meta } from 'libs/apis'
 import { Dispatch, SetStateAction, useState } from 'react'
 import {
-  PkgHandlerProjectAssignMemberInput,
+  RequestAssignMemberInput,
   ViewEmployeeListDataResponse,
   ViewPositionResponse,
   ViewSeniorityResponse,
@@ -16,8 +16,8 @@ interface Props {
   rowIndex?: number
   initialValues?: MemberFormValues
   onClose: () => void
-  memberData: PkgHandlerProjectAssignMemberInput[]
-  setMemberData: Dispatch<SetStateAction<PkgHandlerProjectAssignMemberInput[]>>
+  memberData: RequestAssignMemberInput[]
+  setMemberData: Dispatch<SetStateAction<RequestAssignMemberInput[]>>
   getDataOnSubmit?: (
     e: ViewEmployeeListDataResponse & Meta,
     s: ViewSeniorityResponse,
@@ -83,7 +83,7 @@ export const ProjectMemberModal = (props: Props) => {
 
   const transformDataToSend = (
     values: Record<string, any>,
-  ): PkgHandlerProjectAssignMemberInput => {
+  ): RequestAssignMemberInput => {
     return {
       deploymentType: values.deploymentType || '',
       discount: values.discount,

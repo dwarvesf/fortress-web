@@ -8,7 +8,7 @@ import { projectTypes } from 'constants/projectTypes'
 import { EmployeeStatus } from 'constants/status'
 import { GET_PATHS, client } from 'libs/apis'
 import { theme } from 'styles'
-import { ProjectCreateProjectInput } from 'types/schema'
+import { RequestCreateProjectInput } from 'types/schema'
 import {
   searchFilterOption,
   transformEmployeeDataToSelectOption,
@@ -17,8 +17,8 @@ import {
 
 interface Props {
   form: FormInstance<any>
-  initialValues?: ProjectCreateProjectInput
-  onSubmit: (values: Required<ProjectCreateProjectInput>) => Promise<void>
+  initialValues?: RequestCreateProjectInput
+  onSubmit: (values: Required<RequestCreateProjectInput>) => Promise<void>
 }
 
 export const ProjectForm = (props: Props) => {
@@ -39,7 +39,7 @@ export const ProjectForm = (props: Props) => {
       <Form
         form={form}
         onFinish={(values) => {
-          onSubmit(values as Required<ProjectCreateProjectInput>)
+          onSubmit(values as Required<RequestCreateProjectInput>)
         }}
         initialValues={initialValues}
       >

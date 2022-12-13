@@ -3,11 +3,11 @@ import { useForm } from 'antd/lib/form/Form'
 import { FeedbackSubtype } from 'constants/feedbackTypes'
 import { client } from 'libs/apis'
 import { useState } from 'react'
-import { FeedbackCreateSurveyFeedbackInput } from 'types/schema'
+import { RequestCreateSurveyFeedbackInput } from 'types/schema'
 
 interface Props {
   isOpen: boolean
-  initialValues: Partial<FeedbackCreateSurveyFeedbackInput>
+  initialValues: Partial<RequestCreateSurveyFeedbackInput>
   onClose: () => void
   onAfterSubmit: () => void
 }
@@ -18,7 +18,7 @@ export const CreatePeerReviewModal = (props: Props) => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const currentYear = new Date().getFullYear()
 
-  const onSubmit = async (values: FeedbackCreateSurveyFeedbackInput) => {
+  const onSubmit = async (values: RequestCreateSurveyFeedbackInput) => {
     try {
       setIsSubmitting(true)
 
