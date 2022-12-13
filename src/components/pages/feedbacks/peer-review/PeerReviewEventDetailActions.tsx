@@ -3,17 +3,19 @@ import { useDisclosure } from '@dwarvesf/react-hooks'
 import { Col, Modal, notification, Row, Tooltip } from 'antd'
 import { Button } from 'components/common/Button'
 import { MemberPeerReviewsLink } from 'components/common/DetailLink/MemberPeerReviewsLink'
+import { client } from 'libs/apis'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
+import { ViewTopic } from 'types/schema'
 import { AddParticipantsModal } from './AddParticipantsModal'
-import { PeerReviewDetail } from './mockData'
 
 interface Props {
-  peerReviewDetail: PeerReviewDetail
+  topic: ViewTopic
+  onAfterDelete: () => void
 }
 
 export const PeerReviewEventDetailActions = (props: Props) => {
-  const { peerReviewDetail } = props
+  const { topic, onAfterDelete } = props
   const {
     isOpen: isAddParticipantsModalOpen,
     onOpen: openAddParticipantsModal,
@@ -24,12 +26,17 @@ export const PeerReviewEventDetailActions = (props: Props) => {
   const { query } = useRouter()
 
   const onDelete = async () => {
+    if (!topic.eventID || !topic.id) return
     try {
       setIsLoading(true)
+
+      await client.deleteSurveyTopic(topic.eventID, topic.id)
 
       notification.success({
         message: 'Peer performance review item deleted sent successfully!',
       })
+
+      onAfterDelete()
     } catch (error: any) {
       notification.error({
         message:
@@ -46,7 +53,7 @@ export const PeerReviewEventDetailActions = (props: Props) => {
       content: (
         <>
           Do you want to delete surveys of{' '}
-          <strong>{peerReviewDetail.employee?.displayName}</strong>?
+          <strong>{topic.employee?.displayName}</strong>?
         </>
       ),
       okText: 'Delete',
@@ -60,7 +67,7 @@ export const PeerReviewEventDetailActions = (props: Props) => {
       <Col>
         <MemberPeerReviewsLink
           id={query.id as string}
-          memberId={peerReviewDetail.employee?.id!}
+          memberId={topic.employee?.id!}
         >
           <Tooltip title="View">
             <Button type="text-primary" size="small" icon={<EyeOutlined />} />
@@ -84,7 +91,7 @@ export const PeerReviewEventDetailActions = (props: Props) => {
             size="small"
             icon={<DeleteOutlined />}
             onClick={confirmDelete}
-            disabled={!!peerReviewDetail.totalSentSurveys}
+            disabled={!!topic.count?.sent}
           />
         </Tooltip>
       </Col>
@@ -94,7 +101,7 @@ export const PeerReviewEventDetailActions = (props: Props) => {
           isOpen={isAddParticipantsModalOpen}
           onClose={closeAddParticipantsModal}
           onAfterSubmit={() => {}}
-          peerReviewDetail={peerReviewDetail}
+          topic={topic}
         />
       )}
     </Row>
