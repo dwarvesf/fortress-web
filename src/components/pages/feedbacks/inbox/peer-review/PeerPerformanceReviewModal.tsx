@@ -1,14 +1,14 @@
-import { Col, Modal, Row, Space } from 'antd'
+import { Col, Modal, Row, Space, Tag } from 'antd'
 import { ItemIndex } from 'components/common/ItemIndex'
 import { Button } from 'components/common/Button'
-import { ViewBasicEmployeeInfo, ViewQuestionAnswer } from 'types/schema'
+import { ViewFeedbackDetail, ViewQuestionAnswer } from 'types/schema'
+import { capitalizeFirstLetter } from 'utils/string'
 
 interface Props {
   isPreviewing?: boolean
   isOpen: boolean
   answers: ViewQuestionAnswer[]
-  reviewer: ViewBasicEmployeeInfo
-  title: string
+  detail: ViewFeedbackDetail
   onCancel: () => void
   onOk?: () => void
 }
@@ -18,8 +18,7 @@ export const PeerPerformanceReviewModal = (props: Props) => {
     isPreviewing = true,
     isOpen,
     answers = [],
-    reviewer,
-    title,
+    detail,
     onCancel,
     onOk,
   } = props
@@ -44,10 +43,10 @@ export const PeerPerformanceReviewModal = (props: Props) => {
       title={
         <Space direction="vertical">
           <Space>
-            <span>{reviewer.displayName}</span>
-            {/* <Tag>{reviewer.}</Tag> */}
+            <span>{detail.reviewer?.displayName}</span>
+            <Tag>{capitalizeFirstLetter(detail.relationship || '-')}</Tag>
           </Space>
-          <small>{title}</small>
+          <small>{detail.title}</small>
         </Space>
       }
     >

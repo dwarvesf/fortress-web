@@ -8,12 +8,12 @@ import { PageHeader } from 'components/common/PageHeader'
 import { PageSpinner } from 'components/common/PageSpinner'
 import { statusColors } from 'constants/colors'
 import { ROUTES } from 'constants/routes'
-import { feedbackStatuses } from 'constants/status'
+import { feedbackStatuses, ModelEventReviewerStatus } from 'constants/status'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { client, GET_PATHS } from 'libs/apis'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
-import { RequestSubmitBody, ModelEventReviewerStatus } from 'types/schema'
+import { RequestSubmitBody } from 'types/schema'
 import { PeerPerformanceReviewModal } from './PeerPerformanceReviewModal'
 
 const Field = (props: any) => {
@@ -94,6 +94,14 @@ export const PeerFormanceReviewForm = () => {
           status,
         },
       )
+
+      notification.success({
+        message: `Feedback ${
+          status === ModelEventReviewerStatus.EventReviewerStatusDraft
+            ? 'saved'
+            : 'submitted'
+        } successfully!`,
+      })
 
       mutate()
       push(ROUTES.INBOX)
@@ -207,8 +215,7 @@ export const PeerFormanceReviewForm = () => {
       {isPreviewDialogOpen && (
         <PeerPerformanceReviewModal
           answers={answersToSubmit}
-          reviewer={detail.reviewer!}
-          title={detail.title!}
+          detail={detail}
           isOpen={isPreviewDialogOpen}
           onCancel={closePreviewDialog}
           onOk={() =>
