@@ -8,7 +8,7 @@ import { useRouter } from 'next/router'
 import { CreateEmployeeFormValues } from 'pages/employees/new'
 import { useState, useEffect } from 'react'
 import { theme } from 'styles'
-import { EmployeeCreateEmployeeInput } from 'types/schema'
+import { RequestCreateEmployeeInput } from 'types/schema'
 import {
   searchFilterOption,
   transformMetadataToSelectOption,
@@ -28,7 +28,7 @@ export const EmployeeForm = (props: Props) => {
   const [form] = Form.useForm()
 
   const onCreateSubmit = async (
-    values: Required<EmployeeCreateEmployeeInput>,
+    values: Required<RequestCreateEmployeeInput>,
   ) => {
     try {
       setIsSubmitting(true)
@@ -67,7 +67,7 @@ export const EmployeeForm = (props: Props) => {
 
   const transformDataToSend = (
     values: Required<Record<string, any>>,
-  ): EmployeeCreateEmployeeInput => {
+  ): RequestCreateEmployeeInput => {
     return {
       fullName: values.fullName,
       displayName: values.displayName,
@@ -93,7 +93,7 @@ export const EmployeeForm = (props: Props) => {
       initialValues={initialValues}
       onFinish={(values) => {
         if (!isEditing) {
-          onCreateSubmit(values as Required<EmployeeCreateEmployeeInput>)
+          onCreateSubmit(values as Required<RequestCreateEmployeeInput>)
         }
       }}
     >

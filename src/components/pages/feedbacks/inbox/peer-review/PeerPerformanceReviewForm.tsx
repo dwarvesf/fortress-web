@@ -13,7 +13,7 @@ import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { client, GET_PATHS } from 'libs/apis'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
-import { FeedbackSubmitBody, ModelEventReviewerStatus } from 'types/schema'
+import { RequestSubmitBody, ModelEventReviewerStatus } from 'types/schema'
 import { PeerPerformanceReviewModal } from './PeerPerformanceReviewModal'
 
 const Field = (props: any) => {
@@ -90,7 +90,7 @@ export const PeerFormanceReviewForm = () => {
         eventID as string,
         topicID as string,
         {
-          answers: answersToSubmit as FeedbackSubmitBody['answers'],
+          answers: answersToSubmit as RequestSubmitBody['answers'],
           status,
         },
       )

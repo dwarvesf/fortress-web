@@ -2,12 +2,13 @@ import { Form, Input, Modal, notification, Space } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
 import { client, GET_PATHS } from 'libs/apis'
 import { useState } from 'react'
-import { ProjectUpdateGeneralInfoInput } from 'types/schema'
+import { RequestUpdateProjectGeneralInfoInput } from 'types/schema'
 import { AsyncSelect } from 'components/common/Select'
 import { transformMetadataToSelectOption } from 'utils/select'
 import { useRouter } from 'next/router'
 
-type ProjectGeneralInfoFormValues = Partial<ProjectUpdateGeneralInfoInput>
+type ProjectGeneralInfoFormValues =
+  Partial<RequestUpdateProjectGeneralInfoInput>
 
 interface Props {
   isOpen: boolean

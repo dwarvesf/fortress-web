@@ -2,14 +2,14 @@ import { Form, Input, Modal, notification, Space } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
 import { client, GET_PATHS } from 'libs/apis'
 import { useState } from 'react'
-import { ProjectUpdateContactInfoInput } from 'types/schema'
+import { RequestUpdateContactInfoInput } from 'types/schema'
 import { AsyncSelect } from 'components/common/Select'
 import { renderEmployeeOption } from 'components/common/Select/renderers/employeeOption'
 import { transformEmployeeDataToSelectOption } from 'utils/select'
 import { useRouter } from 'next/router'
 import { EmployeeStatus } from 'constants/status'
 
-type ProjectContactInfoFormValues = Partial<ProjectUpdateContactInfoInput>
+type ProjectContactInfoFormValues = Partial<RequestUpdateContactInfoInput>
 
 interface Props {
   isOpen: boolean

@@ -1,5 +1,3 @@
-import { ModelEventReviewerStatus } from 'types/schema'
-
 export enum EmployeeStatus {
   LEFT = 'left',
   ONBOARDING = 'on-boarding',
@@ -90,6 +88,14 @@ export const workloadAverageStatuses: Record<WorkloadAverageStatus, string> = {
   [WorkloadAverageStatus.NOT_MUCH]: 'Not much',
   [WorkloadAverageStatus.FEW_THINGS]: 'Few things',
   [WorkloadAverageStatus.A_LOT]: 'A lot',
+}
+
+// TODO: import from schema
+export enum ModelEventReviewerStatus {
+  EventReviewerStatusDone = 'done',
+  EventReviewerStatusDraft = 'draft',
+  EventReviewerStatusNew = 'new',
+  EventReviewerStatusNone = 'none',
 }
 
 export const feedbackStatuses: Record<ModelEventReviewerStatus, string> = {

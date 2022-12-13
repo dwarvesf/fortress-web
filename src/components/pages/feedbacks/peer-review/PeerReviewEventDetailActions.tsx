@@ -89,12 +89,14 @@ export const PeerReviewEventDetailActions = (props: Props) => {
         </Tooltip>
       </Col>
 
-      <AddParticipantsModal
-        isOpen={isAddParticipantsModalOpen}
-        onClose={closeAddParticipantsModal}
-        onAfterSubmit={() => {}}
-        peerReviewDetail={peerReviewDetail}
-      />
+      {isAddParticipantsModalOpen && (
+        <AddParticipantsModal
+          isOpen={isAddParticipantsModalOpen}
+          onClose={closeAddParticipantsModal}
+          onAfterSubmit={() => {}}
+          peerReviewDetail={peerReviewDetail}
+        />
+      )}
     </Row>
   )
 }

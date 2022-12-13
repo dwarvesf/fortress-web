@@ -9,8 +9,8 @@ import { useCallback, useEffect, useState } from 'react'
 import {
   ModelPosition,
   ModelSeniority,
-  PkgHandlerProjectAssignMemberInput,
-  ProjectCreateProjectInput,
+  RequestAssignMemberInput,
+  RequestCreateProjectInput,
   ViewPosition,
   ViewProjectMember,
   ViewEmployeeData,
@@ -53,9 +53,7 @@ const CreateNewProjectPage = () => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
   const { push } = useRouter()
 
-  const [memberData, setMemberData] = useState<
-    PkgHandlerProjectAssignMemberInput[]
-  >([])
+  const [memberData, setMemberData] = useState<RequestAssignMemberInput[]>([])
   const [memberTableData, setMemberTableData] = useState<ViewProjectMember[]>(
     [],
   )
@@ -75,7 +73,7 @@ const CreateNewProjectPage = () => {
     onClose: closeAddNewMemberDialog,
   } = useDisclosure()
 
-  const onSubmit = async (values: Required<ProjectCreateProjectInput>) => {
+  const onSubmit = async (values: Required<RequestCreateProjectInput>) => {
     try {
       setIsSubmitting(true)
 
@@ -98,7 +96,7 @@ const CreateNewProjectPage = () => {
 
   const transformDataToSend = (
     values: Required<Record<string, any>>,
-  ): ProjectCreateProjectInput => {
+  ): RequestCreateProjectInput => {
     return {
       accountManagerID: values.accountManagerID,
       clientEmail: values.clientEmail,
@@ -116,7 +114,7 @@ const CreateNewProjectPage = () => {
   }
 
   const transformMemberDataToTableData = useCallback(
-    (memberData: PkgHandlerProjectAssignMemberInput): ViewProjectMember => {
+    (memberData: RequestAssignMemberInput): ViewProjectMember => {
       return {
         avatar: getEmployeeFromID(
           employeeData.data || [],

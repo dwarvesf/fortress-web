@@ -1,7 +1,7 @@
 import { Checkbox, Col, Form, Input, Row, Select } from 'antd'
 import { client, GET_PATHS, Meta } from 'libs/apis'
 import {
-  ProjectAssignMemberInput,
+  RequestAssignMemberInput,
   ViewEmployeeListDataResponse,
   ViewPositionResponse,
   ViewSeniorityResponse,
@@ -23,7 +23,7 @@ import { useEffect } from 'react'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { theme } from 'styles'
 
-export type MemberFormValues = Partial<ProjectAssignMemberInput>
+export type MemberFormValues = Partial<RequestAssignMemberInput>
 
 interface Props {
   isAssigning?: boolean

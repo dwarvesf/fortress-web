@@ -9,73 +9,16 @@
  * ---------------------------------------------------------------
  */
 
-export interface EmployeeCreateEmployeeInput {
-  displayName?: string
-  fullName: string
-  personalEmail: string
-  positions: string[]
-  roleID: string
-  salary: number
-  seniorityID: string
-  status: string
-  teamEmail: string
-}
-
-export interface EmployeeUpdateGeneralInfoInput {
-  discordID?: string
-  email: string
-  fullName: string
-  githubID?: string
-  lineManagerID?: string
-  notionID?: string
-  phone: string
-}
-
-export interface EmployeeUpdatePersonalInfoInput {
-  address: string
-  dob: string
-  gender: string
-  personalEmail: string
-}
-
-export interface EmployeeUpdateSkillsInput {
-  chapters: string[]
-  leadingChapters?: string[]
-  positions: string[]
-  seniority: string
-  stacks: string[]
-}
-
-export interface FeedbackBasicEventQuestionInput {
-  answer?: string
-  eventQuestionID: string
-  note?: string
-}
-
-export interface FeedbackCreateSurveyFeedbackInput {
-  quarter: string
-  type: string
-  year: number
-}
-
-export interface FeedbackPerformanceReviewInput {
-  participants: string[]
-  topicID: string
-}
-
-export interface FeedbackPerformanceReviewListInput {
-  reviewList: FeedbackPerformanceReviewInput[]
-}
-
-export interface FeedbackSubmitBody {
-  answers: FeedbackBasicEventQuestionInput[]
-  status: ModelEventReviewerStatus
+export interface GormDeletedAt {
+  time?: string
+  /** Valid is true if Time is not NULL */
+  valid?: boolean
 }
 
 export interface ModelChapter {
   code?: string
   createdAt?: string
-  deletedAt?: string
+  deletedAt?: GormDeletedAt
   id?: string
   lead_id?: string
   name?: string
@@ -86,46 +29,25 @@ export interface ModelCountry {
   cities?: string[]
   code?: string
   createdAt?: string
-  deletedAt?: string
+  deletedAt?: GormDeletedAt
   id?: string
   name?: string
   updatedAt?: string
-}
-
-export enum ModelEventReviewerStatus {
-  EventReviewerStatusNone = 'none',
-  EventReviewerStatusNew = 'new',
-  EventReviewerStatusDraft = 'draft',
-  EventReviewerStatusDone = 'done',
-}
-
-export enum ModelHeadPosition {
-  HeadPositionTechnicalLead = 'technical-lead',
-  HeadPositionDeliveryManager = 'delivery-manager',
-  HeadPositionAccountManager = 'account-manager',
-  HeadPositionSalePerson = 'sale-person',
 }
 
 export interface ModelPosition {
   code?: string
   createdAt?: string
-  deletedAt?: string
+  deletedAt?: GormDeletedAt
   id?: string
   name?: string
   updatedAt?: string
 }
 
-export enum ModelProjectStatus {
-  ProjectStatusOnBoarding = 'on-boarding',
-  ProjectStatusActive = 'active',
-  ProjectStatusPaused = 'paused',
-  ProjectStatusClosed = 'closed',
-}
-
 export interface ModelRole {
   code?: string
   createdAt?: string
-  deletedAt?: string
+  deletedAt?: GormDeletedAt
   id?: string
   name?: string
   updatedAt?: string
@@ -134,7 +56,7 @@ export interface ModelRole {
 export interface ModelSeniority {
   code?: string
   createdAt?: string
-  deletedAt?: string
+  deletedAt?: GormDeletedAt
   id?: string
   name?: string
   updatedAt?: string
@@ -143,37 +65,13 @@ export interface ModelSeniority {
 export interface ModelStack {
   code?: string
   createdAt?: string
-  deletedAt?: string
+  deletedAt?: GormDeletedAt
   id?: string
   name?: string
   updatedAt?: string
 }
 
-export enum ModelWorkUnitType {
-  WorkUnitTypeDevelopment = 'development',
-  WorkUnitTypeManagement = 'management',
-  WorkUnitTypeTraining = 'training',
-  WorkUnitTypeLearning = 'learning',
-}
-
-export enum ModelWorkingStatus {
-  WorkingStatusOnBoarding = 'on-boarding',
-  WorkingStatusLeft = 'left',
-  WorkingStatusProbation = 'probation',
-  WorkingStatusFullTime = 'full-time',
-  WorkingStatusContractor = 'contractor',
-}
-
-export interface ProfileUpdateInfoInput {
-  discordID?: string
-  githubID?: string
-  notionID?: string
-  personalEmail: string
-  phoneNumber: string
-  teamEmail: string
-}
-
-export interface ProjectAssignMemberInput {
+export interface RequestAssignMemberInput {
   deploymentType: string
   discount?: number
   employeeID?: string
@@ -186,12 +84,30 @@ export interface ProjectAssignMemberInput {
   status: string
 }
 
-export interface ProjectCreateProjectInput {
+export interface RequestBasicEventQuestionInput {
+  answer?: string
+  eventQuestionID: string
+  note?: string
+}
+
+export interface RequestCreateEmployeeInput {
+  displayName?: string
+  fullName: string
+  personalEmail: string
+  positions: string[]
+  roleID: string
+  salary: number
+  seniorityID: string
+  status: string
+  teamEmail: string
+}
+
+export interface RequestCreateProjectInput {
   accountManagerID: string
   clientEmail?: string
   countryID: string
   deliveryManagerID?: string
-  members?: ProjectAssignMemberInput[]
+  members?: RequestAssignMemberInput[]
   name: string
   projectEmail?: string
   startDate?: string
@@ -199,7 +115,13 @@ export interface ProjectCreateProjectInput {
   type?: string
 }
 
-export interface ProjectCreateWorkUnitBody {
+export interface RequestCreateSurveyFeedbackInput {
+  quarter: string
+  type: string
+  year: number
+}
+
+export interface RequestCreateWorkUnitBody {
   members?: string[]
   name: string
   stacks: string[]
@@ -208,21 +130,47 @@ export interface ProjectCreateWorkUnitBody {
   url?: string
 }
 
-export interface ProjectUpdateContactInfoInput {
+export interface RequestPerformanceReviewTopic {
+  participants: string[]
+  topicID: string
+}
+
+export interface RequestSendPerformanceReviewInput {
+  topics: RequestPerformanceReviewTopic[]
+}
+
+export interface RequestSubmitBody {
+  answers: RequestBasicEventQuestionInput[]
+  status: string
+}
+
+export interface RequestUpdateContactInfoInput {
   accountManagerID: string
   clientEmail?: string
   deliveryManagerID?: string
   projectEmail?: string
 }
 
-export interface ProjectUpdateGeneralInfoInput {
-  countryID: string
-  name: string
-  stacks?: string[]
-  startDate?: string
+export interface RequestUpdateEmployeeGeneralInfoInput {
+  discordID?: string
+  email: string
+  fullName: string
+  githubID?: string
+  lineManagerID?: string
+  notionID?: string
+  phone: string
 }
 
-export interface ProjectUpdateMemberInput {
+export interface RequestUpdateInfoInput {
+  discordID?: string
+  githubID?: string
+  notionID?: string
+  personalEmail: string
+  phoneNumber: string
+  teamEmail: string
+}
+
+export interface RequestUpdateMemberInput {
   deploymentType: string
   discount?: number
   employeeID?: string
@@ -236,16 +184,42 @@ export interface ProjectUpdateMemberInput {
   status: string
 }
 
-export interface ProjectUpdateWorkUnitBody {
+export interface RequestUpdatePersonalInfoInput {
+  address: string
+  dob: string
+  gender: string
+  personalEmail: string
+}
+
+export interface RequestUpdateProjectGeneralInfoInput {
+  countryID: string
+  name: string
+  stacks?: string[]
+  startDate?: string
+}
+
+export interface RequestUpdateSkillsInput {
+  chapters: string[]
+  leadingChapters?: string[]
+  positions: string[]
+  seniority: string
+  stacks: string[]
+}
+
+export interface RequestUpdateTopicReviewersBody {
+  reviewerIDs?: string[]
+}
+
+export interface RequestUpdateWorkUnitBody {
   members?: string[]
   name: string
   stacks: string[]
-  type: ModelWorkUnitType
+  type: string
   url?: string
 }
 
-export interface ProjectUpdateWorkUnitInput {
-  body?: ProjectUpdateWorkUnitBody
+export interface RequestUpdateWorkUnitInput {
+  body?: RequestUpdateWorkUnitBody
   projectID?: string
   workUnitID?: string
 }
@@ -296,7 +270,7 @@ export interface ViewBasicProjectHeadInfo {
   displayName?: string
   employeeID?: string
   fullName?: string
-  position?: ModelHeadPosition
+  position?: string
 }
 
 export interface ViewChapter {
@@ -341,7 +315,7 @@ export interface ViewCreateProjectData {
   clientEmail?: string
   country?: ViewBasicCountryInfo
   createdAt?: string
-  deletedAt?: string
+  deletedAt?: GormDeletedAt
   deliveryManager?: ViewProjectHead
   id?: string
   members?: ViewCreateMemberData[]
@@ -367,7 +341,7 @@ export interface ViewEmployeeData {
   birthday?: string
   chapters?: ViewChapter[]
   createdAt?: string
-  deletedAt?: string
+  deletedAt?: GormDeletedAt
   discordID?: string
   displayName?: string
   /** basic info */
@@ -389,7 +363,7 @@ export interface ViewEmployeeData {
   seniority?: ModelSeniority
   stacks?: ViewStack[]
   /** working info */
-  status?: ModelWorkingStatus
+  status?: string
   teamEmail?: string
   updatedAt?: string
 }
@@ -466,7 +440,7 @@ export interface ViewListFeedbackResponse {
 }
 
 export interface ViewListSurveyDetailResponse {
-  data?: ViewSurveyDetail[]
+  data?: ViewSurveyDetail
 }
 
 export interface ViewListSurveyResponse {
@@ -485,6 +459,24 @@ export interface ViewMetaData {
   code?: string
   id?: string
   name?: string
+}
+
+export interface ViewPeerReviewDetail {
+  employee?: ViewBasicEmployeeInfo
+  participants?: ViewPeerReviewer[]
+  title?: string
+  topicID?: string
+}
+
+export interface ViewPeerReviewDetailResponse {
+  data?: ViewPeerReviewDetail
+}
+
+export interface ViewPeerReviewer {
+  eventReviewerID?: string
+  relationship?: string
+  reviewer?: ViewBasicEmployeeInfo
+  status?: string
 }
 
 export interface ViewPosition {
@@ -521,7 +513,7 @@ export interface ViewProjectData {
   clientEmail?: string
   country?: ViewBasicCountryInfo
   createdAt?: string
-  deletedAt?: string
+  deletedAt?: GormDeletedAt
   deliveryManager?: ViewProjectHead
   endDate?: string
   id?: string
@@ -667,7 +659,7 @@ export interface ViewUpdateGeneralEmployeeResponse {
 
 export interface ViewUpdateGeneralInfoEmployeeData {
   createdAt?: string
-  deletedAt?: string
+  deletedAt?: GormDeletedAt
   discordID?: string
   /** basic info */
   fullName?: string
@@ -684,7 +676,7 @@ export interface ViewUpdatePersonalEmployeeData {
   address?: string
   birthday?: string
   createdAt?: string
-  deletedAt?: string
+  deletedAt?: GormDeletedAt
   gender?: string
   id?: string
   personalEmail?: string
@@ -697,7 +689,7 @@ export interface ViewUpdatePersonalEmployeeResponse {
 
 export interface ViewUpdateProfileInfoData {
   createdAt?: string
-  deletedAt?: string
+  deletedAt?: GormDeletedAt
   discordID?: string
   githubID?: string
   id?: string
@@ -740,7 +732,7 @@ export interface ViewUpdateProjectStatusResponse {
 export interface ViewUpdateSkillEmployeeData {
   chapters?: ModelChapter[]
   createdAt?: string
-  deletedAt?: string
+  deletedAt?: GormDeletedAt
   id?: string
   positions?: ModelPosition[]
   seniority?: ModelSeniority
@@ -754,7 +746,7 @@ export interface ViewUpdateSkillsEmployeeResponse {
 
 export interface ViewUpdatedProject {
   createdAt?: string
-  deletedAt?: string
+  deletedAt?: GormDeletedAt
   endDate?: string
   id?: string
   name?: string

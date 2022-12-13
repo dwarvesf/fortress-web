@@ -8,7 +8,7 @@ import { Dispatch, SetStateAction, useMemo } from 'react'
 import {
   ModelPosition,
   ModelSeniority,
-  PkgHandlerProjectAssignMemberInput,
+  RequestAssignMemberInput,
   ViewEmployeeListDataResponse,
   ViewPosition,
   ViewPositionResponse,
@@ -26,8 +26,8 @@ export const ProjectMemberTable = ({
   getDataOnSubmit,
 }: {
   data: ViewProjectMember[]
-  memberData: PkgHandlerProjectAssignMemberInput[]
-  setMemberData: Dispatch<SetStateAction<PkgHandlerProjectAssignMemberInput[]>>
+  memberData: RequestAssignMemberInput[]
+  setMemberData: Dispatch<SetStateAction<RequestAssignMemberInput[]>>
   getDataOnSubmit?: (
     e: ViewEmployeeListDataResponse & Meta,
     s: ViewSeniorityResponse,

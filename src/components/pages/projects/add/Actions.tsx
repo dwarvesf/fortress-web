@@ -7,7 +7,7 @@ import { format } from 'date-fns'
 import { Meta } from 'libs/apis'
 import { Dispatch, SetStateAction, useState } from 'react'
 import {
-  PkgHandlerProjectAssignMemberInput,
+  RequestAssignMemberInput,
   ViewEmployeeListDataResponse,
   ViewPositionResponse,
   ViewProjectMember,
@@ -29,8 +29,8 @@ export const Actions = ({
     p: ViewPositionResponse,
   ) => void
   tableData: ViewProjectMember[]
-  memberData: PkgHandlerProjectAssignMemberInput[]
-  setMemberData: Dispatch<SetStateAction<PkgHandlerProjectAssignMemberInput[]>>
+  memberData: RequestAssignMemberInput[]
+  setMemberData: Dispatch<SetStateAction<RequestAssignMemberInput[]>>
 }) => {
   const {
     isOpen: isEditDialogOpen,
@@ -50,7 +50,7 @@ export const Actions = ({
 
       const currentMemberData = memberData
 
-      const newMemberData: PkgHandlerProjectAssignMemberInput[] = []
+      const newMemberData: RequestAssignMemberInput[] = []
       currentMemberData.forEach((item, j) => {
         if (j !== rowIndex) {
           newMemberData.push(item)

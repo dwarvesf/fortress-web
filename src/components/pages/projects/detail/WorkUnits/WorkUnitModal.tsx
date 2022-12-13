@@ -3,14 +3,14 @@ import { useForm } from 'antd/lib/form/Form'
 import { client } from 'libs/apis'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import { ProjectCreateWorkUnitBody } from 'types/schema'
+import { RequestCreateWorkUnitBody } from 'types/schema'
 import { WorkUnitForm } from './WorkUnitForm'
 
 interface Props {
   isOpen: boolean
   isEditing?: boolean
   rowID?: string
-  initialValues?: ProjectCreateWorkUnitBody
+  initialValues?: RequestCreateWorkUnitBody
   onClose: () => void
   onAfterSubmit: () => void
 }
@@ -32,7 +32,7 @@ export const WorkUnitModal = (props: Props) => {
   const [form] = useForm()
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const onSubmit = async (values: ProjectCreateWorkUnitBody) => {
+  const onSubmit = async (values: RequestCreateWorkUnitBody) => {
     try {
       setIsSubmitting(true)
 
