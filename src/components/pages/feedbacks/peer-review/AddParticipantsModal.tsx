@@ -13,6 +13,7 @@ import { client, GET_PATHS } from 'libs/apis'
 import { useState } from 'react'
 import { EmployeeListFilter } from 'types/filters/EmployeeListFilter'
 import { ViewTopic } from 'types/schema'
+import debounce from 'lodash.debounce'
 
 interface Props {
   isOpen: boolean
@@ -28,16 +29,32 @@ export const AddParticipantsModal = (props: Props) => {
     ...(topic.participants || []),
   ])
   const [value, setValue] = useState('')
-  const { filter } = useFilter(new EmployeeListFilter())
-  const { data, loading } = useFetchWithCache(
+  const { filter, setFilter } = useFilter(new EmployeeListFilter())
+  const { data: employeeData, loading: employeeLoading } = useFetchWithCache(
     [GET_PATHS.getEmployees, filter],
     () => client.getEmployees(filter),
   )
-  const employees = data?.data || []
+  const employees = employeeData?.data || []
+  const { data: topicData, loading: topicLoading } = useFetchWithCache(
+    [
+      GET_PATHS.getSurveyTopic(topic.eventID!, topic.id!),
+      topic.eventID,
+      topic.id,
+    ],
+    () => client.getSurveyTopic(topic.eventID!, topic.id!),
+  )
+  const participantStatuses =
+    topicData?.data?.participants?.reduce<{
+      [id: string]: string | undefined
+    }>((pre, cur) => ({ ...pre, [cur.reviewer?.id!]: cur.status }), {}) || {}
 
   const onSubmit = async () => {
     try {
       setIsSubmitting(true)
+
+      await client.updateSurveyReviewers(topic.eventID!, topic.id!, {
+        reviewerIDs: participants.map((each) => each.id!),
+      })
 
       notification.success({
         message: 'Participants edited successfully!',
@@ -55,15 +72,21 @@ export const AddParticipantsModal = (props: Props) => {
   }
 
   const onSelect = (data: string) => {
-    setValue('')
+    setValue(filter.keyword || '')
     const newParticipant = employees.find((each) => each.id === data)
     if (newParticipant && !participants.some((each) => each.id === data)) {
       setParticipants((participants) => [...participants, newParticipant])
     }
   }
 
-  const onChange = (data: string) => {
+  const onSearch = debounce((data: string) => {
     setValue(data)
+    setFilter({ keyword: data })
+  }, 500)
+
+  const onClear = () => {
+    setValue('')
+    setFilter({ keyword: '' })
   }
 
   return (
@@ -71,7 +94,6 @@ export const AddParticipantsModal = (props: Props) => {
       open={isOpen}
       onCancel={() => {
         onClose()
-        setParticipants([...(topic.participants || [])])
       }}
       onOk={onSubmit}
       okText="Save"
@@ -84,10 +106,11 @@ export const AddParticipantsModal = (props: Props) => {
         bordered
         showSearch
         allowClear
+        onClear={onClear}
         style={{ width: '100%' }}
-        filterOption={false}
         defaultActiveFirstOption={false}
-        loading={loading}
+        loading={employeeLoading}
+        filterOption={false}
         options={employees.map((each) => ({
           value: each.id,
           label: <AvatarWithName user={each} isLink={false} />,
@@ -97,34 +120,34 @@ export const AddParticipantsModal = (props: Props) => {
         }))}
         value={value}
         onSelect={onSelect}
-        onChange={onChange}
+        onSearch={onSearch}
       />
       <Divider />
       <List
         itemLayout="horizontal"
         dataSource={participants}
+        loading={topicLoading}
         split={false}
         style={{ maxHeight: '50vh', overflowY: 'auto' }}
         renderItem={(item, index) => (
           <List.Item
             actions={[
               <div style={{ minWidth: 60 }}>
-                {index < 2 ? (
+                {[
+                  PeerReviewServeyStatus.DONE,
+                  PeerReviewServeyStatus.SENT,
+                ].includes(
+                  participantStatuses[item.id!] as PeerReviewServeyStatus,
+                ) ? (
                   <Tag
                     color={
-                      statusColors[
-                        index === 0
-                          ? PeerReviewServeyStatus.DONE
-                          : PeerReviewServeyStatus.SENT
-                      ]
+                      statusColors[participantStatuses[item.id!] as string]
                     }
                     style={{ margin: 0 }}
                   >
                     {
                       peerReviewServeyStatuses[
-                        index === 0
-                          ? PeerReviewServeyStatus.DONE
-                          : PeerReviewServeyStatus.SENT
+                        participantStatuses[item.id!] as PeerReviewServeyStatus
                       ]
                     }
                   </Tag>

@@ -33,9 +33,13 @@ import { ViewTopic } from 'types/schema'
 
 interface ColumnProps {
   onAfterDelete: () => void
+  onAfterEdit: () => void
 }
 
-const columns = ({ onAfterDelete }: ColumnProps): ColumnsType<ViewTopic> => [
+const columns = ({
+  onAfterDelete,
+  onAfterEdit,
+}: ColumnProps): ColumnsType<ViewTopic> => [
   {
     title: 'Employee',
     key: 'employee',
@@ -65,6 +69,7 @@ const columns = ({ onAfterDelete }: ColumnProps): ColumnsType<ViewTopic> => [
       <PeerReviewEventDetailActions
         topic={value}
         onAfterDelete={onAfterDelete}
+        onAfterEdit={onAfterEdit}
       />
     ),
     fixed: 'right',
@@ -271,7 +276,10 @@ const Default = () => {
       />
       <Table
         dataSource={peerReviews}
-        columns={columns({ onAfterDelete: mutateSurveyDetail })}
+        columns={columns({
+          onAfterDelete: mutateSurveyDetail,
+          onAfterEdit: mutateSurveyDetail,
+        })}
         rowSelection={{
           type: 'checkbox',
           selectedRowKeys,

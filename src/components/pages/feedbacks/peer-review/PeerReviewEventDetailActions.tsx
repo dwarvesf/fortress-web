@@ -12,10 +12,11 @@ import { AddParticipantsModal } from './AddParticipantsModal'
 interface Props {
   topic: ViewTopic
   onAfterDelete: () => void
+  onAfterEdit: () => void
 }
 
 export const PeerReviewEventDetailActions = (props: Props) => {
-  const { topic, onAfterDelete } = props
+  const { topic, onAfterDelete, onAfterEdit } = props
   const {
     isOpen: isAddParticipantsModalOpen,
     onOpen: openAddParticipantsModal,
@@ -100,7 +101,7 @@ export const PeerReviewEventDetailActions = (props: Props) => {
         <AddParticipantsModal
           isOpen={isAddParticipantsModalOpen}
           onClose={closeAddParticipantsModal}
-          onAfterSubmit={() => {}}
+          onAfterSubmit={onAfterEdit}
           topic={topic}
         />
       )}
