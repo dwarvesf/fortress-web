@@ -10,7 +10,7 @@ import { WorkUnitType, workUnitTypes } from 'constants/workUnitTypes'
 import { client, GET_PATHS } from 'libs/apis'
 import { useRouter } from 'next/router'
 import { theme } from 'styles'
-import { PkgHandlerProjectCreateWorkUnitBody } from 'types/schema'
+import { ProjectCreateWorkUnitBody } from 'types/schema'
 import {
   searchFilterOption,
   transformMetadataToSelectOption,
@@ -18,9 +18,9 @@ import {
 } from 'utils/select'
 
 interface Props {
-  initialValues?: PkgHandlerProjectCreateWorkUnitBody
+  initialValues?: ProjectCreateWorkUnitBody
   form: FormInstance<any>
-  onSubmit: (values: PkgHandlerProjectCreateWorkUnitBody) => void
+  onSubmit: (values: ProjectCreateWorkUnitBody) => void
   isEditing?: boolean
 }
 

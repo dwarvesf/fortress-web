@@ -11,7 +11,7 @@ import {
 import { client } from 'libs/apis'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import { PkgHandlerEmployeeUpdatePersonalInfoInput } from 'types/schema'
+import { EmployeeUpdatePersonalInfoInput } from 'types/schema'
 import moment from 'moment'
 import { SELECT_BOX_DATE_FORMAT } from 'constants/date'
 import { theme } from 'styles'
@@ -19,7 +19,7 @@ import { searchFilterOption } from 'utils/select'
 
 interface Props {
   isOpen: boolean
-  initialValues?: Omit<PkgHandlerEmployeeUpdatePersonalInfoInput, 'dob'> & {
+  initialValues?: Omit<EmployeeUpdatePersonalInfoInput, 'dob'> & {
     dob: moment.Moment
   }
   onClose: () => void
@@ -34,7 +34,7 @@ export const EditPersonalInfoModal = (props: Props) => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
 
   const onSubmit = async (
-    values: Required<PkgHandlerEmployeeUpdatePersonalInfoInput>,
+    values: Required<EmployeeUpdatePersonalInfoInput>,
   ) => {
     try {
       setIsSubmitting(true)

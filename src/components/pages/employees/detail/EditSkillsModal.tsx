@@ -5,7 +5,7 @@ import { GET_PATHS, client } from 'libs/apis'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { theme } from 'styles'
-import { PkgHandlerEmployeeUpdateSkillsInput } from 'types/schema'
+import { EmployeeUpdateSkillsInput } from 'types/schema'
 import {
   searchFilterOption,
   transformMetadataToSelectOption,
@@ -13,7 +13,7 @@ import {
 
 interface Props {
   isOpen: boolean
-  initialValues?: PkgHandlerEmployeeUpdateSkillsInput
+  initialValues?: EmployeeUpdateSkillsInput
   onClose: () => void
   onAfterSubmit: () => void
 }
@@ -33,9 +33,7 @@ export const EditSkillsModal = (props: Props) => {
     () => client.getChaptersMetadata(),
   )
 
-  const onSubmit = async (
-    values: Required<PkgHandlerEmployeeUpdateSkillsInput>,
-  ) => {
+  const onSubmit = async (values: Required<EmployeeUpdateSkillsInput>) => {
     try {
       if (
         !(

@@ -13,33 +13,34 @@ import {
   ViewAccountRoleResponse,
   ViewPositionResponse,
   ViewSeniorityResponse,
-  PkgHandlerEmployeeCreateEmployeeInput,
-  PkgHandlerProfileUpdateInfoInput,
+  EmployeeCreateEmployeeInput,
+  ProfileUpdateInfoInput,
   ViewProjectData,
   ViewProjectMemberListResponse,
-  PkgHandlerEmployeeUpdateGeneralInfoInput,
+  EmployeeUpdateGeneralInfoInput,
   ViewUpdateGeneralEmployeeResponse,
-  PkgHandlerEmployeeUpdateSkillsInput,
+  EmployeeUpdateSkillsInput,
   ViewUpdateSkillsEmployeeResponse,
   ViewStackResponse,
   ViewChapterResponse,
-  PkgHandlerEmployeeUpdatePersonalInfoInput,
+  EmployeeUpdatePersonalInfoInput,
   ViewUpdatePersonalEmployeeResponse,
   ViewProjectMember,
-  GithubComDwarvesfFortressApiPkgHandlerProjectUpdateMemberInput,
-  GithubComDwarvesfFortressApiPkgHandlerProjectAssignMemberInput,
-  PkgHandlerProjectCreateProjectInput,
+  ProjectUpdateMemberInput,
+  ProjectAssignMemberInput,
+  ProjectCreateProjectInput,
   ViewCreateProjectData,
-  PkgHandlerProjectUpdateGeneralInfoInput,
+  ProjectUpdateGeneralInfoInput,
   ViewUpdateProjectGeneralInfoResponse,
-  PkgHandlerProjectUpdateContactInfoInput,
+  ProjectUpdateContactInfoInput,
   ViewUpdateProjectContactInfoResponse,
   ViewWorkUnit,
   ViewEmployeeContentData,
-  PkgHandlerProjectCreateWorkUnitBody,
-  PkgHandlerProjectUpdateWorkUnitBody,
+  ProjectCreateWorkUnitBody,
+  ProjectUpdateWorkUnitBody,
   ViewMessageResponse,
   ViewListSurveyResponse,
+  FeedbackCreateSurveyFeedbackInput,
 } from 'types/schema'
 import qs from 'qs'
 import fetcher from './fetcher'
@@ -119,7 +120,7 @@ class Client {
     })
   }
 
-  public updateProfile(data: Partial<PkgHandlerProfileUpdateInfoInput>) {
+  public updateProfile(data: Partial<ProfileUpdateInfoInput>) {
     return fetcher<Response<ViewProfileData>>(`${BASE_URL}/profile`, {
       headers: { ...this.privateHeaders },
       method: 'PUT',
@@ -249,7 +250,7 @@ class Client {
     })
   }
 
-  public createNewEmployee(data: PkgHandlerEmployeeCreateEmployeeInput) {
+  public createNewEmployee(data: EmployeeCreateEmployeeInput) {
     return fetcher<Response<ViewEmployeeData>>(`${BASE_URL}/employees`, {
       method: 'POST',
       headers: {
@@ -261,7 +262,7 @@ class Client {
 
   public updateEmployeeGeneralInfo(
     id: string,
-    data: PkgHandlerEmployeeUpdateGeneralInfoInput,
+    data: EmployeeUpdateGeneralInfoInput,
   ) {
     return fetcher<ViewUpdateGeneralEmployeeResponse>(
       `${BASE_URL}/employees/${id}/general-info`,
@@ -275,10 +276,7 @@ class Client {
     )
   }
 
-  public updateEmployeeSkills(
-    id: string,
-    data: PkgHandlerEmployeeUpdateSkillsInput,
-  ) {
+  public updateEmployeeSkills(id: string, data: EmployeeUpdateSkillsInput) {
     return fetcher<ViewUpdateSkillsEmployeeResponse>(
       `${BASE_URL}/employees/${id}/skills`,
       {
@@ -293,7 +291,7 @@ class Client {
 
   public updateEmployeePersonalInfo(
     id: string,
-    data: PkgHandlerEmployeeUpdatePersonalInfoInput,
+    data: EmployeeUpdatePersonalInfoInput,
   ) {
     return fetcher<ViewUpdatePersonalEmployeeResponse>(
       `${BASE_URL}/employees/${id}/personal-info`,
@@ -307,7 +305,7 @@ class Client {
     )
   }
 
-  public createNewProject(data: PkgHandlerProjectCreateProjectInput) {
+  public createNewProject(data: ProjectCreateProjectInput) {
     return fetcher<Response<ViewCreateProjectData>>(`${BASE_URL}/projects`, {
       method: 'POST',
       headers: {
@@ -319,7 +317,7 @@ class Client {
 
   public createProjectMember(
     projectId: string,
-    data: Partial<GithubComDwarvesfFortressApiPkgHandlerProjectAssignMemberInput>,
+    data: Partial<ProjectAssignMemberInput>,
   ) {
     return fetcher<Response<ViewProjectMember>>(
       `${BASE_URL}/projects/${projectId}/members`,
@@ -335,7 +333,7 @@ class Client {
 
   public updateProjectMember(
     projectId: string,
-    data: Partial<GithubComDwarvesfFortressApiPkgHandlerProjectUpdateMemberInput>,
+    data: Partial<ProjectUpdateMemberInput>,
   ) {
     return fetcher<Response<ViewProjectMember>>(
       `${BASE_URL}/projects/${projectId}/members`,
@@ -375,7 +373,7 @@ class Client {
 
   public updateProjectGeneralInfo(
     id: string,
-    data: Partial<PkgHandlerProjectUpdateGeneralInfoInput>,
+    data: Partial<ProjectUpdateGeneralInfoInput>,
   ) {
     return fetcher<ViewUpdateProjectGeneralInfoResponse>(
       `${BASE_URL}/projects/${id}/general-info`,
@@ -391,7 +389,7 @@ class Client {
 
   public updateProjectContactInfo(
     id: string,
-    data: Partial<PkgHandlerProjectUpdateContactInfoInput>,
+    data: Partial<ProjectUpdateContactInfoInput>,
   ) {
     return fetcher<ViewUpdateProjectContactInfoResponse>(
       `${BASE_URL}/projects/${id}/contact-info`,
@@ -460,7 +458,7 @@ class Client {
 
   public addProjectWorkUnit(
     projectId: string,
-    data: PkgHandlerProjectCreateWorkUnitBody,
+    data: ProjectCreateWorkUnitBody,
   ) {
     return fetcher<Response<ViewWorkUnit[]>>(
       `${BASE_URL}/projects/${projectId}/work-units`,
@@ -477,7 +475,7 @@ class Client {
   public editProjectWorkUnit(
     projectId: string,
     workUnitId: string,
-    data: PkgHandlerProjectUpdateWorkUnitBody,
+    data: ProjectUpdateWorkUnitBody,
   ) {
     return fetcher<ViewMessageResponse>(
       `${BASE_URL}/projects/${projectId}/work-units/${workUnitId}`,
@@ -500,6 +498,16 @@ class Client {
         headers: { ...this.privateHeaders },
       },
     )
+  }
+
+  public createSurvey(data: FeedbackCreateSurveyFeedbackInput) {
+    return fetcher<ViewMessageResponse>(`${BASE_URL}/surveys`, {
+      method: 'POST',
+      headers: {
+        ...this.privateHeaders,
+      },
+      body: JSON.stringify(data),
+    })
   }
 }
 

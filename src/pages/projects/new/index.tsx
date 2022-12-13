@@ -10,7 +10,7 @@ import {
   ModelPosition,
   ModelSeniority,
   PkgHandlerProjectAssignMemberInput,
-  PkgHandlerProjectCreateProjectInput,
+  ProjectCreateProjectInput,
   ViewPosition,
   ViewProjectMember,
   ViewEmployeeData,
@@ -75,9 +75,7 @@ const CreateNewProjectPage = () => {
     onClose: closeAddNewMemberDialog,
   } = useDisclosure()
 
-  const onSubmit = async (
-    values: Required<PkgHandlerProjectCreateProjectInput>,
-  ) => {
+  const onSubmit = async (values: Required<ProjectCreateProjectInput>) => {
     try {
       setIsSubmitting(true)
 
@@ -100,7 +98,7 @@ const CreateNewProjectPage = () => {
 
   const transformDataToSend = (
     values: Required<Record<string, any>>,
-  ): PkgHandlerProjectCreateProjectInput => {
+  ): ProjectCreateProjectInput => {
     return {
       accountManagerID: values.accountManagerID,
       clientEmail: values.clientEmail,

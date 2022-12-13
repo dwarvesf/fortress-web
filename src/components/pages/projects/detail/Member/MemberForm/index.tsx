@@ -1,7 +1,7 @@
 import { Checkbox, Col, Form, Input, Row, Select } from 'antd'
 import { client, GET_PATHS, Meta } from 'libs/apis'
 import {
-  GithubComDwarvesfFortressApiPkgHandlerProjectAssignMemberInput,
+  ProjectAssignMemberInput,
   ViewEmployeeListDataResponse,
   ViewPositionResponse,
   ViewSeniorityResponse,
@@ -23,8 +23,7 @@ import { useEffect } from 'react'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { theme } from 'styles'
 
-export type MemberFormValues =
-  Partial<GithubComDwarvesfFortressApiPkgHandlerProjectAssignMemberInput>
+export type MemberFormValues = Partial<ProjectAssignMemberInput>
 
 interface Props {
   isAssigning?: boolean

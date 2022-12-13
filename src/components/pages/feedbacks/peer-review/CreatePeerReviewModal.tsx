@@ -1,10 +1,13 @@
 import { Form, Modal, notification, Select } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
+import { FeedbackSubtype } from 'constants/feedbackTypes'
+import { client } from 'libs/apis'
 import { useState } from 'react'
+import { FeedbackCreateSurveyFeedbackInput } from 'types/schema'
 
 interface Props {
   isOpen: boolean
-  initialValues: { quarters: string; year: number }
+  initialValues: Partial<FeedbackCreateSurveyFeedbackInput>
   onClose: () => void
   onAfterSubmit: () => void
 }
@@ -15,9 +18,14 @@ export const CreatePeerReviewModal = (props: Props) => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const currentYear = new Date().getFullYear()
 
-  const onSubmit = async () => {
+  const onSubmit = async (values: FeedbackCreateSurveyFeedbackInput) => {
     try {
       setIsSubmitting(true)
+
+      await client.createSurvey({
+        ...values,
+        type: FeedbackSubtype.PEER_REVIEW,
+      })
 
       notification.success({
         message: 'Peer performance review event created successfully!',
@@ -50,15 +58,15 @@ export const CreatePeerReviewModal = (props: Props) => {
       <Form form={form} onFinish={onSubmit} initialValues={initialValues}>
         <Form.Item
           label="Quarters"
-          name="quarters"
+          name="quarter"
           required
           rules={[{ required: true }]}
         >
           <Select
             placeholder="Select quarters"
-            options={[1, 2, 3, 4].map((q) => ({
-              label: `Q${q},Q${(q % 4) + 1}`,
-              value: q,
+            options={['q1,q2', 'q3,q4'].map((value) => ({
+              label: value.toUpperCase(),
+              value,
             }))}
           />
         </Form.Item>
