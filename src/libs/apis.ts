@@ -569,6 +569,27 @@ class Client {
       },
     )
   }
+
+  public deleteSurvey(id: string) {
+    return fetcher<ViewMessageResponse>(`${BASE_URL}/surveys/${id}`, {
+      method: 'DELETE',
+      headers: {
+        ...this.privateHeaders,
+      },
+    })
+  }
+
+  public deleteSurveyTopic(id: string, topicId: string) {
+    return fetcher<ViewMessageResponse>(
+      `${BASE_URL}/surveys/${id}/topics/${topicId}`,
+      {
+        method: 'DELETE',
+        headers: {
+          ...this.privateHeaders,
+        },
+      },
+    )
+  }
 }
 
 const client = new Client()

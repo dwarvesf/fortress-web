@@ -31,7 +31,11 @@ import React, { useState } from 'react'
 import { SurveyDetailFilter } from 'types/filters/SurveyDetailFilter'
 import { ViewTopic } from 'types/schema'
 
-const columns: ColumnsType<ViewTopic> = [
+interface ColumnProps {
+  onAfterDelete: () => void
+}
+
+const columns = ({ onAfterDelete }: ColumnProps): ColumnsType<ViewTopic> => [
   {
     title: 'Employee',
     key: 'employee',
@@ -58,7 +62,10 @@ const columns: ColumnsType<ViewTopic> = [
   {
     title: '',
     render: (value: ViewTopic) => (
-      <PeerReviewEventDetailActions peerReviewDetail={value} />
+      <PeerReviewEventDetailActions
+        topic={value}
+        onAfterDelete={onAfterDelete}
+      />
     ),
     fixed: 'right',
   },
@@ -70,7 +77,11 @@ const Default = () => {
   } = useRouter()
   const peerReviewId = id as string
   const { filter, setFilter } = useFilter(new SurveyDetailFilter())
-  const { data, loading } = useFetchWithCache(
+  const {
+    data,
+    loading,
+    mutate: mutateSurveyDetail,
+  } = useFetchWithCache(
     [GET_PATHS.getSurveyDetail(peerReviewId), peerReviewId, filter],
     () => client.getSurveyDetail(peerReviewId, filter),
   )
@@ -128,6 +139,8 @@ const Default = () => {
   const onDelete = async () => {
     try {
       setIsLoading(true)
+
+      await client.deleteSurvey(peerReviewId)
 
       notification.success({
         message: 'Peer performance review event deleted successfully!',
@@ -246,7 +259,7 @@ const Default = () => {
       />
       <Table
         dataSource={peerReviews}
-        columns={columns}
+        columns={columns({ onAfterDelete: mutateSurveyDetail })}
         rowSelection={{
           type: 'checkbox',
           selectedRowKeys,

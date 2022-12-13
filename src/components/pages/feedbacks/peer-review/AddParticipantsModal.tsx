@@ -12,20 +12,20 @@ import { useFilter } from 'hooks/useFilter'
 import { client, GET_PATHS } from 'libs/apis'
 import { useState } from 'react'
 import { EmployeeListFilter } from 'types/filters/EmployeeListFilter'
-import { PeerReviewDetail } from './mockData'
+import { ViewTopic } from 'types/schema'
 
 interface Props {
   isOpen: boolean
   onClose: () => void
   onAfterSubmit: () => void
-  peerReviewDetail: PeerReviewDetail
+  topic: ViewTopic
 }
 
 export const AddParticipantsModal = (props: Props) => {
-  const { isOpen, onClose, onAfterSubmit, peerReviewDetail } = props
+  const { isOpen, onClose, onAfterSubmit, topic } = props
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [participants, setParticipants] = useState([
-    ...(peerReviewDetail.participants || []),
+    ...(topic.participants || []),
   ])
   const [value, setValue] = useState('')
   const { filter } = useFilter(new EmployeeListFilter())
@@ -71,7 +71,7 @@ export const AddParticipantsModal = (props: Props) => {
       open={isOpen}
       onCancel={() => {
         onClose()
-        setParticipants([...(peerReviewDetail.participants || [])])
+        setParticipants([...(topic.participants || [])])
       }}
       onOk={onSubmit}
       okText="Save"

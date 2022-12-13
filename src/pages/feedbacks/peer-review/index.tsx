@@ -15,7 +15,11 @@ import { SurveyListFilter } from 'types/filters/SurveyListFilter'
 import { FeedbackSubtype } from 'constants/feedbackTypes'
 import { ViewSurvey } from 'types/schema'
 
-const columns: ColumnsType<ViewSurvey> = [
+interface ColumnProps {
+  onAfterDelete: () => void
+}
+
+const columns = ({ onAfterDelete }: ColumnProps): ColumnsType<ViewSurvey> => [
   {
     title: 'Time',
     key: 'title',
@@ -40,7 +44,9 @@ const columns: ColumnsType<ViewSurvey> = [
   },
   {
     title: '',
-    render: (value: ViewSurvey) => <Actions record={value} />,
+    render: (value: ViewSurvey) => (
+      <Actions record={value} onAfterDelete={onAfterDelete} />
+    ),
     fixed: 'right',
   },
 ]
@@ -75,7 +81,7 @@ const PeerReviewPage = () => {
       />
       <Table
         dataSource={data?.data || []}
-        columns={columns}
+        columns={columns({ onAfterDelete: mutateSurveys })}
         loading={loading}
         rowKey={(row) => row.id as string}
         pagination={false}

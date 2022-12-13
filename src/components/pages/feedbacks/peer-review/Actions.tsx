@@ -3,24 +3,31 @@ import { Col, Modal, notification, Row, Tooltip } from 'antd'
 import { Button } from 'components/common/Button'
 import { PeerReviewEventLink } from 'components/common/DetailLink'
 import { PeerReviewStatus } from 'constants/status'
+import { client } from 'libs/apis'
 import { useState } from 'react'
 import { ViewSurvey } from 'types/schema'
 
 interface Props {
   record: ViewSurvey
+  onAfterDelete: () => void
 }
 
 export const Actions = (props: Props) => {
-  const { record } = props
+  const { record, onAfterDelete } = props
   const [isLoading, setIsLoading] = useState(false)
 
   const onDelete = async () => {
+    if (!record.id) return
     try {
       setIsLoading(true)
+
+      await client.deleteSurvey(record.id)
 
       notification.success({
         message: 'Peer performance review event deleted sent successfully!',
       })
+
+      onAfterDelete()
     } catch (error: any) {
       notification.error({
         message:
