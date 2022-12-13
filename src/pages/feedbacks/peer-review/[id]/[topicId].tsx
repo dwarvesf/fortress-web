@@ -1,4 +1,4 @@
-import { Pagination, Row, Space, Table, Tag } from 'antd'
+import { Space, Table, Tag } from 'antd'
 import { ColumnsType } from 'antd/lib/table'
 import { AvatarWithName } from 'components/common/AvatarWithName'
 import { PageHeader } from 'components/common/PageHeader'
@@ -10,16 +10,14 @@ import {
 } from 'constants/status'
 import { useRouter } from 'next/router'
 import React from 'react'
-import {
-  PeerReviewDetail,
-  peerReviewEvent,
-  memberPeerReviews,
-  MemberPeerReviewDetail,
-} from 'components/pages/feedbacks/peer-review/mockData'
+import { PeerReviewDetail } from 'components/pages/feedbacks/peer-review/mockData'
 import { MemberRelationship, memberRelationship } from 'constants/relationship'
 import { MemberPeerReviewsAction } from 'components/pages/feedbacks/peer-review/MemberPeerReviewsAction'
+import { client, GET_PATHS } from 'libs/apis'
+import { useFetchWithCache } from 'hooks/useFetchWithCache'
+import { ViewPeerReviewer } from 'types/schema'
 
-const columns: ColumnsType<MemberPeerReviewDetail> = [
+const columns: ColumnsType<ViewPeerReviewer> = [
   {
     title: 'Reviewer',
     key: 'reviewer',
@@ -53,38 +51,33 @@ const columns: ColumnsType<MemberPeerReviewDetail> = [
 ]
 
 const MemberPeerReviewsPage = () => {
-  const { time, peerReviews = [] } = peerReviewEvent
-  const selectedPeerReviews = peerReviews[0]
+  const { query } = useRouter()
 
-  const router = useRouter()
+  const { data, loading } = useFetchWithCache(
+    [
+      GET_PATHS.getPeerReviewDetail(
+        query.id as string,
+        query.topicId as string,
+      ),
+    ],
+    () =>
+      client.getPeerReviewDetail(query.id as string, query.topicId as string),
+  )
 
   return (
     <Space direction="vertical" size={24} style={{ width: '100%' }}>
       <PageHeader
-        backHref={ROUTES.PEER_REVIEW_EVENT_DETAIL(router.query.id as string)}
-        title={
-          <Space align="center">
-            {selectedPeerReviews.employee?.displayName} - Peer reviews
-            <span>{time}</span>
-          </Space>
-        }
+        backHref={ROUTES.PEER_REVIEW_EVENT_DETAIL(query.id as string)}
+        title={data?.data?.title}
       />
       <Table
-        dataSource={memberPeerReviews}
+        dataSource={data?.data?.participants || []}
         columns={columns}
-        rowKey={(row) => row.id as string}
+        rowKey={(row) => row.eventReviewerID as string}
         pagination={false}
         scroll={{ x: 'max-content' }}
+        loading={loading}
       />
-      <Row justify="end">
-        <Pagination
-          current={1}
-          onChange={() => {}}
-          total={1}
-          pageSize={10}
-          hideOnSinglePage
-        />
-      </Row>
     </Space>
   )
 }

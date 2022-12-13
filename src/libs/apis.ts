@@ -81,6 +81,8 @@ export const GET_PATHS = {
   getSurveyDetail: (id: string) => `/surveys/${id}`,
   getSurveyTopic: (id: string, topicId: string) =>
     `/surveys/${id}/topics/${topicId}`,
+  getPeerReviewDetail: (id: string, topicID: string) =>
+    `/surveys/${id}/topics/${topicID}`,
 }
 export interface Meta {
   page?: number
@@ -641,6 +643,15 @@ class Client {
         ...this.privateHeaders,
       },
     })
+  }
+
+  public getPeerReviewDetail(id: string, topicID: string) {
+    return fetcher<ViewPeerReviewDetailResponse>(
+      `${BASE_URL}/surveys/${id}/topics/${topicID}`,
+      {
+        headers: { ...this.privateHeaders },
+      },
+    )
   }
 }
 
