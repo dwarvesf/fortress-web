@@ -4,14 +4,14 @@ import { WithChildren } from 'types/common'
 
 interface Props extends WithChildren {
   id: string
-  memberId: string
+  topicId: string
 }
 
 export const MemberPeerReviewsLink = (props: Props) => {
-  const { id, memberId, children } = props
+  const { id, topicId, children } = props
 
   return (
-    <Link href={ROUTES.MEMBER_PEER_REVIEWS(id, memberId)}>
+    <Link href={ROUTES.MEMBER_PEER_REVIEWS(id, topicId)}>
       <a>{children}</a>
     </Link>
   )

@@ -66,10 +66,7 @@ export const PeerReviewEventDetailActions = (props: Props) => {
   return (
     <Row justify="end" gutter={[8, 8]}>
       <Col>
-        <MemberPeerReviewsLink
-          id={query.id as string}
-          memberId={topic.employee?.id!}
-        >
+        <MemberPeerReviewsLink id={query.id as string} topicId={topic.id!}>
           <Tooltip title="View">
             <Button type="text-primary" size="small" icon={<EyeOutlined />} />
           </Tooltip>

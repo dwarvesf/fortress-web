@@ -11,47 +11,6 @@ interface Props {
   memberPeerReviewDetail: MemberPeerReviewDetail
 }
 
-const mockData = [
-  {
-    question: 'Does this employee effectively communicate with others?',
-    type: 'textarea',
-    name: '1',
-  },
-  {
-    question:
-      'How effective of a leader is this person, either through direct management or influence?',
-    type: 'textarea',
-    name: '2',
-  },
-  {
-    question:
-      'Does this person find creative solutions, and own the solution to problems? Are they proactive or reactive?',
-    type: 'textarea',
-    name: '3',
-  },
-  {
-    question: "How would you rate the quality of the employee's work?",
-    type: 'textarea',
-    name: '4',
-  },
-  {
-    question: 'How well does this person set and meet deadlines?',
-    type: 'textarea',
-    name: '5',
-  },
-  {
-    question: 'How well does this person embody our culture?',
-    type: 'textarea',
-    name: '6',
-  },
-  {
-    question:
-      'If you could give this person one piece of constructive advice to make them more effective in their role, what would you say?',
-    type: 'textarea',
-    name: '7',
-  },
-]
-
 export const MemberPeerReviewsAction = (props: Props) => {
   const { memberPeerReviewDetail } = props
 
@@ -124,12 +83,11 @@ export const MemberPeerReviewsAction = (props: Props) => {
       </Col>
 
       <PeerPerformanceReviewModal
-        data={mockData}
         isPreviewing={false}
-        // peerReviewData={memberPeerReviewDetail}
-        values={new Array(8).fill('Lorem Ipsum')}
         isOpen={isPreviewDialogOpen}
         onCancel={closePreviewDialog}
+        answers={[]}
+        detail={{}}
       />
     </Row>
   )
