@@ -41,6 +41,8 @@ import {
   RequestSubmitBody,
   ViewListSurveyDetailResponse,
   RequestSendPerformanceReviewInput,
+  ViewPeerReviewDetailResponse,
+  RequestUpdateTopicReviewersBody,
 } from 'types/schema'
 import { EmployeeListFilter } from 'types/filters/EmployeeListFilter'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
@@ -77,6 +79,8 @@ export const GET_PATHS = {
   getChapterMetadata: '/metadata/chapters',
   getSurveys: '/surveys',
   getSurveyDetail: (id: string) => `/surveys/${id}`,
+  getSurveyTopic: (id: string, topicId: string) =>
+    `/surveys/${id}/topics/${topicId}`,
 }
 export interface Meta {
   page?: number
@@ -600,6 +604,34 @@ class Client {
       },
       body: JSON.stringify(data),
     })
+  }
+
+  public getSurveyTopic(id: string, topicId: string) {
+    return fetcher<ViewPeerReviewDetailResponse>(
+      `${BASE_URL}/surveys/${id}/topics/${topicId}`,
+      {
+        headers: {
+          ...this.privateHeaders,
+        },
+      },
+    )
+  }
+
+  public updateSurveyReviewers(
+    id: string,
+    topicId: string,
+    data: RequestUpdateTopicReviewersBody,
+  ) {
+    return fetcher<ViewMessageResponse>(
+      `${BASE_URL}/surveys/${id}/topics/${topicId}/employees`,
+      {
+        method: 'PUT',
+        headers: {
+          ...this.privateHeaders,
+        },
+        body: JSON.stringify(data),
+      },
+    )
   }
 }
 
