@@ -106,7 +106,7 @@ export const ToggleSendSurveysModal = (props: Props) => {
       onCancel={onClose}
       footer={null}
       title="Setting"
-      style={{ maxWidth: 350 }}
+      style={{ maxWidth: 450 }}
     >
       <Row style={{ marginBottom: 24 }}>
         <Col span={24}>
@@ -123,7 +123,7 @@ export const ToggleSendSurveysModal = (props: Props) => {
       <Space
         direction="vertical"
         split={<Divider style={{ marginTop: 12, marginBottom: 12 }} />}
-        style={{ width: '100%', height: 250, overflowY: 'auto' }}
+        style={{ width: '100%', height: 400, overflowY: 'auto' }}
       >
         {renderProjects}
       </Space>
