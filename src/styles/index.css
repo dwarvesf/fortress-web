@@ -5,6 +5,6 @@ body a:hover {
   color: #e13f5e;
 }
 
-tr.not-read {
-  font-weight: bold;
+tr.inbox-row:not(.not-read) td {
+  background-color: #fafafa;
 }

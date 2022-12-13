@@ -1,61 +1,26 @@
 import { useDisclosure } from '@dwarvesf/react-hooks'
-import { Card, Col, Form, Row, Space } from 'antd'
+import { Card, Col, Form, notification, Row, Space, Tag } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
 import TextArea from 'antd/lib/input/TextArea'
 import { Button } from 'components/common/Button'
 import { ItemIndex } from 'components/common/ItemIndex'
 import { PageHeader } from 'components/common/PageHeader'
+import { PageSpinner } from 'components/common/PageSpinner'
+import { statusColors } from 'constants/colors'
 import { ROUTES } from 'constants/routes'
+import { feedbackStatuses } from 'constants/status'
+import { useFetchWithCache } from 'hooks/useFetchWithCache'
+import { client, GET_PATHS } from 'libs/apis'
 import { useRouter } from 'next/router'
-import { useRef, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { FeedbackSubmitBody, ModelEventReviewerStatus } from 'types/schema'
 import { PeerPerformanceReviewModal } from './PeerPerformanceReviewModal'
-
-const mockData = [
-  {
-    question: 'Does this employee effectively communicate with others?',
-    type: 'textarea',
-    name: '1',
-  },
-  {
-    question:
-      'How effective of a leader is this person, either through direct management or influence?',
-    type: 'textarea',
-    name: '2',
-  },
-  {
-    question:
-      'Does this person find creative solutions, and own the solution to problems? Are they proactive or reactive?',
-    type: 'textarea',
-    name: '3',
-  },
-  {
-    question: "How would you rate the quality of the employee's work?",
-    type: 'textarea',
-    name: '4',
-  },
-  {
-    question: 'How well does this person set and meet deadlines?',
-    type: 'textarea',
-    name: '5',
-  },
-  {
-    question: 'How well does this person embody our culture?',
-    type: 'textarea',
-    name: '6',
-  },
-  {
-    question:
-      'If you could give this person one piece of constructive advice to make them more effective in their role, what would you say?',
-    type: 'textarea',
-    name: '7',
-  },
-]
 
 const Field = (props: any) => {
   const { type, ...rest } = props
 
   switch (type) {
-    case 'textarea': {
+    case 'general': {
       return <TextArea {...rest} rows={3} bordered />
     }
     default: {
@@ -65,11 +30,25 @@ const Field = (props: any) => {
 }
 
 export const PeerFormanceReviewForm = () => {
-  const { push } = useRouter()
+  const {
+    query: { id: topicID, eventID },
+    push,
+  } = useRouter()
+
+  const { data, loading, mutate } = useFetchWithCache(
+    [GET_PATHS.getFeedbacks, topicID, eventID],
+    () => client.getPersonalFeedback(eventID as string, topicID as string),
+    {
+      revalidateOnFocus: false,
+    },
+  )
+  const detail = data?.data
 
   const [form] = useForm()
-  const submitAction = useRef('')
-  const [submittedValues, setSubmittedValues] = useState()
+  const [submittedValues, setSubmittedValues] = useState<Record<string, any>>(
+    {},
+  )
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const {
     isOpen: isPreviewDialogOpen,
@@ -77,36 +56,84 @@ export const PeerFormanceReviewForm = () => {
     onClose: closePreviewDialog,
   } = useDisclosure()
 
-  const onSubmit = async (values: any) => {
-    setSubmittedValues({ ...values })
+  const initialValues = useMemo(() => {
+    return (detail?.answers || []).reduce((result, current) => {
+      return {
+        ...result,
+        [current.eventQuestionID || '']: current.answer,
+      }
+    }, {})
+  }, [detail])
 
-    if (submitAction.current === 'preview') {
-      console.log('Preview')
-      openPreviewDialog()
-    } else if (submitAction.current === 'save-draft') {
-      console.log('Save draft!')
+  useEffect(() => {
+    setSubmittedValues({ ...initialValues })
+  }, [initialValues])
+
+  const answersToSubmit = useMemo(() => {
+    return (detail?.answers || []).map((answer) => {
+      return {
+        ...answer,
+        answer: submittedValues[answer.eventQuestionID || ''],
+      }
+    })
+  }, [submittedValues, detail])
+
+  const submitForm = async ({
+    status,
+  }: {
+    status: ModelEventReviewerStatus
+  }) => {
+    try {
+      setIsSubmitting(true)
+
+      await client.submitPersonalFeedback(
+        eventID as string,
+        topicID as string,
+        {
+          answers: answersToSubmit as FeedbackSubmitBody['answers'],
+          status,
+        },
+      )
+
+      mutate()
+      push(ROUTES.INBOX)
+    } catch (error: any) {
+      notification.error({
+        message: error?.message || 'Could not save the feedback as draft!',
+      })
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
-  const onPreview = () => {
-    submitAction.current = 'preview'
-    form.submit()
+  const onSubmit = async (values: any) => {
+    setSubmittedValues({ ...values })
+    openPreviewDialog()
   }
 
   const onSaveDraft = () => {
-    submitAction.current = 'save-draft'
-    form.submit()
+    submitForm({ status: ModelEventReviewerStatus.EventReviewerStatusDraft })
   }
 
-  const onSend = () => {
-    push(ROUTES.INBOX)
+  if (!detail || loading) {
+    return <PageSpinner />
   }
 
   return (
     <>
       <Space style={{ width: '100%' }} size={24} direction="vertical">
         <PageHeader
-          title="Peer Performance Review Q1/Q2 2022 - John Doe"
+          title={
+            <Space>
+              <span>{detail.title}</span>
+              {detail.status ===
+                ModelEventReviewerStatus.EventReviewerStatusDraft && (
+                <Tag color={statusColors[detail.status]}>
+                  {feedbackStatuses[detail.status]}
+                </Tag>
+              )}
+            </Space>
+          }
           backHref={ROUTES.INBOX}
         />
         <Row>
@@ -118,9 +145,11 @@ export const PeerFormanceReviewForm = () => {
                 onValuesChange={(_, values) => {
                   setSubmittedValues({ ...values })
                 }}
+                initialValues={initialValues}
+                validateTrigger="onSubmit"
               >
                 <Space direction="vertical" style={{ width: '100%' }}>
-                  {mockData.map((field, index) => {
+                  {(detail.answers || []).map((field, index) => {
                     return (
                       <Row key={index} gutter={24} wrap={false}>
                         <Col
@@ -130,16 +159,20 @@ export const PeerFormanceReviewForm = () => {
                             display: 'flex',
                           }}
                         >
-                          <ItemIndex active={submittedValues?.[field.name]}>
+                          <ItemIndex
+                            active={
+                              submittedValues?.[field.eventQuestionID || '']
+                            }
+                          >
                             {index + 1}
                           </ItemIndex>
                         </Col>
                         <Col flex={1}>
                           <Form.Item
-                            label={field.question}
-                            name={field.name}
+                            label={field.content}
+                            name={field.eventQuestionID || ''}
                             required
-                            rules={[{ required: true }]}
+                            rules={[{ required: true, message: 'Required' }]}
                           >
                             <Field {...field} />
                           </Form.Item>
@@ -152,26 +185,37 @@ export const PeerFormanceReviewForm = () => {
             </Card>
           </Col>
         </Row>
-        <Row gutter={8}>
-          <Col>
-            <Button type="default" onClick={onSaveDraft}>
-              Save Draft
-            </Button>
-          </Col>
-          <Col>
-            <Button type="primary" onClick={onPreview}>
-              Preview & Send
-            </Button>
-          </Col>
-        </Row>
+        {detail.status !== ModelEventReviewerStatus.EventReviewerStatusDone && (
+          <Row gutter={8}>
+            <Col>
+              <Button
+                type="default"
+                onClick={onSaveDraft}
+                loading={isSubmitting}
+              >
+                Save Draft
+              </Button>
+            </Col>
+            <Col>
+              <Button type="primary" onClick={form.submit}>
+                Preview & Send
+              </Button>
+            </Col>
+          </Row>
+        )}
       </Space>
       {isPreviewDialogOpen && (
         <PeerPerformanceReviewModal
-          data={mockData}
-          values={submittedValues}
+          answers={answersToSubmit}
+          reviewer={detail.reviewer!}
+          title={detail.title!}
           isOpen={isPreviewDialogOpen}
           onCancel={closePreviewDialog}
-          onOk={onSend}
+          onOk={() =>
+            submitForm({
+              status: ModelEventReviewerStatus.EventReviewerStatusDone,
+            })
+          }
         />
       )}
     </>
