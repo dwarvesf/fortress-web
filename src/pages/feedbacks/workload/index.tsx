@@ -1,13 +1,14 @@
-import { Space, Table } from 'antd'
+import { Pagination, Row, Space, Table } from 'antd'
 import { PageHeader } from 'components/common/PageHeader'
 import { Button } from 'components/common/Button'
 import { ColumnsType } from 'antd/lib/table'
 import { ProgressColumn } from 'components/pages/feedbacks/peer-review/ProgressColumn'
 import { Actions } from 'components/pages/feedbacks/workload'
 import { SettingFilled } from '@ant-design/icons'
-import { theme } from 'styles'
 import { WorkloadAverage } from 'components/pages/feedbacks/workload/WorkloadAverage'
 import { WorkloadAverageStatus } from 'constants/status'
+import { useDisclosure } from '@dwarvesf/react-hooks'
+import { ToggleSendSurveysModal } from 'components/pages/feedbacks/workload/ToggleSendSurveysModal'
 
 const mockWorkloadAverageData = [
   {
@@ -105,27 +106,46 @@ const columns: ColumnsType<any> = [
 ]
 
 const WorkloadPage = () => {
+  const {
+    isOpen: isToggleSendSurveyDialogOpen,
+    onOpen: openToggleSendSurveyDialog,
+    onClose: closeToggleSendSurveyDialog,
+  } = useDisclosure()
+
   return (
-    <Space direction="vertical" size={24} style={{ width: '100%' }}>
-      <PageHeader
-        title="Work"
-        rightRender={
-          <Button
-            type="primary"
-            style={{ background: theme.colors.gray600, border: 'none' }}
-          >
-            <SettingFilled />
-          </Button>
-        }
+    <>
+      <Space direction="vertical" size={24} style={{ width: '100%' }}>
+        <PageHeader
+          title="Work"
+          rightRender={
+            <Button type="default" onClick={openToggleSendSurveyDialog}>
+              <SettingFilled />
+            </Button>
+          }
+        />
+        <Table
+          dataSource={mockWorkloadData.data || []}
+          columns={columns}
+          rowKey={(row) => row.id as string}
+          scroll={{ x: 'max-content' }}
+        >
+          <Row justify="end">
+            <Pagination
+              current={1}
+              onChange={() => {}}
+              total={1}
+              pageSize={10}
+              hideOnSinglePage
+            />
+          </Row>
+        </Table>
+      </Space>
+
+      <ToggleSendSurveysModal
+        onClose={closeToggleSendSurveyDialog}
+        isOpen={isToggleSendSurveyDialogOpen}
       />
-      <Table
-        dataSource={mockWorkloadData.data || []}
-        columns={columns}
-        rowKey={(row) => row.id as string}
-        pagination={false}
-        scroll={{ x: 'max-content' }}
-      />
-    </Space>
+    </>
   )
 }
 
