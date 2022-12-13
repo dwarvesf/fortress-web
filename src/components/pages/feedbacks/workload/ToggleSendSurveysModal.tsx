@@ -1,5 +1,16 @@
-import { Col, Divider, Modal, Space, Switch, Typography } from 'antd'
-import { useState } from 'react'
+import {
+  Col,
+  Divider,
+  Empty,
+  Input,
+  Modal,
+  Row,
+  Space,
+  Switch,
+  Typography,
+} from 'antd'
+import { useCallback, useMemo, useState } from 'react'
+import debounce from 'lodash.debounce'
 
 interface Props {
   isOpen: boolean
@@ -21,30 +32,54 @@ export const ToggleSendSurveysModal = (props: Props) => {
     mockSendSurveyData.map((d) => d.checked),
   )
 
-  const toggleCheckedList = (index: number) => {
-    const newCheckedList: boolean[] = []
+  const [searchQuery, setSearchQuery] = useState('')
 
-    checkedList.forEach((c, i) => {
-      newCheckedList.push(i === index ? !c : c)
-    })
+  const toggleCheckedList = useCallback(
+    (index: number) => {
+      const newCheckedList: boolean[] = []
 
-    defaultSetCheckedList(newCheckedList)
-  }
+      checkedList.forEach((c, i) => {
+        newCheckedList.push(i === index ? !c : c)
+      })
 
-  return (
-    <Modal
-      open={isOpen}
-      onCancel={onClose}
-      footer={null}
-      title="Setting"
-      style={{ maxWidth: 350 }}
-    >
-      <Space
-        direction="vertical"
-        split={<Divider style={{ marginTop: 12, marginBottom: 12 }} />}
-        style={{ width: '100%', maxHeight: 350, overflowY: 'auto' }}
-      >
-        {mockSendSurveyData.map((d, i) => (
+      defaultSetCheckedList(newCheckedList)
+    },
+    [checkedList],
+  )
+
+  const renderProjects = useMemo(() => {
+    if (!mockSendSurveyData.length) {
+      return <Empty description="No projects data" />
+    }
+    if (!searchQuery) {
+      return mockSendSurveyData.map((d, i) => (
+        <Col
+          span={24}
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            gap: 8,
+            alignItems: 'center',
+          }}
+        >
+          <Typography.Text>{d.projectName}</Typography.Text>
+          <Switch
+            checked={checkedList[i]}
+            onChange={() => toggleCheckedList(i)}
+          />
+        </Col>
+      ))
+    }
+    if (
+      mockSendSurveyData.find((d) =>
+        d.projectName.toLowerCase().includes(searchQuery.toLowerCase()),
+      )
+    ) {
+      return mockSendSurveyData
+        .filter((d) =>
+          d.projectName.toLowerCase().includes(searchQuery.toLowerCase()),
+        )
+        .map((d, i) => (
           <Col
             span={24}
             style={{
@@ -60,7 +95,37 @@ export const ToggleSendSurveysModal = (props: Props) => {
               onChange={() => toggleCheckedList(i)}
             />
           </Col>
-        ))}
+        ))
+    }
+    return <Empty description={`No projects for keyword "${searchQuery}"`} />
+  }, [checkedList, searchQuery, toggleCheckedList])
+
+  return (
+    <Modal
+      open={isOpen}
+      onCancel={onClose}
+      footer={null}
+      title="Setting"
+      style={{ maxWidth: 350 }}
+    >
+      <Row style={{ marginBottom: 24 }}>
+        <Col span={24}>
+          <Input
+            className="bordered"
+            placeholder="Search projects"
+            onChange={debounce(
+              (event) => setSearchQuery(event.target.value),
+              500,
+            )}
+          />
+        </Col>
+      </Row>
+      <Space
+        direction="vertical"
+        split={<Divider style={{ marginTop: 12, marginBottom: 12 }} />}
+        style={{ width: '100%', height: 250, overflowY: 'auto' }}
+      >
+        {renderProjects}
       </Space>
     </Modal>
   )

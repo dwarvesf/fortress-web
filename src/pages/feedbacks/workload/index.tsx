@@ -5,7 +5,6 @@ import { ColumnsType } from 'antd/lib/table'
 import { ProgressColumn } from 'components/pages/feedbacks/peer-review/ProgressColumn'
 import { Actions } from 'components/pages/feedbacks/workload'
 import { SettingFilled } from '@ant-design/icons'
-import { theme } from 'styles'
 import { WorkloadAverage } from 'components/pages/feedbacks/workload/WorkloadAverage'
 import { WorkloadAverageStatus } from 'constants/status'
 import { useDisclosure } from '@dwarvesf/react-hooks'
@@ -119,11 +118,7 @@ const WorkloadPage = () => {
         <PageHeader
           title="Work"
           rightRender={
-            <Button
-              type="primary"
-              style={{ background: theme.colors.gray600, border: 'none' }}
-              onClick={openToggleSendSurveyDialog}
-            >
+            <Button type="default" onClick={openToggleSendSurveyDialog}>
               <SettingFilled />
             </Button>
           }
