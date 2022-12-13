@@ -1,13 +1,13 @@
 import { Pagination, Row, Tabs } from 'antd'
 import { PageHeader } from 'components/common/PageHeader'
 import { FeedbackInputTable } from 'components/pages/feedbacks/inbox/FeedbackInboxTable'
+import { ModelEventReviewerStatus } from 'constants/status'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { useFilter } from 'hooks/useFilter'
 import { useTabWithQuery } from 'hooks/useTabWithQuery'
 import { client, GET_PATHS } from 'libs/apis'
 import { useMemo } from 'react'
 import { FeedbackListFilter } from 'types/filters/FeedbackListFilter'
-import { ModelEventReviewerStatus } from 'types/schema'
 
 const Default = () => {
   const { tabKey, setTabKey } = useTabWithQuery({ queryKey: 'inbox' })

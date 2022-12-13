@@ -417,6 +417,7 @@ export interface ViewFeedbackDetail {
   answers?: ViewQuestionAnswer[]
   employeeID?: string
   eventID?: string
+  relationship?: string
   reviewer?: ViewBasicEmployeeInfo
   status?: string
   title?: string

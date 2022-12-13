@@ -3,9 +3,9 @@ import { ColumnsType } from 'antd/lib/table'
 import classNames from 'classnames'
 import { statusColors } from 'constants/colors'
 import { FeedbackType, feedbackTypes } from 'constants/feedbackTypes'
-import { feedbackStatuses } from 'constants/status'
+import { feedbackStatuses, ModelEventReviewerStatus } from 'constants/status'
 import { useMemo } from 'react'
-import { ModelEventReviewerStatus, ViewFeedback } from 'types/schema'
+import { ViewFeedback } from 'types/schema'
 import { Actions } from './Actions'
 
 export const FeedbackInputTable = ({
