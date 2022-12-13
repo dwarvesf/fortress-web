@@ -4,6 +4,7 @@ import { AvatarWithName } from 'components/common/AvatarWithName'
 import { Button } from 'components/common/Button'
 import { statusColors } from 'constants/colors'
 import {
+  EmployeeStatus,
   PeerReviewServeyStatus,
   peerReviewServeyStatuses,
 } from 'constants/status'
@@ -29,7 +30,11 @@ export const AddParticipantsModal = (props: Props) => {
     ...(topic.participants || []),
   ])
   const [value, setValue] = useState('')
-  const { filter, setFilter } = useFilter(new EmployeeListFilter())
+  const { filter, setFilter } = useFilter(
+    new EmployeeListFilter({
+      workingStatus: [EmployeeStatus.FULLTIME, EmployeeStatus.PROBATION],
+    }),
+  )
   const { data: employeeData, loading: employeeLoading } = useFetchWithCache(
     [GET_PATHS.getEmployees, filter],
     () => client.getEmployees(filter),
