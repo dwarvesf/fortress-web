@@ -50,15 +50,15 @@ export const peerReviewStatuses: Record<PeerReviewStatus, string> = {
   [PeerReviewStatus.DONE]: 'Done',
 }
 
-export enum PeerReviewServeyStatus {
+export enum PeerReviewSurveyStatus {
   DONE = 'done',
   SENT = 'sent',
 }
 
-export const peerReviewServeyStatuses: Record<PeerReviewServeyStatus, string> =
+export const peerReviewSurveyStatuses: Record<PeerReviewSurveyStatus, string> =
   {
-    [PeerReviewServeyStatus.DONE]: 'Done',
-    [PeerReviewServeyStatus.SENT]: 'Sent',
+    [PeerReviewSurveyStatus.DONE]: 'Done',
+    [PeerReviewSurveyStatus.SENT]: 'Sent',
   }
 
 export enum MemberPeerReviewStatus {
