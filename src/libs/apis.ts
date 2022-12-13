@@ -40,6 +40,7 @@ import {
   ViewFeedbackDetailResponse,
   RequestSubmitBody,
   ViewListSurveyDetailResponse,
+  RequestSendPerformanceReviewInput,
 } from 'types/schema'
 import { EmployeeListFilter } from 'types/filters/EmployeeListFilter'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
@@ -589,6 +590,16 @@ class Client {
         },
       },
     )
+  }
+
+  public sendSurvey(id: string, data: RequestSendPerformanceReviewInput) {
+    return fetcher<ViewMessageResponse>(`${BASE_URL}/surveys/${id}/send`, {
+      method: 'POST',
+      headers: {
+        ...this.privateHeaders,
+      },
+      body: JSON.stringify(data),
+    })
   }
 }
 

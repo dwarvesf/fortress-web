@@ -98,11 +98,23 @@ const Default = () => {
     try {
       setIsLoading(true)
 
+      const selectedPeerReviews = peerReviews.filter((each) =>
+        selectedRowKeys.includes(each.id!),
+      )
+      await client.sendSurvey(peerReviewId, {
+        topics: selectedPeerReviews.map((each) => ({
+          topicID: each.id!,
+          participants:
+            each.participants?.map((participant) => participant.id!) || [],
+        })),
+      })
+
       notification.success({
         message: 'Peer performance servey sent successfully!',
       })
 
       setSelectedRowKeys([])
+      mutateSurveyDetail()
     } catch (error: any) {
       notification.error({
         message: error?.message || 'Could not send peer performance servey',
