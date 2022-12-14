@@ -25,7 +25,7 @@ export const statusColors: Record<string, TagProps['color']> = {
   agree: 'blue',
   'strongly-agree': 'green',
   sent: 'gray',
-  new: 'green',
+  new: 'red',
 }
 
 export const engagementColors = {
