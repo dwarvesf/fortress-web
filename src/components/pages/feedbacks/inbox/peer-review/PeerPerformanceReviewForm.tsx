@@ -182,7 +182,13 @@ export const PeerFormanceReviewForm = () => {
                             required
                             rules={[{ required: true, message: 'Required' }]}
                           >
-                            <Field {...field} />
+                            <Field
+                              {...field}
+                              disabled={
+                                detail.status ===
+                                ModelEventReviewerStatus.EventReviewerStatusDone
+                              }
+                            />
                           </Form.Item>
                         </Col>
                       </Row>
