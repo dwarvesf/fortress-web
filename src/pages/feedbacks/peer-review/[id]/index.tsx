@@ -141,7 +141,7 @@ const Default = () => {
     }
 
     Modal.confirm({
-      title: 'Send servey',
+      title: 'Send survey',
       content: (
         <>
           Do you want to send peer review feedback to{' '}
