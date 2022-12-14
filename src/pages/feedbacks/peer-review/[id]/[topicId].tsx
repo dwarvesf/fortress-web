@@ -53,12 +53,7 @@ const MemberPeerReviewsPage = () => {
   const { query } = useRouter()
 
   const { data, loading } = useFetchWithCache(
-    [
-      GET_PATHS.getPeerReviewDetail(
-        query.id as string,
-        query.topicId as string,
-      ),
-    ],
+    [GET_PATHS.getSurveyTopic(query.id as string, query.topicId as string)],
     () =>
       client.getPeerReviewDetail(query.id as string, query.topicId as string),
   )

@@ -21,7 +21,7 @@ export const MemberPeerReviewsAction = (props: Props) => {
 
   const { data: reviewDetail } = useFetchWithCache(
     [
-      GET_PATHS.getPeerReviewDetailQuestions(
+      GET_PATHS.getSurveyTopicReviews(
         query.id as string,
         query.topicId as string,
         memberPeerReviewDetail.eventReviewerID as string,

@@ -82,13 +82,8 @@ export const GET_PATHS = {
   getSurveyDetail: (id: string) => `/surveys/${id}`,
   getSurveyTopic: (id: string, topicId: string) =>
     `/surveys/${id}/topics/${topicId}`,
-  getPeerReviewDetail: (id: string, topicID: string) =>
-    `/surveys/${id}/topics/${topicID}`,
-  getPeerReviewDetailQuestions: (
-    id: string,
-    topicID: string,
-    reviewerID: string,
-  ) => `/surveys/${id}/topics/${topicID}/reviews/${reviewerID}`,
+  getSurveyTopicReviews: (id: string, topicID: string, reviewerID: string) =>
+    `/surveys/${id}/topics/${topicID}/reviews/${reviewerID}`,
 }
 export interface Meta {
   page?: number
