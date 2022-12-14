@@ -2,39 +2,48 @@ import { Form, Radio, FormItemProps } from 'antd'
 import TextArea from 'antd/lib/input/TextArea'
 import { agreementLevels } from 'constants/agreementLevel'
 import { engagementColors } from 'constants/colors'
+import { FeedbackQuestionType } from 'constants/feedbackTypes'
 
 type Props = FormItemProps & {
-  type: string
+  type: FeedbackQuestionType
   showNote: boolean
 } & Record<string, any>
 
 export const FeedbackFormField = (props: Props) => {
-  const { type, label, name, rules, showNote = false, ...rest } = props
+  const {
+    type,
+    label,
+    name,
+    rules,
+    showNote = false,
+    required = false,
+    ...rest
+  } = props
 
   switch (type) {
-    case 'general': {
+    case FeedbackQuestionType.GENERAL: {
       return (
         <Form.Item
           label={label}
           name={name}
-          required
-          rules={[{ required: true, message: 'Required' }]}
+          required={required}
+          rules={[{ required, message: 'Required' }]}
         >
           {/* @ts-ignore */}
           <TextArea {...rest} rows={3} bordered />
         </Form.Item>
       )
     }
-    case 'likert-scale': {
+    case FeedbackQuestionType.LIKERT_SCALE: {
       return (
         <>
           <Form.Item
             label={label}
             name={name}
-            required
+            required={required}
             rules={[
               {
-                required: true,
+                required,
                 message: 'Required',
               },
             ]}

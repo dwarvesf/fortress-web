@@ -30,3 +30,8 @@ export const feedbackSubtypes: Record<
     [FeedbackSubtype.COMMENT]: 'Comment',
   },
 }
+
+export enum FeedbackQuestionType {
+  GENERAL = 'general',
+  LIKERT_SCALE = 'likert-scale',
+}

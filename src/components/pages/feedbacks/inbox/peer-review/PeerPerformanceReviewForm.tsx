@@ -7,6 +7,7 @@ import { ItemIndex } from 'components/common/ItemIndex'
 import { PageHeader } from 'components/common/PageHeader'
 import { PageSpinner } from 'components/common/PageSpinner'
 import { statusColors } from 'constants/colors'
+import { FeedbackQuestionType } from 'constants/feedbackTypes'
 import { ROUTES } from 'constants/routes'
 import { feedbackStatuses, ModelEventReviewerStatus } from 'constants/status'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
@@ -167,7 +168,10 @@ export const PeerFormanceReviewForm = () => {
                         </Col>
                         <Col flex={1}>
                           <FeedbackFormField
-                            type={field.type || 'general'}
+                            type={
+                              (field.type as FeedbackQuestionType) ||
+                              FeedbackQuestionType.GENERAL
+                            }
                             name={field.eventQuestionID}
                             label={field.content}
                             showNote={showNote}
@@ -175,6 +179,7 @@ export const PeerFormanceReviewForm = () => {
                               detail.status ===
                               ModelEventReviewerStatus.EventReviewerStatusDone
                             }
+                            required
                           />
                         </Col>
                       </Row>
