@@ -59,7 +59,7 @@ export const MemberPeerReviewsAction = (props: Props) => {
     try {
       setIsLoading(true)
 
-      await client.removeParticipantPeerReviewDetail(
+      await client.removeSurveyParticipants(
         query.id as string,
         query.topicId as string,
         [reviewDetail?.data?.reviewer?.id] as string[],

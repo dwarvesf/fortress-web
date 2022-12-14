@@ -63,8 +63,7 @@ const MemberPeerReviewsPage = () => {
 
   const { data, loading, mutate } = useFetchWithCache(
     [GET_PATHS.getSurveyTopic(query.id as string, query.topicId as string)],
-    () =>
-      client.getPeerReviewDetail(query.id as string, query.topicId as string),
+    () => client.getSurveyTopic(query.id as string, query.topicId as string),
   )
 
   return (

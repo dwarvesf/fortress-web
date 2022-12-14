@@ -646,15 +646,6 @@ class Client {
     })
   }
 
-  public getPeerReviewDetail(id: string, topicID: string) {
-    return fetcher<ViewPeerReviewDetailResponse>(
-      `${BASE_URL}/surveys/${id}/topics/${topicID}`,
-      {
-        headers: { ...this.privateHeaders },
-      },
-    )
-  }
-
   public getPeerReviewDetailQuestions(
     id: string,
     topicID: string,
@@ -668,7 +659,7 @@ class Client {
     )
   }
 
-  public removeParticipantPeerReviewDetail(
+  public removeSurveyParticipants(
     id: string,
     topicID: string,
     reviewerIDs: string[],
