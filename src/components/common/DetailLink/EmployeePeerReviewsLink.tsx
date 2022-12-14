@@ -7,11 +7,11 @@ interface Props extends WithChildren {
   topicId: string
 }
 
-export const MemberPeerReviewsLink = (props: Props) => {
+export const EmployeePeerReviewsLink = (props: Props) => {
   const { id, topicId, children } = props
 
   return (
-    <Link href={ROUTES.MEMBER_PEER_REVIEWS(id, topicId)}>
+    <Link href={ROUTES.EMPLOYEE_PEER_REVIEWS(id, topicId)}>
       <a>{children}</a>
     </Link>
   )

@@ -2,7 +2,7 @@ import { DeleteOutlined, EyeOutlined } from '@ant-design/icons'
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { Col, Modal, notification, Row, Tooltip } from 'antd'
 import { Button } from 'components/common/Button'
-import { MemberPeerReviewStatus } from 'constants/status'
+import { EmployeePeerReviewStatus } from 'constants/status'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { client, GET_PATHS } from 'libs/apis'
 import { useRouter } from 'next/router'
@@ -11,12 +11,12 @@ import { ViewFeedBackReviewDetail, ViewPeerReviewer } from 'types/schema'
 import { PeerPerformanceReviewModal } from '../inbox/peer-review/PeerPerformanceReviewModal'
 
 interface Props {
-  memberPeerReviewDetail: ViewPeerReviewer
+  employeePeerReviewDetail: ViewPeerReviewer
   onAfterDelete: () => void
 }
 
-export const MemberPeerReviewsAction = (props: Props) => {
-  const { memberPeerReviewDetail, onAfterDelete } = props
+export const EmployeePeerReviewsAction = (props: Props) => {
+  const { employeePeerReviewDetail, onAfterDelete } = props
 
   const { query } = useRouter()
 
@@ -25,14 +25,14 @@ export const MemberPeerReviewsAction = (props: Props) => {
       GET_PATHS.getSurveyReviewDetail(
         query.id as string,
         query.topicId as string,
-        memberPeerReviewDetail.eventReviewerID as string,
+        employeePeerReviewDetail.eventReviewerID as string,
       ),
     ],
     () =>
       client.getSurveyReviewDetail(
         query.id as string,
         query.topicId as string,
-        memberPeerReviewDetail.eventReviewerID as string,
+        employeePeerReviewDetail.eventReviewerID as string,
       ),
   )
 
@@ -41,7 +41,7 @@ export const MemberPeerReviewsAction = (props: Props) => {
   ) => ({
     answers: data?.questions,
     employeeID: data?.employee?.id,
-    eventID: memberPeerReviewDetail.eventReviewerID,
+    eventID: employeePeerReviewDetail.eventReviewerID,
     relationship: data?.relationship,
     reviewer: data?.reviewer,
     title: data?.topicName,
@@ -85,7 +85,7 @@ export const MemberPeerReviewsAction = (props: Props) => {
       content: (
         <>
           Do you want to delete peer performance review from{' '}
-          <strong>{memberPeerReviewDetail.reviewer?.displayName}</strong>?
+          <strong>{employeePeerReviewDetail.reviewer?.displayName}</strong>?
         </>
       ),
       okText: 'Delete',
@@ -104,7 +104,7 @@ export const MemberPeerReviewsAction = (props: Props) => {
             icon={<EyeOutlined />}
             onClick={openPreviewDialog}
             disabled={
-              memberPeerReviewDetail.status !== MemberPeerReviewStatus.DONE
+              employeePeerReviewDetail.status !== EmployeePeerReviewStatus.DONE
             }
           />
         </Tooltip>
@@ -117,7 +117,7 @@ export const MemberPeerReviewsAction = (props: Props) => {
             icon={<DeleteOutlined />}
             onClick={confirmDelete}
             disabled={
-              memberPeerReviewDetail.status !== MemberPeerReviewStatus.DRAFT
+              employeePeerReviewDetail.status !== EmployeePeerReviewStatus.DRAFT
             }
           />
         </Tooltip>

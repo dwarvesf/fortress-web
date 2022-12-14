@@ -5,13 +5,16 @@ import { PageHeader } from 'components/common/PageHeader'
 import { statusColors } from 'constants/colors'
 import { ROUTES } from 'constants/routes'
 import {
-  MemberPeerReviewStatus,
-  memberPeerReviewStatuses,
+  EmployeePeerReviewStatus,
+  employeePeerReviewStatuses,
 } from 'constants/status'
 import { useRouter } from 'next/router'
 import React from 'react'
-import { MemberRelationship, memberRelationship } from 'constants/relationship'
-import { MemberPeerReviewsAction } from 'components/pages/feedbacks/peer-review/MemberPeerReviewsAction'
+import {
+  EmployeeRelationship,
+  employeeRelationship,
+} from 'constants/relationship'
+import { EmployeePeerReviewsAction } from 'components/pages/feedbacks/peer-review/EmployeePeerReviewsAction'
 import { client, GET_PATHS } from 'libs/apis'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { ViewPeerReviewer } from 'types/schema'
@@ -34,23 +37,23 @@ const columns = ({
     title: 'Relationship',
     key: 'relationship',
     dataIndex: 'relationship',
-    render: (value) => memberRelationship[value as MemberRelationship],
+    render: (value) => employeeRelationship[value as EmployeeRelationship],
   },
   {
     title: 'Status',
     key: 'status',
     dataIndex: 'status',
-    render: (value: MemberPeerReviewStatus) => (
+    render: (value: EmployeePeerReviewStatus) => (
       <Tag color={statusColors[value]}>
-        {memberPeerReviewStatuses[value] || '-'}
+        {employeePeerReviewStatuses[value] || '-'}
       </Tag>
     ),
   },
   {
     title: '',
     render: (value: ViewPeerReviewer) => (
-      <MemberPeerReviewsAction
-        memberPeerReviewDetail={value}
+      <EmployeePeerReviewsAction
+        employeePeerReviewDetail={value}
         onAfterDelete={onAfterDelete}
       />
     ),
@@ -58,7 +61,7 @@ const columns = ({
   },
 ]
 
-const MemberPeerReviewsPage = () => {
+const EmployeePeerReviewsPage = () => {
   const { query } = useRouter()
 
   const { data, loading, mutate } = useFetchWithCache(
@@ -86,4 +89,4 @@ const MemberPeerReviewsPage = () => {
   )
 }
 
-export default MemberPeerReviewsPage
+export default EmployeePeerReviewsPage
