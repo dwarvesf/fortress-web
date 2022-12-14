@@ -43,6 +43,7 @@ import {
   RequestSendPerformanceReviewInput,
   ViewPeerReviewDetailResponse,
   RequestUpdateTopicReviewersBody,
+  ViewFeedbackReviewDetailResponse,
 } from 'types/schema'
 import { EmployeeListFilter } from 'types/filters/EmployeeListFilter'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
@@ -81,6 +82,8 @@ export const GET_PATHS = {
   getSurveyDetail: (id: string) => `/surveys/${id}`,
   getSurveyTopic: (id: string, topicId: string) =>
     `/surveys/${id}/topics/${topicId}`,
+  getSurveyReviewDetail: (id: string, topicID: string, reviewerID: string) =>
+    `/surveys/${id}/topics/${topicID}/reviews/${reviewerID}`,
 }
 export interface Meta {
   page?: number
@@ -641,6 +644,34 @@ class Client {
         ...this.privateHeaders,
       },
     })
+  }
+
+  public getSurveyReviewDetail(
+    id: string,
+    topicID: string,
+    reviewerID: string,
+  ) {
+    return fetcher<ViewFeedbackReviewDetailResponse>(
+      `${BASE_URL}/surveys/${id}/topics/${topicID}/reviews/${reviewerID}`,
+      {
+        headers: { ...this.privateHeaders },
+      },
+    )
+  }
+
+  public removeSurveyParticipants(
+    id: string,
+    topicID: string,
+    reviewerIDs: string[],
+  ) {
+    return fetcher<ViewFeedbackReviewDetailResponse>(
+      `${BASE_URL}/surveys/${id}/topics/${topicID}/employees`,
+      {
+        method: 'DELETE',
+        headers: { ...this.privateHeaders },
+        body: JSON.stringify({ reviewerIDs }),
+      },
+    )
   }
 }
 

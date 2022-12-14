@@ -1,5 +1,15 @@
 import { useDisclosure } from '@dwarvesf/react-hooks'
-import { Card, Col, Form, notification, Row, Space, Switch, Tag } from 'antd'
+import {
+  Card,
+  Col,
+  Empty,
+  Form,
+  notification,
+  Row,
+  Space,
+  Switch,
+  Tag,
+} from 'antd'
 import { useForm } from 'antd/lib/form/Form'
 import { Button } from 'components/common/Button'
 import { FeedbackFormField } from 'components/common/Feedbacks/FeedbackFormField'
@@ -136,7 +146,7 @@ export const PeerFormanceReviewForm = () => {
           backHref={ROUTES.INBOX}
         />
         <Row>
-          <Col lg={{ span: 16 }}>
+          <Col span={24} lg={{ span: 16 }}>
             <Card>
               <Form
                 form={form}
@@ -148,43 +158,47 @@ export const PeerFormanceReviewForm = () => {
                 validateTrigger="onSubmit"
               >
                 <Space direction="vertical" style={{ width: '100%' }}>
-                  {(detail.answers || []).map((field, index) => {
-                    return (
-                      <Row key={index} gutter={24} wrap={false}>
-                        <Col
-                          style={{
-                            height: 40,
-                            alignItems: 'center',
-                            display: 'flex',
-                          }}
-                        >
-                          <ItemIndex
-                            active={
-                              submittedValues?.[field.eventQuestionID || '']
-                            }
+                  {detail.answers && detail.answers.length ? (
+                    detail.answers.map((field, index) => {
+                      return (
+                        <Row key={index} gutter={24} wrap={false}>
+                          <Col
+                            style={{
+                              height: 40,
+                              alignItems: 'center',
+                              display: 'flex',
+                            }}
                           >
-                            {index + 1}
-                          </ItemIndex>
-                        </Col>
-                        <Col flex={1}>
-                          <FeedbackFormField
-                            type={
-                              (field.type as FeedbackQuestionType) ||
-                              FeedbackQuestionType.GENERAL
-                            }
-                            name={field.eventQuestionID}
-                            label={field.content}
-                            showNote={showNote}
-                            disabled={
-                              detail.status ===
-                              ModelEventReviewerStatus.EventReviewerStatusDone
-                            }
-                            required
-                          />
-                        </Col>
-                      </Row>
-                    )
-                  })}
+                            <ItemIndex
+                              active={
+                                submittedValues?.[field.eventQuestionID || '']
+                              }
+                            >
+                              {index + 1}
+                            </ItemIndex>
+                          </Col>
+                          <Col flex={1}>
+                            <FeedbackFormField
+                              type={
+                                (field.type as FeedbackQuestionType) ||
+                                FeedbackQuestionType.GENERAL
+                              }
+                              name={field.eventQuestionID}
+                              label={field.content}
+                              showNote={showNote}
+                              disabled={
+                                detail.status ===
+                                ModelEventReviewerStatus.EventReviewerStatusDone
+                              }
+                              required
+                            />
+                          </Col>
+                        </Row>
+                      )
+                    })
+                  ) : (
+                    <Empty description="No questions data" />
+                  )}
                 </Space>
               </Form>
               <Space>

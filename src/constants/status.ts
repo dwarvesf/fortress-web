@@ -61,18 +61,20 @@ export const peerReviewSurveyStatuses: Record<PeerReviewSurveyStatus, string> =
     [PeerReviewSurveyStatus.SENT]: 'Sent',
   }
 
-export enum MemberPeerReviewStatus {
+export enum EmployeePeerReviewStatus {
   DONE = 'done',
   SENT = 'sent',
   DRAFT = 'draft',
 }
 
-export const memberPeerReviewStatuses: Record<MemberPeerReviewStatus, string> =
-  {
-    [MemberPeerReviewStatus.DONE]: 'Done',
-    [MemberPeerReviewStatus.SENT]: 'Sent',
-    [MemberPeerReviewStatus.DRAFT]: 'Draft',
-  }
+export const employeePeerReviewStatuses: Record<
+  EmployeePeerReviewStatus,
+  string
+> = {
+  [EmployeePeerReviewStatus.DONE]: 'Done',
+  [EmployeePeerReviewStatus.SENT]: 'Sent',
+  [EmployeePeerReviewStatus.DRAFT]: 'Draft',
+}
 
 export enum WorkloadAverageStatus {
   ALL_BORING_STUFF = 'all-boring-stuff',

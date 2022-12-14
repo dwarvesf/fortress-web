@@ -2,58 +2,50 @@ import { DeleteOutlined, EyeOutlined } from '@ant-design/icons'
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { Col, Modal, notification, Row, Tooltip } from 'antd'
 import { Button } from 'components/common/Button'
-import { MemberPeerReviewStatus } from 'constants/status'
+import { EmployeePeerReviewStatus } from 'constants/status'
+import { useFetchWithCache } from 'hooks/useFetchWithCache'
+import { client, GET_PATHS } from 'libs/apis'
+import { useRouter } from 'next/router'
 import { useState } from 'react'
+import { ViewFeedBackReviewDetail, ViewPeerReviewer } from 'types/schema'
 import { PeerPerformanceReviewModal } from '../inbox/peer-review/PeerPerformanceReviewModal'
-import { MemberPeerReviewDetail } from './mockData'
 
 interface Props {
-  memberPeerReviewDetail: MemberPeerReviewDetail
+  employeePeerReviewDetail: ViewPeerReviewer
+  onAfterDelete: () => void
 }
 
-const mockData = [
-  {
-    question: 'Does this employee effectively communicate with others?',
-    type: 'textarea',
-    name: '1',
-  },
-  {
-    question:
-      'How effective of a leader is this person, either through direct management or influence?',
-    type: 'textarea',
-    name: '2',
-  },
-  {
-    question:
-      'Does this person find creative solutions, and own the solution to problems? Are they proactive or reactive?',
-    type: 'textarea',
-    name: '3',
-  },
-  {
-    question: "How would you rate the quality of the employee's work?",
-    type: 'textarea',
-    name: '4',
-  },
-  {
-    question: 'How well does this person set and meet deadlines?',
-    type: 'textarea',
-    name: '5',
-  },
-  {
-    question: 'How well does this person embody our culture?',
-    type: 'textarea',
-    name: '6',
-  },
-  {
-    question:
-      'If you could give this person one piece of constructive advice to make them more effective in their role, what would you say?',
-    type: 'textarea',
-    name: '7',
-  },
-]
+export const EmployeePeerReviewsAction = (props: Props) => {
+  const { employeePeerReviewDetail, onAfterDelete } = props
 
-export const MemberPeerReviewsAction = (props: Props) => {
-  const { memberPeerReviewDetail } = props
+  const { query } = useRouter()
+
+  const { data: reviewDetail } = useFetchWithCache(
+    [
+      GET_PATHS.getSurveyReviewDetail(
+        query.id as string,
+        query.topicId as string,
+        employeePeerReviewDetail.eventReviewerID as string,
+      ),
+    ],
+    () =>
+      client.getSurveyReviewDetail(
+        query.id as string,
+        query.topicId as string,
+        employeePeerReviewDetail.eventReviewerID as string,
+      ),
+  )
+
+  const transformDataToViewFeedbackDetail = (
+    data?: ViewFeedBackReviewDetail,
+  ) => ({
+    answers: data?.questions,
+    employeeID: data?.employee?.id,
+    eventID: employeePeerReviewDetail.eventReviewerID,
+    relationship: data?.relationship,
+    reviewer: data?.reviewer,
+    title: data?.topicName,
+  })
 
   const {
     isOpen: isPreviewDialogOpen,
@@ -67,9 +59,17 @@ export const MemberPeerReviewsAction = (props: Props) => {
     try {
       setIsLoading(true)
 
+      await client.removeSurveyParticipants(
+        query.id as string,
+        query.topicId as string,
+        [reviewDetail?.data?.reviewer?.id] as string[],
+      )
+
       notification.success({
         message: 'Peer performance review deleted successfully!',
       })
+
+      onAfterDelete()
     } catch (error: any) {
       notification.error({
         message: error?.message || 'Could not delete peer performance review',
@@ -85,7 +85,7 @@ export const MemberPeerReviewsAction = (props: Props) => {
       content: (
         <>
           Do you want to delete peer performance review from{' '}
-          <strong>{memberPeerReviewDetail.reviewer?.displayName}</strong>?
+          <strong>{employeePeerReviewDetail.reviewer?.displayName}</strong>?
         </>
       ),
       okText: 'Delete',
@@ -104,7 +104,7 @@ export const MemberPeerReviewsAction = (props: Props) => {
             icon={<EyeOutlined />}
             onClick={openPreviewDialog}
             disabled={
-              memberPeerReviewDetail.status !== MemberPeerReviewStatus.DONE
+              employeePeerReviewDetail.status !== EmployeePeerReviewStatus.DONE
             }
           />
         </Tooltip>
@@ -117,19 +117,19 @@ export const MemberPeerReviewsAction = (props: Props) => {
             icon={<DeleteOutlined />}
             onClick={confirmDelete}
             disabled={
-              memberPeerReviewDetail.status !== MemberPeerReviewStatus.DRAFT
+              employeePeerReviewDetail.status !== EmployeePeerReviewStatus.DRAFT
             }
           />
         </Tooltip>
       </Col>
 
       <PeerPerformanceReviewModal
-        data={mockData}
         isPreviewing={false}
-        // peerReviewData={memberPeerReviewDetail}
-        values={new Array(8).fill('Lorem Ipsum')}
         isOpen={isPreviewDialogOpen}
         onCancel={closePreviewDialog}
+        answers={reviewDetail?.data?.questions || []}
+        detail={transformDataToViewFeedbackDetail(reviewDetail?.data)}
+        centered
       />
     </Row>
   )

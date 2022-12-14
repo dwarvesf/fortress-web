@@ -32,12 +32,12 @@ export const AddParticipantsModal = (props: Props) => {
   const [value, setValue] = useState('')
   const { filter, setFilter } = useFilter(
     new EmployeeListFilter({
-      workingStatus: [EmployeeStatus.FULLTIME, EmployeeStatus.PROBATION],
+      workingStatus: [EmployeeStatus.FULLTIME],
     }),
   )
   const { data: employeeData, loading: employeeLoading } = useFetchWithCache(
     [GET_PATHS.getEmployees, filter],
-    () => client.getEmployees(filter),
+    () => client.getEmployees({ ...filter, size: 1000 }),
   )
   const employees = employeeData?.data || []
   const { data: topicData, loading: topicLoading } = useFetchWithCache(

@@ -1,10 +1,10 @@
-import { List, Modal, Space, Tag } from 'antd'
+import { List, Modal, Space, Tag, ModalProps } from 'antd'
 import { Button } from 'components/common/Button'
 import { ViewFeedbackDetail, ViewQuestionAnswer } from 'types/schema'
 import { capitalizeFirstLetter } from 'utils/string'
 import { FeedbackPreviewField } from 'components/common/Feedbacks/FeedbackPreviewField'
 
-interface Props {
+interface Props extends ModalProps {
   isPreviewing?: boolean
   isOpen: boolean
   answers: ViewQuestionAnswer[]
@@ -21,6 +21,7 @@ export const PeerPerformanceReviewModal = (props: Props) => {
     detail,
     onCancel,
     onOk,
+    ...rest
   } = props
 
   if (!detail) {
@@ -47,12 +48,13 @@ export const PeerPerformanceReviewModal = (props: Props) => {
       title={
         <Space direction="vertical">
           <Space>
-            <span>{detail.reviewer?.displayName}</span>
-            <Tag>{capitalizeFirstLetter(detail.relationship || '-')}</Tag>
+            <span>{detail?.reviewer?.displayName || '-'}</span>
+            <Tag>{capitalizeFirstLetter(detail?.relationship || '-')}</Tag>
           </Space>
-          <small>{detail.title}</small>
+          {detail?.title && <small>{detail?.title}</small>}
         </Space>
       }
+      {...rest}
     >
       <List
         itemLayout="horizontal"
