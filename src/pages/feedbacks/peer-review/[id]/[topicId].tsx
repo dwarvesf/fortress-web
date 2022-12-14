@@ -16,7 +16,13 @@ import { client, GET_PATHS } from 'libs/apis'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { ViewPeerReviewer } from 'types/schema'
 
-const columns: ColumnsType<ViewPeerReviewer> = [
+interface ColumnProps {
+  onAfterDelete: () => void
+}
+
+const columns = ({
+  onAfterDelete,
+}: ColumnProps): ColumnsType<ViewPeerReviewer> => [
   {
     title: 'Reviewer',
     key: 'reviewer',
@@ -43,7 +49,10 @@ const columns: ColumnsType<ViewPeerReviewer> = [
   {
     title: '',
     render: (value: ViewPeerReviewer) => (
-      <MemberPeerReviewsAction memberPeerReviewDetail={value} />
+      <MemberPeerReviewsAction
+        memberPeerReviewDetail={value}
+        onAfterDelete={onAfterDelete}
+      />
     ),
     fixed: 'right',
   },
@@ -52,7 +61,7 @@ const columns: ColumnsType<ViewPeerReviewer> = [
 const MemberPeerReviewsPage = () => {
   const { query } = useRouter()
 
-  const { data, loading } = useFetchWithCache(
+  const { data, loading, mutate } = useFetchWithCache(
     [GET_PATHS.getSurveyTopic(query.id as string, query.topicId as string)],
     () =>
       client.getPeerReviewDetail(query.id as string, query.topicId as string),
@@ -66,7 +75,9 @@ const MemberPeerReviewsPage = () => {
       />
       <Table
         dataSource={data?.data?.participants || []}
-        columns={columns}
+        columns={columns({
+          onAfterDelete: mutate,
+        })}
         rowKey={(row) => row.eventReviewerID as string}
         pagination={false}
         scroll={{ x: 'max-content' }}

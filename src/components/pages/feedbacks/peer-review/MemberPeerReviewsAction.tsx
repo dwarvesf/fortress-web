@@ -12,10 +12,11 @@ import { PeerPerformanceReviewModal } from '../inbox/peer-review/PeerPerformance
 
 interface Props {
   memberPeerReviewDetail: ViewPeerReviewer
+  onAfterDelete: () => void
 }
 
 export const MemberPeerReviewsAction = (props: Props) => {
-  const { memberPeerReviewDetail } = props
+  const { memberPeerReviewDetail, onAfterDelete } = props
 
   const { query } = useRouter()
 
@@ -58,9 +59,17 @@ export const MemberPeerReviewsAction = (props: Props) => {
     try {
       setIsLoading(true)
 
+      await client.removeParticipantPeerReviewDetail(
+        query.id as string,
+        query.topicId as string,
+        [reviewDetail?.data?.reviewer?.id] as string[],
+      )
+
       notification.success({
         message: 'Peer performance review deleted successfully!',
       })
+
+      onAfterDelete()
     } catch (error: any) {
       notification.error({
         message: error?.message || 'Could not delete peer performance review',

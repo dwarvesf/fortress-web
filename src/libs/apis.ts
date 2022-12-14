@@ -667,6 +667,21 @@ class Client {
       },
     )
   }
+
+  public removeParticipantPeerReviewDetail(
+    id: string,
+    topicID: string,
+    reviewerIDs: string[],
+  ) {
+    return fetcher<ViewFeedbackReviewDetailResponse>(
+      `${BASE_URL}/surveys/${id}/topics/${topicID}/employees`,
+      {
+        method: 'DELETE',
+        headers: { ...this.privateHeaders },
+        body: JSON.stringify({ reviewerIDs }),
+      },
+    )
+  }
 }
 
 const client = new Client()
