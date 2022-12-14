@@ -192,9 +192,13 @@ const Default = () => {
     try {
       setIsLoading(true)
 
+      await client.markSurveyAsDone(peerReviewId)
+
       notification.success({
         message: 'Peer performance review event marked as done successfully!',
       })
+
+      mutateSurveyDetail()
     } catch (error: any) {
       notification.error({
         message:
