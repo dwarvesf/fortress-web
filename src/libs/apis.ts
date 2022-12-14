@@ -633,6 +633,15 @@ class Client {
       },
     )
   }
+
+  public markSurveyAsDone(id: string) {
+    return fetcher<ViewMessageResponse>(`${BASE_URL}/surveys/${id}/done`, {
+      method: 'PUT',
+      headers: {
+        ...this.privateHeaders,
+      },
+    })
+  }
 }
 
 const client = new Client()
