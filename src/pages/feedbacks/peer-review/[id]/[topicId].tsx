@@ -10,7 +10,6 @@ import {
 } from 'constants/status'
 import { useRouter } from 'next/router'
 import React from 'react'
-import { PeerReviewDetail } from 'components/pages/feedbacks/peer-review/mockData'
 import { MemberRelationship, memberRelationship } from 'constants/relationship'
 import { MemberPeerReviewsAction } from 'components/pages/feedbacks/peer-review/MemberPeerReviewsAction'
 import { client, GET_PATHS } from 'libs/apis'
@@ -43,7 +42,7 @@ const columns: ColumnsType<ViewPeerReviewer> = [
   },
   {
     title: '',
-    render: (value: PeerReviewDetail) => (
+    render: (value: ViewPeerReviewer) => (
       <MemberPeerReviewsAction memberPeerReviewDetail={value} />
     ),
     fixed: 'right',

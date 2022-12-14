@@ -43,6 +43,7 @@ import {
   RequestSendPerformanceReviewInput,
   ViewPeerReviewDetailResponse,
   RequestUpdateTopicReviewersBody,
+  ViewFeedbackReviewDetailResponse,
 } from 'types/schema'
 import { EmployeeListFilter } from 'types/filters/EmployeeListFilter'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
@@ -83,6 +84,11 @@ export const GET_PATHS = {
     `/surveys/${id}/topics/${topicId}`,
   getPeerReviewDetail: (id: string, topicID: string) =>
     `/surveys/${id}/topics/${topicID}`,
+  getPeerReviewDetailQuestions: (
+    id: string,
+    topicID: string,
+    reviewerID: string,
+  ) => `/surveys/${id}/topics/${topicID}/reviews/${reviewerID}`,
 }
 export interface Meta {
   page?: number
@@ -648,6 +654,19 @@ class Client {
   public getPeerReviewDetail(id: string, topicID: string) {
     return fetcher<ViewPeerReviewDetailResponse>(
       `${BASE_URL}/surveys/${id}/topics/${topicID}`,
+      {
+        headers: { ...this.privateHeaders },
+      },
+    )
+  }
+
+  public getPeerReviewDetailQuestions(
+    id: string,
+    topicID: string,
+    reviewerID: string,
+  ) {
+    return fetcher<ViewFeedbackReviewDetailResponse>(
+      `${BASE_URL}/surveys/${id}/topics/${topicID}/reviews/${reviewerID}`,
       {
         headers: { ...this.privateHeaders },
       },

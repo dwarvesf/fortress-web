@@ -3,16 +3,48 @@ import { useDisclosure } from '@dwarvesf/react-hooks'
 import { Col, Modal, notification, Row, Tooltip } from 'antd'
 import { Button } from 'components/common/Button'
 import { MemberPeerReviewStatus } from 'constants/status'
+import { useFetchWithCache } from 'hooks/useFetchWithCache'
+import { client, GET_PATHS } from 'libs/apis'
+import { useRouter } from 'next/router'
 import { useState } from 'react'
+import { ViewFeedBackReviewDetail, ViewPeerReviewer } from 'types/schema'
 import { PeerPerformanceReviewModal } from '../inbox/peer-review/PeerPerformanceReviewModal'
-import { MemberPeerReviewDetail } from './mockData'
 
 interface Props {
-  memberPeerReviewDetail: MemberPeerReviewDetail
+  memberPeerReviewDetail: ViewPeerReviewer
 }
 
 export const MemberPeerReviewsAction = (props: Props) => {
   const { memberPeerReviewDetail } = props
+
+  const { query } = useRouter()
+
+  const { data: reviewDetail } = useFetchWithCache(
+    [
+      GET_PATHS.getPeerReviewDetailQuestions(
+        query.id as string,
+        query.topicId as string,
+        memberPeerReviewDetail.eventReviewerID as string,
+      ),
+    ],
+    () =>
+      client.getPeerReviewDetailQuestions(
+        query.id as string,
+        query.topicId as string,
+        memberPeerReviewDetail.eventReviewerID as string,
+      ),
+  )
+
+  const transformDataToViewFeedbackDetail = (
+    data?: ViewFeedBackReviewDetail,
+  ) => ({
+    answers: data?.questions,
+    employeeID: data?.employee?.id,
+    eventID: memberPeerReviewDetail.eventReviewerID,
+    relationship: data?.relationship,
+    reviewer: data?.reviewer,
+    title: data?.topicName,
+  })
 
   const {
     isOpen: isPreviewDialogOpen,
@@ -86,8 +118,9 @@ export const MemberPeerReviewsAction = (props: Props) => {
         isPreviewing={false}
         isOpen={isPreviewDialogOpen}
         onCancel={closePreviewDialog}
-        answers={[]}
-        detail={{}}
+        answers={reviewDetail?.data?.questions || []}
+        detail={transformDataToViewFeedbackDetail(reviewDetail?.data)}
+        centered
       />
     </Row>
   )
