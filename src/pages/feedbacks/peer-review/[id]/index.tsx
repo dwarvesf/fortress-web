@@ -51,7 +51,7 @@ const columns = ({
     title: 'Participants',
     key: 'participants',
     dataIndex: 'participants',
-    render: (value) => <AvatarArray data={value} />,
+    render: (value) => (value.length > 0 ? <AvatarArray data={value} /> : '-'),
   },
   {
     title: 'Completed',

@@ -1,8 +1,8 @@
 import { useDisclosure } from '@dwarvesf/react-hooks'
-import { Card, Col, Form, notification, Row, Space, Tag } from 'antd'
+import { Card, Col, Form, notification, Row, Space, Switch, Tag } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
-import TextArea from 'antd/lib/input/TextArea'
 import { Button } from 'components/common/Button'
+import { FeedbackFormField } from 'components/common/Feedbacks/FeedbackFormField'
 import { ItemIndex } from 'components/common/ItemIndex'
 import { PageHeader } from 'components/common/PageHeader'
 import { PageSpinner } from 'components/common/PageSpinner'
@@ -15,19 +15,6 @@ import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
 import { RequestSubmitBody } from 'types/schema'
 import { PeerPerformanceReviewModal } from './PeerPerformanceReviewModal'
-
-const Field = (props: any) => {
-  const { type, ...rest } = props
-
-  switch (type) {
-    case 'general': {
-      return <TextArea {...rest} rows={3} bordered />
-    }
-    default: {
-      return null
-    }
-  }
-}
 
 export const PeerFormanceReviewForm = () => {
   const {
@@ -49,6 +36,7 @@ export const PeerFormanceReviewForm = () => {
     {},
   )
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [showNote, setShowNote] = useState(true)
 
   const {
     isOpen: isPreviewDialogOpen,
@@ -61,6 +49,7 @@ export const PeerFormanceReviewForm = () => {
       return {
         ...result,
         [current.eventQuestionID || '']: current.answer,
+        [`${current.eventQuestionID}_notes`]: current.note || '',
       }
     }, {})
   }, [detail])
@@ -74,6 +63,7 @@ export const PeerFormanceReviewForm = () => {
       return {
         ...answer,
         answer: submittedValues[answer.eventQuestionID || ''],
+        note: submittedValues[`${answer.eventQuestionID}_notes`],
       }
     })
   }, [submittedValues, detail])
@@ -176,26 +166,29 @@ export const PeerFormanceReviewForm = () => {
                           </ItemIndex>
                         </Col>
                         <Col flex={1}>
-                          <Form.Item
+                          <FeedbackFormField
+                            type={field.type || 'general'}
+                            name={field.eventQuestionID}
                             label={field.content}
-                            name={field.eventQuestionID || ''}
-                            required
-                            rules={[{ required: true, message: 'Required' }]}
-                          >
-                            <Field
-                              {...field}
-                              disabled={
-                                detail.status ===
-                                ModelEventReviewerStatus.EventReviewerStatusDone
-                              }
-                            />
-                          </Form.Item>
+                            showNote={showNote}
+                            disabled={
+                              detail.status ===
+                              ModelEventReviewerStatus.EventReviewerStatusDone
+                            }
+                          />
                         </Col>
                       </Row>
                     )
                   })}
                 </Space>
               </Form>
+              <Space>
+                <Switch
+                  checked={showNote}
+                  onChange={(checked) => setShowNote(checked)}
+                />
+                <span>Show note</span>
+              </Space>
             </Card>
           </Col>
         </Row>

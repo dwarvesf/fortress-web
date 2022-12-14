@@ -1,8 +1,8 @@
-import { Col, Modal, Row, Space, Tag } from 'antd'
-import { ItemIndex } from 'components/common/ItemIndex'
+import { List, Modal, Space, Tag } from 'antd'
 import { Button } from 'components/common/Button'
 import { ViewFeedbackDetail, ViewQuestionAnswer } from 'types/schema'
 import { capitalizeFirstLetter } from 'utils/string'
+import { FeedbackPreviewField } from 'components/common/Feedbacks/FeedbackPreviewField'
 
 interface Props {
   isPreviewing?: boolean
@@ -22,6 +22,10 @@ export const PeerPerformanceReviewModal = (props: Props) => {
     onCancel,
     onOk,
   } = props
+
+  if (!detail) {
+    return null
+  }
 
   return (
     <Modal
@@ -50,25 +54,15 @@ export const PeerPerformanceReviewModal = (props: Props) => {
         </Space>
       }
     >
-      <Space direction="vertical" style={{ width: '100%' }} size={24}>
-        {answers.map((answer, index: number) => {
+      <List
+        itemLayout="horizontal"
+        dataSource={answers}
+        renderItem={(item, index) => {
           return (
-            <Row key={index} gutter={24} wrap={false}>
-              <Col>
-                <ItemIndex active>{index + 1}</ItemIndex>
-              </Col>
-              <Col flex={1}>
-                <Space direction="vertical">
-                  <div>
-                    <b>{answer.content}</b>
-                  </div>
-                  <div>{answer.answer || '-'}</div>
-                </Space>
-              </Col>
-            </Row>
+            <FeedbackPreviewField answer={item} key={index} index={index} />
           )
-        })}
-      </Space>
+        }}
+      />
     </Modal>
   )
 }

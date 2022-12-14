@@ -8,3 +8,12 @@ body a:hover {
 tr.inbox-row:not(.not-read) td {
   background-color: #fafafa;
 }
+
+.likert-scale .ant-radio-button-wrapper {
+  opacity: 0.3;
+}
+
+.likert-scale .ant-radio-button-wrapper:hover,
+.likert-scale .ant-radio-button-wrapper.ant-radio-button-wrapper-checked {
+  opacity: 1;
+}
