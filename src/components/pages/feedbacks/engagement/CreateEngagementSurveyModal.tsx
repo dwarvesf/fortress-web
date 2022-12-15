@@ -20,14 +20,16 @@ export const CreateEngagementSurveyModal = (props: Props) => {
       setIsSubmitting(true)
 
       notification.success({
-        message: 'Peer performance review event created successfully!',
+        message: 'Employee engagement survey event created successfully!',
       })
 
       onClose()
       onAfterSubmit()
     } catch (error: any) {
       notification.error({
-        message: error?.message || 'Could not create peer performance review',
+        message:
+          error?.message ||
+          'Could not create employee engagement survey event!',
       })
     } finally {
       setIsSubmitting(false)
@@ -48,8 +50,7 @@ export const CreateEngagementSurveyModal = (props: Props) => {
         <Form.Item
           label="Quarter"
           name="quarter"
-          required
-          rules={[{ required: true }]}
+          rules={[{ required: true, message: 'Please select quarter' }]}
         >
           <Select
             placeholder="Select quarter"
@@ -62,8 +63,7 @@ export const CreateEngagementSurveyModal = (props: Props) => {
         <Form.Item
           label="Year"
           name="year"
-          required
-          rules={[{ required: true }]}
+          rules={[{ required: true, message: 'Please select year' }]}
         >
           <Select
             placeholder="Select year"
