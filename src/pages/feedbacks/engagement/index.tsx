@@ -6,6 +6,8 @@ import { ProgressColumn } from 'components/pages/feedbacks/peer-review/ProgressC
 import { statusColors } from 'constants/colors'
 import { PeerReviewStatus, peerReviewStatuses } from 'constants/status'
 import { Actions } from 'components/pages/feedbacks/engagement/Actions'
+import { CreateEngagementSurveyModal } from 'components/pages/feedbacks/engagement/CreateEngagementSurveyModal'
+import { useDisclosure } from '@dwarvesf/react-hooks'
 
 const mockData = [
   {
@@ -83,30 +85,49 @@ const columns: ColumnsType<any> = [
 ]
 
 const EmployeeEngagementPage = () => {
+  const {
+    isOpen: isCreateEngagementSurveyModalOpen,
+    onOpen: openCreateEngagementSurveyModal,
+    onClose: closeCreateEngagementSurveyModal,
+  } = useDisclosure()
+
   return (
-    <Space direction="vertical" size={24} style={{ width: '100%' }}>
-      <PageHeader
-        title="Employee engagement"
-        rightRender={<Button type="primary">Create</Button>}
-      />
-      <Table
-        dataSource={mockData || []}
-        columns={columns}
-        // loading={loading}
-        rowKey={(row) => row.id as string}
-        pagination={false}
-        scroll={{ x: 'max-content' }}
-      />
-      <Row justify="end">
-        <Pagination
-          current={1}
-          onChange={() => {}}
-          total={3}
-          pageSize={20}
-          hideOnSinglePage
+    <>
+      <Space direction="vertical" size={24} style={{ width: '100%' }}>
+        <PageHeader
+          title="Employee engagement"
+          rightRender={
+            <Button type="primary" onClick={openCreateEngagementSurveyModal}>
+              Create
+            </Button>
+          }
         />
-      </Row>
-    </Space>
+        <Table
+          dataSource={mockData || []}
+          columns={columns}
+          // loading={loading}
+          rowKey={(row) => row.id as string}
+          pagination={false}
+          scroll={{ x: 'max-content' }}
+        />
+        <Row justify="end">
+          <Pagination
+            current={1}
+            onChange={() => {}}
+            total={3}
+            pageSize={20}
+            hideOnSinglePage
+          />
+        </Row>
+      </Space>
+
+      <CreateEngagementSurveyModal
+        isOpen={isCreateEngagementSurveyModalOpen}
+        initialValues={{ quarter: 'q1', year: 2022 }}
+        onClose={closeCreateEngagementSurveyModal}
+        onAfterSubmit={() => {}}
+      />
+    </>
   )
 }
 
