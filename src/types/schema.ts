@@ -130,6 +130,10 @@ export interface RequestCreateWorkUnitBody {
   url?: string
 }
 
+export interface RequestDeleteTopicReviewersBody {
+  reviewerIDs?: string[]
+}
+
 export interface RequestPerformanceReviewTopic {
   participants: string[]
   topicID: string
