@@ -10,7 +10,11 @@ export const FormWrapper = (props: Props) => {
   const { children, footer } = props
 
   return (
-    <Card style={{ maxWidth: '100%' }} bodyStyle={{ padding: 0 }}>
+    <Card
+      style={{ maxWidth: '100%' }}
+      bodyStyle={{ padding: 0 }}
+      bordered={false}
+    >
       <Card>{children}</Card>
       {footer && (
         <Card style={{ position: 'sticky', bottom: 0, zIndex: 20 }}>

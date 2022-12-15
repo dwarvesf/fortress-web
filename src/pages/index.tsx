@@ -3,11 +3,11 @@ import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 
 const DashboardPage = () => {
-  const { push } = useRouter()
+  const { replace } = useRouter()
 
   useEffect(() => {
-    push(ROUTES.PROJECTS)
-  }, [push])
+    replace(ROUTES.PROJECTS)
+  }, [replace])
 
   return <>Dashboard</>
 }
