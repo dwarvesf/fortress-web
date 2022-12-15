@@ -4,7 +4,7 @@ import { useState } from 'react'
 
 interface Props {
   isOpen: boolean
-  initialValues: Partial<any>
+  initialValues: Partial<any> // TODO: add type
   onClose: () => void
   onAfterSubmit: () => void
 }
@@ -37,10 +37,7 @@ export const CreateEngagementSurveyModal = (props: Props) => {
   return (
     <Modal
       open={isOpen}
-      onCancel={() => {
-        onClose()
-        form.resetFields()
-      }}
+      onCancel={onClose}
       onOk={form.submit}
       okText="Create"
       okButtonProps={{ loading: isSubmitting }}
