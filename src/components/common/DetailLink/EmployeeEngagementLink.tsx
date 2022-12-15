@@ -10,7 +10,7 @@ export const EmployeeEngagementLink = (props: Props) => {
   const { id, children } = props
 
   return (
-    <Link href={id ? ROUTES.EMPLOYEE_ENGAGEMENT_DETAIL(id) : ROUTES.ENGAGEMENT}>
+    <Link href={ROUTES.EMPLOYEE_ENGAGEMENT_DETAIL(id)}>
       <a>{children}</a>
     </Link>
   )
