@@ -19,10 +19,10 @@ import { AvatarWithName } from 'components/common/AvatarWithName'
 import { NameArray } from 'components/common/NameArray'
 import { PageHeader } from 'components/common/PageHeader'
 import { PeerReviewEventDetailActions } from 'components/pages/feedbacks/peer-review/PeerReviewEventDetailActions'
-import { ProgressColumn } from 'components/pages/feedbacks/peer-review/ProgressColumn'
+import { ProgressColumn } from 'components/common/ProgressColumn'
 import { statusColors } from 'constants/colors'
 import { ROUTES } from 'constants/routes'
-import { PeerReviewStatus, peerReviewStatuses } from 'constants/status'
+import { SurveyStatus, surveyStatuses } from 'constants/status'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { useFilter } from 'hooks/useFilter'
 import { client, GET_PATHS } from 'libs/apis'
@@ -230,7 +230,7 @@ const Default = () => {
             {status && (
               <div style={{ display: 'flex' }}>
                 <Tag color={statusColors[status]}>
-                  {peerReviewStatuses[status as PeerReviewStatus] || '-'}
+                  {surveyStatuses[status as SurveyStatus] || '-'}
                 </Tag>
               </div>
             )}
@@ -258,13 +258,13 @@ const Default = () => {
                 overlay={
                   <Menu>
                     <Menu.Item
-                      disabled={status !== PeerReviewStatus.INPROGRESS}
+                      disabled={status !== SurveyStatus.INPROGRESS}
                       onClick={confirmMarkDone}
                     >
                       Mark done
                     </Menu.Item>
                     <Menu.Item
-                      disabled={status !== PeerReviewStatus.DRAFT}
+                      disabled={status !== SurveyStatus.DRAFT}
                       onClick={confirmDelete}
                     >
                       Delete

@@ -38,28 +38,29 @@ export const projectWorkUnitStatuses: Record<ProjectWorkUnitStatus, string> = {
   [ProjectWorkUnitStatus.ARCHIVED]: 'Archived',
 }
 
-export enum PeerReviewStatus {
+export enum SurveyStatus {
   DRAFT = 'draft',
   INPROGRESS = 'in-progress',
   DONE = 'done',
 }
 
-export const peerReviewStatuses: Record<PeerReviewStatus, string> = {
-  [PeerReviewStatus.DRAFT]: 'Draft',
-  [PeerReviewStatus.INPROGRESS]: 'In progress',
-  [PeerReviewStatus.DONE]: 'Done',
+export const surveyStatuses: Record<SurveyStatus, string> = {
+  [SurveyStatus.DRAFT]: 'Draft',
+  [SurveyStatus.INPROGRESS]: 'In progress',
+  [SurveyStatus.DONE]: 'Done',
 }
 
-export enum PeerReviewSurveyStatus {
+export enum SurveyTopicStatus {
+  DRAFT = 'draft',
   DONE = 'done',
   SENT = 'sent',
 }
 
-export const peerReviewSurveyStatuses: Record<PeerReviewSurveyStatus, string> =
-  {
-    [PeerReviewSurveyStatus.DONE]: 'Done',
-    [PeerReviewSurveyStatus.SENT]: 'Sent',
-  }
+export const surveyTopicStatuses: Record<SurveyTopicStatus, string> = {
+  [SurveyTopicStatus.DRAFT]: 'Draft',
+  [SurveyTopicStatus.DONE]: 'Done',
+  [SurveyTopicStatus.SENT]: 'Sent',
+}
 
 export enum EmployeePeerReviewStatus {
   DONE = 'done',

@@ -5,8 +5,8 @@ import { Button } from 'components/common/Button'
 import { statusColors } from 'constants/colors'
 import {
   EmployeeStatus,
-  PeerReviewSurveyStatus,
-  peerReviewSurveyStatuses,
+  SurveyTopicStatus,
+  surveyTopicStatuses,
 } from 'constants/status'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { useFilter } from 'hooks/useFilter'
@@ -138,11 +138,8 @@ export const AddParticipantsModal = (props: Props) => {
           <List.Item
             actions={[
               <div style={{ minWidth: 60 }}>
-                {[
-                  PeerReviewSurveyStatus.DONE,
-                  PeerReviewSurveyStatus.SENT,
-                ].includes(
-                  participantStatuses[item.id!] as PeerReviewSurveyStatus,
+                {[SurveyTopicStatus.DONE, SurveyTopicStatus.SENT].includes(
+                  participantStatuses[item.id!] as SurveyTopicStatus,
                 ) ? (
                   <Tag
                     color={
@@ -151,8 +148,8 @@ export const AddParticipantsModal = (props: Props) => {
                     style={{ margin: 0 }}
                   >
                     {
-                      peerReviewSurveyStatuses[
-                        participantStatuses[item.id!] as PeerReviewSurveyStatus
+                      surveyTopicStatuses[
+                        participantStatuses[item.id!] as SurveyTopicStatus
                       ]
                     }
                   </Tag>
