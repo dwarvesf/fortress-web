@@ -1,10 +1,4 @@
-import {
-  AppstoreFilled,
-  LayoutFilled,
-  SettingFilled,
-  UserOutlined,
-  WechatFilled,
-} from '@ant-design/icons'
+import { AppstoreFilled, UserOutlined, WechatFilled } from '@ant-design/icons'
 import { Col, MenuProps, Row, Layout, Menu } from 'antd'
 import { ROUTES } from 'constants/routes'
 import { LOGIN_REDIRECTION_KEY, useAuthContext } from 'context/auth'
@@ -37,7 +31,7 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-  getItem('Dashboard', ROUTES.DASHBOARD, <LayoutFilled />),
+  // getItem('Dashboard', ROUTES.DASHBOARD, <LayoutFilled />),
   getItem('Projects', ROUTES.PROJECTS, <AppstoreFilled />),
   getItem('Employees', ROUTES.EMPLOYEES, <UserOutlined />),
   getItem('Feedbacks', ROUTES.FEEDBACKS, <WechatFilled />, [
@@ -46,7 +40,7 @@ const items: MenuItem[] = [
     getItem('Engagement', ROUTES.ENGAGEMENT),
     getItem('Workload', ROUTES.WORKLOAD),
   ]),
-  getItem('Config', ROUTES.CONFIG, <SettingFilled />),
+  // getItem('Config', ROUTES.CONFIG, <SettingFilled />),
 ]
 
 interface Props extends WithChildren {}

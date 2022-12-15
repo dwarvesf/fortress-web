@@ -32,11 +32,13 @@ import { SurveyDetailFilter } from 'types/filters/SurveyDetailFilter'
 import { ViewTopic } from 'types/schema'
 
 interface ColumnProps {
+  eventStatus?: PeerReviewStatus
   onAfterDelete: () => void
   onAfterEdit: () => void
 }
 
 const columns = ({
+  eventStatus,
   onAfterDelete,
   onAfterEdit,
 }: ColumnProps): ColumnsType<ViewTopic> => [
@@ -70,6 +72,7 @@ const columns = ({
         topic={value}
         onAfterDelete={onAfterDelete}
         onAfterEdit={onAfterEdit}
+        eventStatus={eventStatus}
       />
     ),
     fixed: 'right',
@@ -283,6 +286,7 @@ const Default = () => {
         columns={columns({
           onAfterDelete: mutateSurveyDetail,
           onAfterEdit: mutateSurveyDetail,
+          eventStatus: status as PeerReviewStatus,
         })}
         rowSelection={{
           type: 'checkbox',
