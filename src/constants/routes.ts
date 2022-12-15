@@ -20,4 +20,5 @@ export const ROUTES = {
   EMPLOYEE_PEER_REVIEWS: (id: string, topicId: string) =>
     `/feedbacks/peer-review/${id}/${topicId}`,
   FEEDBACK_INBOX_DETAIL: (id: string) => `/feedbacks/inbox/${id}`,
+  EMPLOYEE_ENGAGEMENT: (id: string) => `/feedbacks/engagement/${id}`,
 }

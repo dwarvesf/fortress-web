@@ -77,7 +77,7 @@ const columns: ColumnsType<any> = [
   },
   {
     title: '',
-    render: () => <Actions />,
+    render: (value) => <Actions record={value} />,
     fixed: 'right',
   },
 ]
