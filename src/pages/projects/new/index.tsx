@@ -24,6 +24,7 @@ import { PlusCircleOutlined } from '@ant-design/icons'
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { ProjectMemberModal } from 'components/pages/projects/add/ProjectMemberModal'
 import { ProjectMemberTable } from 'components/pages/projects/add/ProjectMemberTable'
+import { FormWrapper } from 'components/common/FormWrapper'
 
 const getPositionsFromIDs = (data: ModelPosition[], positionStrs: string[]) => {
   const result: ViewPosition[] = []
@@ -166,49 +167,8 @@ const CreateNewProjectPage = () => {
       <Space direction="vertical" size={24} style={{ width: '100%' }}>
         <PageHeader title="New project" />
 
-        <Row gutter={[0, 24]}>
-          <Col span={24} lg={{ span: 16 }}>
-            <ProjectForm form={form} onSubmit={onSubmit} />
-          </Col>
-
-          <Col span={24}>
-            <Card>
-              <Space
-                align="center"
-                style={{
-                  justifyContent: 'space-between',
-                  width: '100%',
-                  marginBottom: 24,
-                }}
-              >
-                <Typography.Title level={4}>Members</Typography.Title>
-                <Button
-                  type="primary"
-                  icon={<PlusCircleOutlined />}
-                  onClick={openAddNewMemberDialog}
-                >
-                  Add New
-                </Button>
-              </Space>
-
-              <ProjectMemberTable
-                data={memberTableData}
-                memberData={memberData}
-                setMemberData={setMemberData}
-                getDataOnSubmit={(
-                  e: ViewEmployeeListDataResponse & Meta,
-                  s: ViewSeniorityResponse,
-                  p: ViewPositionResponse,
-                ) => {
-                  setEmployeeData(e)
-                  setSenioritiesData(s)
-                  setPositionsData(p)
-                }}
-              />
-            </Card>
-          </Col>
-
-          <Col span={24}>
+        <FormWrapper
+          footer={
             <Button
               type="primary"
               htmlType="submit"
@@ -217,9 +177,53 @@ const CreateNewProjectPage = () => {
             >
               Submit
             </Button>
-          </Col>
-        </Row>
+          }
+        >
+          <Row gutter={[0, 24]}>
+            <Col span={24} lg={{ span: 16 }}>
+              <ProjectForm form={form} onSubmit={onSubmit} />
+            </Col>
+
+            <Col span={24}>
+              <Card>
+                <Space
+                  align="center"
+                  style={{
+                    justifyContent: 'space-between',
+                    width: '100%',
+                    marginBottom: 24,
+                  }}
+                >
+                  <Typography.Title level={4}>Members</Typography.Title>
+                  <Button
+                    type="primary"
+                    icon={<PlusCircleOutlined />}
+                    onClick={openAddNewMemberDialog}
+                  >
+                    Add New
+                  </Button>
+                </Space>
+
+                <ProjectMemberTable
+                  data={memberTableData}
+                  memberData={memberData}
+                  setMemberData={setMemberData}
+                  getDataOnSubmit={(
+                    e: ViewEmployeeListDataResponse & Meta,
+                    s: ViewSeniorityResponse,
+                    p: ViewPositionResponse,
+                  ) => {
+                    setEmployeeData(e)
+                    setSenioritiesData(s)
+                    setPositionsData(p)
+                  }}
+                />
+              </Card>
+            </Col>
+          </Row>
+        </FormWrapper>
       </Space>
+
       <ProjectMemberModal
         isOpen={isAddNewMemberDialogOpen}
         onClose={closeAddNewMemberDialog}

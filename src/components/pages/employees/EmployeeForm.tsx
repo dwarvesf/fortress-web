@@ -1,4 +1,5 @@
-import { Form, Row, Col, Input, Button, notification, Select, Card } from 'antd'
+import { Form, Row, Col, Input, Button, notification, Select } from 'antd'
+import { FormWrapper } from 'components/common/FormWrapper'
 import { AsyncSelect } from 'components/common/Select'
 import { renderStatusOption } from 'components/common/Select/renderers/statusOption'
 import { ROUTES } from 'constants/routes'
@@ -88,16 +89,27 @@ export const EmployeeForm = (props: Props) => {
   }, [initialValues]) // eslint-disable-line
 
   return (
-    <Form
-      form={form}
-      initialValues={initialValues}
-      onFinish={(values) => {
-        if (!isEditing) {
-          onCreateSubmit(values as Required<RequestCreateEmployeeInput>)
-        }
-      }}
+    <FormWrapper
+      footer={
+        <Button
+          type="primary"
+          htmlType="submit"
+          loading={isSubmitting}
+          onClick={form.submit}
+        >
+          Submit
+        </Button>
+      }
     >
-      <Card>
+      <Form
+        form={form}
+        initialValues={initialValues}
+        onFinish={(values) => {
+          if (!isEditing) {
+            onCreateSubmit(values as Required<RequestCreateEmployeeInput>)
+          }
+        }}
+      >
         <Row gutter={24}>
           <Col span={24} md={{ span: 12 }}>
             <Form.Item
@@ -270,15 +282,7 @@ export const EmployeeForm = (props: Props) => {
             </Form.Item>
           </Col>
         </Row>
-      </Card>
-      <Button
-        type="primary"
-        htmlType="submit"
-        loading={isSubmitting}
-        style={{ marginTop: 24 }}
-      >
-        Submit
-      </Button>
-    </Form>
+      </Form>
+    </FormWrapper>
   )
 }

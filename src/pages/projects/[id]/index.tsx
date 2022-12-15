@@ -41,26 +41,26 @@ const Default = () => {
             label: 'Members',
             children: <Member data={project} />,
           },
-          {
-            key: 'performance',
-            label: 'Performance',
-            children: 'Performance',
-          },
+          // {
+          //   key: 'performance',
+          //   label: 'Performance',
+          //   children: 'Performance',
+          // },
           {
             key: 'work-units',
             label: 'Work Units',
             children: <WorkUnits data={project} />,
           },
-          {
-            key: 'stakeholders',
-            label: 'Stakeholders',
-            children: 'Stakeholders',
-          },
-          {
-            key: 'documents',
-            label: 'Document',
-            children: 'Document',
-          },
+          // {
+          //   key: 'stakeholders',
+          //   label: 'Stakeholders',
+          //   children: 'Stakeholders',
+          // },
+          // {
+          //   key: 'documents',
+          //   label: 'Document',
+          //   children: 'Document',
+          // },
         ]}
       />
     </>

@@ -24,6 +24,9 @@ const Default = () => {
       ModelEventReviewerStatus.EventReviewerStatusDraft,
     ),
   })
+  const { filter: doneFilter, setFilter: setDoneFilter } = useFilter({
+    ...new FeedbackListFilter(ModelEventReviewerStatus.EventReviewerStatusDone),
+  })
 
   const { data: allData, loading: isAllLoading } = useFetchWithCache(
     [GET_PATHS.getFeedbacks, allFilter],
@@ -37,6 +40,12 @@ const Default = () => {
   )
   const draftFeedbacks = draftData?.data || []
 
+  const { data: doneData, loading: isDoneLoading } = useFetchWithCache(
+    [GET_PATHS.getFeedbacks, doneFilter],
+    () => client.getPersonalFeedbacks(doneFilter),
+  )
+  const doneFeedbacks = doneData?.data || []
+
   const paginationRender = useMemo(() => {
     let filter: any
     let data: any
@@ -47,6 +56,13 @@ const Default = () => {
         filter = draftFilter
         data = draftData
         setFilter = setDraftFilter
+
+        break
+      }
+      case ModelEventReviewerStatus.EventReviewerStatusDone: {
+        filter = doneFilter
+        data = doneData
+        setFilter = setDoneFilter
 
         break
       }
@@ -71,12 +87,15 @@ const Default = () => {
     ) : null
   }, [
     tabKey,
-    allData,
-    draftData,
-    allFilter,
     draftFilter,
-    setAllFilter,
+    draftData,
     setDraftFilter,
+    doneFilter,
+    doneData,
+    setDoneFilter,
+    allFilter,
+    allData,
+    setAllFilter,
   ])
 
   return (
@@ -97,17 +116,6 @@ const Default = () => {
               />
             ),
           },
-          // {
-          //   key: 'sent',
-          //   label: `Sent`,
-          //   children: (
-          //     <FeedbackInputTable
-          //       data={[]}
-          //       // isLoading={isPendingLoading}
-          //       // onAfterAction={mutate}
-          //     />
-          //   ),
-          // },
           {
             key: 'draft',
             label: `Draft (${draftFeedbacks.length})`,
@@ -115,6 +123,17 @@ const Default = () => {
               <FeedbackInputTable
                 data={draftFeedbacks}
                 isLoading={isDraftLoading}
+                // onAfterAction={mutate}
+              />
+            ),
+          },
+          {
+            key: 'done',
+            label: `Done (${doneFeedbacks.length})`,
+            children: (
+              <FeedbackInputTable
+                data={doneFeedbacks}
+                isLoading={isDoneLoading}
                 // onAfterAction={mutate}
               />
             ),
