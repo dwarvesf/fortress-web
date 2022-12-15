@@ -95,3 +95,27 @@ export const feedbackStatuses: Record<ModelEventReviewerStatus, string> = {
   [ModelEventReviewerStatus.EventReviewerStatusNew]: 'New',
   [ModelEventReviewerStatus.EventReviewerStatusNone]: 'None',
 }
+
+export enum SurveyStatus {
+  DRAFT = 'draft',
+  INPROGRESS = 'in-progress',
+  DONE = 'done',
+}
+
+export const surveyStatuses: Record<SurveyStatus, string> = {
+  [SurveyStatus.DRAFT]: 'Draft',
+  [SurveyStatus.INPROGRESS]: 'In progress',
+  [SurveyStatus.DONE]: 'Done',
+}
+
+export enum SurveyTopicStatus {
+  DRAFT = 'draft',
+  DONE = 'done',
+  SENT = 'sent',
+}
+
+export const surveyTopicStatuses: Record<SurveyTopicStatus, string> = {
+  [SurveyTopicStatus.DRAFT]: 'Draft',
+  [SurveyTopicStatus.DONE]: 'Done',
+  [SurveyTopicStatus.SENT]: 'Sent',
+}
