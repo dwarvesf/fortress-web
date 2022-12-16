@@ -17,10 +17,10 @@ import { EngagementDetailActions } from 'components/pages/feedbacks/engagement/E
 import { statusColors } from 'constants/colors'
 import { ROUTES } from 'constants/routes'
 import {
-  SurveyStatus,
-  surveyStatuses,
-  SurveyTopicStatus,
-  surveyTopicStatuses,
+  SurveyEventStatus,
+  surveyEventStatuses,
+  SurveyParticipantStatus,
+  surveyParticipantStatuses,
 } from 'constants/status'
 import React, { useState } from 'react'
 import { ViewBasicEmployeeInfo } from 'types/schema'
@@ -64,7 +64,7 @@ const columns: ColumnsType<EngagementDetail> = [
     dataIndex: 'status',
     render: (value) => (
       <Tag color={statusColors[value]}>
-        {surveyTopicStatuses[value as SurveyTopicStatus] || '-'}
+        {surveyParticipantStatuses[value as SurveyParticipantStatus] || '-'}
       </Tag>
     ),
   },
@@ -146,7 +146,7 @@ const Default = () => {
             {status && (
               <div style={{ display: 'flex' }}>
                 <Tag color={statusColors[status]}>
-                  {surveyStatuses[status as SurveyStatus] || '-'}
+                  {surveyEventStatuses[status as SurveyEventStatus] || '-'}
                 </Tag>
               </div>
             )}

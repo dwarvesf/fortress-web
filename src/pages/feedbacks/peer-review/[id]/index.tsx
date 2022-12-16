@@ -22,7 +22,7 @@ import { PeerReviewEventDetailActions } from 'components/pages/feedbacks/peer-re
 import { ProgressColumn } from 'components/common/ProgressColumn'
 import { statusColors } from 'constants/colors'
 import { ROUTES } from 'constants/routes'
-import { SurveyEventStatus, peerReviewStatuses } from 'constants/status'
+import { SurveyEventStatus, surveyEventStatuses } from 'constants/status'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { useFilter } from 'hooks/useFilter'
 import { client, GET_PATHS } from 'libs/apis'
@@ -233,7 +233,7 @@ const Default = () => {
             {status && (
               <div style={{ display: 'flex' }}>
                 <Tag color={statusColors[status]}>
-                  {peerReviewStatuses[status as SurveyEventStatus] || '-'}
+                  {surveyEventStatuses[status as SurveyEventStatus] || '-'}
                 </Tag>
               </div>
             )}

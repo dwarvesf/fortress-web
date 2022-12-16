@@ -44,7 +44,7 @@ export enum SurveyEventStatus {
   DONE = 'done',
 }
 
-export const peerReviewStatuses: Record<SurveyEventStatus, string> = {
+export const surveyEventStatuses: Record<SurveyEventStatus, string> = {
   [SurveyEventStatus.DRAFT]: 'Draft',
   [SurveyEventStatus.INPROGRESS]: 'In progress',
   [SurveyEventStatus.DONE]: 'Done',
@@ -56,7 +56,7 @@ export enum SurveyParticipantStatus {
   DRAFT = 'draft',
 }
 
-export const employeePeerReviewStatuses: Record<
+export const surveyParticipantStatuses: Record<
   SurveyParticipantStatus,
   string
 > = {
@@ -94,28 +94,4 @@ export const feedbackStatuses: Record<ModelEventReviewerStatus, string> = {
   [ModelEventReviewerStatus.EventReviewerStatusDraft]: 'Draft',
   [ModelEventReviewerStatus.EventReviewerStatusNew]: 'New',
   [ModelEventReviewerStatus.EventReviewerStatusNone]: 'None',
-}
-
-export enum SurveyStatus {
-  DRAFT = 'draft',
-  INPROGRESS = 'in-progress',
-  DONE = 'done',
-}
-
-export const surveyStatuses: Record<SurveyStatus, string> = {
-  [SurveyStatus.DRAFT]: 'Draft',
-  [SurveyStatus.INPROGRESS]: 'In progress',
-  [SurveyStatus.DONE]: 'Done',
-}
-
-export enum SurveyTopicStatus {
-  DRAFT = 'draft',
-  DONE = 'done',
-  SENT = 'sent',
-}
-
-export const surveyTopicStatuses: Record<SurveyTopicStatus, string> = {
-  [SurveyTopicStatus.DRAFT]: 'Draft',
-  [SurveyTopicStatus.DONE]: 'Done',
-  [SurveyTopicStatus.SENT]: 'Sent',
 }

@@ -5,7 +5,7 @@ import { ColumnsType } from 'antd/lib/table'
 import { ProgressColumn } from 'components/common/ProgressColumn'
 import { Actions } from 'components/pages/feedbacks/peer-review/Actions'
 import { statusColors } from 'constants/colors'
-import { SurveyEventStatus, peerReviewStatuses } from 'constants/status'
+import { SurveyEventStatus, surveyEventStatuses } from 'constants/status'
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { CreatePeerReviewModal } from 'components/pages/feedbacks/peer-review/CreatePeerReviewModal'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
@@ -39,7 +39,7 @@ const columns = ({ onAfterDelete }: ColumnProps): ColumnsType<ViewSurvey> => [
     key: 'status',
     dataIndex: 'status',
     render: (value: SurveyEventStatus) => (
-      <Tag color={statusColors[value]}>{peerReviewStatuses[value] || '-'}</Tag>
+      <Tag color={statusColors[value]}>{surveyEventStatuses[value] || '-'}</Tag>
     ),
   },
   {
