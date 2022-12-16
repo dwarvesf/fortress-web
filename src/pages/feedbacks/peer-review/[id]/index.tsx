@@ -30,6 +30,7 @@ import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { SurveyDetailFilter } from 'types/filters/SurveyDetailFilter'
 import { ViewTopic } from 'types/schema'
+import debounce from 'lodash.debounce'
 
 interface ColumnProps {
   eventStatus?: SurveyEventStatus
@@ -242,7 +243,13 @@ const Default = () => {
         rightRender={
           <>
             <Col style={{ width: 256 }}>
-              <Input placeholder="Search by name..." bordered />
+              <Input
+                placeholder="Search by name..."
+                bordered
+                onChange={debounce((e) => {
+                  setFilter({ keyword: e.target.value })
+                }, 500)}
+              />
             </Col>
             <Col>
               <Button
