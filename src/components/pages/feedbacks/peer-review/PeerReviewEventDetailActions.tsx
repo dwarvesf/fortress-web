@@ -3,7 +3,7 @@ import { useDisclosure } from '@dwarvesf/react-hooks'
 import { Col, Modal, notification, Row, Tooltip } from 'antd'
 import { Button } from 'components/common/Button'
 import { EmployeePeerReviewsLink } from 'components/common/DetailLink/EmployeePeerReviewsLink'
-import { PeerReviewStatus } from 'constants/status'
+import { SurveyEventStatus } from 'constants/status'
 import { client } from 'libs/apis'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
@@ -14,7 +14,7 @@ interface Props {
   topic: ViewTopic
   onAfterDelete: () => void
   onAfterEdit: () => void
-  eventStatus?: PeerReviewStatus
+  eventStatus?: SurveyEventStatus
 }
 
 export const PeerReviewEventDetailActions = (props: Props) => {
@@ -81,7 +81,7 @@ export const PeerReviewEventDetailActions = (props: Props) => {
             size="small"
             icon={<EditOutlined />}
             onClick={openAddParticipantsModal}
-            disabled={eventStatus === PeerReviewStatus.DONE}
+            disabled={eventStatus === SurveyEventStatus.DONE}
           />
         </Tooltip>
       </Col>
@@ -93,7 +93,7 @@ export const PeerReviewEventDetailActions = (props: Props) => {
             icon={<DeleteOutlined />}
             onClick={confirmDelete}
             disabled={
-              !!topic.count?.sent || eventStatus === PeerReviewStatus.DONE
+              !!topic.count?.sent || eventStatus === SurveyEventStatus.DONE
             }
           />
         </Tooltip>

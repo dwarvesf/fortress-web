@@ -40,8 +40,8 @@ import {
   ViewFeedbackDetailResponse,
   RequestSubmitBody,
   ViewListSurveyDetailResponse,
-  RequestSendPerformanceReviewInput,
-  ViewPeerReviewDetailResponse,
+  RequestSendSurveyInput,
+  ViewSurveyTopicDetailResponse,
   RequestUpdateTopicReviewersBody,
   ViewFeedbackReviewDetailResponse,
 } from 'types/schema'
@@ -599,7 +599,7 @@ class Client {
     )
   }
 
-  public sendSurvey(id: string, data: RequestSendPerformanceReviewInput) {
+  public sendSurvey(id: string, data: RequestSendSurveyInput) {
     return fetcher<ViewMessageResponse>(`${BASE_URL}/surveys/${id}/send`, {
       method: 'POST',
       headers: {
@@ -610,7 +610,7 @@ class Client {
   }
 
   public getSurveyTopic(id: string, topicId: string) {
-    return fetcher<ViewPeerReviewDetailResponse>(
+    return fetcher<ViewSurveyTopicDetailResponse>(
       `${BASE_URL}/surveys/${id}/topics/${topicId}`,
       {
         headers: {

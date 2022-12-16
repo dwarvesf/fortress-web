@@ -5,7 +5,7 @@ import { PageHeader } from 'components/common/PageHeader'
 import { statusColors } from 'constants/colors'
 import { ROUTES } from 'constants/routes'
 import {
-  EmployeePeerReviewStatus,
+  SurveyParticipantStatus,
   employeePeerReviewStatuses,
 } from 'constants/status'
 import { useRouter } from 'next/router'
@@ -43,7 +43,7 @@ const columns = ({
     title: 'Status',
     key: 'status',
     dataIndex: 'status',
-    render: (value: EmployeePeerReviewStatus) => (
+    render: (value: SurveyParticipantStatus) => (
       <Tag color={statusColors[value]}>
         {employeePeerReviewStatuses[value] || '-'}
       </Tag>

@@ -2,7 +2,7 @@ import { DeleteOutlined, EyeOutlined } from '@ant-design/icons'
 import { Col, Modal, notification, Row, Tooltip } from 'antd'
 import { Button } from 'components/common/Button'
 import { PeerReviewEventLink } from 'components/common/DetailLink'
-import { PeerReviewStatus } from 'constants/status'
+import { SurveyEventStatus } from 'constants/status'
 import { client } from 'libs/apis'
 import { useState } from 'react'
 import { ViewSurvey } from 'types/schema'
@@ -68,7 +68,7 @@ export const Actions = (props: Props) => {
             size="small"
             icon={<DeleteOutlined />}
             onClick={confirmDelete}
-            disabled={record.status !== PeerReviewStatus.DRAFT}
+            disabled={record.status !== SurveyEventStatus.DRAFT}
           />
         </Tooltip>
       </Col>
