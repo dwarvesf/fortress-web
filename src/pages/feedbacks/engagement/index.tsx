@@ -8,51 +8,11 @@ import { SurveyEventStatus, surveyEventStatuses } from 'constants/status'
 import { Actions } from 'components/pages/feedbacks/engagement/Actions'
 import { CreateEngagementSurveyModal } from 'components/pages/feedbacks/engagement/CreateEngagementSurveyModal'
 import { useDisclosure } from '@dwarvesf/react-hooks'
-
-const mockData = [
-  {
-    id: '8a5bfedb-6e11-4f5c-82d9-2635cfcce3e2',
-    title: 'Q1, 2022',
-    type: 'survey',
-    subtype: 'peer-review',
-    status: 'in-progress',
-    startDate: '2022-11-29T08:03:33.233262Z',
-    endDate: '2023-05-29T08:03:33.233262Z',
-    count: {
-      total: 1,
-      sent: 1,
-      done: 0,
-    },
-  },
-  {
-    id: '26b52a9e-bdff-451e-9d37-7aa7695abace',
-    title: 'Q2, 2022',
-    type: 'survey',
-    subtype: 'peer-review',
-    status: 'draft',
-    startDate: '2023-01-01T00:00:00Z',
-    endDate: '2023-06-30T23:59:59Z',
-    count: {
-      total: 12,
-      sent: 10,
-      done: 5,
-    },
-  },
-  {
-    id: '6d97b658-9d40-4116-a809-e621203c8496',
-    title: 'Q3, 2022',
-    type: 'survey',
-    subtype: 'peer-review',
-    status: 'done',
-    startDate: '2023-01-01T00:00:00Z',
-    endDate: '2023-06-30T23:59:59Z',
-    count: {
-      total: 12,
-      sent: 11,
-      done: 1,
-    },
-  },
-]
+import { FeedbackSubtype } from 'constants/feedbackTypes'
+import { useFetchWithCache } from 'hooks/useFetchWithCache'
+import { useFilter } from 'hooks/useFilter'
+import { GET_PATHS, client } from 'libs/apis'
+import { SurveyListFilter } from 'types/filters/SurveyListFilter'
 
 const columns: ColumnsType<any> = [
   {
@@ -91,6 +51,17 @@ const EmployeeEngagementPage = () => {
     onClose: closeCreateEngagementSurveyModal,
   } = useDisclosure()
 
+  const { filter, setFilter } = useFilter(
+    new SurveyListFilter(FeedbackSubtype.ENGAGEMENT),
+  )
+  const {
+    data,
+    loading,
+    mutate: mutateSurveys,
+  } = useFetchWithCache([GET_PATHS.getSurveys, filter], () =>
+    client.getSurveys(filter),
+  )
+
   return (
     <>
       <Space direction="vertical" size={24} style={{ width: '100%' }}>
@@ -103,19 +74,19 @@ const EmployeeEngagementPage = () => {
           }
         />
         <Table
-          dataSource={mockData || []}
+          dataSource={data?.data || []}
           columns={columns}
-          // loading={loading}
+          loading={loading}
           rowKey={(row) => row.id as string}
           pagination={false}
           scroll={{ x: 'max-content' }}
         />
         <Row justify="end">
           <Pagination
-            current={1}
-            onChange={() => {}}
-            total={3}
-            pageSize={20}
+            current={filter.page}
+            onChange={(page) => setFilter({ page })}
+            total={data?.total}
+            pageSize={filter.size}
             hideOnSinglePage
           />
         </Row>
@@ -125,7 +96,7 @@ const EmployeeEngagementPage = () => {
         isOpen={isCreateEngagementSurveyModalOpen}
         initialValues={{ quarter: 'q1', year: 2022 }}
         onClose={closeCreateEngagementSurveyModal}
-        onAfterSubmit={() => {}}
+        onAfterSubmit={mutateSurveys}
       />
     </>
   )
