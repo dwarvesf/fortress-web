@@ -22,35 +22,16 @@ import {
   SurveyParticipantStatus,
   surveyParticipantStatuses,
 } from 'constants/status'
+import { useFetchWithCache } from 'hooks/useFetchWithCache'
+import { useFilter } from 'hooks/useFilter'
+import { client, GET_PATHS } from 'libs/apis'
+import { useRouter } from 'next/router'
 import React, { useState } from 'react'
-import { ViewBasicEmployeeInfo } from 'types/schema'
+import { SurveyDetailFilter } from 'types/filters/SurveyDetailFilter'
+import { ViewTopic } from 'types/schema'
+import debounce from 'lodash.debounce'
 
-interface EngagementDetail {
-  id?: string
-  employee?: ViewBasicEmployeeInfo
-  status?: string
-}
-
-const data: EngagementDetail[] = [
-  {
-    id: '1',
-    employee: {
-      id: '1',
-      displayName: 'John Doe',
-    },
-    status: 'sent',
-  },
-  {
-    id: '1',
-    employee: {
-      id: '1',
-      displayName: 'John Doe',
-    },
-    status: 'done',
-  },
-]
-
-const columns: ColumnsType<EngagementDetail> = [
+const columns: ColumnsType<ViewTopic> = [
   {
     title: 'Employee',
     key: 'employee',
@@ -62,9 +43,9 @@ const columns: ColumnsType<EngagementDetail> = [
     title: 'Status',
     key: 'status',
     dataIndex: 'status',
-    render: (value) => (
+    render: (value: SurveyParticipantStatus) => (
       <Tag color={statusColors[value]}>
-        {surveyParticipantStatuses[value as SurveyParticipantStatus] || '-'}
+        {surveyParticipantStatuses[value] || '-'}
       </Tag>
     ),
   },
@@ -76,21 +57,38 @@ const columns: ColumnsType<EngagementDetail> = [
 ]
 
 const Default = () => {
-  const title = 'Q1 2022'
-  const status = 'draft'
-  const peopleNumner = 72
+  const {
+    query: { id },
+  } = useRouter()
+  const engagementId = id as string
+  const { filter, setFilter } = useFilter(new SurveyDetailFilter())
+  const {
+    data,
+    loading,
+    mutate: mutateSurveyDetail,
+  } = useFetchWithCache(
+    [GET_PATHS.getSurveyDetail(engagementId), engagementId, filter],
+    () => client.getSurveyDetail(engagementId, filter),
+  )
+  const { title, status, topics: engagements = [] } = data?.data || {}
   const [isLoading, setIsLoading] = useState(false)
-  const [isSurveySent, setIsSurveySent] = useState(false)
 
   const onSendServey = async () => {
     try {
       setIsLoading(true)
 
+      await client.sendSurvey(engagementId, {
+        topics: engagements.map((each) => ({
+          topicID: each.id!,
+          participants: [each.employee?.id!],
+        })),
+      })
+
       notification.success({
         message: 'Engagement servey sent successfully!',
       })
 
-      setIsSurveySent(true)
+      mutateSurveyDetail()
     } catch (error: any) {
       notification.error({
         message: error?.message || 'Could not send engagement servey',
@@ -101,9 +99,10 @@ const Default = () => {
   }
 
   const confirmSendServey = () => {
+    const total = engagements.length
     Modal.confirm({
       title: 'Send servey',
-      content: `Do you want to send survey to ${peopleNumner} people?`,
+      content: `Do you want to send survey to ${total} people?`,
       okText: 'Send',
       okButtonProps: { loading: isLoading },
       onOk: onSendServey,
@@ -114,9 +113,13 @@ const Default = () => {
     try {
       setIsLoading(true)
 
+      await client.markSurveyAsDone(engagementId)
+
       notification.success({
         message: 'Engagement survey closed successfully!',
       })
+
+      mutateSurveyDetail()
     } catch (error: any) {
       notification.error({
         message: error?.message || 'Could not close engagement survey',
@@ -127,9 +130,12 @@ const Default = () => {
   }
 
   const confirmCompleteSurvey = () => {
+    const done = engagements.filter(
+      (each) => each.status === SurveyParticipantStatus.DONE,
+    ).length
     Modal.confirm({
       title: 'Complete survey',
-      content: `There are ${peopleNumner} people have filled the survey, do you want to close it?`,
+      content: `There are ${done} people have filled the survey, do you want to close it?`,
       okText: 'Close',
       okButtonProps: { loading: isLoading },
       onOk: completeSurvey,
@@ -155,37 +161,47 @@ const Default = () => {
         rightRender={
           <>
             <Col style={{ width: 256 }}>
-              <Input placeholder="Search by name..." bordered />
+              <Input
+                placeholder="Search by name..."
+                bordered
+                onChange={debounce((e) => {
+                  setFilter({ keyword: e.target.value })
+                }, 500)}
+              />
             </Col>
             <Col>
               <Button
                 type="primary"
-                disabled={isLoading}
+                disabled={
+                  isLoading || !status || status === SurveyEventStatus.DONE
+                }
                 loading={isLoading}
                 onClick={
-                  isSurveySent ? confirmCompleteSurvey : confirmSendServey
+                  status === SurveyEventStatus.DRAFT
+                    ? confirmSendServey
+                    : confirmCompleteSurvey
                 }
               >
-                {isSurveySent ? 'Close' : 'Send'}
+                {status === SurveyEventStatus.DRAFT ? 'Send' : 'Close'}
               </Button>
             </Col>
           </>
         }
       />
       <Table
-        dataSource={data}
+        dataSource={engagements}
         columns={columns}
         rowKey={(row) => row.id as string}
-        loading={false}
+        loading={loading}
         pagination={false}
         scroll={{ x: 'max-content' }}
       />
       <Row justify="end">
         <Pagination
-          current={1}
-          onChange={() => {}}
-          total={1}
-          pageSize={20}
+          current={filter.page}
+          onChange={(page) => setFilter({ page })}
+          total={data?.total}
+          pageSize={filter.size}
           hideOnSinglePage
         />
       </Row>
