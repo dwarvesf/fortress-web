@@ -2,11 +2,11 @@ import { Col, Input, Pagination, Row, Space, Tooltip } from 'antd'
 import { ROUTES } from 'constants/routes'
 import { PageHeader } from 'components/common/PageHeader'
 import Table, { ColumnsType } from 'antd/lib/table'
-import { EditOutlined, EyeOutlined, StarFilled } from '@ant-design/icons'
+import { EyeOutlined, StarFilled } from '@ant-design/icons'
 import Link from 'next/link'
 import { AvatarWithName } from 'components/common/AvatarWithName'
 import {
-  EditEmployeeLink,
+  // EditEmployeeLink,
   EmployeeLink,
   ProjectLink,
 } from 'components/common/DetailLink'
@@ -213,7 +213,7 @@ const columns = ({
             </Tooltip>
           </EmployeeLink>
         </Col>
-        <Col>
+        {/* <Col>
           <EditEmployeeLink id={value.id}>
             <Tooltip title="Edit">
               <Button
@@ -223,7 +223,7 @@ const columns = ({
               />
             </Tooltip>
           </EditEmployeeLink>
-        </Col>
+        </Col> */}
       </Row>
     ),
     fixed: 'right',
