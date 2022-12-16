@@ -36,11 +36,11 @@ const Default = () => {
             label: 'General',
             children: <General data={employee} />,
           },
-          {
-            key: 'document',
-            label: 'Document',
-            children: 'Document',
-          },
+          // {
+          //   key: 'document',
+          //   label: 'Document',
+          //   children: 'Document',
+          // },
         ]}
       />
     </>
