@@ -1,6 +1,9 @@
 import { Form, Modal, notification, Select } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
+import { FeedbackSubtype } from 'constants/feedbackTypes'
+import { client } from 'libs/apis'
 import { useState } from 'react'
+import { RequestCreateSurveyFeedbackInput } from 'types/schema'
 
 interface Props {
   isOpen: boolean
@@ -15,9 +18,14 @@ export const CreateEngagementSurveyModal = (props: Props) => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const currentYear = new Date().getFullYear()
 
-  const onSubmit = async () => {
+  const onSubmit = async (values: RequestCreateSurveyFeedbackInput) => {
     try {
       setIsSubmitting(true)
+
+      await client.createSurvey({
+        ...values,
+        type: FeedbackSubtype.ENGAGEMENT,
+      })
 
       notification.success({
         message: 'Employee engagement survey event created successfully!',
