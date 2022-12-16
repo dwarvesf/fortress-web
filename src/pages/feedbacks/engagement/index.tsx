@@ -4,7 +4,7 @@ import { Button } from 'components/common/Button'
 import { ColumnsType } from 'antd/lib/table'
 import { ProgressColumn } from 'components/pages/feedbacks/peer-review/ProgressColumn'
 import { statusColors } from 'constants/colors'
-import { PeerReviewStatus, peerReviewStatuses } from 'constants/status'
+import { SurveyEventStatus, peerReviewStatuses } from 'constants/status'
 import { Actions } from 'components/pages/feedbacks/engagement/Actions'
 import { CreateEngagementSurveyModal } from 'components/pages/feedbacks/engagement/CreateEngagementSurveyModal'
 import { useDisclosure } from '@dwarvesf/react-hooks'
@@ -73,7 +73,7 @@ const columns: ColumnsType<any> = [
     title: 'Status',
     key: 'status',
     dataIndex: 'status',
-    render: (value: PeerReviewStatus) => (
+    render: (value: SurveyEventStatus) => (
       <Tag color={statusColors[value]}>{peerReviewStatuses[value] || '-'}</Tag>
     ),
   },

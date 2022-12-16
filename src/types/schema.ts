@@ -134,18 +134,18 @@ export interface RequestDeleteTopicReviewersBody {
   reviewerIDs?: string[]
 }
 
-export interface RequestPerformanceReviewTopic {
-  participants: string[]
-  topicID: string
-}
-
-export interface RequestSendPerformanceReviewInput {
-  topics: RequestPerformanceReviewTopic[]
+export interface RequestSendSurveyInput {
+  topics: RequestSurvey[]
 }
 
 export interface RequestSubmitBody {
   answers: RequestBasicEventQuestionInput[]
   status: string
+}
+
+export interface RequestSurvey {
+  participants: string[]
+  topicID: string
 }
 
 export interface RequestUpdateContactInfoInput {
@@ -466,17 +466,6 @@ export interface ViewMetaData {
   name?: string
 }
 
-export interface ViewPeerReviewDetail {
-  employee?: ViewBasicEmployeeInfo
-  participants?: ViewPeerReviewer[]
-  title?: string
-  topicID?: string
-}
-
-export interface ViewPeerReviewDetailResponse {
-  data?: ViewPeerReviewDetail
-}
-
 export interface ViewPeerReviewer {
   eventReviewerID?: string
   relationship?: string
@@ -643,12 +632,25 @@ export interface ViewSurveyDetail {
   type?: string
 }
 
+export interface ViewSurveyTopicDetail {
+  employee?: ViewBasicEmployeeInfo
+  participants?: ViewPeerReviewer[]
+  title?: string
+  topicID?: string
+}
+
+export interface ViewSurveyTopicDetailResponse {
+  data?: ViewSurveyTopicDetail
+}
+
 export interface ViewTopic {
   count?: ViewFeedbackCount
   employee?: ViewBasicEmployeeInfo
   eventID?: string
   id?: string
   participants?: ViewBasicEmployeeInfo[]
+  reviewID?: string
+  status?: string
   subtype?: string
   title?: string
   type?: string

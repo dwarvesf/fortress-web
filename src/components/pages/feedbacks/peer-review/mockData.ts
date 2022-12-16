@@ -1,5 +1,5 @@
 import { EmployeeRelationship } from 'constants/relationship'
-import { MemberPeerReviewStatus, PeerReviewStatus } from 'constants/status'
+import { MemberPeerReviewStatus, SurveyEventStatus } from 'constants/status'
 import { ViewEmployeeData } from 'types/schema'
 
 export interface PeerReviewDetail {
@@ -14,7 +14,7 @@ export interface PeerReviewDetail {
 export interface PeerReviewEventDetail {
   id?: string
   time?: string
-  status?: PeerReviewStatus
+  status?: SurveyEventStatus
   peerReviews?: PeerReviewDetail[]
 }
 
@@ -403,7 +403,7 @@ const employees: ViewEmployeeData[] = [
 export const peerReviewEvent: PeerReviewEventDetail = {
   id: '1',
   time: 'Q1/Q2, 2022',
-  status: PeerReviewStatus.DRAFT,
+  status: SurveyEventStatus.DRAFT,
   peerReviews: [
     {
       id: '1',

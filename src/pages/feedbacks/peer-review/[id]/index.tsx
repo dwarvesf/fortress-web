@@ -22,7 +22,7 @@ import { PeerReviewEventDetailActions } from 'components/pages/feedbacks/peer-re
 import { ProgressColumn } from 'components/pages/feedbacks/peer-review/ProgressColumn'
 import { statusColors } from 'constants/colors'
 import { ROUTES } from 'constants/routes'
-import { PeerReviewStatus, peerReviewStatuses } from 'constants/status'
+import { SurveyEventStatus, peerReviewStatuses } from 'constants/status'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { useFilter } from 'hooks/useFilter'
 import { client, GET_PATHS } from 'libs/apis'
@@ -32,7 +32,7 @@ import { SurveyDetailFilter } from 'types/filters/SurveyDetailFilter'
 import { ViewTopic } from 'types/schema'
 
 interface ColumnProps {
-  eventStatus?: PeerReviewStatus
+  eventStatus?: SurveyEventStatus
   onAfterDelete: () => void
   onAfterEdit: () => void
 }
@@ -233,7 +233,7 @@ const Default = () => {
             {status && (
               <div style={{ display: 'flex' }}>
                 <Tag color={statusColors[status]}>
-                  {peerReviewStatuses[status as PeerReviewStatus] || '-'}
+                  {peerReviewStatuses[status as SurveyEventStatus] || '-'}
                 </Tag>
               </div>
             )}
@@ -261,13 +261,13 @@ const Default = () => {
                 overlay={
                   <Menu>
                     <Menu.Item
-                      disabled={status !== PeerReviewStatus.INPROGRESS}
+                      disabled={status !== SurveyEventStatus.INPROGRESS}
                       onClick={confirmMarkDone}
                     >
                       Mark done
                     </Menu.Item>
                     <Menu.Item
-                      disabled={status !== PeerReviewStatus.DRAFT}
+                      disabled={status !== SurveyEventStatus.DRAFT}
                       onClick={confirmDelete}
                     >
                       Delete
@@ -286,7 +286,7 @@ const Default = () => {
         columns={columns({
           onAfterDelete: mutateSurveyDetail,
           onAfterEdit: mutateSurveyDetail,
-          eventStatus: status as PeerReviewStatus,
+          eventStatus: status as SurveyEventStatus,
         })}
         rowSelection={{
           type: 'checkbox',

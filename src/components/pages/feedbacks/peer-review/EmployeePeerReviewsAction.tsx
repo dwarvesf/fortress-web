@@ -2,7 +2,7 @@ import { DeleteOutlined, EyeOutlined } from '@ant-design/icons'
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { Col, Modal, notification, Row, Tooltip } from 'antd'
 import { Button } from 'components/common/Button'
-import { EmployeePeerReviewStatus } from 'constants/status'
+import { SurveyParticipantStatus } from 'constants/status'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { client, GET_PATHS } from 'libs/apis'
 import { useRouter } from 'next/router'
@@ -104,7 +104,7 @@ export const EmployeePeerReviewsAction = (props: Props) => {
             icon={<EyeOutlined />}
             onClick={openPreviewDialog}
             disabled={
-              employeePeerReviewDetail.status !== EmployeePeerReviewStatus.DONE
+              employeePeerReviewDetail.status !== SurveyParticipantStatus.DONE
             }
           />
         </Tooltip>
@@ -117,7 +117,7 @@ export const EmployeePeerReviewsAction = (props: Props) => {
             icon={<DeleteOutlined />}
             onClick={confirmDelete}
             disabled={
-              employeePeerReviewDetail.status !== EmployeePeerReviewStatus.DRAFT
+              employeePeerReviewDetail.status !== SurveyParticipantStatus.DRAFT
             }
           />
         </Tooltip>
