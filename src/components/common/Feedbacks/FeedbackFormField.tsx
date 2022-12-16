@@ -92,11 +92,13 @@ export const FeedbackFormField = (props: Props) => {
           </Form.Item>
           {showNote && (
             <Form.Item name={`${name}_notes`}>
+              {/* @ts-ignore */}
               <TextArea
                 rows={3}
                 bordered
                 placeholder="Enter your message"
                 readOnly={done}
+                {...rest}
               />
             </Form.Item>
           )}
