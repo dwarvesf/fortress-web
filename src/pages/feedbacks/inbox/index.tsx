@@ -10,7 +10,7 @@ import { useMemo } from 'react'
 import { FeedbackListFilter } from 'types/filters/FeedbackListFilter'
 
 const Default = () => {
-  const { tabKey, setTabKey } = useTabWithQuery({ queryKey: 'inbox' })
+  const { tabKey, setTabKey } = useTabWithQuery({ queryKey: 'all' })
 
   const onTabChange = (tabKey: string) => {
     setTabKey(tabKey)
@@ -106,8 +106,8 @@ const Default = () => {
         onTabClick={onTabChange}
         items={[
           {
-            key: 'inbox',
-            label: `Inbox (${allFeedbacks.length})`,
+            key: 'all',
+            label: `All (${allFeedbacks.length})`,
             children: (
               <FeedbackInputTable
                 data={allFeedbacks}

@@ -5,6 +5,10 @@ body a:hover {
   color: #e13f5e;
 }
 
+tr.inbox-row.not-read td {
+  font-weight: 600;
+}
+
 tr.inbox-row:not(.not-read) td {
   background-color: #fafafa;
 }

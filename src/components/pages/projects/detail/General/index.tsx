@@ -1,4 +1,3 @@
-import { FileImageOutlined } from '@ant-design/icons'
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { Space, Col, Row, Avatar, notification, Card } from 'antd'
 import { AvatarArray } from 'components/common/AvatarArray'
@@ -65,7 +64,7 @@ export const General = (props: Props) => {
                     size={24}
                     style={{ justifyContent: 'center' }}
                   >
-                    <Avatar size={128} icon={<FileImageOutlined />} />
+                    <Avatar size={128} icon={[data.name?.slice(0, 1)]} />
                     <AsyncSelect
                       style={{ width: '100%', border: '1px solid #d9d9d9' }}
                       value={data.status}
