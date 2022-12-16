@@ -6,6 +6,13 @@
 
 - ...
 
+**Confidence Level**
+
+- High (I only need you to be aware of my modifications)
+- Medium (I need reviewers to help)
+- Low (I need reviewers to check out the branch and test it)
+- I'm not sure (We need to discuss more about it)
+
 **How to test**
 
 - Create a detailed description of what you need to do to set this PR up. ie: Do
