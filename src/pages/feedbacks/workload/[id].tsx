@@ -6,7 +6,7 @@ import { statusColors } from 'constants/colors'
 import { ROUTES } from 'constants/routes'
 import {
   SurveyParticipantStatus,
-  employeePeerReviewStatuses,
+  surveyParticipantStatuses,
 } from 'constants/status'
 import { useRouter } from 'next/router'
 import React from 'react'
@@ -48,19 +48,15 @@ const columns: ColumnsType<any> = [
     key: 'status',
     dataIndex: 'workStatus',
     filterMultiple: false,
-    filters: Object.values(SurveyParticipantStatus)
-      .slice(0, 2)
-      .map((s) => ({
-        value: s,
-        text: (
-          <Tag color={statusColors[s]}>{employeePeerReviewStatuses[s]}</Tag>
-        ),
-      })),
+    filters: Object.values(SurveyParticipantStatus).map((s) => ({
+      value: s,
+      text: <Tag color={statusColors[s]}>{surveyParticipantStatuses[s]}</Tag>,
+    })),
     onFilter: (value: any, record) => value === record.workStatus,
     render: (value: SurveyParticipantStatus) =>
       value ? (
         <Tag color={statusColors[value]}>
-          {employeePeerReviewStatuses[value]}
+          {surveyParticipantStatuses[value]}
         </Tag>
       ) : (
         '-'
