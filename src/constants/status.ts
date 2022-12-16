@@ -44,7 +44,7 @@ export enum SurveyEventStatus {
   DONE = 'done',
 }
 
-export const peerReviewStatuses: Record<SurveyEventStatus, string> = {
+export const surveyEventStatuses: Record<SurveyEventStatus, string> = {
   [SurveyEventStatus.DRAFT]: 'Draft',
   [SurveyEventStatus.INPROGRESS]: 'In progress',
   [SurveyEventStatus.DONE]: 'Done',
@@ -56,7 +56,7 @@ export enum SurveyParticipantStatus {
   DRAFT = 'draft',
 }
 
-export const employeePeerReviewStatuses: Record<
+export const surveyParticipantStatuses: Record<
   SurveyParticipantStatus,
   string
 > = {

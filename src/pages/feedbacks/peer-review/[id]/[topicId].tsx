@@ -6,7 +6,7 @@ import { statusColors } from 'constants/colors'
 import { ROUTES } from 'constants/routes'
 import {
   SurveyParticipantStatus,
-  employeePeerReviewStatuses,
+  surveyParticipantStatuses,
 } from 'constants/status'
 import { useRouter } from 'next/router'
 import React from 'react'
@@ -45,7 +45,7 @@ const columns = ({
     dataIndex: 'status',
     render: (value: SurveyParticipantStatus) => (
       <Tag color={statusColors[value]}>
-        {employeePeerReviewStatuses[value] || '-'}
+        {surveyParticipantStatuses[value] || '-'}
       </Tag>
     ),
   },
