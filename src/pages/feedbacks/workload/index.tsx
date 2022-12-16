@@ -6,9 +6,10 @@ import { ProgressColumn } from 'components/common/ProgressColumn'
 import { Actions } from 'components/pages/feedbacks/workload'
 import { SettingFilled } from '@ant-design/icons'
 import { WorkloadAverage } from 'components/pages/feedbacks/workload/WorkloadAverage'
-import { WorkloadAverageStatus } from 'constants/status'
+import { PeerReviewSurveyStatus, WorkloadAverageStatus } from 'constants/status'
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { ToggleSendSurveysModal } from 'components/pages/feedbacks/workload/ToggleSendSurveysModal'
+import { employees } from 'components/pages/feedbacks/peer-review/mockData'
 
 const mockWorkloadAverageData = [
   {
@@ -20,7 +21,15 @@ const mockWorkloadAverageData = [
   { title: 'Training', average: WorkloadAverageStatus.A_LOT },
 ]
 
-const mockWorkloadData = {
+const mockProjectNames = [
+  'SP Digital',
+  'Setel',
+  'Droppii',
+  'Konvoy',
+  'Fortress',
+]
+
+export const mockWorkloadData = {
   page: 1,
   size: 20,
   sort: '',
@@ -39,6 +48,13 @@ const mockWorkloadData = {
         total: 50,
         done: 50,
       },
+      employees: employees.map((e, i) => ({
+        ...e,
+        projectName: mockProjectNames[i],
+        workStatus: PeerReviewSurveyStatus.DONE,
+        comments: Math.floor(Math.random() * 3),
+        result: mockWorkloadAverageData,
+      })),
     },
     {
       id: '2',
@@ -53,20 +69,13 @@ const mockWorkloadData = {
         total: 50,
         done: 0,
       },
-    },
-    {
-      id: '3',
-      title: 'Dec 09, 2022',
-      type: 'survey',
-      subtype: 'peer-review',
-      status: 'in-progress',
-      average: mockWorkloadAverageData,
-      startDate: '2022-11-29T08:03:33.233262Z',
-      endDate: '2023-05-29T08:03:33.233262Z',
-      count: {
-        total: 50,
-        done: 25,
-      },
+      employees: employees.map((e, i) => ({
+        ...e,
+        projectName: mockProjectNames[i],
+        workStatus: PeerReviewSurveyStatus.SENT,
+        comments: Math.floor(Math.random() * 3),
+        result: mockWorkloadAverageData,
+      })),
     },
   ],
 }
