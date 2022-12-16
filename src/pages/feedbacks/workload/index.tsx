@@ -6,7 +6,10 @@ import { ProgressColumn } from 'components/common/ProgressColumn'
 import { Actions } from 'components/pages/feedbacks/workload'
 import { SettingFilled } from '@ant-design/icons'
 import { WorkloadAverage } from 'components/pages/feedbacks/workload/WorkloadAverage'
-import { PeerReviewSurveyStatus, WorkloadAverageStatus } from 'constants/status'
+import {
+  SurveyParticipantStatus,
+  WorkloadAverageStatus,
+} from 'constants/status'
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { ToggleSendSurveysModal } from 'components/pages/feedbacks/workload/ToggleSendSurveysModal'
 import { employees } from 'components/pages/feedbacks/peer-review/mockData'
@@ -21,7 +24,7 @@ const mockWorkloadAverageData = [
   { title: 'Training', average: WorkloadAverageStatus.A_LOT },
 ]
 
-const mockProjectNames = [
+export const mockProjectNames = [
   'SP Digital',
   'Setel',
   'Droppii',
@@ -51,7 +54,7 @@ export const mockWorkloadData = {
       employees: employees.map((e, i) => ({
         ...e,
         projectName: mockProjectNames[i],
-        workStatus: PeerReviewSurveyStatus.DONE,
+        workStatus: SurveyParticipantStatus.DONE,
         comments: Math.floor(Math.random() * 3),
         result: mockWorkloadAverageData,
       })),
@@ -72,7 +75,7 @@ export const mockWorkloadData = {
       employees: employees.map((e, i) => ({
         ...e,
         projectName: mockProjectNames[i],
-        workStatus: PeerReviewSurveyStatus.SENT,
+        workStatus: SurveyParticipantStatus.SENT,
         comments: Math.floor(Math.random() * 3),
         result: mockWorkloadAverageData,
       })),

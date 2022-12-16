@@ -5,14 +5,14 @@ import { PageHeader } from 'components/common/PageHeader'
 import { statusColors } from 'constants/colors'
 import { ROUTES } from 'constants/routes'
 import {
-  PeerReviewSurveyStatus,
-  peerReviewSurveyStatuses,
+  SurveyParticipantStatus,
+  employeePeerReviewStatuses,
 } from 'constants/status'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { WorkloadAverage } from 'components/pages/feedbacks/workload/WorkloadAverage'
 import { WorkloadDetailActions } from 'components/pages/feedbacks/workload/WorkloadDetailActions'
-import { mockWorkloadData } from '.'
+import { mockProjectNames, mockWorkloadData } from '.'
 
 const columns: ColumnsType<any> = [
   {
@@ -25,6 +25,11 @@ const columns: ColumnsType<any> = [
     title: 'Project',
     key: 'projectName',
     dataIndex: 'projectName',
+    filters: mockProjectNames.map((n) => ({
+      value: n,
+      text: n,
+    })),
+    onFilter: (value: any, record) => value === record.projectName,
   },
   {
     title: 'Result',
@@ -42,14 +47,30 @@ const columns: ColumnsType<any> = [
     title: 'Status',
     key: 'status',
     dataIndex: 'workStatus',
-    render: (value: PeerReviewSurveyStatus) => (
-      <Tag color={statusColors[value]}>{peerReviewSurveyStatuses[value]}</Tag>
-    ),
+    filterMultiple: false,
+    filters: Object.values(SurveyParticipantStatus)
+      .slice(0, 2)
+      .map((s) => ({
+        value: s,
+        text: (
+          <Tag color={statusColors[s]}>{employeePeerReviewStatuses[s]}</Tag>
+        ),
+      })),
+    onFilter: (value: any, record) => value === record.workStatus,
+    render: (value: SurveyParticipantStatus) =>
+      value ? (
+        <Tag color={statusColors[value]}>
+          {employeePeerReviewStatuses[value]}
+        </Tag>
+      ) : (
+        '-'
+      ),
   },
   {
     title: 'Comments',
     key: 'comments',
-    dataIndex: 'comments',
+    sorter: (a, b) => a.comments - b.comments,
+    render: (value) => value.comments,
   },
   {
     title: '',

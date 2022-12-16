@@ -1,5 +1,5 @@
 import { EmployeeRelationship } from 'constants/relationship'
-import { EmployeePeerReviewStatus, SurveyEventStatus } from 'constants/status'
+import { SurveyEventStatus, SurveyParticipantStatus } from 'constants/status'
 import { ViewEmployeeData } from 'types/schema'
 
 export interface PeerReviewDetail {
@@ -22,7 +22,7 @@ export interface MemberPeerReviewDetail {
   id?: string
   reviewer?: ViewEmployeeData
   relationship?: EmployeeRelationship
-  status?: EmployeePeerReviewStatus
+  status?: SurveyParticipantStatus
 }
 
 export const employees: ViewEmployeeData[] = [
@@ -429,18 +429,18 @@ export const memberPeerReviews: MemberPeerReviewDetail[] = [
     id: '1',
     reviewer: employees[2],
     relationship: EmployeeRelationship.TEAM_LEAD,
-    status: EmployeePeerReviewStatus.SENT,
+    status: SurveyParticipantStatus.SENT,
   },
   {
     id: '2',
     reviewer: employees[3],
     relationship: EmployeeRelationship.LINE_MANAGER,
-    status: EmployeePeerReviewStatus.DONE,
+    status: SurveyParticipantStatus.DONE,
   },
   {
     id: '3',
     reviewer: employees[4],
     relationship: EmployeeRelationship.CHAPTER_LEAD,
-    status: EmployeePeerReviewStatus.DRAFT,
+    status: SurveyParticipantStatus.DRAFT,
   },
 ]

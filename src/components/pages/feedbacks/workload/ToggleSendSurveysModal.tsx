@@ -54,6 +54,7 @@ export const ToggleSendSurveysModal = (props: Props) => {
     if (!searchQuery) {
       return mockSendSurveyData.map((d, i) => (
         <Col
+          key={i}
           span={24}
           style={{
             display: 'flex',
