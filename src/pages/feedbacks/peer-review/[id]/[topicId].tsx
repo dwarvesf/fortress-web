@@ -18,6 +18,7 @@ import { EmployeePeerReviewsAction } from 'components/pages/feedbacks/peer-revie
 import { client, GET_PATHS } from 'libs/apis'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { ViewPeerReviewer } from 'types/schema'
+import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 
 interface ColumnProps {
   onAfterDelete: () => void
@@ -70,22 +71,47 @@ const EmployeePeerReviewsPage = () => {
   )
 
   return (
-    <Space direction="vertical" size={24} style={{ width: '100%' }}>
-      <PageHeader
-        backHref={ROUTES.PEER_REVIEW_EVENT_DETAIL(query.id as string)}
-        title={data?.data?.title}
+    <>
+      <Breadcrumb
+        items={[
+          {
+            label: 'Dashboard',
+            href: ROUTES.DASHBOARD,
+          },
+          {
+            label: 'Feedbacks',
+          },
+          {
+            label: 'Peer Review',
+            href: ROUTES.PEER_REVIEW,
+          },
+          {
+            label: data?.data?.title || '-',
+            href: ROUTES.PEER_REVIEW_EVENT_DETAIL(query?.id as string),
+          },
+          {
+            label: data?.data?.employee?.displayName || '-',
+          },
+        ]}
       />
-      <Table
-        dataSource={data?.data?.participants || []}
-        columns={columns({
-          onAfterDelete: mutate,
-        })}
-        rowKey={(row) => row.eventReviewerID as string}
-        pagination={false}
-        scroll={{ x: 'max-content' }}
-        loading={loading}
-      />
-    </Space>
+
+      <Space direction="vertical" size={24} style={{ width: '100%' }}>
+        <PageHeader
+          backHref={ROUTES.PEER_REVIEW_EVENT_DETAIL(query.id as string)}
+          title={data?.data?.title}
+        />
+        <Table
+          dataSource={data?.data?.participants || []}
+          columns={columns({
+            onAfterDelete: mutate,
+          })}
+          rowKey={(row) => row.eventReviewerID as string}
+          pagination={false}
+          scroll={{ x: 'max-content' }}
+          loading={loading}
+        />
+      </Space>
+    </>
   )
 }
 

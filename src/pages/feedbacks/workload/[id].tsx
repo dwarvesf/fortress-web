@@ -12,6 +12,7 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import { WorkloadAverage } from 'components/pages/feedbacks/workload/WorkloadAverage'
 import { WorkloadDetailActions } from 'components/pages/feedbacks/workload/WorkloadDetailActions'
+import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 import { mockProjectNames, mockWorkloadData } from '.'
 
 const columns: ColumnsType<any> = [
@@ -80,16 +81,37 @@ const EmployeePeerReviewsPage = () => {
   const currentData = mockWorkloadData.data.find((d) => d.id === query.id)
 
   return (
-    <Space direction="vertical" size={24} style={{ width: '100%' }}>
-      <PageHeader backHref={ROUTES.WORKLOAD} title={currentData?.title} />
-      <Table
-        dataSource={currentData?.employees || []}
-        columns={columns}
-        rowKey={(row) => row.id as string}
-        pagination={false}
-        scroll={{ x: 'max-content' }}
+    <>
+      <Breadcrumb
+        items={[
+          {
+            label: 'Dashboard',
+            href: ROUTES.DASHBOARD,
+          },
+          {
+            label: 'Feedbacks',
+          },
+          {
+            label: 'Workload',
+            href: ROUTES.WORKLOAD,
+          },
+          {
+            label: currentData?.title,
+          },
+        ]}
       />
-    </Space>
+
+      <Space direction="vertical" size={24} style={{ width: '100%' }}>
+        <PageHeader backHref={ROUTES.WORKLOAD} title={currentData?.title} />
+        <Table
+          dataSource={currentData?.employees || []}
+          columns={columns}
+          rowKey={(row) => row.id as string}
+          pagination={false}
+          scroll={{ x: 'max-content' }}
+        />
+      </Space>
+    </>
   )
 }
 

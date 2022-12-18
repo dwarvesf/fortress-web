@@ -1,4 +1,3 @@
-import { EditOutlined, LinkOutlined } from '@ant-design/icons'
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { Avatar, Col, Image, Row, Space } from 'antd'
 import { DataRows } from 'components/common/DataRows'
@@ -9,6 +8,9 @@ import { EditProfileInfoModal } from 'components/pages/profile/EditProfileInfoMo
 import { useAuthContext } from 'context/auth'
 import { theme } from 'styles'
 import { Button } from 'components/common/Button'
+import { ROUTES } from 'constants/routes'
+import { Breadcrumb } from 'components/common/Header/Breadcrumb'
+import { Edit, Link } from '@icon-park/react'
 
 const Default = () => {
   const { user, revalidate } = useAuthContext()
@@ -27,6 +29,18 @@ const Default = () => {
 
   return (
     <>
+      <Breadcrumb
+        items={[
+          {
+            label: 'Dashboard',
+            href: ROUTES.DASHBOARD,
+          },
+          {
+            label: 'Profile',
+          },
+        ]}
+      />
+
       <PageHeader title="Profile" />
       <Space direction="vertical" size={24} style={{ width: '100%' }}>
         <Row gutter={[0, 24]}>
@@ -72,7 +86,7 @@ const Default = () => {
                     </Avatar>
                     <Button
                       type="primary"
-                      icon={<EditOutlined />}
+                      icon={<Edit size={20} />}
                       onClick={openEditAvatarDialog}
                     >
                       Edit
@@ -120,7 +134,7 @@ const Default = () => {
                           >
                             <Space>
                               {user.discordID}
-                              <LinkOutlined />
+                              <Link />
                             </Space>
                           </a>
                         ) : (
@@ -137,7 +151,7 @@ const Default = () => {
                           >
                             <Space>
                               {user?.githubID}
-                              <LinkOutlined />
+                              <Link />
                             </Space>
                           </a>
                         ),

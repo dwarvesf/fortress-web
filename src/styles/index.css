@@ -1,5 +1,4 @@
 @import './vendor/nprogress.css';
-@import './ant-custom.css';
 
 body a:hover {
   color: #e13f5e;
@@ -7,10 +6,6 @@ body a:hover {
 
 tr.inbox-row.not-read td {
   font-weight: 600;
-}
-
-tr.inbox-row:not(.not-read) td {
-  background-color: #fafafa;
 }
 
 .likert-scale .ant-radio-button-wrapper {

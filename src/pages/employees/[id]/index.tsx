@@ -1,7 +1,9 @@
 import { Tabs } from 'antd'
+import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 import { PageHeader } from 'components/common/PageHeader'
 import { PageSpinner } from 'components/common/PageSpinner'
 import { General } from 'components/pages/employees/detail/General'
+import { ROUTES } from 'constants/routes'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { useTabWithQuery } from 'hooks/useTabWithQuery'
 import { client, GET_PATHS } from 'libs/apis'
@@ -26,6 +28,22 @@ const Default = () => {
 
   return (
     <>
+      <Breadcrumb
+        items={[
+          {
+            label: 'Dashboard',
+            href: ROUTES.DASHBOARD,
+          },
+          {
+            label: 'Employees',
+            href: ROUTES.EMPLOYEES,
+          },
+          {
+            label: employee.displayName || '-',
+          },
+        ]}
+      />
+
       <PageHeader title={employee?.displayName || ''} />
       <Tabs
         defaultActiveKey={tabKey}

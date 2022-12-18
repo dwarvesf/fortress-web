@@ -31,17 +31,20 @@ export const AvatarArray = (props: Props) => {
               }
               color="white"
             >
-              <Avatar
-                src={user.avatar}
-                size={size}
+              <span
                 style={{
                   marginLeft: index !== 0 ? offset : 0,
                   borderStyle: 'solid',
                   borderWidth: 0.5,
                   borderColor: theme.colors.white,
                 }}
-                icon={!user.avatar && user.displayName?.slice(0, 1)}
-              />
+              >
+                <Avatar
+                  src={user.avatar}
+                  size={size}
+                  icon={!user.avatar && user.displayName?.slice(0, 1)}
+                />
+              </span>
             </Tooltip>
           </EmployeeLink>
         )

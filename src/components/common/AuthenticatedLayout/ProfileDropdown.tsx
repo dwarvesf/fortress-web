@@ -1,13 +1,7 @@
-import { LogoutOutlined, UserOutlined } from '@ant-design/icons'
-import { Avatar, Dropdown, Menu, Space, Image } from 'antd'
+import { Avatar, Menu, Space, Image, Dropdown } from 'antd'
 import { ROUTES } from 'constants/routes'
 import { useAuthContext } from 'context/auth'
 import Link from 'next/link'
-import { theme } from 'styles'
-
-const iconStyle = {
-  color: theme.colors.gray500,
-}
 
 export const ProfileDropdown = () => {
   const { logout, user } = useAuthContext()
@@ -19,12 +13,7 @@ export const ProfileDropdown = () => {
           key: 'profile',
           label: (
             <Link href={ROUTES.PROFILE}>
-              <a style={{ textDecoration: 'none' }}>
-                <Space>
-                  <UserOutlined style={iconStyle} />
-                  <span>Profile</span>
-                </Space>
-              </a>
+              <a style={{ textDecoration: 'none' }}>Profile</a>
             </Link>
           ),
         },
@@ -32,8 +21,7 @@ export const ProfileDropdown = () => {
           key: 'logout',
           label: (
             <Space role="button" onClick={logout}>
-              <LogoutOutlined style={iconStyle} />
-              <span>Logout</span>
+              Logout
             </Space>
           ),
         },
@@ -44,17 +32,17 @@ export const ProfileDropdown = () => {
   return (
     <Dropdown overlay={menuRender}>
       <Space align="center">
+        <span>{user?.displayName}</span>
         <Avatar
           size={32}
           icon={
             <Image
               src={user?.avatar}
               preview={false}
-              style={{ objectFit: 'cover', height: 32 }}
+              style={{ objectFit: 'cover', height: 24 }}
             />
           }
         />
-        <span>{user?.displayName}</span>
       </Space>
     </Dropdown>
   )

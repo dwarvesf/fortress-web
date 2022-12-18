@@ -1,5 +1,5 @@
-import { PlusCircleOutlined } from '@ant-design/icons'
 import { useDisclosure } from '@dwarvesf/react-hooks'
+import { Plus } from '@icon-park/react'
 import { Card, Space, Tabs } from 'antd'
 import { Button } from 'components/common/Button'
 import { ProjectWorkUnitStatus } from 'constants/status'
@@ -76,7 +76,7 @@ export const WorkUnits = (props: Props) => {
             tabBarExtraContent={
               <Button
                 type="primary"
-                icon={<PlusCircleOutlined />}
+                icon={<Plus size={20} />}
                 onClick={openAddNewWorkUnitDialog}
               >
                 Add New

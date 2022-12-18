@@ -1,18 +1,26 @@
-import { AppstoreFilled, UserOutlined, WechatFilled } from '@ant-design/icons'
-import { Col, MenuProps, Row, Layout, Menu } from 'antd'
+import {
+  AllApplication,
+  ChartLine,
+  EveryUser,
+  Mail,
+  Setting,
+} from '@icon-park/react'
+import { MenuProps, Layout, Menu } from 'antd'
 import { ROUTES } from 'constants/routes'
 import { LOGIN_REDIRECTION_KEY, useAuthContext } from 'context/auth'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
-import React, { useEffect, useMemo, useState } from 'react'
-import styled from 'styled-components'
+import React, { useEffect, useMemo } from 'react'
 import { WithChildren } from 'types/common'
 import { isActivePath } from 'utils/link'
-import { Logo } from '../Logo'
+import { Header } from '../Header'
 import { PageSpinner } from '../PageSpinner'
-import { ProfileDropdown } from './ProfileDropdown'
+import { SidebarLogo } from './SidebarLogo'
 
-const { Header, Content, Footer, Sider } = Layout
+const {
+  Content,
+  // Footer,
+  Sider,
+} = Layout
 
 type MenuItem = Required<MenuProps>['items'][number]
 
@@ -31,23 +39,19 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-  // getItem('Dashboard', ROUTES.DASHBOARD, <LayoutFilled />),
-  getItem('Projects', ROUTES.PROJECTS, <AppstoreFilled />),
-  getItem('Employees', ROUTES.EMPLOYEES, <UserOutlined />),
-  getItem('Feedbacks', ROUTES.FEEDBACKS, <WechatFilled />, [
+  getItem('Dashboard', ROUTES.DASHBOARD, <ChartLine size={24} />),
+  getItem('Projects', ROUTES.PROJECTS, <AllApplication size={24} />),
+  getItem('Employees', ROUTES.EMPLOYEES, <EveryUser size={24} />),
+  getItem('Feedbacks', ROUTES.FEEDBACKS, <Mail size={24} />, [
     getItem('Inbox', ROUTES.INBOX),
     getItem('Peer review', ROUTES.PEER_REVIEW),
     getItem('Engagement', ROUTES.ENGAGEMENT),
     getItem('Workload', ROUTES.WORKLOAD),
   ]),
-  // getItem('Config', ROUTES.CONFIG, <SettingFilled />),
+  getItem('Config', ROUTES.CONFIG, <Setting size={24} />),
 ]
 
 interface Props extends WithChildren {}
-
-const LogoLink = styled.a`
-  text-decoration: none !important;
-`
 
 export const AuthenticatedLayout = (props: Props) => {
   const { children } = props
@@ -68,8 +72,6 @@ export const AuthenticatedLayout = (props: Props) => {
     }
   }, [replace, isAuthenticated, pathname, isAuthenticating])
 
-  const [collapsed, setCollapsed] = useState(false)
-
   const activeMenuKey = useMemo(() => {
     return items.find((item) => {
       return isActivePath(item?.key as string, pathname)
@@ -85,44 +87,23 @@ export const AuthenticatedLayout = (props: Props) => {
   }
 
   return (
-    <Layout style={{ minHeight: '100vh' }}>
-      <Header className="layout-header">
-        <Row justify="space-between">
-          <Col>
-            <Link href={ROUTES.DASHBOARD}>
-              <LogoLink>
-                <Logo hasText />
-              </LogoLink>
-            </Link>
-          </Col>
-          <Col>
-            <ProfileDropdown />
-          </Col>
-        </Row>
-      </Header>
-      <Layout style={{ paddingTop: 64, height: '100vh' }}>
-        <Sider
-          collapsible
-          collapsed={collapsed}
-          onCollapse={(value) => setCollapsed(value)}
-          theme="light"
-          style={{ top: 0 }}
-        >
-          <Menu
-            theme="light"
-            defaultSelectedKeys={['1']}
-            mode="inline"
-            items={items}
-            onClick={({ key }) => push(key)}
-            activeKey={activeMenuKey}
-          />
-        </Sider>
-        <Layout className="layout-main">
-          <Content className="layout-main-content">
-            <div className="layout-main-content-body">{children}</div>
-            <Footer>Dwarves, LLC © 2015 - 2022 All rights reserved.</Footer>
-          </Content>
-        </Layout>
+    <Layout style={{ height: '100vh', overflow: 'hidden' }}>
+      <Sider style={{ top: 0 }}>
+        <SidebarLogo />
+        <Menu
+          defaultSelectedKeys={['1']}
+          mode="inline"
+          items={items}
+          onClick={({ key }) => push(key)}
+          activeKey={activeMenuKey}
+        />
+      </Sider>
+      <Layout style={{ overflow: 'hidden' }}>
+        <Header />
+        <Content style={{ overflow: 'auto' }}>
+          <div style={{ padding: 24 }}>{children}</div>
+          {/* <Footer>Dwarves, LLC © 2015 - 2022 All rights reserved.</Footer> */}
+        </Content>
       </Layout>
     </Layout>
   )

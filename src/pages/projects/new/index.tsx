@@ -20,11 +20,12 @@ import {
 } from 'types/schema'
 import { format } from 'date-fns'
 import { ProjectForm } from 'components/pages/projects/add/ProjectForm'
-import { PlusCircleOutlined } from '@ant-design/icons'
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { ProjectMemberModal } from 'components/pages/projects/add/ProjectMemberModal'
 import { ProjectMemberTable } from 'components/pages/projects/add/ProjectMemberTable'
 import { FormWrapper } from 'components/common/FormWrapper'
+import { Breadcrumb } from 'components/common/Header/Breadcrumb'
+import { Plus } from '@icon-park/react'
 
 const getPositionsFromIDs = (data: ModelPosition[], positionStrs: string[]) => {
   const result: ViewPosition[] = []
@@ -164,6 +165,22 @@ const CreateNewProjectPage = () => {
 
   return (
     <>
+      <Breadcrumb
+        items={[
+          {
+            label: 'Dashboard',
+            href: ROUTES.DASHBOARD,
+          },
+          {
+            label: 'Projects',
+            href: ROUTES.PROJECTS,
+          },
+          {
+            label: 'New',
+          },
+        ]}
+      />
+
       <Space direction="vertical" size={24} style={{ width: '100%' }}>
         <PageHeader title="New project" />
 
@@ -197,7 +214,7 @@ const CreateNewProjectPage = () => {
                   <Typography.Title level={4}>Members</Typography.Title>
                   <Button
                     type="primary"
-                    icon={<PlusCircleOutlined />}
+                    icon={<Plus size={20} />}
                     onClick={openAddNewMemberDialog}
                   >
                     Add New

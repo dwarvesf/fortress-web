@@ -1,5 +1,5 @@
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import { useDisclosure } from '@dwarvesf/react-hooks'
+import { Delete, Edit } from '@icon-park/react'
 import { Col, Modal, notification, Row, Tooltip } from 'antd'
 import { Button } from 'components/common/Button'
 import { SERVER_DATE_FORMAT } from 'constants/date'
@@ -87,7 +87,7 @@ export const Actions = ({
             <Button
               type="text-primary"
               size="small"
-              icon={<EditOutlined />}
+              icon={<Edit size={20} />}
               onClick={openEditDialog}
             />
           </Tooltip>
@@ -97,7 +97,7 @@ export const Actions = ({
             <Button
               type="text-primary"
               size="small"
-              icon={<DeleteOutlined />}
+              icon={<Delete size={20} />}
               onClick={confirmDelete}
             />
           </Tooltip>

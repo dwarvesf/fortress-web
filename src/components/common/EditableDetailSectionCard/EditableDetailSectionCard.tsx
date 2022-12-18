@@ -1,5 +1,5 @@
-import { EditOutlined } from '@ant-design/icons'
 import { noop } from '@dwarvesf/react-utils'
+import { Edit } from '@icon-park/react'
 import { Card, CardProps, Tooltip } from 'antd'
 import { Button } from '../Button'
 
@@ -15,7 +15,7 @@ const SectionEditButton = ({ onClick }: { onClick: () => void }) => {
         size="small"
         onClick={onClick}
         icon={
-          <EditOutlined
+          <Edit
             style={{
               fontSize: 16,
             }}

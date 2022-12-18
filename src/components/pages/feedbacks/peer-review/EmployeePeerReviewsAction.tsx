@@ -1,5 +1,5 @@
-import { DeleteOutlined, EyeOutlined } from '@ant-design/icons'
 import { useDisclosure } from '@dwarvesf/react-hooks'
+import { Delete, PreviewOpen } from '@icon-park/react'
 import { Col, Modal, notification, Row, Tooltip } from 'antd'
 import { Button } from 'components/common/Button'
 import { SurveyParticipantStatus } from 'constants/status'
@@ -101,7 +101,7 @@ export const EmployeePeerReviewsAction = (props: Props) => {
           <Button
             type="text-primary"
             size="small"
-            icon={<EyeOutlined />}
+            icon={<PreviewOpen size={20} />}
             onClick={openPreviewDialog}
             disabled={
               employeePeerReviewDetail.status !== SurveyParticipantStatus.DONE
@@ -114,7 +114,7 @@ export const EmployeePeerReviewsAction = (props: Props) => {
           <Button
             type="text-primary"
             size="small"
-            icon={<DeleteOutlined />}
+            icon={<Delete size={20} />}
             onClick={confirmDelete}
             disabled={
               employeePeerReviewDetail.status !== SurveyParticipantStatus.DRAFT

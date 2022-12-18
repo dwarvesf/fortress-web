@@ -1,13 +1,12 @@
-import { EditOutlined } from '@ant-design/icons'
 import { Col, notification, Row, Tooltip } from 'antd'
 import { Button } from 'components/common/Button'
 import { ViewWorkUnit } from 'types/schema'
-import { RiInboxArchiveLine, RiInboxUnarchiveLine } from 'react-icons/ri'
 import { useState } from 'react'
 import { client } from 'libs/apis'
 import { useRouter } from 'next/router'
 import { ProjectWorkUnitStatus } from 'constants/status'
 import { useDisclosure } from '@dwarvesf/react-hooks'
+import { Edit, FolderDownload, FolderUpload } from '@icon-park/react'
 import { WorkUnitModal } from '../WorkUnitModal'
 
 export const Actions = ({
@@ -28,13 +27,13 @@ export const Actions = ({
   } = useDisclosure()
 
   const [isLoading, setIsLoading] = useState(false)
-  const isArchiving = record.status === ProjectWorkUnitStatus.ACTIVE
+  const isActive = record.status === ProjectWorkUnitStatus.ACTIVE
 
   const onArchiveUnarchive = async () => {
     try {
       setIsLoading(true)
 
-      if (isArchiving) {
+      if (isActive) {
         await client.archiveProjectWorkUnit(
           projectId as string,
           record.id || '',
@@ -48,7 +47,7 @@ export const Actions = ({
 
       notification.success({
         message: `Work unit ${
-          isArchiving ? 'archived' : 'unarchived'
+          isActive ? 'archived' : 'unarchived'
         } successfully!`,
       })
 
@@ -57,7 +56,7 @@ export const Actions = ({
       notification.error({
         message:
           error?.message ||
-          `Could not ${isArchiving ? 'archive' : 'unarchive'} this work unit!`,
+          `Could not ${isActive ? 'archive' : 'unarchive'} this work unit!`,
       })
     } finally {
       setIsLoading(false)
@@ -72,18 +71,22 @@ export const Actions = ({
             <Button
               type="text-primary"
               size="small"
-              icon={<EditOutlined />}
+              icon={<Edit size={20} />}
               onClick={openEditWorkUnitDialog}
             />
           </Tooltip>
         </Col>
         <Col>
-          <Tooltip title={isArchiving ? 'Archive' : 'Unarchive'}>
+          <Tooltip title={isActive ? 'Archive' : 'Unarchive'}>
             <Button
               type="text-primary"
               size="small"
               icon={
-                isArchiving ? <RiInboxArchiveLine /> : <RiInboxUnarchiveLine />
+                isActive ? (
+                  <FolderDownload size={20} />
+                ) : (
+                  <FolderUpload size={20} />
+                )
               }
               onClick={onArchiveUnarchive}
               loading={isLoading}

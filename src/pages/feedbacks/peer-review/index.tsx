@@ -14,6 +14,8 @@ import { useFilter } from 'hooks/useFilter'
 import { SurveyListFilter } from 'types/filters/SurveyListFilter'
 import { FeedbackSubtype } from 'constants/feedbackTypes'
 import { ViewSurvey } from 'types/schema'
+import { ROUTES } from 'constants/routes'
+import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 
 interface ColumnProps {
   onAfterDelete: () => void
@@ -70,42 +72,59 @@ const PeerReviewPage = () => {
   )
 
   return (
-    <Space direction="vertical" size={24} style={{ width: '100%' }}>
-      <PageHeader
-        title="Peer performance review"
-        rightRender={
-          <Button type="primary" onClick={openCreatePeerReviewModal}>
-            Create
-          </Button>
-        }
+    <>
+      <Breadcrumb
+        items={[
+          {
+            label: 'Dashboard',
+            href: ROUTES.DASHBOARD,
+          },
+          {
+            label: 'Feedbacks',
+          },
+          {
+            label: 'Peer Review',
+          },
+        ]}
       />
-      <Table
-        dataSource={data?.data || []}
-        columns={columns({ onAfterDelete: mutateSurveys })}
-        loading={loading}
-        rowKey={(row) => row.id as string}
-        pagination={false}
-        scroll={{ x: 'max-content' }}
-      />
-      <Row justify="end">
-        <Pagination
-          current={filter.page}
-          onChange={(page) => setFilter({ page })}
-          total={data?.total}
-          pageSize={filter.size}
-          hideOnSinglePage
-        />
-      </Row>
 
-      <CreatePeerReviewModal
-        isOpen={isCreatePeerReviewModalOpen}
-        initialValues={{ quarter: 'q1,q2', year: 2022 }}
-        onClose={closeCreatePeerReviewModal}
-        onAfterSubmit={() => {
-          mutateSurveys()
-        }}
-      />
-    </Space>
+      <Space direction="vertical" size={24} style={{ width: '100%' }}>
+        <PageHeader
+          title="Peer performance review"
+          rightRender={
+            <Button type="primary" onClick={openCreatePeerReviewModal}>
+              Create
+            </Button>
+          }
+        />
+        <Table
+          dataSource={data?.data || []}
+          columns={columns({ onAfterDelete: mutateSurveys })}
+          loading={loading}
+          rowKey={(row) => row.id as string}
+          pagination={false}
+          scroll={{ x: 'max-content' }}
+        />
+        <Row justify="end">
+          <Pagination
+            current={filter.page}
+            onChange={(page) => setFilter({ page })}
+            total={data?.total}
+            pageSize={filter.size}
+            hideOnSinglePage
+          />
+        </Row>
+
+        <CreatePeerReviewModal
+          isOpen={isCreatePeerReviewModalOpen}
+          initialValues={{ quarter: 'q1,q2', year: 2022 }}
+          onClose={closeCreatePeerReviewModal}
+          onAfterSubmit={() => {
+            mutateSurveys()
+          }}
+        />
+      </Space>
+    </>
   )
 }
 

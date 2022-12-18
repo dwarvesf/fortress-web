@@ -30,6 +30,7 @@ import React, { useState } from 'react'
 import { SurveyDetailFilter } from 'types/filters/SurveyDetailFilter'
 import { ViewTopic } from 'types/schema'
 import debounce from 'lodash.debounce'
+import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 
 const columns: ColumnsType<ViewTopic> = [
   {
@@ -143,69 +144,90 @@ const Default = () => {
   }
 
   return (
-    <Space direction="vertical" size={24} style={{ width: '100%' }}>
-      <PageHeader
-        backHref={ROUTES.ENGAGEMENT}
-        title={
-          <Space align="center">
-            <span>{title}</span>
-            {status && (
-              <div style={{ display: 'flex' }}>
-                <Tag color={statusColors[status]}>
-                  {surveyEventStatuses[status as SurveyEventStatus] || '-'}
-                </Tag>
-              </div>
-            )}
-          </Space>
-        }
-        rightRender={
-          <>
-            <Col style={{ width: 256 }}>
-              <Input
-                placeholder="Search by name..."
-                bordered
-                onChange={debounce((e) => {
-                  setFilter({ keyword: e.target.value })
-                }, 500)}
-              />
-            </Col>
-            <Col>
-              <Button
-                type="primary"
-                disabled={
-                  isLoading || !status || status === SurveyEventStatus.DONE
-                }
-                loading={isLoading}
-                onClick={
-                  status === SurveyEventStatus.DRAFT
-                    ? confirmSendServey
-                    : confirmCompleteSurvey
-                }
-              >
-                {status === SurveyEventStatus.DRAFT ? 'Send' : 'Close'}
-              </Button>
-            </Col>
-          </>
-        }
+    <>
+      <Breadcrumb
+        items={[
+          {
+            label: 'Dashboard',
+            href: ROUTES.DASHBOARD,
+          },
+          {
+            label: 'Feedbacks',
+          },
+          {
+            label: 'Engagement',
+            href: ROUTES.ENGAGEMENT,
+          },
+          {
+            label: title || '-',
+          },
+        ]}
       />
-      <Table
-        dataSource={engagements}
-        columns={columns}
-        rowKey={(row) => row.id as string}
-        loading={loading}
-        pagination={false}
-        scroll={{ x: 'max-content' }}
-      />
-      <Row justify="end">
-        <Pagination
-          current={filter.page}
-          onChange={(page) => setFilter({ page })}
-          total={data?.total}
-          pageSize={filter.size}
-          hideOnSinglePage
+
+      <Space direction="vertical" size={24} style={{ width: '100%' }}>
+        <PageHeader
+          backHref={ROUTES.ENGAGEMENT}
+          title={
+            <Space align="center">
+              <span>{title}</span>
+              {status && (
+                <div style={{ display: 'flex' }}>
+                  <Tag color={statusColors[status]}>
+                    {surveyEventStatuses[status as SurveyEventStatus] || '-'}
+                  </Tag>
+                </div>
+              )}
+            </Space>
+          }
+          rightRender={
+            <>
+              <Col style={{ width: 256 }}>
+                <Input
+                  placeholder="Search by name..."
+                  bordered
+                  onChange={debounce((e) => {
+                    setFilter({ keyword: e.target.value })
+                  }, 500)}
+                />
+              </Col>
+              <Col>
+                <Button
+                  type="primary"
+                  disabled={
+                    isLoading || !status || status === SurveyEventStatus.DONE
+                  }
+                  loading={isLoading}
+                  onClick={
+                    status === SurveyEventStatus.DRAFT
+                      ? confirmSendServey
+                      : confirmCompleteSurvey
+                  }
+                >
+                  {status === SurveyEventStatus.DRAFT ? 'Send' : 'Close'}
+                </Button>
+              </Col>
+            </>
+          }
         />
-      </Row>
-    </Space>
+        <Table
+          dataSource={engagements}
+          columns={columns}
+          rowKey={(row) => row.id as string}
+          loading={loading}
+          pagination={false}
+          scroll={{ x: 'max-content' }}
+        />
+        <Row justify="end">
+          <Pagination
+            current={filter.page}
+            onChange={(page) => setFilter({ page })}
+            total={data?.total}
+            pageSize={filter.size}
+            hideOnSinglePage
+          />
+        </Row>
+      </Space>
+    </>
   )
 }
 

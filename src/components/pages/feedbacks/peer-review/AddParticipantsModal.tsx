@@ -1,4 +1,3 @@
-import { CloseOutlined } from '@ant-design/icons'
 import { Divider, List, Modal, notification, Select, Tag, Tooltip } from 'antd'
 import { AvatarWithName } from 'components/common/AvatarWithName'
 import { Button } from 'components/common/Button'
@@ -6,7 +5,7 @@ import { statusColors } from 'constants/colors'
 import {
   EmployeeStatus,
   SurveyParticipantStatus,
-  peerReviewSurveyStatuses,
+  surveyParticipantStatuses,
 } from 'constants/status'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { useFilter } from 'hooks/useFilter'
@@ -15,6 +14,7 @@ import { useState } from 'react'
 import { EmployeeListFilter } from 'types/filters/EmployeeListFilter'
 import { ViewTopic } from 'types/schema'
 import debounce from 'lodash.debounce'
+import { Close } from '@icon-park/react'
 
 interface Props {
   isOpen: boolean
@@ -151,7 +151,7 @@ export const AddParticipantsModal = (props: Props) => {
                     style={{ margin: 0 }}
                   >
                     {
-                      peerReviewSurveyStatuses[
+                      surveyParticipantStatuses[
                         participantStatuses[item.id!] as SurveyParticipantStatus
                       ]
                     }
@@ -161,7 +161,7 @@ export const AddParticipantsModal = (props: Props) => {
                     <Button
                       type="text-primary"
                       size="small"
-                      icon={<CloseOutlined />}
+                      icon={<Close size={20} />}
                       onClick={() => {
                         setParticipants((participants) =>
                           participants.filter((_, i) => i !== index),

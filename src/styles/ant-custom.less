@@ -1,0 +1,280 @@
+.ant-layout {
+  background-color: @tertiary-color;
+}
+
+.ant-layout-header {
+  background-color: #fff;
+  border-bottom: 1px solid #fff;
+  padding: 0 24px;
+  line-height: inherit;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+.ant-layout-footer {
+  padding: 12px 50px;
+  text-align: center;
+  font-size: 12px;
+}
+
+.ant-layout-sider {
+  background: transparent;
+
+  .ant-layout-sider-children {
+    display: flex;
+    flex-direction: column;
+    color: @gray-color--dark;
+
+    &::after {
+      content: '';
+      display: block;
+      width: 100%;
+      flex: 1;
+      background-color: white;
+    }
+  
+    > .ant-menu {
+      background: transparent;
+    }
+
+    .ant-menu {
+      border: none;
+
+      &.ant-menu-root > .ant-menu-item,
+      .ant-menu-submenu > .ant-menu-submenu-title {
+        font-weight: 500 !important;
+        height: 56px;
+      }
+      
+      .ant-menu-submenu {
+        .ant-menu-submenu-title {
+          margin: 0;
+          background-color: white;
+        }
+
+        .ant-menu-sub {
+          background-color: transparent;
+  
+          .ant-menu-item {
+            background-color: #fafafa;
+          }
+        }
+      }
+
+      .ant-menu-item {
+        margin: 0;
+        height: 48px;
+        background-color: white;
+
+        &::after {
+          left: 0;
+          right: unset;
+        }
+
+        &.ant-menu-item-active,
+        &.ant-menu-item-selected {
+          background-color: @tertiary-color !important;
+        }
+      }
+
+      :has(+ .ant-menu-item-active),
+      :has(+ .ant-menu-item-selected) {
+        border-bottom-right-radius: 1rem;
+        overflow: hidden;
+      }
+
+      .ant-menu-item-active + *,
+      .ant-menu-item-selected + * {
+        border-top-right-radius: 1rem;
+        overflow: hidden;
+      }
+    }
+
+    .ant-menu-item-icon {
+      display: inline-flex;
+    }
+  }
+}
+
+.ant-input[type='text'],
+.ant-input[type='email'],
+.ant-input[type='number'] {
+  background: #fff;
+}
+
+.ant-input-status-error {
+  background: #fff;
+}
+
+.ant-form-item-row {
+  flex-direction: column;
+  align-items: start;
+}
+
+.ant-form-item-control {
+  width: 100%;
+}
+
+.ant-form-item-label {
+  font-weight: 600;
+
+  > label::after {
+    display: none;
+  }
+
+  > .ant-form-item-required::after {
+    display: block;
+    content: '*';
+    color: @primary-color;
+  }
+
+  > .ant-form-item-required::before {
+    display: none;
+  }
+}
+
+.ant-tabs-nav-list {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.ant-card-head .ant-card-head-title {
+  padding: 8px 0;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.ant-card-head .ant-card-extra {
+  padding: 8px 0;
+}
+
+.ant-card-head-wrapper {
+  height: 49px;
+}
+
+.ant-card-body > .ant-table-wrapper .ant-table-cell:first-of-type {
+  padding-left: 24px;
+}
+
+.ant-card-body > .ant-table-wrapper .ant-table-cell:last-of-type {
+  padding-right: 24px;
+}
+
+.ant-input[type='date'] {
+  background: transparent;
+}
+
+.ant-modal-title {
+  font-weight: bold;
+}
+
+.ant-table-wrapper {
+  border-radius: 0.5rem;
+  overflow: hidden;
+
+  .ant-table-thead {
+    tr {
+      th {
+        text-transform: uppercase;
+        color: @gray-color--dark;
+        font-weight: bold;
+        font-size: 80%;
+        background-color: white;
+        
+        &::before {
+          display: none !important;
+        }
+
+        &:nth-of-type(2n) {
+          background-color: #fcfcfc !important;
+        }
+      }
+    }
+  }
+
+  .ant-table-tbody {
+    tr {
+      td {
+        &:nth-of-type(2n + 1) {
+          background-color: white !important;
+        }
+
+        &:nth-of-type(2n) {
+          background-color: #fcfcfc !important;
+        }
+      }
+    }
+  }
+}
+
+.ant-btn {
+  border-radius: 0.25rem;
+
+  &:has(.i-icon) {
+    display: flex;
+
+    .i-icon + span {
+      margin-left: 8px;
+    }
+  }
+}
+
+.ant-input.bordered {
+  border: 1px solid #d9d9d9;
+}
+
+.ant-picker.bordered {
+  border-color: #d9d9d9 !important;
+}
+
+.ant-breadcrumb {
+  font-size: 12px !important;
+  color: @gray-color--dark !important;
+}
+
+.i-icon {
+  display: inline-block;
+  color: inherit;
+  font-style: normal;
+  line-height: 0;
+  text-align: center;
+  text-transform: none;
+  vertical-align: -0.125em;
+  text-rendering: optimizelegibility;
+}
+
+// Rounded stuff
+
+.ant-select .ant-select-selector,
+.ant-input {
+  border-radius: 0.25rem !important;
+}
+
+.ant-tag {
+  border-radius: 1rem !important;
+}
+
+.ant-pagination-item {
+  border-radius: 0.25rem !important;
+}
+
+.ant-card {
+  border-radius: 0.5rem !important;
+}
+
+.ant-table-filter-dropdown {
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.ant-modal {
+  .ant-modal-content {
+    border-radius: 0.5rem !important;
+    overflow: hidden;
+  }
+}
+
+.ant-popover-inner,
+.ant-tooltip-inner {
+  border-radius: 0.5rem;
+}
