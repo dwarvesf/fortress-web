@@ -3,7 +3,6 @@ import { ROUTES } from 'constants/routes'
 import { PageHeader } from 'components/common/PageHeader'
 import { useMemo } from 'react'
 import Table, { ColumnsType } from 'antd/lib/table'
-import { EyeOutlined } from '@ant-design/icons'
 import Link from 'next/link'
 import { capitalizeFirstLetter } from 'utils/string'
 import { AvatarArray } from 'components/common/AvatarArray'
@@ -18,6 +17,8 @@ import { useFilter } from 'hooks/useFilter'
 import debounce from 'lodash.debounce'
 import { transformMetadataToFilterOption } from 'utils/select'
 import { statusColors } from 'constants/colors'
+import { Breadcrumb } from 'components/common/Header/Breadcrumb'
+import { PreviewOpen } from '@icon-park/react'
 
 const Default = () => {
   const { filter, setFilter } = useFilter(new ProjectListFilter())
@@ -116,7 +117,7 @@ const Default = () => {
                   <Button
                     type="text-primary"
                     size="small"
-                    icon={<EyeOutlined />}
+                    icon={<PreviewOpen size={20} />}
                   />
                 </Tooltip>
               </ProjectLink>
@@ -142,57 +143,72 @@ const Default = () => {
   }, [JSON.stringify({ projectStatuses, setFilter })]) // eslint-disable-line
 
   return (
-    <Space direction="vertical" size={24} style={{ width: '100%' }}>
-      <PageHeader
-        title="Projects"
-        rightRender={
-          <>
-            <Col style={{ width: 256 }}>
-              <Input
-                placeholder="Search projects"
-                bordered
-                onChange={debounce(
-                  (event) =>
-                    setFilter({
-                      name: event.target.value,
-                    }),
-                  300,
-                )}
-              />
-            </Col>
-            <Col>
-              <Link href={ROUTES.ADD_PROJECT}>
-                <a>
-                  <Button type="primary">Add Project</Button>
-                </a>
-              </Link>
-            </Col>
-          </>
-        }
+    <>
+      <Breadcrumb
+        items={[
+          {
+            label: 'Dashboard',
+            href: ROUTES.DASHBOARD,
+          },
+          {
+            label: 'Projects',
+          },
+        ]}
       />
-      <Table
-        loading={loading}
-        dataSource={projects}
-        columns={columns}
-        rowKey={(row) => row.id || ''}
-        pagination={false}
-        scroll={{ x: 'max-content' }}
-        onChange={(_, filters) => {
-          setFilter({
-            status: (filters.status?.[0] as string) || '',
-          })
-        }}
-      />
-      <Row justify="end">
-        <Pagination
-          current={filter.page}
-          onChange={(page) => setFilter({ page })}
-          total={data?.total}
-          pageSize={filter.size}
-          hideOnSinglePage
+
+      <Space direction="vertical" size={24} style={{ width: '100%' }}>
+        <PageHeader
+          title="Projects"
+          rightRender={
+            <>
+              <Col style={{ width: 256 }}>
+                <Input
+                  placeholder="Search projects"
+                  bordered
+                  onChange={debounce(
+                    (event) =>
+                      setFilter({
+                        name: event.target.value,
+                      }),
+                    300,
+                  )}
+                />
+              </Col>
+              <Col>
+                <Link href={ROUTES.ADD_PROJECT}>
+                  <a>
+                    <Button type="primary">Add Project</Button>
+                  </a>
+                </Link>
+              </Col>
+            </>
+          }
         />
-      </Row>
-    </Space>
+        <Table
+          loading={loading}
+          dataSource={projects}
+          columns={columns}
+          rowKey={(row) => row.id || ''}
+          pagination={false}
+          scroll={{ x: 'max-content' }}
+          onChange={(_, filters) => {
+            setFilter({
+              status: (filters.status?.[0] as string) || '',
+            })
+          }}
+          className="shadowed"
+        />
+        <Row justify="end">
+          <Pagination
+            current={filter.page}
+            onChange={(page) => setFilter({ page })}
+            total={data?.total}
+            pageSize={filter.size}
+            hideOnSinglePage
+          />
+        </Row>
+      </Space>
+    </>
   )
 }
 

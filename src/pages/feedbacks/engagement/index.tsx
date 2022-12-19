@@ -13,6 +13,8 @@ import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { useFilter } from 'hooks/useFilter'
 import { GET_PATHS, client } from 'libs/apis'
 import { SurveyListFilter } from 'types/filters/SurveyListFilter'
+import { Breadcrumb } from 'components/common/Header/Breadcrumb'
+import { ROUTES } from 'constants/routes'
 
 const columns: ColumnsType<any> = [
   {
@@ -64,6 +66,21 @@ const EmployeeEngagementPage = () => {
 
   return (
     <>
+      <Breadcrumb
+        items={[
+          {
+            label: 'Dashboard',
+            href: ROUTES.DASHBOARD,
+          },
+          {
+            label: 'Feedbacks',
+          },
+          {
+            label: 'Engagement',
+          },
+        ]}
+      />
+
       <Space direction="vertical" size={24} style={{ width: '100%' }}>
         <PageHeader
           title="Employee engagement"

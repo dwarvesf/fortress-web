@@ -1,5 +1,5 @@
-import { PlusCircleOutlined } from '@ant-design/icons'
 import { useDisclosure } from '@dwarvesf/react-hooks'
+import { Plus } from '@icon-park/react'
 import { Card, Pagination, Row, Space, Tabs } from 'antd'
 import { Button } from 'components/common/Button'
 import { SERVER_DATE_FORMAT } from 'constants/date'
@@ -202,7 +202,7 @@ export const Member = (props: Props) => {
             tabBarExtraContent={
               <Button
                 type="primary"
-                icon={<PlusCircleOutlined />}
+                icon={<Plus size={20} />}
                 onClick={openAddNewMemberDialog}
               >
                 Add New

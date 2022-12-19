@@ -1,4 +1,4 @@
-import { EyeOutlined } from '@ant-design/icons'
+import { PreviewOpen } from '@icon-park/react'
 import { Row, Tooltip } from 'antd'
 import { Button } from 'components/common/Button'
 
@@ -15,7 +15,7 @@ export const WorkloadDetailActions = (props: Props) => {
         <Button
           type="text-primary"
           size="small"
-          icon={<EyeOutlined />}
+          icon={<PreviewOpen size={20} />}
           onClick={() => console.log(record)}
         />
       </Tooltip>

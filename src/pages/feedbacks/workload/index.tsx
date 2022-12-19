@@ -4,7 +4,6 @@ import { Button } from 'components/common/Button'
 import { ColumnsType } from 'antd/lib/table'
 import { ProgressColumn } from 'components/common/ProgressColumn'
 import { Actions } from 'components/pages/feedbacks/workload'
-import { SettingFilled } from '@ant-design/icons'
 import { WorkloadAverage } from 'components/pages/feedbacks/workload/WorkloadAverage'
 import {
   SurveyParticipantStatus,
@@ -13,6 +12,9 @@ import {
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { ToggleSendSurveysModal } from 'components/pages/feedbacks/workload/ToggleSendSurveysModal'
 import { ViewEmployeeData } from 'types/schema'
+import { Breadcrumb } from 'components/common/Header/Breadcrumb'
+import { ROUTES } from 'constants/routes'
+import { Setting } from '@icon-park/react'
 
 const employees: ViewEmployeeData[] = [
   {
@@ -501,12 +503,27 @@ const WorkloadPage = () => {
 
   return (
     <>
+      <Breadcrumb
+        items={[
+          {
+            label: 'Dashboard',
+            href: ROUTES.DASHBOARD,
+          },
+          {
+            label: 'Feedbacks',
+          },
+          {
+            label: 'Workload',
+          },
+        ]}
+      />
+
       <Space direction="vertical" size={24} style={{ width: '100%' }}>
         <PageHeader
           title="Work"
           rightRender={
-            <Button type="default" onClick={openToggleSendSurveyDialog}>
-              <SettingFilled />
+            <Button type="primary" onClick={openToggleSendSurveyDialog}>
+              <Setting size={24} />
             </Button>
           }
         />

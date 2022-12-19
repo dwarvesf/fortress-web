@@ -1,4 +1,4 @@
-import { UploadOutlined } from '@ant-design/icons'
+import { UploadPicture } from '@icon-park/react'
 import { Avatar, Modal, notification, Space, Upload, Image, Spin } from 'antd'
 import { Button } from 'components/common/Button'
 import { useAuthContext } from 'context/auth'
@@ -91,7 +91,7 @@ export const EditProfileAvatarModal = (props: Props) => {
             onSubmit(options.file as File)
           }}
         >
-          <Button type="primary" icon={<UploadOutlined />}>
+          <Button type="primary" icon={<UploadPicture size={20} />}>
             Upload image
           </Button>
         </Upload>

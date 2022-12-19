@@ -1,6 +1,8 @@
 import { Pagination, Row, Tabs } from 'antd'
+import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 import { PageHeader } from 'components/common/PageHeader'
 import { FeedbackInputTable } from 'components/pages/feedbacks/inbox/FeedbackInboxTable'
+import { ROUTES } from 'constants/routes'
 import { ModelEventReviewerStatus } from 'constants/status'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { useFilter } from 'hooks/useFilter'
@@ -100,6 +102,21 @@ const Default = () => {
 
   return (
     <>
+      <Breadcrumb
+        items={[
+          {
+            label: 'Dashboard',
+            href: ROUTES.DASHBOARD,
+          },
+          {
+            label: 'Feedbacks',
+          },
+          {
+            label: 'Inbox',
+          },
+        ]}
+      />
+
       <PageHeader title="Feedbacks" />
       <Tabs
         defaultActiveKey={tabKey}

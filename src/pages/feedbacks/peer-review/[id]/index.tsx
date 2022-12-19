@@ -1,4 +1,3 @@
-import { EllipsisOutlined } from '@ant-design/icons'
 import {
   Button,
   Col,
@@ -31,6 +30,8 @@ import React, { useState } from 'react'
 import { SurveyDetailFilter } from 'types/filters/SurveyDetailFilter'
 import { ViewTopic } from 'types/schema'
 import debounce from 'lodash.debounce'
+import { Breadcrumb } from 'components/common/Header/Breadcrumb'
+import { More } from '@icon-park/react'
 
 interface ColumnProps {
   eventStatus?: SurveyEventStatus
@@ -225,96 +226,117 @@ const Default = () => {
   }
 
   return (
-    <Space direction="vertical" size={24} style={{ width: '100%' }}>
-      <PageHeader
-        backHref={ROUTES.PEER_REVIEW}
-        title={
-          <Space align="center">
-            <span>{title}</span>
-            {status && (
-              <div style={{ display: 'flex' }}>
-                <Tag color={statusColors[status]}>
-                  {surveyEventStatuses[status as SurveyEventStatus] || '-'}
-                </Tag>
-              </div>
-            )}
-          </Space>
-        }
-        rightRender={
-          <>
-            <Col style={{ width: 256 }}>
-              <Input
-                placeholder="Search by name..."
-                bordered
-                onChange={debounce((e) => {
-                  setFilter({ keyword: e.target.value })
-                }, 500)}
-              />
-            </Col>
-            <Col>
-              <Button
-                type="primary"
-                disabled={!selectedRowKeys.length || isLoading}
-                loading={isLoading}
-                onClick={confirmSendServey}
-              >
-                Send
-              </Button>
-            </Col>
-            <Col style={{ display: 'flex', alignItems: 'center' }}>
-              <Dropdown
-                placement="bottomRight"
-                trigger={['click']}
-                overlay={
-                  <Menu>
-                    <Menu.Item
-                      disabled={status !== SurveyEventStatus.INPROGRESS}
-                      onClick={confirmMarkDone}
-                    >
-                      Mark done
-                    </Menu.Item>
-                    <Menu.Item
-                      disabled={status !== SurveyEventStatus.DRAFT}
-                      onClick={confirmDelete}
-                    >
-                      Delete
-                    </Menu.Item>
-                  </Menu>
-                }
-              >
-                <EllipsisOutlined style={{ fontSize: 24, fontWeight: 700 }} />
-              </Dropdown>
-            </Col>
-          </>
-        }
+    <>
+      <Breadcrumb
+        items={[
+          {
+            label: 'Dashboard',
+            href: ROUTES.DASHBOARD,
+          },
+          {
+            label: 'Feedbacks',
+          },
+          {
+            label: 'Peer Review',
+            href: ROUTES.PEER_REVIEW,
+          },
+          {
+            label: title || '-',
+          },
+        ]}
       />
-      <Table
-        dataSource={peerReviews}
-        columns={columns({
-          onAfterDelete: mutateSurveyDetail,
-          onAfterEdit: mutateSurveyDetail,
-          eventStatus: status as SurveyEventStatus,
-        })}
-        rowSelection={{
-          type: 'checkbox',
-          selectedRowKeys,
-          onChange: onSelectChange,
-        }}
-        rowKey={(row) => row.id as string}
-        loading={loading}
-        pagination={false}
-        scroll={{ x: 'max-content' }}
-      />
-      <Row justify="end">
-        <Pagination
-          current={filter.page}
-          onChange={(page) => setFilter({ page })}
-          total={data?.total}
-          pageSize={filter.size}
-          hideOnSinglePage
+
+      <Space direction="vertical" size={24} style={{ width: '100%' }}>
+        <PageHeader
+          backHref={ROUTES.PEER_REVIEW}
+          title={
+            <Space align="center">
+              <span>{title}</span>
+              {status && (
+                <div style={{ display: 'flex' }}>
+                  <Tag color={statusColors[status]}>
+                    {surveyEventStatuses[status as SurveyEventStatus] || '-'}
+                  </Tag>
+                </div>
+              )}
+            </Space>
+          }
+          rightRender={
+            <>
+              <Col style={{ width: 256 }}>
+                <Input
+                  placeholder="Search by name..."
+                  bordered
+                  onChange={debounce((e) => {
+                    setFilter({ keyword: e.target.value })
+                  }, 500)}
+                />
+              </Col>
+              <Col>
+                <Button
+                  type="primary"
+                  disabled={!selectedRowKeys.length || isLoading}
+                  loading={isLoading}
+                  onClick={confirmSendServey}
+                >
+                  Send
+                </Button>
+              </Col>
+              <Col style={{ display: 'flex', alignItems: 'center' }}>
+                <Dropdown
+                  placement="bottomRight"
+                  trigger={['click']}
+                  overlay={
+                    <Menu>
+                      <Menu.Item
+                        disabled={status !== SurveyEventStatus.INPROGRESS}
+                        onClick={confirmMarkDone}
+                      >
+                        Mark done
+                      </Menu.Item>
+                      <Menu.Item
+                        disabled={status !== SurveyEventStatus.DRAFT}
+                        onClick={confirmDelete}
+                      >
+                        Delete
+                      </Menu.Item>
+                    </Menu>
+                  }
+                >
+                  <More size={24} />
+                </Dropdown>
+              </Col>
+            </>
+          }
         />
-      </Row>
-    </Space>
+        <Table
+          dataSource={peerReviews}
+          columns={columns({
+            onAfterDelete: mutateSurveyDetail,
+            onAfterEdit: mutateSurveyDetail,
+            eventStatus: status as SurveyEventStatus,
+          })}
+          rowSelection={{
+            type: 'checkbox',
+            selectedRowKeys,
+            onChange: onSelectChange,
+          }}
+          rowKey={(row) => row.id as string}
+          loading={loading}
+          pagination={false}
+          scroll={{ x: 'max-content' }}
+        />
+        <Row justify="end">
+          <Pagination
+            current={filter.page}
+            onChange={(page) => setFilter({ page })}
+            total={data?.total}
+            pageSize={filter.size}
+            hideOnSinglePage
+          />
+        </Row>
+      </Space>
+    </>
   )
 }
 

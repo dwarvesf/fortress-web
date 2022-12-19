@@ -10,8 +10,8 @@ import { client, GET_PATHS } from 'libs/apis'
 import { mutate } from 'swr'
 import { useState } from 'react'
 import { EmployeeStatus, employeeStatuses } from 'constants/status'
+import { Star } from '@icon-park/react'
 import moment from 'moment'
-import { StarFilled } from '@ant-design/icons'
 import { theme } from 'styles'
 import { EditGeneralInfoModal } from './EditGeneralInfoModal'
 import { EditSkillsModal } from './EditSkillsModal'
@@ -182,7 +182,7 @@ export const General = (props: Props) => {
                                   title={`${chapter.name} lead`}
                                 >
                                   {chapter.name}{' '}
-                                  <StarFilled
+                                  <Star
                                     style={{ color: theme.colors.primary }}
                                   />
                                 </Tooltip>

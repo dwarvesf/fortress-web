@@ -1,4 +1,4 @@
-import { LeftOutlined } from '@ant-design/icons'
+import { LeftSmall } from '@icon-park/react'
 import { Col, Row, Typography } from 'antd'
 import Link from 'next/link'
 import styled from 'styled-components'
@@ -19,10 +19,10 @@ export const PageHeader = (props: Props) => {
   return (
     <Row gutter={[16, 16]}>
       {backHref && (
-        <Col>
+        <Col style={{ paddingTop: 4 }}>
           <Link href={backHref}>
             <BackLink>
-              <LeftOutlined />
+              <LeftSmall size={24} />
             </BackLink>
           </Link>
         </Col>

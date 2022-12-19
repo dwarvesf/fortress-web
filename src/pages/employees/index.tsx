@@ -2,7 +2,6 @@ import { Col, Input, Pagination, Row, Space, Tooltip } from 'antd'
 import { ROUTES } from 'constants/routes'
 import { PageHeader } from 'components/common/PageHeader'
 import Table, { ColumnsType } from 'antd/lib/table'
-import { EyeOutlined, StarFilled } from '@ant-design/icons'
 import Link from 'next/link'
 import { AvatarWithName } from 'components/common/AvatarWithName'
 import {
@@ -35,6 +34,8 @@ import { useRouter } from 'next/router'
 import { useCallback, useState } from 'react'
 import qs from 'qs'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
+import { Breadcrumb } from 'components/common/Header/Breadcrumb'
+import { PreviewOpen, Star } from '@icon-park/react'
 
 interface ColumnProps {
   filter: EmployeeListFilter
@@ -119,8 +120,7 @@ const columns = ({
               color={theme.colors.primary}
               title={`${chapter.name} lead`}
             >
-              {chapter.name}{' '}
-              <StarFilled style={{ color: theme.colors.primary }} />
+              {chapter.name} <Star style={{ color: theme.colors.primary }} />
             </Tooltip>
           ) : (
             chapter.name
@@ -209,7 +209,11 @@ const columns = ({
         <Col>
           <EmployeeLink id={value.id}>
             <Tooltip title="View Detail">
-              <Button type="text-primary" size="small" icon={<EyeOutlined />} />
+              <Button
+                type="text-primary"
+                size="small"
+                icon={<PreviewOpen size={20} />}
+              />
             </Tooltip>
           </EmployeeLink>
         </Col>
@@ -280,78 +284,93 @@ const Default = () => {
   )
 
   return (
-    <Space direction="vertical" size={24} style={{ width: '100%' }}>
-      <PageHeader
-        title="Employees"
-        rightRender={
-          <>
-            <Col style={{ width: 256 }}>
-              <Input
-                placeholder="Search employees"
-                bordered
-                value={value}
-                onChange={(e) => {
-                  setValue(e.target.value)
-                  searchEmployees(e.target.value)
-                }}
-              />
-            </Col>
-            <Col>
-              <Link href={ROUTES.ADD_EMPLOYEE}>
-                <a>
-                  <Button type="primary">Add Employee</Button>
-                </a>
-              </Link>
-            </Col>
-          </>
-        }
+    <>
+      <Breadcrumb
+        items={[
+          {
+            label: 'Dashboard',
+            href: ROUTES.DASHBOARD,
+          },
+          {
+            label: 'Employees',
+          },
+        ]}
       />
-      <Table
-        loading={loading}
-        dataSource={employees}
-        columns={columns({
-          filter,
-          positionsData: positionsData?.data || [],
-          projectsData: projectsData?.data || [],
-          stacksData: stacksData?.data || [],
-          chaptersData: chaptersData?.data || [],
-          senioritiesData: senioritiesData?.data || [],
-        })}
-        rowKey={(row) => row.id as string}
-        pagination={false}
-        scroll={{ x: 'max-content' }}
-        onChange={(_, filters) => {
-          const newFilter = {
-            positionID: filters.positions?.[0] as string,
-            projectID: filters.projects?.[0] as string,
-            stackID: filters.stacks?.[0] as string,
-            chapterID: filters.chapters?.[0] as string,
-            seniorityID: filters.seniority?.[0] as string,
+
+      <Space direction="vertical" size={24} style={{ width: '100%' }}>
+        <PageHeader
+          title="Employees"
+          rightRender={
+            <>
+              <Col style={{ width: 256 }}>
+                <Input
+                  placeholder="Search employees"
+                  bordered
+                  value={value}
+                  onChange={(e) => {
+                    setValue(e.target.value)
+                    searchEmployees(e.target.value)
+                  }}
+                />
+              </Col>
+              <Col>
+                <Link href={ROUTES.ADD_EMPLOYEE}>
+                  <a>
+                    <Button type="primary">Add Employee</Button>
+                  </a>
+                </Link>
+              </Col>
+            </>
           }
-          setFilter(newFilter)
-          push(
-            {
-              pathname,
-              query: qs.stringify(
-                { ...query, ...newFilter },
-                { skipNulls: true },
-              ),
-            },
-            undefined,
-            { shallow: true },
-          )
-        }}
-      />
-      <Row justify="end">
-        <Pagination
-          current={filter.page}
-          onChange={(page) => setFilter({ page })}
-          total={data?.total}
-          pageSize={filter.size}
-          hideOnSinglePage
         />
-      </Row>
-    </Space>
+        <Table
+          loading={loading}
+          dataSource={employees}
+          columns={columns({
+            filter,
+            positionsData: positionsData?.data || [],
+            projectsData: projectsData?.data || [],
+            stacksData: stacksData?.data || [],
+            chaptersData: chaptersData?.data || [],
+            senioritiesData: senioritiesData?.data || [],
+          })}
+          rowKey={(row) => row.id as string}
+          pagination={false}
+          scroll={{ x: 'max-content' }}
+          onChange={(_, filters) => {
+            const newFilter = {
+              positionID: filters.positions?.[0] as string,
+              projectID: filters.projects?.[0] as string,
+              stackID: filters.stacks?.[0] as string,
+              chapterID: filters.chapters?.[0] as string,
+              seniorityID: filters.seniority?.[0] as string,
+            }
+            setFilter(newFilter)
+            push(
+              {
+                pathname,
+                query: qs.stringify(
+                  { ...query, ...newFilter },
+                  { skipNulls: true },
+                ),
+              },
+              undefined,
+              { shallow: true },
+            )
+          }}
+        />
+        <Row justify="end">
+          <Pagination
+            current={filter.page}
+            onChange={(page) => setFilter({ page })}
+            total={data?.total}
+            pageSize={filter.size}
+            hideOnSinglePage
+            size="small"
+          />
+        </Row>
+      </Space>
+    </>
   )
 }
 

@@ -1,5 +1,5 @@
-import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons'
 import { useDisclosure } from '@dwarvesf/react-hooks'
+import { Delete, Edit, PreviewOpen } from '@icon-park/react'
 import { Col, Modal, notification, Row, Tooltip } from 'antd'
 import { Button } from 'components/common/Button'
 import { EmployeePeerReviewsLink } from 'components/common/DetailLink/EmployeePeerReviewsLink'
@@ -70,7 +70,11 @@ export const PeerReviewEventDetailActions = (props: Props) => {
       <Col>
         <EmployeePeerReviewsLink id={query.id as string} topicId={topic.id!}>
           <Tooltip title="View">
-            <Button type="text-primary" size="small" icon={<EyeOutlined />} />
+            <Button
+              type="text-primary"
+              size="small"
+              icon={<PreviewOpen size={20} />}
+            />
           </Tooltip>
         </EmployeePeerReviewsLink>
       </Col>
@@ -79,7 +83,7 @@ export const PeerReviewEventDetailActions = (props: Props) => {
           <Button
             type="text-primary"
             size="small"
-            icon={<EditOutlined />}
+            icon={<Edit size={20} />}
             onClick={openAddParticipantsModal}
             disabled={eventStatus === SurveyEventStatus.DONE}
           />
@@ -90,7 +94,7 @@ export const PeerReviewEventDetailActions = (props: Props) => {
           <Button
             type="text-primary"
             size="small"
-            icon={<DeleteOutlined />}
+            icon={<Delete size={20} />}
             onClick={confirmDelete}
             disabled={
               !!topic.count?.sent || eventStatus === SurveyEventStatus.DONE
