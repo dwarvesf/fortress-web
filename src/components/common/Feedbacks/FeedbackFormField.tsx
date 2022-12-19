@@ -7,7 +7,7 @@ import { FeedbackQuestionType } from 'constants/feedbackTypes'
 type Props = FormItemProps & {
   type: FeedbackQuestionType
   showNote: boolean
-  disabled?: boolean
+  done?: boolean
 } & Record<string, any>
 
 export const FeedbackFormField = (props: Props) => {
@@ -18,7 +18,7 @@ export const FeedbackFormField = (props: Props) => {
     rules,
     showNote = false,
     required = false,
-    disabled = false,
+    done = false,
     ...rest
   } = props
 
@@ -32,7 +32,7 @@ export const FeedbackFormField = (props: Props) => {
           rules={[{ required, message: 'Required' }]}
         >
           {/* @ts-ignore */}
-          <TextArea {...rest} rows={3} bordered disabled={disabled} />
+          <TextArea {...rest} rows={3} bordered />
         </Form.Item>
       )
     }
@@ -68,7 +68,7 @@ export const FeedbackFormField = (props: Props) => {
                 <Radio.Button
                   value={item}
                   key={item}
-                  disabled={disabled}
+                  disabled={done}
                   style={{
                     display: 'flex',
                     height: '100%',
@@ -96,7 +96,7 @@ export const FeedbackFormField = (props: Props) => {
                 rows={3}
                 bordered
                 placeholder="Enter your message"
-                disabled={disabled}
+                readOnly={done}
               />
             </Form.Item>
           )}

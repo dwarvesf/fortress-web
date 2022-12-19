@@ -164,7 +164,7 @@ export const EngagementSurveyForm = () => {
                           name={field.eventQuestionID}
                           label={field.content}
                           showNote={showNote}
-                          disabled={
+                          done={
                             detail.status ===
                             ModelEventReviewerStatus.EventReviewerStatusDone
                           }
