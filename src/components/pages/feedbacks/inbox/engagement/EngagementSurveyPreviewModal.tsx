@@ -1,45 +1,53 @@
-import { List, Modal, Tag } from 'antd'
-import { AgreementLevel, agreementLevels } from 'constants/agreementLevel'
-import { statusColors } from 'constants/colors'
-import { ItemIndex } from '../../../../common/ItemIndex'
+import { List, Modal } from 'antd'
+import { Button } from 'components/common/Button'
+import { FeedbackPreviewField } from 'components/common/Feedbacks/FeedbackPreviewField'
+import { ViewFeedbackDetail, ViewQuestionAnswer } from 'types/schema'
 
 interface Props {
+  isPreviewing?: boolean
   isOpen: boolean
-  values: any
-  data: { question: string; name: string }[]
+  answers: ViewQuestionAnswer[]
+  detail: ViewFeedbackDetail
   onCancel: () => void
-  onOk: () => void
+  onOk?: () => void
 }
 
 export const EngagementSurveyPreviewModal = (props: Props) => {
-  const { isOpen, values = {}, data = [], onCancel, onOk } = props
+  const {
+    isPreviewing = true,
+    isOpen,
+    answers = [],
+    detail,
+    onCancel,
+    onOk,
+    ...rest
+  } = props
 
   return (
     <Modal
       open={isOpen}
-      onCancel={onCancel}
-      okText="Send"
-      onOk={onOk}
       width={768}
-      title="John Doe, SP Digital"
+      onCancel={onCancel}
+      footer={
+        isPreviewing
+          ? [
+              <Button type="default" onClick={onCancel}>
+                Cancel
+              </Button>,
+              <Button type="primary" onClick={onOk}>
+                Send
+              </Button>,
+            ]
+          : null
+      }
+      title={detail?.reviewer?.displayName || '-'}
+      {...rest}
     >
       <List
         itemLayout="horizontal"
-        dataSource={data}
+        dataSource={answers}
         renderItem={(item, index) => (
-          <List.Item style={{ alignItems: 'start' }}>
-            <List.Item.Meta
-              avatar={<ItemIndex active>{index + 1}</ItemIndex>}
-              title={<strong>{item.question}</strong>}
-              description={values[`${item.name}_message`]}
-            />
-            <Tag
-              color={statusColors[values[item.name]]}
-              style={{ minWidth: 110, textAlign: 'center' }}
-            >
-              {agreementLevels[values[item.name] as AgreementLevel]}
-            </Tag>
-          </List.Item>
+          <FeedbackPreviewField answer={item} key={index} index={index} />
         )}
       />
     </Modal>
