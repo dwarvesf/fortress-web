@@ -7,6 +7,7 @@ import { useRouter } from 'next/router'
 import { FeedbackSubtype } from 'constants/feedbackTypes'
 
 interface Props extends ModalProps {
+  isPreviewing?: boolean
   isOpen: boolean
   answers: ViewQuestionAnswer[]
   detail: ViewFeedbackDetail
@@ -15,7 +16,15 @@ interface Props extends ModalProps {
 }
 
 export const SurveyReviewModal = (props: Props) => {
-  const { isOpen, answers = [], detail, onCancel, onOk, ...rest } = props
+  const {
+    isPreviewing = true,
+    isOpen,
+    answers = [],
+    detail,
+    onCancel,
+    onOk,
+    ...rest
+  } = props
   const {
     query: { subtype },
   } = useRouter()
@@ -43,14 +52,18 @@ export const SurveyReviewModal = (props: Props) => {
       open={isOpen}
       width={768}
       onCancel={onCancel}
-      footer={[
-        <Button type="default" onClick={onCancel}>
-          Cancel
-        </Button>,
-        <Button type="primary" onClick={onOk}>
-          Send
-        </Button>,
-      ]}
+      footer={
+        isPreviewing
+          ? [
+              <Button type="default" onClick={onCancel}>
+                Cancel
+              </Button>,
+              <Button type="primary" onClick={onOk}>
+                Send
+              </Button>,
+            ]
+          : null
+      }
       title={title}
       {...rest}
     >
