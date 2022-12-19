@@ -1,79 +1,41 @@
 import { useDisclosure } from '@dwarvesf/react-hooks'
-import { Card, Col, Form, Radio, Row, Space, Switch } from 'antd'
+import { Card, Col, Empty, Form, notification, Row, Space, Switch } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
-import TextArea from 'antd/lib/input/TextArea'
 import { Button } from 'components/common/Button'
 import { PageHeader } from 'components/common/PageHeader'
-import { agreementLevels } from 'constants/agreementLevel'
 import { ROUTES } from 'constants/routes'
 import { useRouter } from 'next/router'
-import { useRef, useState } from 'react'
-import { engagementColors } from 'constants/colors'
+import { useEffect, useMemo, useState } from 'react'
+import { useFetchWithCache } from 'hooks/useFetchWithCache'
+import { client, GET_PATHS } from 'libs/apis'
+import { ModelEventReviewerStatus } from 'constants/status'
+import { RequestSubmitBody } from 'types/schema'
+import { PageSpinner } from 'components/common/PageSpinner'
+import { FeedbackFormField } from 'components/common/Feedbacks/FeedbackFormField'
+import { FeedbackQuestionType } from 'constants/feedbackTypes'
 import { EngagementSurveyPreviewModal } from './EngagementSurveyPreviewModal'
 import { ItemIndex } from '../../../../common/ItemIndex'
 
-const mockData = [
-  {
-    question: 'I know what is expected of me at work.',
-    name: 'question_1',
-  },
-  {
-    question: 'I have the materials and equipment I need to do my work right.',
-    name: 'question_2',
-  },
-  {
-    question: 'At work, I have the opportunity to do what I do best every day.',
-    name: 'question_3',
-  },
-  {
-    question:
-      'In the last seven days, I have received recognition or praise for doing good work.',
-    name: 'question_4',
-  },
-  {
-    question:
-      'My supervisor, or someone at work, seems to care about me as a person.',
-    name: 'question_5',
-  },
-  {
-    question: 'There is someone at work who encourages my development.',
-    name: 'question_6',
-  },
-  {
-    question: 'At work, my opinions seem to count.',
-    name: 'question_7',
-  },
-  {
-    question:
-      'The mission or purpose of my company makes me feel my job is important.',
-    name: 'question_8',
-  },
-  {
-    question:
-      'My associates or fellow employees are committed to doing quality work.',
-    name: 'question_9',
-  },
-  {
-    question: 'I have a best friend at work.',
-    name: 'question_10',
-  },
-  {
-    question:
-      'In the last six months, someone at work has talked to me about my progress.',
-    name: 'question_11',
-  },
-  {
-    question:
-      'This last year, I have had opportunities at work to learn and grow.',
-    name: 'question_12',
-  },
-]
-
 export const EngagementSurveyForm = () => {
-  const { push } = useRouter()
+  const {
+    query: { id: topicID, eventID },
+    push,
+  } = useRouter()
+
+  const { data, loading, mutate } = useFetchWithCache(
+    [GET_PATHS.getFeedbacks, topicID, eventID],
+    () => client.getPersonalFeedback(eventID as string, topicID as string),
+    {
+      revalidateOnFocus: false,
+    },
+  )
+  const detail = data?.data
+
   const [form] = useForm()
-  const submitAction = useRef('')
-  const [submittedValues, setSubmittedValues] = useState()
+  const [submittedValues, setSubmittedValues] = useState<Record<string, any>>(
+    {},
+  )
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [showNote, setShowNite] = useState(true)
 
   const {
@@ -82,29 +44,81 @@ export const EngagementSurveyForm = () => {
     onClose: closePreviewDialog,
   } = useDisclosure()
 
-  const onSubmit = async (values: any) => {
-    setSubmittedValues({ ...values })
+  const initialValues = useMemo(
+    () =>
+      (detail?.answers || []).reduce((result, current) => {
+        return {
+          ...result,
+          [current.eventQuestionID!]: current.answer,
+          [`${current.eventQuestionID}_notes`]: current.note || '',
+        }
+      }, {}),
+    [detail],
+  )
 
-    if (submitAction.current === 'preview') {
-      console.log('Preview')
-      openPreviewDialog()
-    } else if (submitAction.current === 'save-draft') {
-      console.log('Save draft!')
+  useEffect(() => {
+    setSubmittedValues({ ...initialValues })
+  }, [initialValues])
+
+  const answersToSubmit = useMemo(
+    () =>
+      (detail?.answers || []).map((answer) => {
+        return {
+          ...answer,
+          answer: submittedValues[answer.eventQuestionID || ''],
+          note: submittedValues[`${answer.eventQuestionID}_notes`],
+        }
+      }),
+    [submittedValues, detail],
+  )
+
+  const submitForm = async ({
+    status,
+  }: {
+    status: ModelEventReviewerStatus
+  }) => {
+    try {
+      setIsSubmitting(true)
+
+      await client.submitPersonalFeedback(
+        eventID as string,
+        topicID as string,
+        {
+          answers: answersToSubmit as RequestSubmitBody['answers'],
+          status,
+        },
+      )
+
+      notification.success({
+        message: `Feedback ${
+          status === ModelEventReviewerStatus.EventReviewerStatusDraft
+            ? 'saved'
+            : 'submitted'
+        } successfully!`,
+      })
+
+      mutate()
+      push(ROUTES.INBOX)
+    } catch (error: any) {
+      notification.error({
+        message: error?.message || 'Could not save the feedback as draft!',
+      })
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
-  const onPreview = () => {
-    submitAction.current = 'preview'
-    form.submit()
+  const onSubmit = async (values: any) => {
+    setSubmittedValues({ ...values })
+    openPreviewDialog()
   }
 
   const onSaveDraft = () => {
-    submitAction.current = 'save-draft'
-    form.submit()
+    submitForm({ status: ModelEventReviewerStatus.EventReviewerStatusDraft })
   }
 
-  const onSend = () => {
-    push(ROUTES.INBOX)
+  if (!detail || loading) {
+    return <PageSpinner />
   }
 
   return (
@@ -119,88 +133,49 @@ export const EngagementSurveyForm = () => {
               onValuesChange={(_, values) => {
                 setSubmittedValues({ ...values })
               }}
+              initialValues={initialValues}
+              validateTrigger="onSubmit"
             >
               <Space direction="vertical" style={{ width: '100%' }}>
-                {mockData.map((field, index) => (
-                  <Row key={index} gutter={24} wrap={false}>
-                    <Col
-                      style={{
-                        height: 40,
-                        alignItems: 'center',
-                        display: 'flex',
-                      }}
-                    >
-                      <ItemIndex active={submittedValues?.[field.name]}>
-                        {index + 1}
-                      </ItemIndex>
-                    </Col>
-                    <Col flex={1}>
-                      <Form.Item
-                        label={field.question}
-                        name={field.name}
-                        required
-                        rules={[
-                          {
-                            required: true,
-                            message: 'This question is required',
-                          },
-                        ]}
+                {detail.answers?.length ? (
+                  detail.answers.map((field, index) => (
+                    <Row key={index} gutter={24} wrap={false}>
+                      <Col
+                        style={{
+                          height: 40,
+                          alignItems: 'center',
+                          display: 'flex',
+                        }}
                       >
-                        <Radio.Group
-                          style={{
-                            width: '100%',
-                            display: 'grid',
-                            gridTemplateColumns: 'repeat(5, 1fr)',
-                            gap: '5px',
-                            textAlign: 'center',
-                          }}
+                        <ItemIndex
+                          active={
+                            submittedValues?.[field.eventQuestionID || '']
+                          }
                         >
-                          {(
-                            Object.keys(agreementLevels) as Array<
-                              keyof typeof agreementLevels
-                            >
-                          ).map((item) => (
-                            <Radio.Button
-                              value={item}
-                              key={item}
-                              style={{
-                                display: 'flex',
-                                height: '100%',
-                                lineHeight: 1,
-                                padding: '10px',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                backgroundColor:
-                                  engagementColors[item].background,
-                                color: engagementColors[item].text,
-                                borderRadius: '5px',
-                                borderWidth: 0,
-                                fontSize: 12,
-                                fontWeight: 700,
-                                overflow: 'hidden',
-                                opacity:
-                                  submittedValues?.[field.name] === item
-                                    ? 1
-                                    : 0.3,
-                              }}
-                            >
-                              {agreementLevels[item]}
-                            </Radio.Button>
-                          ))}
-                        </Radio.Group>
-                      </Form.Item>
-                      {showNote && (
-                        <Form.Item name={`${field.name}_message`}>
-                          <TextArea
-                            rows={3}
-                            bordered
-                            placeholder="Enter your message"
-                          />
-                        </Form.Item>
-                      )}
-                    </Col>
-                  </Row>
-                ))}
+                          {index + 1}
+                        </ItemIndex>
+                      </Col>
+                      <Col flex={1}>
+                        <FeedbackFormField
+                          type={
+                            (field.type as FeedbackQuestionType) ||
+                            FeedbackQuestionType.GENERAL
+                          }
+                          name={field.eventQuestionID}
+                          label={field.content}
+                          showNote={showNote}
+                          disabled={
+                            detail.status ===
+                            ModelEventReviewerStatus.EventReviewerStatusDone
+                          }
+                          required
+                        />
+                      </Col>
+                    </Row>
+                  ))
+                ) : (
+                  <Empty description="No questions data" />
+                )}
               </Space>
             </Form>
             <Space>
@@ -215,24 +190,30 @@ export const EngagementSurveyForm = () => {
       </Row>
       <Row gutter={8}>
         <Col>
-          <Button type="default" onClick={onSaveDraft}>
+          <Button type="default" onClick={onSaveDraft} loading={isSubmitting}>
             Save Draft
           </Button>
         </Col>
         <Col>
-          <Button type="primary" onClick={onPreview}>
+          <Button type="primary" onClick={form.submit}>
             Preview & Send
           </Button>
         </Col>
       </Row>
 
-      <EngagementSurveyPreviewModal
-        data={mockData}
-        values={submittedValues}
-        isOpen={isPreviewDialogOpen}
-        onCancel={closePreviewDialog}
-        onOk={onSend}
-      />
+      {isPreviewDialogOpen && (
+        <EngagementSurveyPreviewModal
+          answers={answersToSubmit}
+          detail={detail}
+          isOpen={isPreviewDialogOpen}
+          onCancel={closePreviewDialog}
+          onOk={() => {
+            submitForm({
+              status: ModelEventReviewerStatus.EventReviewerStatusDone,
+            })
+          }}
+        />
+      )}
     </Space>
   )
 }
