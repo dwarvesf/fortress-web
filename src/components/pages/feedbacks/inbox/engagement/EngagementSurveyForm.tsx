@@ -36,7 +36,7 @@ export const EngagementSurveyForm = () => {
     {},
   )
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [showNote, setShowNite] = useState(true)
+  const [showNote, setShowNote] = useState(true)
 
   const {
     isOpen: isPreviewDialogOpen,
@@ -181,25 +181,27 @@ export const EngagementSurveyForm = () => {
             <Space>
               <Switch
                 checked={showNote}
-                onChange={(checked) => setShowNite(checked)}
+                onChange={(checked) => setShowNote(checked)}
               />
               <span>Show note</span>
             </Space>
           </Card>
         </Col>
       </Row>
-      <Row gutter={8}>
-        <Col>
-          <Button type="default" onClick={onSaveDraft} loading={isSubmitting}>
-            Save Draft
-          </Button>
-        </Col>
-        <Col>
-          <Button type="primary" onClick={form.submit}>
-            Preview & Send
-          </Button>
-        </Col>
-      </Row>
+      {detail.status !== ModelEventReviewerStatus.EventReviewerStatusDone && (
+        <Row gutter={8}>
+          <Col>
+            <Button type="default" onClick={onSaveDraft} loading={isSubmitting}>
+              Save Draft
+            </Button>
+          </Col>
+          <Col>
+            <Button type="primary" onClick={form.submit}>
+              Preview & Send
+            </Button>
+          </Col>
+        </Row>
+      )}
 
       {isPreviewDialogOpen && (
         <EngagementSurveyPreviewModal
