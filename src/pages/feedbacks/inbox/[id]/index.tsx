@@ -1,4 +1,5 @@
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
+import { SEO } from 'components/common/SEO'
 import { SurveyForm } from 'components/pages/feedbacks/inbox/survey/SurveyForm'
 import { FeedbackType } from 'constants/feedbackTypes'
 import { ROUTES } from 'constants/routes'
@@ -23,6 +24,8 @@ const Default = () => {
 
   return (
     <>
+      <SEO title="Feedbacks - Inbox" />
+
       <Breadcrumb
         items={[
           {

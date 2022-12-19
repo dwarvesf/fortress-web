@@ -16,6 +16,7 @@ import { FeedbackSubtype } from 'constants/feedbackTypes'
 import { ViewSurvey } from 'types/schema'
 import { ROUTES } from 'constants/routes'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
+import { SEO } from 'components/common/SEO'
 
 interface ColumnProps {
   onAfterDelete: () => void
@@ -73,6 +74,8 @@ const PeerReviewPage = () => {
 
   return (
     <>
+      <SEO title="Feedbacks - Peer Review" />
+
       <Breadcrumb
         items={[
           {

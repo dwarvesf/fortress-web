@@ -13,6 +13,7 @@ import React from 'react'
 import { WorkloadAverage } from 'components/pages/feedbacks/workload/WorkloadAverage'
 import { WorkloadDetailActions } from 'components/pages/feedbacks/workload/WorkloadDetailActions'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
+import { SEO } from 'components/common/SEO'
 import { mockProjectNames, mockWorkloadData } from '.'
 
 const columns: ColumnsType<any> = [
@@ -82,6 +83,8 @@ const EmployeePeerReviewsPage = () => {
 
   return (
     <>
+      <SEO title={`Workload - ${currentData?.title || '-'}`} />
+
       <Breadcrumb
         items={[
           {

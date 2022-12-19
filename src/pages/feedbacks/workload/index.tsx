@@ -15,6 +15,7 @@ import { ViewEmployeeData } from 'types/schema'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 import { ROUTES } from 'constants/routes'
 import { Setting } from '@icon-park/react'
+import { SEO } from 'components/common/SEO'
 
 const employees: ViewEmployeeData[] = [
   {
@@ -503,6 +504,8 @@ const WorkloadPage = () => {
 
   return (
     <>
+      <SEO title="Feedbacks - Workload" />
+
       <Breadcrumb
         items={[
           {

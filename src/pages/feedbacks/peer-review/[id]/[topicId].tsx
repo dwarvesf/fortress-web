@@ -19,6 +19,7 @@ import { client, GET_PATHS } from 'libs/apis'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { ViewPeerReviewer } from 'types/schema'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
+import { SEO } from 'components/common/SEO'
 
 interface ColumnProps {
   onAfterDelete: () => void
@@ -69,9 +70,14 @@ const EmployeePeerReviewsPage = () => {
     [GET_PATHS.getSurveyTopic(query.id as string, query.topicId as string)],
     () => client.getSurveyTopic(query.id as string, query.topicId as string),
   )
+  const topicDetail = data?.data
 
   return (
     <>
+      <SEO
+        title={`Peer Review - ${topicDetail?.employee?.displayName || '-'}`}
+      />
+
       <Breadcrumb
         items={[
           {
@@ -86,11 +92,11 @@ const EmployeePeerReviewsPage = () => {
             href: ROUTES.PEER_REVIEW,
           },
           {
-            label: data?.data?.title || '-',
+            label: topicDetail?.title || '-',
             href: ROUTES.PEER_REVIEW_EVENT_DETAIL(query?.id as string),
           },
           {
-            label: data?.data?.employee?.displayName || '-',
+            label: topicDetail?.employee?.displayName || '-',
           },
         ]}
       />
@@ -98,10 +104,10 @@ const EmployeePeerReviewsPage = () => {
       <Space direction="vertical" size={24} style={{ width: '100%' }}>
         <PageHeader
           backHref={ROUTES.PEER_REVIEW_EVENT_DETAIL(query.id as string)}
-          title={data?.data?.title}
+          title={topicDetail?.title}
         />
         <Table
-          dataSource={data?.data?.participants || []}
+          dataSource={topicDetail?.participants || []}
           columns={columns({
             onAfterDelete: mutate,
           })}

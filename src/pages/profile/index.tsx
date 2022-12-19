@@ -11,6 +11,7 @@ import { Button } from 'components/common/Button'
 import { ROUTES } from 'constants/routes'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 import { Edit, Link } from '@icon-park/react'
+import { SEO } from 'components/common/SEO'
 
 const Default = () => {
   const { user, revalidate } = useAuthContext()
@@ -29,6 +30,8 @@ const Default = () => {
 
   return (
     <>
+      <SEO title="Profile" />
+
       <Breadcrumb
         items={[
           {

@@ -31,6 +31,7 @@ import { SurveyDetailFilter } from 'types/filters/SurveyDetailFilter'
 import { ViewTopic } from 'types/schema'
 import debounce from 'lodash.debounce'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
+import { SEO } from 'components/common/SEO'
 
 const columns: ColumnsType<ViewTopic> = [
   {
@@ -145,6 +146,8 @@ const Default = () => {
 
   return (
     <>
+      <SEO title={`Engagement - ${title || '-'}`} />
+
       <Breadcrumb
         items={[
           {

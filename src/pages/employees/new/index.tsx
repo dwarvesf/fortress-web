@@ -1,6 +1,7 @@
 import { Col, Row, Space } from 'antd'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 import { PageHeader } from 'components/common/PageHeader'
+import { SEO } from 'components/common/SEO'
 import { EmployeeForm } from 'components/pages/employees/EmployeeForm'
 import { ROUTES } from 'constants/routes'
 
@@ -19,6 +20,8 @@ export class CreateEmployeeFormValues {
 const CreateEmployeePage = () => {
   return (
     <>
+      <SEO title="Employees - New" />
+
       <Breadcrumb
         items={[
           {

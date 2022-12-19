@@ -16,6 +16,7 @@ import { FeedbackFormField } from 'components/common/Feedbacks/FeedbackFormField
 import { ItemIndex } from 'components/common/ItemIndex'
 import { PageHeader } from 'components/common/PageHeader'
 import { PageSpinner } from 'components/common/PageSpinner'
+import { SEO } from 'components/common/SEO'
 import { statusColors } from 'constants/colors'
 import { FeedbackQuestionType } from 'constants/feedbackTypes'
 import { ROUTES } from 'constants/routes'
@@ -130,6 +131,8 @@ export const SurveyForm = () => {
 
   return (
     <>
+      <SEO title={detail.title || '-'} />
+
       <Space style={{ width: '100%' }} size={24} direction="vertical">
         <PageHeader
           title={

@@ -36,6 +36,7 @@ import qs from 'qs'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 import { PreviewOpen, Star } from '@icon-park/react'
+import { SEO } from 'components/common/SEO'
 
 interface ColumnProps {
   filter: EmployeeListFilter
@@ -285,6 +286,8 @@ const Default = () => {
 
   return (
     <>
+      <SEO title="Employees" />
+
       <Breadcrumb
         items={[
           {
