@@ -1,9 +1,12 @@
-import { List, Modal } from 'antd'
+import { List, Modal, Space, Tag, ModalProps } from 'antd'
 import { Button } from 'components/common/Button'
-import { FeedbackPreviewField } from 'components/common/Feedbacks/FeedbackPreviewField'
 import { ViewFeedbackDetail, ViewQuestionAnswer } from 'types/schema'
+import { capitalizeFirstLetter } from 'utils/string'
+import { FeedbackPreviewField } from 'components/common/Feedbacks/FeedbackPreviewField'
+import { useRouter } from 'next/router'
+import { FeedbackSubtype } from 'constants/feedbackTypes'
 
-interface Props {
+interface Props extends ModalProps {
   isPreviewing?: boolean
   isOpen: boolean
   answers: ViewQuestionAnswer[]
@@ -12,7 +15,7 @@ interface Props {
   onOk?: () => void
 }
 
-export const EngagementSurveyPreviewModal = (props: Props) => {
+export const SurveyReviewModal = (props: Props) => {
   const {
     isPreviewing = true,
     isOpen,
@@ -22,6 +25,27 @@ export const EngagementSurveyPreviewModal = (props: Props) => {
     onOk,
     ...rest
   } = props
+  const {
+    query: { subtype },
+  } = useRouter()
+
+  const title =
+    {
+      [FeedbackSubtype.PEER_REVIEW]: (
+        <Space direction="vertical">
+          <Space>
+            <span>{detail?.reviewer?.displayName || '-'}</span>
+            <Tag>{capitalizeFirstLetter(detail?.relationship || '-')}</Tag>
+          </Space>
+          {detail?.title && <small>{detail?.title}</small>}
+        </Space>
+      ),
+      [FeedbackSubtype.ENGAGEMENT]: detail.title,
+    }[subtype as string] || '-'
+
+  if (!detail) {
+    return null
+  }
 
   return (
     <Modal
@@ -40,7 +64,7 @@ export const EngagementSurveyPreviewModal = (props: Props) => {
             ]
           : null
       }
-      title={detail?.reviewer?.displayName || '-'}
+      title={title}
       {...rest}
     >
       <List

@@ -8,7 +8,7 @@ import { client, GET_PATHS } from 'libs/apis'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { ViewFeedBackReviewDetail, ViewPeerReviewer } from 'types/schema'
-import { PeerPerformanceReviewModal } from '../inbox/peer-review/PeerPerformanceReviewModal'
+import { SurveyReviewModal } from '../inbox/survey/SurveyReviewModal'
 
 interface Props {
   employeePeerReviewDetail: ViewPeerReviewer
@@ -123,7 +123,7 @@ export const EmployeePeerReviewsAction = (props: Props) => {
         </Tooltip>
       </Col>
 
-      <PeerPerformanceReviewModal
+      <SurveyReviewModal
         isPreviewing={false}
         isOpen={isPreviewDialogOpen}
         onCancel={closePreviewDialog}

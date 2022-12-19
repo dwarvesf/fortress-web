@@ -25,9 +25,9 @@ import { client, GET_PATHS } from 'libs/apis'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
 import { RequestSubmitBody } from 'types/schema'
-import { PeerPerformanceReviewModal } from './PeerPerformanceReviewModal'
+import { SurveyReviewModal } from './SurveyReviewModal'
 
-export const PeerFormanceReviewForm = () => {
+export const SurveyForm = () => {
   const {
     query: { id: topicID, eventID },
     push,
@@ -159,43 +159,41 @@ export const PeerFormanceReviewForm = () => {
               >
                 <Space direction="vertical" style={{ width: '100%' }}>
                   {detail.answers && detail.answers.length ? (
-                    detail.answers.map((field, index) => {
-                      return (
-                        <Row key={index} gutter={24} wrap={false}>
-                          <Col
-                            style={{
-                              height: 40,
-                              alignItems: 'center',
-                              display: 'flex',
-                            }}
+                    detail.answers.map((field, index) => (
+                      <Row key={index} gutter={24} wrap={false}>
+                        <Col
+                          style={{
+                            height: 40,
+                            alignItems: 'center',
+                            display: 'flex',
+                          }}
+                        >
+                          <ItemIndex
+                            active={
+                              submittedValues?.[field.eventQuestionID || '']
+                            }
                           >
-                            <ItemIndex
-                              active={
-                                submittedValues?.[field.eventQuestionID || '']
-                              }
-                            >
-                              {index + 1}
-                            </ItemIndex>
-                          </Col>
-                          <Col flex={1}>
-                            <FeedbackFormField
-                              type={
-                                (field.type as FeedbackQuestionType) ||
-                                FeedbackQuestionType.GENERAL
-                              }
-                              name={field.eventQuestionID}
-                              label={field.content}
-                              showNote={showNote}
-                              disabled={
-                                detail.status ===
-                                ModelEventReviewerStatus.EventReviewerStatusDone
-                              }
-                              required
-                            />
-                          </Col>
-                        </Row>
-                      )
-                    })
+                            {index + 1}
+                          </ItemIndex>
+                        </Col>
+                        <Col flex={1}>
+                          <FeedbackFormField
+                            type={
+                              (field.type as FeedbackQuestionType) ||
+                              FeedbackQuestionType.GENERAL
+                            }
+                            name={field.eventQuestionID}
+                            label={field.content}
+                            showNote={showNote}
+                            done={
+                              detail.status ===
+                              ModelEventReviewerStatus.EventReviewerStatusDone
+                            }
+                            required
+                          />
+                        </Col>
+                      </Row>
+                    ))
                   ) : (
                     <Empty description="No questions data" />
                   )}
@@ -230,8 +228,9 @@ export const PeerFormanceReviewForm = () => {
           </Row>
         )}
       </Space>
+
       {isPreviewDialogOpen && (
-        <PeerPerformanceReviewModal
+        <SurveyReviewModal
           answers={answersToSubmit}
           detail={detail}
           isOpen={isPreviewDialogOpen}

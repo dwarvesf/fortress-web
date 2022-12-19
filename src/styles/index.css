@@ -8,7 +8,7 @@ tr.inbox-row.not-read td {
   font-weight: 600;
 }
 
-.likert-scale .ant-radio-button-wrapper {
+.likert-scale:has(.ant-radio-button-wrapper-checked) .ant-radio-button-wrapper {
   opacity: 0.3;
 }
 
