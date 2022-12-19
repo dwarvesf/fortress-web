@@ -32,7 +32,7 @@ export const FeedbackFormField = (props: Props) => {
           rules={[{ required, message: 'Required' }]}
         >
           {/* @ts-ignore */}
-          <TextArea {...rest} rows={3} bordered />
+          <TextArea {...rest} rows={3} bordered readOnly={disabled} />
         </Form.Item>
       )
     }
