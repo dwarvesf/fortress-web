@@ -1,6 +1,7 @@
 import { Spin, Tabs } from 'antd'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 import { PageHeader } from 'components/common/PageHeader'
+import { SEO } from 'components/common/SEO'
 import { General } from 'components/pages/projects/detail/General'
 import { Member } from 'components/pages/projects/detail/Member'
 import { WorkUnits } from 'components/pages/projects/detail/WorkUnits'
@@ -28,6 +29,8 @@ const Default = () => {
 
   return (
     <>
+      <SEO title={`Projects - ${project?.name || '-'}`} />
+
       <Breadcrumb
         items={[
           {

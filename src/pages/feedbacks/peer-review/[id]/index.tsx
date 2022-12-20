@@ -32,6 +32,7 @@ import { ViewTopic } from 'types/schema'
 import debounce from 'lodash.debounce'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 import { More } from '@icon-park/react'
+import { SEO } from 'components/common/SEO'
 
 interface ColumnProps {
   eventStatus?: SurveyEventStatus
@@ -227,6 +228,8 @@ const Default = () => {
 
   return (
     <>
+      <SEO title={`Peer Review - ${title || '-'}`} />
+
       <Breadcrumb
         items={[
           {

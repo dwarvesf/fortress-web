@@ -19,6 +19,7 @@ import { transformMetadataToFilterOption } from 'utils/select'
 import { statusColors } from 'constants/colors'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 import { PreviewOpen } from '@icon-park/react'
+import { SEO } from 'components/common/SEO'
 
 const Default = () => {
   const { filter, setFilter } = useFilter(new ProjectListFilter())
@@ -144,6 +145,8 @@ const Default = () => {
 
   return (
     <>
+      <SEO title="Projects" />
+
       <Breadcrumb
         items={[
           {

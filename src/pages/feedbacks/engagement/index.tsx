@@ -15,6 +15,7 @@ import { GET_PATHS, client } from 'libs/apis'
 import { SurveyListFilter } from 'types/filters/SurveyListFilter'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 import { ROUTES } from 'constants/routes'
+import { SEO } from 'components/common/SEO'
 
 const columns: ColumnsType<any> = [
   {
@@ -66,6 +67,8 @@ const EmployeeEngagementPage = () => {
 
   return (
     <>
+      <SEO title="Feedbacks - Engagement" />
+
       <Breadcrumb
         items={[
           {

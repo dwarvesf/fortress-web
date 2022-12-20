@@ -2,6 +2,7 @@ import { Tabs } from 'antd'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 import { PageHeader } from 'components/common/PageHeader'
 import { PageSpinner } from 'components/common/PageSpinner'
+import { SEO } from 'components/common/SEO'
 import { General } from 'components/pages/employees/detail/General'
 import { ROUTES } from 'constants/routes'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
@@ -28,6 +29,8 @@ const Default = () => {
 
   return (
     <>
+      <SEO title={`Employees - ${employee.displayName || '-'}`} />
+
       <Breadcrumb
         items={[
           {

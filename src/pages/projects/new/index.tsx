@@ -26,6 +26,7 @@ import { ProjectMemberTable } from 'components/pages/projects/add/ProjectMemberT
 import { FormWrapper } from 'components/common/FormWrapper'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 import { Plus } from '@icon-park/react'
+import { SEO } from 'components/common/SEO'
 
 const getPositionsFromIDs = (data: ModelPosition[], positionStrs: string[]) => {
   const result: ViewPosition[] = []
@@ -165,6 +166,8 @@ const CreateNewProjectPage = () => {
 
   return (
     <>
+      <SEO title="Projects - New" />
+
       <Breadcrumb
         items={[
           {
