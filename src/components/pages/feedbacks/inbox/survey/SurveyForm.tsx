@@ -1,18 +1,9 @@
 import { useDisclosure } from '@dwarvesf/react-hooks'
-import {
-  Card,
-  Col,
-  Empty,
-  Form,
-  notification,
-  Row,
-  Space,
-  Switch,
-  Tag,
-} from 'antd'
+import { Col, Empty, Form, notification, Row, Space, Switch, Tag } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
 import { Button } from 'components/common/Button'
 import { FeedbackFormField } from 'components/common/Feedbacks/FeedbackFormField'
+import { FormWrapper } from 'components/common/FormWrapper'
 import { ItemIndex } from 'components/common/ItemIndex'
 import { PageHeader } from 'components/common/PageHeader'
 import { PageSpinner } from 'components/common/PageSpinner'
@@ -150,7 +141,29 @@ export const SurveyForm = () => {
         />
         <Row>
           <Col span={24} lg={{ span: 16 }}>
-            <Card>
+            <FormWrapper
+              footer={
+                detail.status !==
+                ModelEventReviewerStatus.EventReviewerStatusDone ? (
+                  <Row gutter={8}>
+                    <Col>
+                      <Button
+                        type="default"
+                        onClick={onSaveDraft}
+                        loading={isSubmitting}
+                      >
+                        Save Draft
+                      </Button>
+                    </Col>
+                    <Col>
+                      <Button type="primary" onClick={form.submit}>
+                        Preview & Send
+                      </Button>
+                    </Col>
+                  </Row>
+                ) : undefined
+              }
+            >
               <Form
                 form={form}
                 onFinish={onSubmit}
@@ -209,27 +222,9 @@ export const SurveyForm = () => {
                 />
                 <span>Show note</span>
               </Space>
-            </Card>
+            </FormWrapper>
           </Col>
         </Row>
-        {detail.status !== ModelEventReviewerStatus.EventReviewerStatusDone && (
-          <Row gutter={8}>
-            <Col>
-              <Button
-                type="default"
-                onClick={onSaveDraft}
-                loading={isSubmitting}
-              >
-                Save Draft
-              </Button>
-            </Col>
-            <Col>
-              <Button type="primary" onClick={form.submit}>
-                Preview & Send
-              </Button>
-            </Col>
-          </Row>
-        )}
       </Space>
 
       {isPreviewDialogOpen && (

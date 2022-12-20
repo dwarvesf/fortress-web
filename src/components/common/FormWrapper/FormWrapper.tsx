@@ -15,9 +15,12 @@ export const FormWrapper = (props: Props) => {
       bodyStyle={{ padding: 0 }}
       bordered={false}
     >
-      <Card>{children}</Card>
+      <Card className="rounded-top">{children}</Card>
       {footer && (
-        <Card style={{ position: 'sticky', bottom: 0, zIndex: 20 }}>
+        <Card
+          style={{ position: 'sticky', bottom: 0, zIndex: 20 }}
+          className="rounded-bottom"
+        >
           {footer}
         </Card>
       )}
