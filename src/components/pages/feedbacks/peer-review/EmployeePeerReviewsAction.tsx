@@ -3,12 +3,11 @@ import { Delete, PreviewOpen } from '@icon-park/react'
 import { Col, Modal, notification, Row, Tooltip } from 'antd'
 import { Button } from 'components/common/Button'
 import { SurveyParticipantStatus } from 'constants/status'
-import { useFetchWithCache } from 'hooks/useFetchWithCache'
-import { client, GET_PATHS } from 'libs/apis'
+import { client } from 'libs/apis'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import { ViewFeedBackReviewDetail, ViewPeerReviewer } from 'types/schema'
-import { SurveyReviewModal } from '../inbox/survey/SurveyReviewModal'
+import { ViewPeerReviewer } from 'types/schema'
+import { SurveyResultModal } from '../SurveyResultModal'
 
 interface Props {
   employeePeerReviewDetail: ViewPeerReviewer
@@ -17,42 +16,12 @@ interface Props {
 
 export const EmployeePeerReviewsAction = (props: Props) => {
   const { employeePeerReviewDetail, onAfterDelete } = props
-
   const { query } = useRouter()
-
-  const { data: reviewDetail } = useFetchWithCache(
-    [
-      GET_PATHS.getSurveyReviewDetail(
-        query.id as string,
-        query.topicId as string,
-        employeePeerReviewDetail.eventReviewerID as string,
-      ),
-    ],
-    () =>
-      client.getSurveyReviewDetail(
-        query.id as string,
-        query.topicId as string,
-        employeePeerReviewDetail.eventReviewerID as string,
-      ),
-  )
-
-  const transformDataToViewFeedbackDetail = (
-    data?: ViewFeedBackReviewDetail,
-  ) => ({
-    answers: data?.questions,
-    employeeID: data?.employee?.id,
-    eventID: employeePeerReviewDetail.eventReviewerID,
-    relationship: data?.relationship,
-    reviewer: data?.reviewer,
-    title: data?.topicName,
-  })
-
   const {
     isOpen: isPreviewDialogOpen,
     onOpen: openPreviewDialog,
     onClose: closePreviewDialog,
   } = useDisclosure()
-
   const [isLoading, setIsLoading] = useState(false)
 
   const onDelete = async () => {
@@ -62,7 +31,7 @@ export const EmployeePeerReviewsAction = (props: Props) => {
       await client.removeSurveyParticipants(
         query.id as string,
         query.topicId as string,
-        [reviewDetail?.data?.reviewer?.id] as string[],
+        [employeePeerReviewDetail.reviewer?.id] as string[],
       )
 
       notification.success({
@@ -123,14 +92,15 @@ export const EmployeePeerReviewsAction = (props: Props) => {
         </Tooltip>
       </Col>
 
-      <SurveyReviewModal
-        isPreviewing={false}
-        isOpen={isPreviewDialogOpen}
-        onCancel={closePreviewDialog}
-        answers={reviewDetail?.data?.questions || []}
-        detail={transformDataToViewFeedbackDetail(reviewDetail?.data)}
-        centered
-      />
+      {isPreviewDialogOpen && (
+        <SurveyResultModal
+          isOpen={isPreviewDialogOpen}
+          onCancel={closePreviewDialog}
+          eventID={query.id as string}
+          topicID={query.topicId as string}
+          reviewID={employeePeerReviewDetail.eventReviewerID}
+        />
+      )}
     </Row>
   )
 }

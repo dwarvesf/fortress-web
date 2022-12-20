@@ -4,7 +4,7 @@ import { Col, Row, Tooltip } from 'antd'
 import { Button } from 'components/common/Button'
 import { SurveyParticipantStatus } from 'constants/status'
 import { ViewTopic } from 'types/schema'
-import { EngagementSurveyResultModal } from './EngagementSurveyResultModal'
+import { SurveyResultModal } from '../SurveyResultModal'
 
 interface Props {
   engagementDetail: ViewTopic
@@ -33,10 +33,12 @@ export const EngagementDetailActions = (props: Props) => {
       </Col>
 
       {isPreviewDialogOpen && (
-        <EngagementSurveyResultModal
+        <SurveyResultModal
           isOpen={isPreviewDialogOpen}
           onCancel={closePreviewDialog}
-          engagementDetail={engagementDetail}
+          eventID={engagementDetail.eventID}
+          topicID={engagementDetail.id}
+          reviewID={engagementDetail.reviewID}
         />
       )}
     </Row>
