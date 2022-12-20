@@ -39,7 +39,7 @@ export const ProfileDropdown = () => {
             <Image
               src={user?.avatar}
               preview={false}
-              style={{ objectFit: 'cover', height: 24 }}
+              style={{ objectFit: 'cover', height: 32 }}
             />
           }
         />
