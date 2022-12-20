@@ -41,7 +41,7 @@ export const SurveyReviewModal = (props: Props) => {
         </Space>
       ),
       [FeedbackSubtype.ENGAGEMENT]: detail.title,
-    }[subtype as string] || '-'
+    }[subtype as string] || detail.title
 
   if (!detail) {
     return null
