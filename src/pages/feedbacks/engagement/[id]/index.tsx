@@ -53,7 +53,7 @@ const columns: ColumnsType<ViewTopic> = [
   },
   {
     title: '',
-    render: () => <EngagementDetailActions />,
+    render: (value) => <EngagementDetailActions engagementDetail={value} />,
     fixed: 'right',
   },
 ]
