@@ -1,14 +1,11 @@
-import { Breadcrumb } from 'components/common/Header/Breadcrumb'
-import { SEO } from 'components/common/SEO'
 import { SurveyForm } from 'components/pages/feedbacks/inbox/survey/SurveyForm'
 import { FeedbackType } from 'constants/feedbackTypes'
-import { ROUTES } from 'constants/routes'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
 
 const Default = () => {
   const {
-    query: { type, id },
+    query: { type },
   } = useRouter()
 
   const content = useMemo(() => {
@@ -22,32 +19,7 @@ const Default = () => {
     }
   }, [type])
 
-  return (
-    <>
-      <SEO title="Feedbacks - Inbox" />
-
-      <Breadcrumb
-        items={[
-          {
-            label: 'Dashboard',
-            href: ROUTES.DASHBOARD,
-          },
-          {
-            label: 'Feedbacks',
-          },
-          {
-            label: 'Inbox',
-            href: ROUTES.INBOX,
-          },
-          {
-            label: id || '-',
-          },
-        ]}
-      />
-
-      {content}
-    </>
-  )
+  return content
 }
 
 export default Default

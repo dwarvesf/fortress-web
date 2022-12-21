@@ -94,7 +94,7 @@ export const FeedbackFormField = (props: Props) => {
             <Form.Item name={`${name}_notes`}>
               {/* @ts-ignore */}
               <TextArea
-                rows={3}
+                rows={4}
                 bordered
                 placeholder="Enter your message"
                 readOnly={done}

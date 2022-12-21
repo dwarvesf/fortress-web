@@ -4,6 +4,7 @@ import { useForm } from 'antd/lib/form/Form'
 import { Button } from 'components/common/Button'
 import { FeedbackFormField } from 'components/common/Feedbacks/FeedbackFormField'
 import { FormWrapper } from 'components/common/FormWrapper'
+import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 import { ItemIndex } from 'components/common/ItemIndex'
 import { PageHeader } from 'components/common/PageHeader'
 import { PageSpinner } from 'components/common/PageSpinner'
@@ -123,6 +124,25 @@ export const SurveyForm = () => {
   return (
     <>
       <SEO title={detail.title || '-'} />
+
+      <Breadcrumb
+        items={[
+          {
+            label: 'Dashboard',
+            href: ROUTES.DASHBOARD,
+          },
+          {
+            label: 'Feedbacks',
+          },
+          {
+            label: 'Inbox',
+            href: ROUTES.INBOX,
+          },
+          {
+            label: detail?.title || '-',
+          },
+        ]}
+      />
 
       <Space style={{ width: '100%' }} size={24} direction="vertical">
         <PageHeader
