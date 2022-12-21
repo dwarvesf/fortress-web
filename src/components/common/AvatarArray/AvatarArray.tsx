@@ -1,7 +1,7 @@
 import { Avatar, Space, Tooltip } from 'antd'
 import { theme } from 'styles'
 import { ViewEmployeeData, ViewProjectMember } from 'types/schema'
-import { AvatarWithName } from '../AvatarWithName'
+import { UserAvatar } from '../AvatarWithName'
 import { EmployeeLink } from '../DetailLink'
 
 interface Props {
@@ -56,10 +56,7 @@ export const AvatarArray = (props: Props) => {
             <Space direction="vertical">
               {data.slice(numOfVisibleAvatar).map((user) => {
                 return (
-                  <AvatarWithName
-                    key={user.id || user.employeeID}
-                    user={user}
-                  />
+                  <UserAvatar key={user.id || user.employeeID} user={user} />
                 )
               })}
             </Space>

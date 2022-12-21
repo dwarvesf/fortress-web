@@ -1,7 +1,7 @@
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { Space, Col, Row, Avatar, notification, Card } from 'antd'
 import { AvatarArray } from 'components/common/AvatarArray'
-import { AvatarWithName } from 'components/common/AvatarWithName'
+import { UserAvatar } from 'components/common/AvatarWithName'
 import { DataRows } from 'components/common/DataRows'
 import { EditableDetailSectionCard } from 'components/common/EditableDetailSectionCard'
 import { AsyncSelect } from 'components/common/Select'
@@ -142,7 +142,7 @@ export const General = (props: Props) => {
                   {
                     label: 'Account Manager',
                     value: data.accountManager ? (
-                      <AvatarWithName user={data.accountManager} />
+                      <UserAvatar user={data.accountManager} />
                     ) : (
                       ''
                     ),
@@ -150,7 +150,7 @@ export const General = (props: Props) => {
                   {
                     label: 'Delivery Manager',
                     value: data.deliveryManager ? (
-                      <AvatarWithName user={data.deliveryManager} />
+                      <UserAvatar user={data.deliveryManager} />
                     ) : (
                       ''
                     ),

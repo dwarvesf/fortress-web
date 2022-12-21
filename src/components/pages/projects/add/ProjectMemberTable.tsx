@@ -1,6 +1,6 @@
 import { Space, Table, Tag } from 'antd'
 import { ColumnsType } from 'antd/lib/table'
-import { AvatarWithName } from 'components/common/AvatarWithName'
+import { UserAvatar } from 'components/common/AvatarWithName'
 import { DATE_FORMAT } from 'constants/date'
 import { format } from 'date-fns'
 import { Meta } from 'libs/apis'
@@ -42,7 +42,7 @@ export const ProjectMemberTable = ({
         render: (value) =>
           value.displayName ? (
             <Space>
-              <AvatarWithName user={value} isLink={false} />
+              <UserAvatar user={value} isLink={false} />
               {value.isLead && <Tag color="red">Lead</Tag>}
             </Space>
           ) : (

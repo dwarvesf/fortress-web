@@ -1,6 +1,6 @@
 import { Space, Table, Tag } from 'antd'
 import { ColumnsType } from 'antd/lib/table'
-import { AvatarWithName } from 'components/common/AvatarWithName'
+import { UserAvatar } from 'components/common/AvatarWithName'
 import { PageHeader } from 'components/common/PageHeader'
 import { statusColors } from 'constants/colors'
 import { ROUTES } from 'constants/routes'
@@ -32,7 +32,7 @@ const columns = ({
     title: 'Reviewer',
     key: 'reviewer',
     dataIndex: 'reviewer',
-    render: (value) => <AvatarWithName user={value} />,
+    render: (value) => <UserAvatar user={value} />,
     fixed: 'left',
   },
   {

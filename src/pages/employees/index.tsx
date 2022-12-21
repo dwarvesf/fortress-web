@@ -3,7 +3,7 @@ import { ROUTES } from 'constants/routes'
 import { PageHeader } from 'components/common/PageHeader'
 import Table, { ColumnsType } from 'antd/lib/table'
 import Link from 'next/link'
-import { AvatarWithName } from 'components/common/AvatarWithName'
+import { UserAvatar } from 'components/common/AvatarWithName'
 import {
   // EditEmployeeLink,
   EmployeeLink,
@@ -57,7 +57,7 @@ const columns = ({
 }: ColumnProps): ColumnsType<ViewEmployeeData> => [
   {
     title: 'Employee',
-    render: (value) => (value ? <AvatarWithName user={value} /> : 'TBD'),
+    render: (value) => (value ? <UserAvatar user={value} /> : 'TBD'),
     fixed: 'left',
   },
   {
@@ -143,7 +143,7 @@ const columns = ({
     key: 'lineManager',
     dataIndex: 'lineManager',
     render: (value?: ViewBasicEmployeeInfo) =>
-      value ? <AvatarWithName user={value} /> : '-',
+      value ? <UserAvatar user={value} /> : '-',
   },
   {
     title: 'Seniority',

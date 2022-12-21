@@ -11,7 +11,7 @@ import {
   Image,
 } from 'antd'
 import { useDisclosure } from '@dwarvesf/react-hooks'
-import { AvatarWithName } from 'components/common/AvatarWithName'
+import { UserAvatar } from 'components/common/AvatarWithName'
 import { DataRows } from 'components/common/DataRows'
 import { EditableDetailSectionCard } from 'components/common/EditableDetailSectionCard'
 import { DATE_FORMAT } from 'constants/date'
@@ -217,7 +217,7 @@ export const General = (props: Props) => {
                       {
                         label: 'Line Manager',
                         value: data.lineManager ? (
-                          <AvatarWithName user={data.lineManager} />
+                          <UserAvatar user={data.lineManager} />
                         ) : (
                           '-'
                         ),
