@@ -36,7 +36,7 @@ export const FeedbackPreviewField = ({
             color={statusColors[answer.answer || '']}
             style={{ minWidth: 110, textAlign: 'center' }}
           >
-            {agreementLevels[answer.answer as AgreementLevel]}
+            {agreementLevels[answer.answer as AgreementLevel] || '-'}
           </Tag>
         </List.Item>
       )

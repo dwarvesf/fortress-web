@@ -1,3 +1,5 @@
+// FIXME: use SurveyResultModal when binding API instead of this one
+
 import { List, Modal, ModalProps } from 'antd'
 import { FeedbackPreviewField } from 'components/common/Feedbacks/FeedbackPreviewField'
 import { AgreementLevel } from 'constants/agreementLevel'
@@ -5,7 +7,7 @@ import { AgreementLevel } from 'constants/agreementLevel'
 interface Props extends ModalProps {
   isOpen: boolean
   onClose: () => void
-  record: any // TODO: add type
+  record: any
 }
 
 export const WorkResultModal = (props: Props) => {
@@ -25,18 +27,22 @@ export const WorkResultModal = (props: Props) => {
         dataSource={[
           {
             answer: AgreementLevel.DISAGREE,
-            content: 'Question 1',
+            content: 'How do you feel about your current workload?',
+            note: 'Overwhelming',
             type: 'likert-scale',
           },
           {
-            answer: AgreementLevel.MIXED,
-            content: 'Question 2',
+            answer: AgreementLevel.STRONGLY_AGREE,
+            content:
+              "How is your confidence in the team's ability to meet the deadline?",
+            note: 'Very confident',
             type: 'likert-scale',
           },
           {
             answer: AgreementLevel.AGREE,
-            content: 'Question 3',
-            note: 'note',
+            content:
+              'How much did you learn from your work and your team in the past two weeks?',
+            note: 'A lot',
             type: 'likert-scale',
           },
         ]}

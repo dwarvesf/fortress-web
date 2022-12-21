@@ -31,14 +31,14 @@ export const CreateWorkSurveyModal = (props: Props) => {
       await client.createSurvey(transformDataToSend(values))
 
       notification.success({
-        message: 'Peer performance review event created successfully!',
+        message: 'Work survey created successfully!',
       })
 
       onClose()
       onAfterSubmit()
     } catch (error: any) {
       notification.error({
-        message: error?.message || 'Could not create peer performance review',
+        message: error?.message || 'Could not create work survey',
       })
     } finally {
       setIsSubmitting(false)
