@@ -1,6 +1,6 @@
 import { Col, Row } from 'antd'
 import { AgreementLevel, workLevels } from 'constants/agreementLevel'
-import { levelsColors } from 'constants/colors'
+import { likertScalesColors } from 'constants/colors'
 import { WorkAverageIcon } from './WorkAverageIcon'
 
 const evaluations = [
@@ -33,7 +33,7 @@ export const WorkAveragePopover = () => {
             }}
           >
             <div>
-              <WorkAverageIcon color={`${levelsColors[e.evaluation]}`} />
+              <WorkAverageIcon color={`${likertScalesColors[e.evaluation]}`} />
               <span style={{ marginLeft: 8 }}>{workLevels[e.evaluation]}</span>
             </div>
             <span style={{ fontSize: 17 }}>{e.value}</span>

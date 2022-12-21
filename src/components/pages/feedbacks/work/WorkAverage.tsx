@@ -1,5 +1,5 @@
 import { Popover, Button } from 'antd'
-import { levelsColors } from 'constants/colors'
+import { likertScalesColors } from 'constants/colors'
 import { WorkAverageIcon } from './WorkAverageIcon'
 import { WorkAveragePopover } from './WorkAveragePopover'
 
@@ -30,8 +30,9 @@ export const WorkAverage = (props: Props) => {
       >
         <WorkAverageIcon
           color={`${
-            levelsColors[props.data.average as keyof typeof levelsColors]
-              .background
+            likertScalesColors[
+              props.data.average as keyof typeof likertScalesColors
+            ].background
           }`}
         />
       </Button>

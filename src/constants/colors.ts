@@ -27,7 +27,7 @@ export const statusColors: Record<string, TagProps['color']> = {
   new: 'red',
 }
 
-export const levelsColors = {
+export const likertScalesColors = {
   'strongly-disagree': { background: '#ff4d4f', text: 'white' },
   disagree: { background: '#ffd666', text: 'black' },
   mixed: { background: '#788896', text: 'white' },
