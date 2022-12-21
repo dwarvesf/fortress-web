@@ -2,7 +2,7 @@ import { useDisclosure } from '@dwarvesf/react-hooks'
 import { PreviewOpen } from '@icon-park/react'
 import { Row, Tooltip } from 'antd'
 import { Button } from 'components/common/Button'
-import { WorkloadResultModal } from './WorkloadResultModal'
+import { WorkResultModal } from './WorkResultModal'
 
 interface Props {
   record: any
@@ -12,9 +12,9 @@ export const WorkDetailActions = (props: Props) => {
   const { record } = props
 
   const {
-    isOpen: isWorkloadResultDialogOpen,
-    onOpen: openWorkloadResultDialog,
-    onClose: closeWorkloadResultDialog,
+    isOpen: isWorkResultDialogOpen,
+    onOpen: openWorkResultDialog,
+    onClose: closeWorkResultDialog,
   } = useDisclosure()
 
   return (
@@ -25,14 +25,14 @@ export const WorkDetailActions = (props: Props) => {
             type="text-primary"
             size="small"
             icon={<PreviewOpen size={20} />}
-            onClick={openWorkloadResultDialog}
+            onClick={openWorkResultDialog}
           />
         </Tooltip>
       </Row>
 
-      <WorkloadResultModal
-        onClose={closeWorkloadResultDialog}
-        isOpen={isWorkloadResultDialogOpen}
+      <WorkResultModal
+        onClose={closeWorkResultDialog}
+        isOpen={isWorkResultDialogOpen}
         record={record}
       />
     </>
