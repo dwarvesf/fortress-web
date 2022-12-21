@@ -1,7 +1,7 @@
 import { Form, Radio, FormItemProps } from 'antd'
 import TextArea from 'antd/lib/input/TextArea'
 import { agreementLevels } from 'constants/agreementLevel'
-import { engagementColors } from 'constants/colors'
+import { likertScalesColors } from 'constants/colors'
 import { FeedbackQuestionType } from 'constants/feedbackTypes'
 
 type Props = FormItemProps & {
@@ -76,8 +76,8 @@ export const FeedbackFormField = (props: Props) => {
                     padding: '10px',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    backgroundColor: engagementColors[item].background,
-                    color: engagementColors[item].text,
+                    backgroundColor: likertScalesColors[item].background,
+                    color: likertScalesColors[item].text,
                     borderRadius: '5px',
                     borderWidth: 0,
                     fontSize: 12,

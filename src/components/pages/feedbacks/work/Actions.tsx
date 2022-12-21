@@ -19,7 +19,7 @@ export const Actions = (props: Props) => {
           type="text-primary"
           size="small"
           icon={<PreviewOpen size={20} />}
-          onClick={() => push(ROUTES.WORKLOAD_DETAIL(record.id))}
+          onClick={() => push(ROUTES.WORK_DETAIL(record.id))}
         />
       </Tooltip>
     </Row>

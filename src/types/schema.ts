@@ -35,6 +35,14 @@ export interface ModelCountry {
   updatedAt?: string
 }
 
+export interface ModelLikertScaleCount {
+  agree?: number
+  disagree?: number
+  mixed?: number
+  'strongly-agree'?: number
+  'strongly-disagree'?: number
+}
+
 export interface ModelPosition {
   code?: string
   createdAt?: string
@@ -116,9 +124,12 @@ export interface RequestCreateProjectInput {
 }
 
 export interface RequestCreateSurveyFeedbackInput {
-  quarter: string
+  fromDate?: string
+  projectIDs?: string[]
+  quarter?: string
+  toDate?: string
   type: string
-  year: number
+  year?: number
 }
 
 export interface RequestCreateWorkUnitBody {
@@ -277,6 +288,13 @@ export interface ViewBasicProjectHeadInfo {
   position?: string
 }
 
+export interface ViewBasicProjectInfo {
+  id?: string
+  name?: string
+  status?: string
+  type?: string
+}
+
 export interface ViewChapter {
   code?: string
   id?: string
@@ -390,6 +408,7 @@ export interface ViewErrorResponse {
 
 export interface ViewFeedBackReviewDetail {
   employee?: ViewBasicEmployeeInfo
+  project?: ViewBasicProjectInfo
   questions?: ViewQuestionAnswer[]
   relationship?: string
   reviewer?: ViewBasicEmployeeInfo
@@ -421,6 +440,7 @@ export interface ViewFeedbackDetail {
   answers?: ViewQuestionAnswer[]
   employeeID?: string
   eventID?: string
+  project?: ViewBasicProjectInfo
   relationship?: string
   reviewer?: ViewBasicEmployeeInfo
   status?: string
@@ -610,6 +630,8 @@ export interface ViewSubmitFeedbackResponse {
 }
 
 export interface ViewSurvey {
+  answerCount?: ModelLikertScaleCount
+  average?: number
   count?: ViewFeedbackCount
   endDate?: string
   id?: string
@@ -632,6 +654,14 @@ export interface ViewSurveyDetail {
   type?: string
 }
 
+export interface ViewSurveyResult {
+  agree?: number
+  disagree?: number
+  mixed?: number
+  stronglyAgree?: number
+  stronglyDisagree?: number
+}
+
 export interface ViewSurveyTopicDetail {
   employee?: ViewBasicEmployeeInfo
   participants?: ViewPeerReviewer[]
@@ -644,11 +674,14 @@ export interface ViewSurveyTopicDetailResponse {
 }
 
 export interface ViewTopic {
+  comments?: number
   count?: ViewFeedbackCount
   employee?: ViewBasicEmployeeInfo
   eventID?: string
   id?: string
   participants?: ViewBasicEmployeeInfo[]
+  project?: ViewBasicProjectInfo
+  result?: ViewSurveyResult
   reviewID?: string
   status?: string
   subtype?: string

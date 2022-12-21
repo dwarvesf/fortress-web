@@ -13,3 +13,11 @@ export const agreementLevels: Record<AgreementLevel, string> = {
   [AgreementLevel.AGREE]: 'Agree',
   [AgreementLevel.STRONGLY_AGREE]: 'Strongly agree',
 }
+
+export const workLevels: Record<AgreementLevel, string> = {
+  [AgreementLevel.STRONGLY_DISAGREE]: 'All boring stuff',
+  [AgreementLevel.DISAGREE]: 'Nothing new',
+  [AgreementLevel.MIXED]: 'Not much',
+  [AgreementLevel.AGREE]: 'Few things',
+  [AgreementLevel.STRONGLY_AGREE]: 'A lot',
+}

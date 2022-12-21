@@ -46,7 +46,7 @@ const items: MenuItem[] = [
     getItem('Inbox', ROUTES.INBOX),
     getItem('Peer review', ROUTES.PEER_REVIEW),
     getItem('Engagement', ROUTES.ENGAGEMENT),
-    getItem('Workload', ROUTES.WORKLOAD),
+    getItem('Work', ROUTES.WORK),
   ]),
   getItem('Config', ROUTES.CONFIG, <Setting size={24} />),
 ]
