@@ -9,28 +9,52 @@ import {
   Switch,
   Typography,
 } from 'antd'
-import { useCallback, useMemo, useState } from 'react'
+import {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 import debounce from 'lodash.debounce'
+import { useFetchWithCache } from 'hooks/useFetchWithCache'
+import { GET_PATHS, client } from 'libs/apis'
+import { ProjectListFilter } from 'types/filters/ProjectListFilter'
 
 interface Props {
   isOpen: boolean
   onClose: () => void
+  setProjectsToSend: Dispatch<SetStateAction<string[]>>
 }
 
-const mockSendSurveyData = [
-  { projectName: 'Fortress', checked: true },
-  { projectName: 'SP Digital', checked: false },
-  { projectName: 'Setel', checked: true },
-  { projectName: 'Droppii', checked: true },
-  { projectName: 'Konvoy', checked: true },
-]
-
 export const ToggleSendSurveysModal = (props: Props) => {
-  const { isOpen, onClose } = props
+  const { isOpen, onClose, setProjectsToSend } = props
 
-  const [checkedList, defaultSetCheckedList] = useState<boolean[]>(
-    mockSendSurveyData.map((d) => d.checked),
+  const { data: projectsData } = useFetchWithCache(
+    [GET_PATHS.getProjects],
+    () => client.getProjects(new ProjectListFilter()),
   )
+
+  const [checkedList, defaultSetCheckedList] = useState<boolean[]>([])
+
+  useEffect(() => {
+    defaultSetCheckedList(
+      new Array((projectsData?.data || []).length).fill(true),
+    )
+  }, [projectsData])
+
+  useEffect(() => {
+    const checkedProjectIds: string[] = []
+
+    checkedList.forEach((checked, id) => {
+      if (checked && projectsData?.data) {
+        checkedProjectIds.push(projectsData?.data[id].id!)
+      }
+    })
+
+    setProjectsToSend(checkedProjectIds)
+  }, [checkedList, projectsData, setProjectsToSend])
 
   const [searchQuery, setSearchQuery] = useState('')
 
@@ -48,11 +72,11 @@ export const ToggleSendSurveysModal = (props: Props) => {
   )
 
   const renderProjects = useMemo(() => {
-    if (!mockSendSurveyData.length) {
+    if (!(projectsData?.data || []).length) {
       return <Empty description="No projects data" />
     }
     if (!searchQuery) {
-      return mockSendSurveyData.map((d, i) => (
+      return (projectsData?.data || []).map((d, i) => (
         <Col
           key={i}
           span={24}
@@ -63,7 +87,7 @@ export const ToggleSendSurveysModal = (props: Props) => {
             alignItems: 'center',
           }}
         >
-          <Typography.Text>{d.projectName}</Typography.Text>
+          <Typography.Text>{d?.name || '-'}</Typography.Text>
           <Switch
             checked={checkedList[i]}
             onChange={() => toggleCheckedList(i)}
@@ -72,13 +96,13 @@ export const ToggleSendSurveysModal = (props: Props) => {
       ))
     }
     if (
-      mockSendSurveyData.find((d) =>
-        d.projectName.toLowerCase().includes(searchQuery.toLowerCase()),
+      (projectsData?.data || []).find((d) =>
+        (d?.name || '-').toLowerCase().includes(searchQuery.toLowerCase()),
       )
     ) {
-      return mockSendSurveyData
+      return (projectsData?.data || [])
         .filter((d) =>
-          d.projectName.toLowerCase().includes(searchQuery.toLowerCase()),
+          (d?.name || '-').toLowerCase().includes(searchQuery.toLowerCase()),
         )
         .map((d, i) => (
           <Col
@@ -90,7 +114,7 @@ export const ToggleSendSurveysModal = (props: Props) => {
               alignItems: 'center',
             }}
           >
-            <Typography.Text>{d.projectName}</Typography.Text>
+            <Typography.Text>{d?.name || '-'}</Typography.Text>
             <Switch
               checked={checkedList[i]}
               onChange={() => toggleCheckedList(i)}
@@ -99,7 +123,7 @@ export const ToggleSendSurveysModal = (props: Props) => {
         ))
     }
     return <Empty description={`No projects for keyword "${searchQuery}"`} />
-  }, [checkedList, searchQuery, toggleCheckedList])
+  }, [checkedList, projectsData, searchQuery, toggleCheckedList])
 
   return (
     <Modal

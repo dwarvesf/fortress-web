@@ -145,20 +145,33 @@ export const SurveyForm = () => {
               footer={
                 detail.status !==
                 ModelEventReviewerStatus.EventReviewerStatusDone ? (
-                  <Row gutter={8}>
+                  <Row gutter={8} justify="space-between" align="middle">
                     <Col>
-                      <Button
-                        type="default"
-                        onClick={onSaveDraft}
-                        loading={isSubmitting}
-                      >
-                        Save Draft
-                      </Button>
+                      <Space>
+                        <Switch
+                          checked={showNote}
+                          onChange={(checked) => setShowNote(checked)}
+                        />
+                        <span>Show note</span>
+                      </Space>
                     </Col>
                     <Col>
-                      <Button type="primary" onClick={form.submit}>
-                        Preview & Send
-                      </Button>
+                      <Row gutter={8}>
+                        <Col>
+                          <Button
+                            type="default"
+                            onClick={onSaveDraft}
+                            loading={isSubmitting}
+                          >
+                            Save Draft
+                          </Button>
+                        </Col>
+                        <Col>
+                          <Button type="primary" onClick={form.submit}>
+                            Preview & Send
+                          </Button>
+                        </Col>
+                      </Row>
                     </Col>
                   </Row>
                 ) : undefined
@@ -215,13 +228,6 @@ export const SurveyForm = () => {
                   )}
                 </Space>
               </Form>
-              <Space>
-                <Switch
-                  checked={showNote}
-                  onChange={(checked) => setShowNote(checked)}
-                />
-                <span>Show note</span>
-              </Space>
             </FormWrapper>
           </Col>
         </Row>

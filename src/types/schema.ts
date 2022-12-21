@@ -349,6 +349,12 @@ export interface ViewCreateProjectData {
   updatedAt?: string
 }
 
+export interface ViewDomain {
+  average?: number
+  count?: ModelLikertScaleCount
+  name?: string
+}
+
 export interface ViewEmployeeContentData {
   url?: string
 }
@@ -524,6 +530,7 @@ export interface ViewProfileDataResponse {
 
 export interface ViewProjectData {
   accountManager?: ViewProjectHead
+  allowsSendingSurvey?: boolean
   clientEmail?: string
   country?: ViewBasicCountryInfo
   createdAt?: string
@@ -630,9 +637,8 @@ export interface ViewSubmitFeedbackResponse {
 }
 
 export interface ViewSurvey {
-  answerCount?: ModelLikertScaleCount
-  average?: number
   count?: ViewFeedbackCount
+  domains?: ViewDomain[]
   endDate?: string
   id?: string
   startDate?: string

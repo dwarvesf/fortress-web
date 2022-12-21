@@ -17,10 +17,12 @@ interface Props {
   >
   onClose: () => void
   onAfterSubmit: () => void
+  projectsToSend: string[]
 }
 
 export const CreateWorkSurveyModal = (props: Props) => {
-  const { isOpen, initialValues, onClose, onAfterSubmit } = props
+  const { isOpen, initialValues, onClose, onAfterSubmit, projectsToSend } =
+    props
   const [form] = useForm()
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -57,6 +59,7 @@ export const CreateWorkSurveyModal = (props: Props) => {
         ? String(format(new Date(values.toDate), SERVER_DATE_FORMAT))
         : '',
       type: FeedbackSubtype.WORK,
+      projectIDs: projectsToSend,
     }
   }
 

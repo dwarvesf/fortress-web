@@ -1,23 +1,42 @@
 import { Popover, Button } from 'antd'
+import { AgreementLevel } from 'constants/agreementLevel'
 import { likertScalesColors } from 'constants/colors'
+import { ViewDomain } from 'types/schema'
+import { capitalizeFirstLetter } from 'utils/string'
 import { WorkAverageIcon } from './WorkAverageIcon'
 import { WorkAveragePopover } from './WorkAveragePopover'
 
-type Data = {
-  title: string
-  average: string
+interface Props {
+  record: ViewDomain
 }
 
-interface Props {
-  data: Data
+const mapScoreToLikertScale = (model: ViewDomain): AgreementLevel => {
+  if (!model.average) {
+    return AgreementLevel.STRONGLY_DISAGREE
+  }
+  if (model?.average <= 1.5) {
+    return AgreementLevel.STRONGLY_DISAGREE
+  }
+  if (model?.average <= 2.5) {
+    return AgreementLevel.DISAGREE
+  }
+  if (model?.average <= 3.5) {
+    return AgreementLevel.MIXED
+  }
+  if (model?.average <= 4.5) {
+    return AgreementLevel.AGREE
+  }
+  return AgreementLevel.STRONGLY_AGREE
 }
 
 export const WorkAverage = (props: Props) => {
+  const { record } = props
+
   return (
     <Popover
       placement="bottom"
-      title={props.data.title}
-      content={<WorkAveragePopover />}
+      title={capitalizeFirstLetter(record?.name || '-')}
+      content={<WorkAveragePopover record={record} />}
     >
       <Button
         style={{
@@ -30,10 +49,9 @@ export const WorkAverage = (props: Props) => {
       >
         <WorkAverageIcon
           color={`${
-            likertScalesColors[
-              props.data.average as keyof typeof likertScalesColors
-            ].background
+            likertScalesColors[mapScoreToLikertScale(record || {})].background
           }`}
+          label={record?.average || 0}
         />
       </Button>
     </Popover>
