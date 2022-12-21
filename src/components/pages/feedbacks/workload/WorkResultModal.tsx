@@ -1,3 +1,5 @@
+// FIXME: use SurveyResultModal when binding API instead of this one
+
 import { List, Modal, ModalProps } from 'antd'
 import { FeedbackPreviewField } from 'components/common/Feedbacks/FeedbackPreviewField'
 import { AgreementLevel } from 'constants/agreementLevel'
@@ -5,7 +7,7 @@ import { AgreementLevel } from 'constants/agreementLevel'
 interface Props extends ModalProps {
   isOpen: boolean
   onClose: () => void
-  record: any // TODO: add type
+  record: any
 }
 
 export const WorkResultModal = (props: Props) => {
