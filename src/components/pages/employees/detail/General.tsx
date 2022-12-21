@@ -1,28 +1,84 @@
-import { Space, Col, Row, Avatar, Select, notification, Tooltip } from 'antd'
+import {
+  Space,
+  Col,
+  Row,
+  Avatar,
+  Select,
+  notification,
+  Tooltip,
+  Card,
+  Table,
+  Image,
+} from 'antd'
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { AvatarWithName } from 'components/common/AvatarWithName'
 import { DataRows } from 'components/common/DataRows'
 import { EditableDetailSectionCard } from 'components/common/EditableDetailSectionCard'
 import { DATE_FORMAT } from 'constants/date'
 import { format } from 'date-fns'
-import { ViewEmployeeData } from 'types/schema'
+import {
+  ViewEmployeeData,
+  ViewEmployeeProjectData,
+  ViewPosition,
+} from 'types/schema'
 import { client, GET_PATHS } from 'libs/apis'
 import { mutate } from 'swr'
 import { useState } from 'react'
 import { EmployeeStatus, employeeStatuses } from 'constants/status'
-import { Star } from '@icon-park/react'
+import { PreviewOpen, Star } from '@icon-park/react'
 import moment from 'moment'
 import { theme } from 'styles'
-import { EditGeneralInfoModal } from './EditGeneralInfoModal'
-import { EditSkillsModal } from './EditSkillsModal'
+import { ColumnsType } from 'antd/lib/table'
+import { ProjectLink } from 'components/common/DetailLink'
+import { Button } from 'components/common/Button'
+import { DeploymentType, deploymentTypes } from 'constants/deploymentTypes'
+import { EditProfileAvatarModal } from 'components/pages/profile/EditProfileAvatarModal'
 import { EditPersonalInfoModal } from './EditPersonalInfoModal'
+import { EditSkillsModal } from './EditSkillsModal'
+import { EditGeneralInfoModal } from './EditGeneralInfoModal'
+
+const projectColumns: ColumnsType<ViewEmployeeProjectData> = [
+  {
+    title: 'Name',
+    key: 'name',
+    dataIndex: 'name',
+  },
+  {
+    title: 'Position',
+    key: 'positions',
+    dataIndex: 'positions',
+    render: (value?: ViewPosition[]) =>
+      value?.map((each) => each.name).join(', ') || '-',
+  },
+  {
+    title: 'Type',
+    key: 'deploymentType',
+    dataIndex: 'deploymentType',
+    render: (value: DeploymentType) => deploymentTypes[value] || '-',
+  },
+  {
+    title: 'Action',
+    render: (value) => (
+      <ProjectLink id={value.id}>
+        <Tooltip title="View Detail">
+          <Button
+            type="text-primary"
+            size="small"
+            icon={<PreviewOpen size={20} />}
+          />
+        </Tooltip>
+      </ProjectLink>
+    ),
+  },
+]
 
 interface Props {
   data: ViewEmployeeData
+  mutateEmployee: () => void
 }
 
 export const General = (props: Props) => {
-  const { data } = props
+  const { data, mutateEmployee } = props
 
   const [isLoading, setIsLoading] = useState(false)
 
@@ -62,6 +118,12 @@ export const General = (props: Props) => {
     onClose: closeEditPersonalInfoDialog,
   } = useDisclosure()
 
+  const {
+    isOpen: isEditAvatarDialogOpen,
+    onOpen: openEditAvatarDialog,
+    onClose: closeEditAvatarDialog,
+  } = useDisclosure()
+
   return (
     <>
       <Space direction="vertical" size={24} style={{ width: '100%' }}>
@@ -78,15 +140,41 @@ export const General = (props: Props) => {
                     size={24}
                     style={{ justifyContent: 'center' }}
                   >
-                    <Avatar size={128} src={data.avatar}>
-                      {data.avatar === '' && (
-                        <span style={{ fontSize: 50 }}>
+                    <Avatar
+                      size={128}
+                      onClick={openEditAvatarDialog}
+                      style={{
+                        border: `2px solid ${theme.colors.primary}`,
+                        userSelect: 'none',
+                        cursor: 'pointer',
+                      }}
+                      src={
+                        data.avatar && (
+                          <Image
+                            src={data.avatar}
+                            height="100%"
+                            width="100%"
+                            style={{ objectFit: 'cover' }}
+                            preview={{ visible: false, mask: 'Edit' }}
+                          />
+                        )
+                      }
+                    >
+                      {!data.avatar && (
+                        <span style={{ fontSize: 64 }}>
                           {(data.fullName || data.displayName)
                             ?.slice(0, 1)
                             .toUpperCase()}
                         </span>
                       )}
                     </Avatar>
+                    <EditProfileAvatarModal
+                      isOpen={isEditAvatarDialogOpen}
+                      onClose={closeEditAvatarDialog}
+                      onAfterSubmit={mutateEmployee}
+                      avatar={data.avatar}
+                      name={data.fullName || data.displayName}
+                    />
                     <Select
                       loading={isLoading}
                       style={{ width: '100%' }}
@@ -235,6 +323,16 @@ export const General = (props: Props) => {
                 ]}
               />
             </EditableDetailSectionCard>
+          </Col>
+          <Col span={24} lg={{ span: 16 }}>
+            <Card title="Projects">
+              <Table
+                dataSource={data.projects}
+                columns={projectColumns}
+                rowKey={(row) => row.id as string}
+                pagination={false}
+              />
+            </Card>
           </Col>
         </Row>
       </Space>
