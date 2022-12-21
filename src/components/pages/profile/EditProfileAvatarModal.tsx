@@ -1,7 +1,15 @@
 import { UploadPicture } from '@icon-park/react'
-import { Avatar, Modal, notification, Space, Upload, Image, Spin } from 'antd'
+import {
+  Avatar,
+  Modal,
+  notification,
+  Space,
+  Upload,
+  Image,
+  Spin,
+  Row,
+} from 'antd'
 import { Button } from 'components/common/Button'
-import { useAuthContext } from 'context/auth'
 import { client } from 'libs/apis'
 import { useState } from 'react'
 import { theme } from 'styles'
@@ -11,11 +19,12 @@ interface Props {
   isOpen: boolean
   onClose: () => void
   onAfterSubmit: () => void
+  avatar?: string
+  name?: string
 }
 
 export const EditProfileAvatarModal = (props: Props) => {
-  const { isOpen, onClose, onAfterSubmit } = props
-  const { user } = useAuthContext()
+  const { isOpen, onClose, onAfterSubmit, avatar, name } = props
 
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isUploading, setIsUploading] = useState(false)
@@ -34,13 +43,13 @@ export const EditProfileAvatarModal = (props: Props) => {
       notification.success({ message: 'Profile avatar updated successfully!' })
 
       onAfterSubmit()
-      setTimeout(() => setIsUploading(false), 500)
     } catch (error: any) {
       notification.error({
         message: error?.message || 'Could not update profile info',
       })
     } finally {
       setIsSubmitting(false)
+      setTimeout(() => setIsUploading(false), 500)
     }
   }
 
@@ -67,21 +76,34 @@ export const EditProfileAvatarModal = (props: Props) => {
           size={200}
           src={
             isUploading ? (
-              <Spin size="large" style={{ color: 'red' }} />
+              <Row
+                align="middle"
+                justify="center"
+                style={{ width: '100%', height: '100%' }}
+              >
+                <Spin size="large" style={{ color: 'red' }} />
+              </Row>
             ) : (
-              <Image
-                src={user?.avatar}
-                style={{ objectFit: 'cover', height: '100%' }}
-                height={200}
-                preview={false}
-              />
+              avatar && (
+                <Image
+                  src={avatar}
+                  height="100%"
+                  width="100%"
+                  style={{ objectFit: 'cover' }}
+                  preview={false}
+                />
+              )
             )
           }
           style={{
             border: `3px solid ${theme.colors.primary}`,
             marginBottom: 24,
+            fontSize: 100,
+            userSelect: 'none',
           }}
-        />
+        >
+          {!avatar && name?.slice(0, 1).toUpperCase()}
+        </Avatar>
         <Upload
           name="file"
           accept="image/*"

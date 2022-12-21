@@ -185,6 +185,8 @@ const Default = () => {
         isOpen={isEditAvatarDialogOpen}
         onClose={closeEditAvatarDialog}
         onAfterSubmit={revalidate}
+        avatar={user?.avatar}
+        name={user?.fullName || user?.displayName}
       />
     </>
   )

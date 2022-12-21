@@ -1,4 +1,3 @@
-import { Tabs } from 'antd'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 import { PageHeader } from 'components/common/PageHeader'
 import { PageSpinner } from 'components/common/PageSpinner'
@@ -6,7 +5,6 @@ import { SEO } from 'components/common/SEO'
 import { General } from 'components/pages/employees/detail/General'
 import { ROUTES } from 'constants/routes'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
-import { useTabWithQuery } from 'hooks/useTabWithQuery'
 import { client, GET_PATHS } from 'libs/apis'
 import { useRouter } from 'next/router'
 
@@ -15,11 +13,14 @@ const Default = () => {
     query: { id },
   } = useRouter()
 
-  const { tabKey = 'general', setTabKey } = useTabWithQuery()
+  // const { tabKey = 'general', setTabKey } = useTabWithQuery()
 
-  const { data, loading } = useFetchWithCache(
-    [GET_PATHS.getEmployees, id],
-    () => client.getEmployee(id as string),
+  const {
+    data,
+    loading,
+    mutate: mutateEmployee,
+  } = useFetchWithCache([GET_PATHS.getEmployees, id], () =>
+    client.getEmployee(id as string),
   )
   const employee = data?.data
 
@@ -47,8 +48,12 @@ const Default = () => {
         ]}
       />
 
-      <PageHeader title={employee?.displayName || ''} />
-      <Tabs
+      <PageHeader
+        title={employee?.displayName || ''}
+        backHref={ROUTES.EMPLOYEES}
+      />
+      <General data={employee} mutateEmployee={mutateEmployee} />
+      {/* <Tabs
         defaultActiveKey={tabKey}
         onTabClick={setTabKey}
         items={[
@@ -63,7 +68,7 @@ const Default = () => {
           //   children: 'Document',
           // },
         ]}
-      />
+      /> */}
     </>
   )
 }
