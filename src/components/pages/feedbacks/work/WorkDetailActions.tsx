@@ -6,7 +6,7 @@ interface Props {
   record: any
 }
 
-export const WorkloadDetailActions = (props: Props) => {
+export const WorkDetailActions = (props: Props) => {
   const { record } = props
 
   return (

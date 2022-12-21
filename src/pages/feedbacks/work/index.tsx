@@ -1,21 +1,21 @@
-import { Pagination, Row, Space, Table } from 'antd'
+import { Col, Pagination, Row, Space, Table } from 'antd'
 import { PageHeader } from 'components/common/PageHeader'
 import { Button } from 'components/common/Button'
 import { ColumnsType } from 'antd/lib/table'
 import { ProgressColumn } from 'components/common/ProgressColumn'
-import { Actions } from 'components/pages/feedbacks/workload'
-import { WorkloadAverage } from 'components/pages/feedbacks/workload/WorkloadAverage'
-import {
-  SurveyParticipantStatus,
-  WorkloadAverageStatus,
-} from 'constants/status'
+import { Actions } from 'components/pages/feedbacks/work'
+import { WorkAverage } from 'components/pages/feedbacks/work/WorkAverage'
+import { SurveyParticipantStatus } from 'constants/status'
 import { useDisclosure } from '@dwarvesf/react-hooks'
-import { ToggleSendSurveysModal } from 'components/pages/feedbacks/workload/ToggleSendSurveysModal'
+import { ToggleSendSurveysModal } from 'components/pages/feedbacks/work/ToggleSendSurveysModal'
 import { ViewEmployeeData } from 'types/schema'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 import { ROUTES } from 'constants/routes'
 import { Setting } from '@icon-park/react'
 import { SEO } from 'components/common/SEO'
+import { AgreementLevel } from 'constants/agreementLevel'
+import { CreateWorkSurveyModal } from 'components/pages/feedbacks/work/CreateWorkSurveyModal'
+import moment from 'moment'
 
 const employees: ViewEmployeeData[] = [
   {
@@ -392,14 +392,14 @@ const employees: ViewEmployeeData[] = [
   },
 ]
 
-const mockWorkloadAverageData = [
+const mockWorkAverageData = [
   {
     title: 'Development',
-    average: WorkloadAverageStatus.ALL_BORING_STUFF,
+    average: AgreementLevel.STRONGLY_DISAGREE,
   },
-  { title: 'Management', average: WorkloadAverageStatus.FEW_THINGS },
-  { title: 'Learning', average: WorkloadAverageStatus.NOTHING_NEW },
-  { title: 'Training', average: WorkloadAverageStatus.A_LOT },
+  { title: 'Management', average: AgreementLevel.MIXED },
+  { title: 'Learning', average: AgreementLevel.DISAGREE },
+  { title: 'Training', average: AgreementLevel.STRONGLY_AGREE },
 ]
 
 export const mockProjectNames = [
@@ -410,7 +410,7 @@ export const mockProjectNames = [
   'Fortress',
 ]
 
-export const mockWorkloadData = {
+export const mockWorkData = {
   page: 1,
   size: 20,
   sort: '',
@@ -422,7 +422,7 @@ export const mockWorkloadData = {
       type: 'survey',
       subtype: 'peer-review',
       status: 'in-progress',
-      average: mockWorkloadAverageData,
+      average: mockWorkAverageData,
       startDate: '2022-11-29T08:03:33.233262Z',
       endDate: '2023-05-29T08:03:33.233262Z',
       count: {
@@ -434,7 +434,7 @@ export const mockWorkloadData = {
         projectName: mockProjectNames[i],
         workStatus: SurveyParticipantStatus.DONE,
         comments: Math.floor(Math.random() * 3),
-        result: mockWorkloadAverageData,
+        result: mockWorkAverageData,
       })),
     },
     {
@@ -443,7 +443,7 @@ export const mockWorkloadData = {
       type: 'survey',
       subtype: 'peer-review',
       status: 'in-progress',
-      average: mockWorkloadAverageData,
+      average: mockWorkAverageData,
       startDate: '2022-11-29T08:03:33.233262Z',
       endDate: '2023-05-29T08:03:33.233262Z',
       count: {
@@ -455,7 +455,7 @@ export const mockWorkloadData = {
         projectName: mockProjectNames[i],
         workStatus: SurveyParticipantStatus.SENT,
         comments: Math.floor(Math.random() * 3),
-        result: mockWorkloadAverageData,
+        result: mockWorkAverageData,
       })),
     },
   ],
@@ -483,7 +483,7 @@ const columns: ColumnsType<any> = [
     render: (value) => (
       <Space>
         {value.map((d: any) => (
-          <WorkloadAverage data={d} />
+          <WorkAverage data={d} />
         ))}
       </Space>
     ),
@@ -495,16 +495,27 @@ const columns: ColumnsType<any> = [
   },
 ]
 
-const WorkloadPage = () => {
+const WorkPage = () => {
   const {
     isOpen: isToggleSendSurveyDialogOpen,
     onOpen: openToggleSendSurveyDialog,
     onClose: closeToggleSendSurveyDialog,
   } = useDisclosure()
 
+  const {
+    isOpen: isCreateWorkSurveyDialogOpen,
+    onOpen: openCreateWorkSurveyDialog,
+    onClose: closeCreateWorkSurveyDialog,
+  } = useDisclosure()
+
+  const today = new Date()
+
+  const tomorrow = new Date()
+  tomorrow.setDate(today.getDate() + 1)
+
   return (
     <>
-      <SEO title="Feedbacks - Workload" />
+      <SEO title="Feedbacks - Work" />
 
       <Breadcrumb
         items={[
@@ -516,7 +527,7 @@ const WorkloadPage = () => {
             label: 'Feedbacks',
           },
           {
-            label: 'Workload',
+            label: 'Work',
           },
         ]}
       />
@@ -525,13 +536,22 @@ const WorkloadPage = () => {
         <PageHeader
           title="Work"
           rightRender={
-            <Button type="primary" onClick={openToggleSendSurveyDialog}>
-              <Setting size={24} />
-            </Button>
+            <>
+              <Col>
+                <Button type="primary" onClick={openCreateWorkSurveyDialog}>
+                  Add event
+                </Button>
+              </Col>
+              <Col>
+                <Button type="default" onClick={openToggleSendSurveyDialog}>
+                  <Setting size={24} />
+                </Button>
+              </Col>
+            </>
           }
         />
         <Table
-          dataSource={mockWorkloadData.data || []}
+          dataSource={mockWorkData.data || []}
           columns={columns}
           rowKey={(row) => row.id as string}
           scroll={{ x: 'max-content' }}
@@ -552,8 +572,18 @@ const WorkloadPage = () => {
         onClose={closeToggleSendSurveyDialog}
         isOpen={isToggleSendSurveyDialogOpen}
       />
+
+      <CreateWorkSurveyModal
+        onClose={closeCreateWorkSurveyDialog}
+        isOpen={isCreateWorkSurveyDialogOpen}
+        initialValues={{
+          fromDate: moment(),
+          toDate: moment(tomorrow),
+        }}
+        onAfterSubmit={() => {}}
+      />
     </>
   )
 }
 
-export default WorkloadPage
+export default WorkPage

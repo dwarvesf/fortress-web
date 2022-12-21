@@ -10,11 +10,11 @@ import {
 } from 'constants/status'
 import { useRouter } from 'next/router'
 import React from 'react'
-import { WorkloadAverage } from 'components/pages/feedbacks/workload/WorkloadAverage'
-import { WorkloadDetailActions } from 'components/pages/feedbacks/workload/WorkloadDetailActions'
+import { WorkAverage } from 'components/pages/feedbacks/work/WorkAverage'
+import { WorkDetailActions } from 'components/pages/feedbacks/work/WorkDetailActions'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 import { SEO } from 'components/common/SEO'
-import { mockProjectNames, mockWorkloadData } from '.'
+import { mockProjectNames, mockWorkData } from '.'
 
 const columns: ColumnsType<any> = [
   {
@@ -40,7 +40,7 @@ const columns: ColumnsType<any> = [
     render: (value) => (
       <Space>
         {value.map((d: any) => (
-          <WorkloadAverage data={d} />
+          <WorkAverage data={d} />
         ))}
       </Space>
     ),
@@ -72,18 +72,18 @@ const columns: ColumnsType<any> = [
   },
   {
     title: '',
-    render: (value) => <WorkloadDetailActions record={value} />,
+    render: (value) => <WorkDetailActions record={value} />,
     fixed: 'right',
   },
 ]
 
 const EmployeePeerReviewsPage = () => {
   const { query } = useRouter()
-  const currentData = mockWorkloadData.data.find((d) => d.id === query.id)
+  const currentData = mockWorkData.data.find((d) => d.id === query.id)
 
   return (
     <>
-      <SEO title={`Workload - ${currentData?.title || '-'}`} />
+      <SEO title={`Work - ${currentData?.title || '-'}`} />
 
       <Breadcrumb
         items={[
@@ -95,8 +95,8 @@ const EmployeePeerReviewsPage = () => {
             label: 'Feedbacks',
           },
           {
-            label: 'Workload',
-            href: ROUTES.WORKLOAD,
+            label: 'Work',
+            href: ROUTES.WORK,
           },
           {
             label: currentData?.title,
@@ -105,7 +105,7 @@ const EmployeePeerReviewsPage = () => {
       />
 
       <Space direction="vertical" size={24} style={{ width: '100%' }}>
-        <PageHeader backHref={ROUTES.WORKLOAD} title={currentData?.title} />
+        <PageHeader backHref={ROUTES.WORK} title={currentData?.title} />
         <Table
           dataSource={currentData?.employees || []}
           columns={columns}

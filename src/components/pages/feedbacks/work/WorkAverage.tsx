@@ -1,7 +1,7 @@
 import { Popover, Button } from 'antd'
-import { workloadAverageColors } from 'constants/colors'
-import { WorkloadAverageIcon } from './WorkloadAverageIcon'
-import { WorkloadAveragePopover } from './WorkloadAveragePopover'
+import { levelsColors } from 'constants/colors'
+import { WorkAverageIcon } from './WorkAverageIcon'
+import { WorkAveragePopover } from './WorkAveragePopover'
 
 type Data = {
   title: string
@@ -12,12 +12,12 @@ interface Props {
   data: Data
 }
 
-export const WorkloadAverage = (props: Props) => {
+export const WorkAverage = (props: Props) => {
   return (
     <Popover
       placement="bottom"
       title={props.data.title}
-      content={<WorkloadAveragePopover />}
+      content={<WorkAveragePopover />}
     >
       <Button
         style={{
@@ -28,11 +28,10 @@ export const WorkloadAverage = (props: Props) => {
           borderRadius: '50%',
         }}
       >
-        <WorkloadAverageIcon
+        <WorkAverageIcon
           color={`${
-            workloadAverageColors[
-              props.data.average as keyof typeof workloadAverageColors
-            ]
+            levelsColors[props.data.average as keyof typeof levelsColors]
+              .background
           }`}
         />
       </Button>
