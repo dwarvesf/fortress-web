@@ -14,7 +14,7 @@ import {
 } from 'antd'
 import { ColumnsType } from 'antd/lib/table'
 import { AvatarArray } from 'components/common/AvatarArray'
-import { AvatarWithName } from 'components/common/AvatarWithName'
+import { UserAvatar } from 'components/common/AvatarWithName'
 import { NameArray } from 'components/common/NameArray'
 import { PageHeader } from 'components/common/PageHeader'
 import { PeerReviewEventDetailActions } from 'components/pages/feedbacks/peer-review/PeerReviewEventDetailActions'
@@ -49,7 +49,7 @@ const columns = ({
     title: 'Employee',
     key: 'employee',
     dataIndex: 'employee',
-    render: (value) => <AvatarWithName user={value} />,
+    render: (value) => <UserAvatar user={value} />,
     fixed: 'left',
   },
   {

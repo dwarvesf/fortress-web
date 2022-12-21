@@ -11,7 +11,7 @@ import {
   Tag,
 } from 'antd'
 import { ColumnsType } from 'antd/lib/table'
-import { AvatarWithName } from 'components/common/AvatarWithName'
+import { UserAvatar } from 'components/common/AvatarWithName'
 import { PageHeader } from 'components/common/PageHeader'
 import { EngagementDetailActions } from 'components/pages/feedbacks/engagement/EngagementDetailActions'
 import { statusColors } from 'constants/colors'
@@ -38,7 +38,7 @@ const columns: ColumnsType<ViewTopic> = [
     title: 'Employee',
     key: 'employee',
     dataIndex: 'employee',
-    render: (value) => <AvatarWithName user={value} />,
+    render: (value) => <UserAvatar user={value} />,
     fixed: 'left',
   },
   {

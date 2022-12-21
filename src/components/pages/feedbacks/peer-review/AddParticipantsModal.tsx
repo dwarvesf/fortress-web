@@ -1,5 +1,5 @@
 import { Divider, List, Modal, notification, Select, Tag, Tooltip } from 'antd'
-import { AvatarWithName } from 'components/common/AvatarWithName'
+import { UserAvatar } from 'components/common/AvatarWithName'
 import { Button } from 'components/common/Button'
 import { statusColors } from 'constants/colors'
 import {
@@ -118,7 +118,7 @@ export const AddParticipantsModal = (props: Props) => {
         filterOption={false}
         options={employees.map((each) => ({
           value: each.id,
-          label: <AvatarWithName user={each} isLink={false} />,
+          label: <UserAvatar user={each} isLink={false} />,
           disabled: participants.some(
             (participant) => participant.id === each.id,
           ),
@@ -173,7 +173,7 @@ export const AddParticipantsModal = (props: Props) => {
               </div>,
             ]}
           >
-            <AvatarWithName user={item} />
+            <UserAvatar user={item} />
           </List.Item>
         )}
       />

@@ -79,3 +79,17 @@ export const feedbackStatuses: Record<ModelEventReviewerStatus, string> = {
   [ModelEventReviewerStatus.EventReviewerStatusNew]: 'New',
   [ModelEventReviewerStatus.EventReviewerStatusNone]: 'None',
 }
+
+export enum ProjectStatus {
+  ONBOARDING = 'on-boarding',
+  PAUSED = 'paused',
+  ACTIVE = 'active',
+  CLOSED = 'closed',
+}
+
+export const projectStatuses: Record<ProjectStatus, string> = {
+  [ProjectStatus.ONBOARDING]: 'On Boarding',
+  [ProjectStatus.PAUSED]: 'Paused',
+  [ProjectStatus.ACTIVE]: 'Active',
+  [ProjectStatus.CLOSED]: 'Closed',
+}

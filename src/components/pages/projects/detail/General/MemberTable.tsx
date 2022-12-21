@@ -1,6 +1,6 @@
 import { Space, Tag } from 'antd'
 import Table, { ColumnsType } from 'antd/lib/table'
-import { AvatarWithName } from 'components/common/AvatarWithName'
+import { UserAvatar } from 'components/common/AvatarWithName'
 import { DeploymentType, deploymentTypes } from 'constants/deploymentTypes'
 import { useMemo } from 'react'
 import { ModelPosition, ViewPosition, ViewProjectMember } from 'types/schema'
@@ -14,7 +14,7 @@ export const MemberTable = ({ data }: { data: ViewProjectMember[] }) => {
         render: (value) =>
           value.displayName ? (
             <Space>
-              <AvatarWithName user={value} />
+              <UserAvatar user={value} />
               {value.isLead && <Tag color="red">Lead</Tag>}
             </Space>
           ) : (
