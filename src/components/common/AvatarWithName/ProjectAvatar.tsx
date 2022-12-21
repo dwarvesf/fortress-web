@@ -6,13 +6,12 @@ interface Props {
   project: ViewProjectData
   avatarSize?: number
   fontSize?: number
-  isLink?: boolean
 }
 
 export const ProjectAvatar = (props: Props) => {
-  const { project, avatarSize, fontSize, isLink = true } = props
+  const { project, avatarSize, fontSize } = props
 
-  return isLink ? (
+  return (
     <ProjectLink id={project.id!}>
       <AvatarWithName
         // avatar={project.avatar}
@@ -20,11 +19,5 @@ export const ProjectAvatar = (props: Props) => {
         {...{ avatarSize, fontSize }}
       />
     </ProjectLink>
-  ) : (
-    <AvatarWithName
-      // avatar={project.avatar}
-      name={project.name}
-      {...{ avatarSize, fontSize }}
-    />
   )
 }
