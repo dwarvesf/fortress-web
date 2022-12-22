@@ -1,23 +1,27 @@
 import { Popover, Button } from 'antd'
 import { likertScalesColors } from 'constants/colors'
+import { ViewDomain } from 'types/schema'
+import { mapScoreToLikertScale } from 'utils/score'
+import { capitalizeFirstLetter } from 'utils/string'
 import { WorkAverageIcon } from './WorkAverageIcon'
 import { WorkAveragePopover } from './WorkAveragePopover'
 
-type Data = {
-  title: string
-  average: string
-}
-
 interface Props {
-  data: Data
+  record: ViewDomain
 }
 
 export const WorkAverage = (props: Props) => {
+  const { record } = props
+
   return (
     <Popover
       placement="bottom"
-      title={props.data.title}
-      content={<WorkAveragePopover />}
+      title={
+        typeof record.name === 'string'
+          ? capitalizeFirstLetter(record?.name)
+          : undefined
+      }
+      content={<WorkAveragePopover record={record} />}
     >
       <Button
         style={{
@@ -29,11 +33,13 @@ export const WorkAverage = (props: Props) => {
         }}
       >
         <WorkAverageIcon
-          color={`${
-            likertScalesColors[
-              props.data.average as keyof typeof likertScalesColors
-            ].background
+          backgroundColor={`${
+            likertScalesColors[mapScoreToLikertScale(record || {})].background
           }`}
+          textColor={`${
+            likertScalesColors[mapScoreToLikertScale(record || {})].text
+          }`}
+          label={record?.average || 0}
         />
       </Button>
     </Popover>

@@ -8,7 +8,6 @@ import {
   SurveyParticipantStatus,
   surveyParticipantStatuses,
 } from 'constants/status'
-import { useRouter } from 'next/router'
 import React from 'react'
 import { WorkAverage } from 'components/pages/feedbacks/work/WorkAverage'
 import { WorkDetailActions } from 'components/pages/feedbacks/work/WorkDetailActions'
@@ -40,7 +39,7 @@ const columns: ColumnsType<any> = [
     render: (value) => (
       <Space>
         {value.map((d: any) => (
-          <WorkAverage data={d} />
+          <WorkAverage record={d} />
         ))}
       </Space>
     ),
@@ -78,8 +77,7 @@ const columns: ColumnsType<any> = [
 ]
 
 const EmployeePeerReviewsPage = () => {
-  const { query } = useRouter()
-  const currentData = mockWorkData.data.find((d) => d.id === query.id)
+  const currentData = mockWorkData.data[0]
 
   return (
     <>

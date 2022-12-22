@@ -1,12 +1,26 @@
 import { Avatar } from 'antd'
 
 interface Props {
-  color: string
+  backgroundColor: string
+  textColor?: string
+  label?: number
 }
 
 export const WorkAverageIcon = (props: Props) => {
-  const { color } = props
+  const { backgroundColor, label, textColor } = props
   return (
-    <Avatar style={{ backgroundColor: color, opacity: 0.5 }} size="small" />
+    <Avatar
+      style={{ backgroundColor, opacity: 0.5 }}
+      size={typeof label === 'number' ? 32 : 28}
+      icon={
+        typeof label === 'number' ? (
+          <span style={{ color: textColor, fontSize: 14 }}>
+            {String(label)}
+          </span>
+        ) : (
+          ''
+        )
+      }
+    />
   )
 }
