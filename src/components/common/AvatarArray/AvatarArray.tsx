@@ -1,6 +1,7 @@
 import { Avatar, Space, Tooltip } from 'antd'
 import { theme } from 'styles'
 import { ViewEmployeeData, ViewProjectMember } from 'types/schema'
+import { getFirstLetterCapitalized } from 'utils/string'
 import { UserAvatar } from '../AvatarWithName'
 import { EmployeeLink } from '../DetailLink'
 
@@ -42,7 +43,10 @@ export const AvatarArray = (props: Props) => {
                 <Avatar
                   src={user.avatar}
                   size={size}
-                  icon={!user.avatar && user.displayName?.slice(0, 1)}
+                  icon={
+                    !user.avatar &&
+                    getFirstLetterCapitalized(user.displayName || user.fullName)
+                  }
                 />
               </span>
             </Tooltip>

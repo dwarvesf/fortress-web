@@ -12,6 +12,7 @@ import { ROUTES } from 'constants/routes'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 import { Edit, Link } from '@icon-park/react'
 import { SEO } from 'components/common/SEO'
+import { getFirstLetterCapitalized } from 'utils/string'
 
 const Default = () => {
   const { user, revalidate } = useAuthContext()
@@ -81,9 +82,9 @@ const Default = () => {
                     >
                       {user?.avatar === '' && (
                         <span style={{ fontSize: 20 }}>
-                          {(user.fullName || user.displayName)
-                            ?.slice(0, 1)
-                            .toUpperCase()}
+                          {getFirstLetterCapitalized(
+                            user.displayName || user.fullName,
+                          )}
                         </span>
                       )}
                     </Avatar>
@@ -186,7 +187,7 @@ const Default = () => {
         onClose={closeEditAvatarDialog}
         onAfterSubmit={revalidate}
         avatar={user?.avatar}
-        name={user?.fullName || user?.displayName}
+        name={user?.displayName || user?.fullName}
       />
     </>
   )

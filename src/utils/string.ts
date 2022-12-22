@@ -1,5 +1,9 @@
-export function capitalizeFirstLetter(value: string) {
+export function capitalizeFirstLetter(value = '') {
   return value.charAt(0).toUpperCase() + value.slice(1)
+}
+
+export function getFirstLetterCapitalized(value = '') {
+  return value.slice(0, 1).toUpperCase()
 }
 
 export function parseJWT(token: string) {

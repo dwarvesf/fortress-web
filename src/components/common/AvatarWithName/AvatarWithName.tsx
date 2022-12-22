@@ -1,4 +1,5 @@
 import { Avatar, Space } from 'antd'
+import { getFirstLetterCapitalized } from 'utils/string'
 
 interface Props {
   avatar?: string
@@ -14,7 +15,7 @@ export const AvatarWithName = (props: Props) => {
     <Space direction="horizontal">
       <Avatar src={avatar} size={avatarSize}>
         {!avatar && (
-          <span style={{ fontSize }}>{name?.slice(0, 1).toUpperCase()}</span>
+          <span style={{ fontSize }}>{getFirstLetterCapitalized(name)}</span>
         )}
       </Avatar>
       <span>{name}</span>

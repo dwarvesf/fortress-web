@@ -13,6 +13,7 @@ import { Button } from 'components/common/Button'
 import { client } from 'libs/apis'
 import { useState } from 'react'
 import { theme } from 'styles'
+import { getFirstLetterCapitalized } from 'utils/string'
 import { v4 as uuid4 } from 'uuid'
 
 interface Props {
@@ -102,7 +103,7 @@ export const EditProfileAvatarModal = (props: Props) => {
             userSelect: 'none',
           }}
         >
-          {!avatar && name?.slice(0, 1).toUpperCase()}
+          {!avatar && getFirstLetterCapitalized(name)}
         </Avatar>
         <Upload
           name="file"

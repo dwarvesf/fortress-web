@@ -33,6 +33,7 @@ import { ProjectLink } from 'components/common/DetailLink'
 import { Button } from 'components/common/Button'
 import { DeploymentType, deploymentTypes } from 'constants/deploymentTypes'
 import { EditProfileAvatarModal } from 'components/pages/profile/EditProfileAvatarModal'
+import { getFirstLetterCapitalized } from 'utils/string'
 import { EditPersonalInfoModal } from './EditPersonalInfoModal'
 import { EditSkillsModal } from './EditSkillsModal'
 import { EditGeneralInfoModal } from './EditGeneralInfoModal'
@@ -162,9 +163,9 @@ export const General = (props: Props) => {
                     >
                       {!data.avatar && (
                         <span style={{ fontSize: 64 }}>
-                          {(data.fullName || data.displayName)
-                            ?.slice(0, 1)
-                            .toUpperCase()}
+                          {getFirstLetterCapitalized(
+                            data.displayName || data.fullName,
+                          )}
                         </span>
                       )}
                     </Avatar>
@@ -173,7 +174,7 @@ export const General = (props: Props) => {
                       onClose={closeEditAvatarDialog}
                       onAfterSubmit={mutateEmployee}
                       avatar={data.avatar}
-                      name={data.fullName || data.displayName}
+                      name={data.displayName || data.fullName}
                     />
                     <Select
                       loading={isLoading}

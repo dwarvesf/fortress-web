@@ -11,6 +11,7 @@ import { client, GET_PATHS } from 'libs/apis'
 import { mutate } from 'swr'
 import { ViewProjectData } from 'types/schema'
 import { transformMetadataToSelectOption } from 'utils/select'
+import { getFirstLetterCapitalized } from 'utils/string'
 import { EditProjectContactInfoModal } from './EditProjectContactInfoModal'
 import { EditProjectGeneralInfoModal } from './EditProjectGeneralInfoModal'
 import { MemberTable } from './MemberTable'
@@ -64,7 +65,10 @@ export const General = (props: Props) => {
                     size={24}
                     style={{ justifyContent: 'center' }}
                   >
-                    <Avatar size={128} icon={[data.name?.slice(0, 1)]} />
+                    <Avatar
+                      size={128}
+                      icon={getFirstLetterCapitalized(data.name)}
+                    />
                     <AsyncSelect
                       style={{ width: '100%', border: '1px solid #d9d9d9' }}
                       value={data.status}
