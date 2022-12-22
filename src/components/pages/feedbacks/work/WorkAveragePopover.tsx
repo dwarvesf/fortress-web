@@ -13,36 +13,44 @@ export const WorkAveragePopover = (props: Props) => {
 
   return (
     <>
-      <span style={{ fontSize: 17 }}>
-        <strong>{record?.average || 0}</strong>
-        <span style={{ fontSize: 14 }}>/5</span>
-      </span>
+      {typeof record.average === 'number' && (
+        <span style={{ fontSize: 17 }}>
+          <strong>{record?.average || 0}</strong>
+          <span style={{ fontSize: 14 }}>/5</span>
+        </span>
+      )}
       <Row style={{ maxWidth: 200, marginTop: 8 }} gutter={[0, 8]}>
-        {Object.entries(record?.count || {}).map((e, i) => (
-          <Col
-            key={i}
-            span={24}
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              gap: 8,
-              alignItems: 'center',
-            }}
-          >
-            <div>
-              <WorkAverageIcon
-                backgroundColor={`${
-                  likertScalesColors[e[0] as keyof typeof likertScalesColors]
-                    .background
-                }`}
-              />
-              <span style={{ marginLeft: 8 }}>
-                {agreementLevels[e[0] as keyof typeof likertScalesColors]}
-              </span>
-            </div>
-            <span style={{ fontSize: 17 }}>{e[1]}</span>
-          </Col>
-        ))}
+        {Object.entries(record?.count || {}).length ? (
+          Object.entries(record?.count || {}).map((e, i) => (
+            <Col
+              key={i}
+              span={24}
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                gap: 8,
+                alignItems: 'center',
+              }}
+            >
+              <div>
+                <WorkAverageIcon
+                  backgroundColor={`${
+                    likertScalesColors[e[0] as keyof typeof likertScalesColors]
+                      .background
+                  }`}
+                />
+                <span style={{ marginLeft: 8 }}>
+                  {agreementLevels[e[0] as keyof typeof likertScalesColors]}
+                </span>
+              </div>
+              <span style={{ fontSize: 17 }}>{e[1]}</span>
+            </Col>
+          ))
+        ) : (
+          <span style={{ textAlign: 'center', width: '100%' }}>
+            No survey data
+          </span>
+        )}
       </Row>
     </>
   )

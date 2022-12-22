@@ -16,7 +16,11 @@ export const WorkAverage = (props: Props) => {
   return (
     <Popover
       placement="bottom"
-      title={capitalizeFirstLetter(record?.name || '-')}
+      title={
+        typeof record.name === 'string'
+          ? capitalizeFirstLetter(record?.name)
+          : undefined
+      }
       content={<WorkAveragePopover record={record} />}
     >
       <Button

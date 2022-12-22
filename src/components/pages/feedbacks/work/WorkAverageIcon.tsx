@@ -11,10 +11,12 @@ export const WorkAverageIcon = (props: Props) => {
   return (
     <Avatar
       style={{ backgroundColor, opacity: 0.5 }}
-      size={28}
+      size={typeof label === 'number' ? 32 : 28}
       icon={
         typeof label === 'number' ? (
-          <span style={{ color: textColor }}>{String(label)}</span>
+          <span style={{ color: textColor, fontSize: 14 }}>
+            {String(label)}
+          </span>
         ) : (
           ''
         )
