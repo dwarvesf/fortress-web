@@ -35,3 +35,5 @@ export enum FeedbackQuestionType {
   GENERAL = 'general',
   LIKERT_SCALE = 'likert-scale',
 }
+
+export type DomainTypes = 'workload' | 'deadline' | 'learning' | 'engagement'

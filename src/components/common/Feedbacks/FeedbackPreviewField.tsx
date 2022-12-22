@@ -1,9 +1,10 @@
 import { List, Tag } from 'antd'
-import { AgreementLevel, agreementLevels } from 'constants/agreementLevel'
+import { AgreementLevel } from 'constants/agreementLevel'
 import { statusColors } from 'constants/colors'
-import { FeedbackQuestionType } from 'constants/feedbackTypes'
+import { DomainTypes, FeedbackQuestionType } from 'constants/feedbackTypes'
 import styled from 'styled-components'
 import { ViewQuestionAnswer } from 'types/schema'
+import { renderDomainLevels } from 'utils/level'
 import { ItemIndex } from '../ItemIndex'
 
 const StyledListItem = styled(List.Item)`
@@ -19,6 +20,10 @@ export const FeedbackPreviewField = ({
   index: number
   answer: ViewQuestionAnswer
 }) => {
+  const levels = renderDomainLevels(
+    (answer?.domain || 'engagement') as DomainTypes,
+  )
+
   switch (answer.type) {
     case FeedbackQuestionType.GENERAL: {
       return (
@@ -41,9 +46,9 @@ export const FeedbackPreviewField = ({
           />
           <Tag
             color={statusColors[answer.answer || '']}
-            style={{ minWidth: 110, textAlign: 'center' }}
+            style={{ minWidth: 135, textAlign: 'center' }}
           >
-            {agreementLevels[answer.answer as AgreementLevel] || '-'}
+            {levels[answer.answer as AgreementLevel] || '-'}
           </Tag>
         </StyledListItem>
       )

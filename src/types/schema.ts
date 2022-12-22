@@ -168,6 +168,7 @@ export interface RequestUpdateContactInfoInput {
 
 export interface RequestUpdateEmployeeGeneralInfoInput {
   discordID?: string
+  discordName?: string
   email: string
   fullName: string
   githubID?: string
@@ -178,6 +179,7 @@ export interface RequestUpdateEmployeeGeneralInfoInput {
 
 export interface RequestUpdateInfoInput {
   discordID?: string
+  discordName?: string
   githubID?: string
   notionID?: string
   personalEmail: string
@@ -371,6 +373,7 @@ export interface ViewEmployeeData {
   createdAt?: string
   deletedAt?: GormDeletedAt
   discordID?: string
+  discordName?: string
   displayName?: string
   /** basic info */
   fullName?: string
@@ -513,6 +516,7 @@ export interface ViewProfileData {
   avatar?: string
   birthday?: string
   discordID?: string
+  discordName?: string
   displayName?: string
   fullName?: string
   gender?: string
@@ -596,6 +600,7 @@ export interface ViewQuestion {
 export interface ViewQuestionAnswer {
   answer?: string
   content?: string
+  domain?: string
   eventQuestionID?: string
   note?: string
   order?: number
@@ -707,6 +712,7 @@ export interface ViewUpdateGeneralInfoEmployeeData {
   createdAt?: string
   deletedAt?: GormDeletedAt
   discordID?: string
+  discordName?: string
   /** basic info */
   fullName?: string
   githubID?: string
@@ -737,6 +743,7 @@ export interface ViewUpdateProfileInfoData {
   createdAt?: string
   deletedAt?: GormDeletedAt
   discordID?: string
+  discordName?: string
   githubID?: string
   id?: string
   notionID?: string

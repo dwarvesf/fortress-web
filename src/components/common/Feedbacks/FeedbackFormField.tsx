@@ -1,13 +1,14 @@
 import { Form, Radio, FormItemProps } from 'antd'
 import TextArea from 'antd/lib/input/TextArea'
-import { agreementLevels } from 'constants/agreementLevel'
 import { likertScalesColors } from 'constants/colors'
-import { FeedbackQuestionType } from 'constants/feedbackTypes'
+import { DomainTypes, FeedbackQuestionType } from 'constants/feedbackTypes'
+import { renderDomainLevels } from 'utils/level'
 
 type Props = FormItemProps & {
   type: FeedbackQuestionType
   showNote: boolean
   done?: boolean
+  domain?: DomainTypes
 } & Record<string, any>
 
 export const FeedbackFormField = (props: Props) => {
@@ -19,8 +20,11 @@ export const FeedbackFormField = (props: Props) => {
     showNote = false,
     required = false,
     done = false,
+    domain = 'engagement',
     ...rest
   } = props
+
+  const levels = renderDomainLevels(domain)
 
   switch (type) {
     case FeedbackQuestionType.GENERAL: {
@@ -60,34 +64,32 @@ export const FeedbackFormField = (props: Props) => {
                 textAlign: 'center',
               }}
             >
-              {(
-                Object.keys(agreementLevels) as Array<
-                  keyof typeof agreementLevels
-                >
-              ).map((item) => (
-                <Radio.Button
-                  value={item}
-                  key={item}
-                  disabled={done}
-                  style={{
-                    display: 'flex',
-                    height: '100%',
-                    lineHeight: 1,
-                    padding: '10px',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    backgroundColor: likertScalesColors[item].background,
-                    color: likertScalesColors[item].text,
-                    borderRadius: '5px',
-                    borderWidth: 0,
-                    fontSize: 12,
-                    fontWeight: 700,
-                    overflow: 'hidden',
-                  }}
-                >
-                  {agreementLevels[item]}
-                </Radio.Button>
-              ))}
+              {(Object.keys(levels) as Array<keyof typeof levels>).map(
+                (item) => (
+                  <Radio.Button
+                    value={item}
+                    key={item}
+                    disabled={done}
+                    style={{
+                      display: 'flex',
+                      height: '100%',
+                      lineHeight: 1,
+                      padding: '10px',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      backgroundColor: likertScalesColors[item].background,
+                      color: likertScalesColors[item].text,
+                      borderRadius: '5px',
+                      borderWidth: 0,
+                      fontSize: 12,
+                      fontWeight: 700,
+                      overflow: 'hidden',
+                    }}
+                  >
+                    {levels[item]}
+                  </Radio.Button>
+                ),
+              )}
             </Radio.Group>
           </Form.Item>
           {showNote && (

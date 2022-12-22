@@ -139,7 +139,7 @@ const columns = ({
     })),
   },
   {
-    title: 'Line-manager',
+    title: 'Line manager',
     key: 'lineManager',
     dataIndex: 'lineManager',
     render: (value?: ViewBasicEmployeeInfo) =>

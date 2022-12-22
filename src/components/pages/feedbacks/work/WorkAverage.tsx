@@ -1,5 +1,6 @@
 import { Popover, Button } from 'antd'
 import { likertScalesColors } from 'constants/colors'
+import { DomainTypes } from 'constants/feedbackTypes'
 import { ViewDomain } from 'types/schema'
 import { mapScoreToLikertScale } from 'utils/score'
 import { capitalizeFirstLetter } from 'utils/string'
@@ -7,11 +8,12 @@ import { WorkAverageIcon } from './WorkAverageIcon'
 import { WorkAveragePopover } from './WorkAveragePopover'
 
 interface Props {
+  domain: DomainTypes
   record: ViewDomain
 }
 
 export const WorkAverage = (props: Props) => {
-  const { record } = props
+  const { domain, record } = props
 
   return (
     <Popover
@@ -21,7 +23,7 @@ export const WorkAverage = (props: Props) => {
           ? capitalizeFirstLetter(record?.name)
           : undefined
       }
-      content={<WorkAveragePopover record={record} />}
+      content={<WorkAveragePopover domain={domain} record={record} />}
     >
       <Button
         style={{

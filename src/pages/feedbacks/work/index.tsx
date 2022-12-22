@@ -512,20 +512,26 @@ const columns: ColumnsType<any> = [
     key: 'workload',
     dataIndex: 'domains',
 
-    render: (value) => <WorkAverage record={value[0] || {}} />,
+    render: (value) => (
+      <WorkAverage domain="workload" record={value[0] || {}} />
+    ),
   },
   {
     title: 'Deadline',
     key: 'deadline',
     dataIndex: 'domains',
-    render: (value) => <WorkAverage record={value[1] || {}} />,
+    render: (value) => (
+      <WorkAverage domain="deadline" record={value[1] || {}} />
+    ),
   },
   {
     title: 'Learning',
     key: 'learning',
     dataIndex: 'domains',
 
-    render: (value) => <WorkAverage record={value[2] || {}} />,
+    render: (value) => (
+      <WorkAverage domain="learning" record={value[2] || {}} />
+    ),
   },
   {
     title: '',
