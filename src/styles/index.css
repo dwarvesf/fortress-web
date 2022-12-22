@@ -2,6 +2,12 @@
 
 body a:hover {
   color: #e13f5e;
+  text-decoration: underline;
+}
+
+.ant-tag a:hover {
+  color: #e13f5e !important;
+  text-decoration: none;
 }
 
 tr.inbox-row.not-read td {
