@@ -8,12 +8,12 @@ import { WorkAverageIcon } from './WorkAverageIcon'
 import { WorkAveragePopover } from './WorkAveragePopover'
 
 interface Props {
-  domain: DomainTypes
+  domain?: DomainTypes
   record: ViewDomain
 }
 
 export const WorkAverage = (props: Props) => {
-  const { domain, record } = props
+  const { domain = 'engagement', record } = props
 
   return (
     <Popover
