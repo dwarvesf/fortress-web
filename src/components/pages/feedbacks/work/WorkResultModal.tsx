@@ -19,7 +19,7 @@ export const WorkResultModal = (props: Props) => {
       width={768}
       onCancel={onClose}
       footer={null}
-      title={`${record?.displayName || '-'}, ${record?.projectName}`}
+      title={`${record?.title || '-'}`}
       {...rest}
     >
       <List

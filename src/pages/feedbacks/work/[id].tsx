@@ -1,87 +1,122 @@
-import { Space, Table, Tag } from 'antd'
+import { Pagination, Row, Space, Table /*Tag*/ } from 'antd'
 import { ColumnsType } from 'antd/lib/table'
 import { UserAvatar } from 'components/common/AvatarWithName'
 import { PageHeader } from 'components/common/PageHeader'
-import { statusColors } from 'constants/colors'
 import { ROUTES } from 'constants/routes'
-import {
-  SurveyParticipantStatus,
-  surveyParticipantStatuses,
-} from 'constants/status'
+// import { statusColors } from 'constants/colors'
+// import {
+//   SurveyParticipantStatus,
+//   surveyParticipantStatuses,
+// } from 'constants/status'
+// import { WorkAverage } from 'components/pages/feedbacks/work/WorkAverage'
 import React from 'react'
-import { WorkAverage } from 'components/pages/feedbacks/work/WorkAverage'
 import { WorkDetailActions } from 'components/pages/feedbacks/work/WorkDetailActions'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 import { SEO } from 'components/common/SEO'
-import { mockProjectNames, mockWorkData } from '.'
-
-const columns: ColumnsType<any> = [
-  {
-    title: 'Employee',
-    key: 'employee',
-    render: (value) => <UserAvatar user={value} />,
-    fixed: 'left',
-  },
-  {
-    title: 'Project',
-    key: 'projectName',
-    dataIndex: 'projectName',
-    filters: mockProjectNames.map((n) => ({
-      value: n,
-      text: n,
-    })),
-    onFilter: (value: any, record) => value === record.projectName,
-  },
-  {
-    title: 'Result',
-    key: 'result',
-    dataIndex: 'result',
-    render: (value) => (
-      <Space>
-        {value.map((d: any) => (
-          <WorkAverage record={d} />
-        ))}
-      </Space>
-    ),
-  },
-  {
-    title: 'Status',
-    key: 'status',
-    dataIndex: 'workStatus',
-    filterMultiple: false,
-    filters: Object.values(SurveyParticipantStatus).map((s) => ({
-      value: s,
-      text: <Tag color={statusColors[s]}>{surveyParticipantStatuses[s]}</Tag>,
-    })),
-    onFilter: (value: any, record) => value === record.workStatus,
-    render: (value: SurveyParticipantStatus) =>
-      value ? (
-        <Tag color={statusColors[value]}>
-          {surveyParticipantStatuses[value]}
-        </Tag>
-      ) : (
-        '-'
-      ),
-  },
-  {
-    title: 'Comments',
-    key: 'comments',
-    sorter: (a, b) => a.comments - b.comments,
-    render: (value) => value.comments,
-  },
-  {
-    title: '',
-    render: (value) => <WorkDetailActions record={value} />,
-    fixed: 'right',
-  },
-]
+import { useFetchWithCache } from 'hooks/useFetchWithCache'
+import { useFilter } from 'hooks/useFilter'
+import { GET_PATHS, client } from 'libs/apis'
+import { SurveyDetailFilter } from 'types/filters/SurveyDetailFilter'
+import { useRouter } from 'next/router'
+import { ProjectListFilter } from 'types/filters/ProjectListFilter'
+import { ViewTopic } from 'types/schema'
 
 const EmployeePeerReviewsPage = () => {
-  const currentData = mockWorkData.data[0]
+  const { data: projectsData } = useFetchWithCache(
+    [GET_PATHS.getProjects, 'toggle-projects-to-send-survey'],
+    () => client.getProjects(new ProjectListFilter()),
+  )
+
+  const columns: ColumnsType<ViewTopic> = [
+    {
+      title: 'Employee',
+      key: 'employee',
+      dataIndex: 'employee',
+      render: (value) =>
+        value.displayName ? (
+          <UserAvatar
+            user={{
+              id: value.id,
+              avatar: value.avatar,
+              displayName: value.displayName,
+              fullName: value.fullName,
+            }}
+          />
+        ) : (
+          'TBD'
+        ),
+      fixed: 'left',
+    },
+    {
+      title: 'Project',
+      key: 'project',
+      dataIndex: 'project',
+      filters: (projectsData?.data || []).map((p) => ({
+        value: p.id!,
+        text: p.name,
+      })),
+      onFilter: (value, record) => value === record?.project?.id,
+      render: (value) => value.name,
+    },
+    // {
+    //   title: 'Result',
+    //   key: 'result',
+    //   dataIndex: 'result',
+    //   render: (value) => (
+    //     <Space>
+    //       {value.map((d: any) => (
+    //         <WorkAverage record={d} />
+    //       ))}
+    //     </Space>
+    //   ),
+    // },
+    // {
+    //   title: 'Status',
+    //   key: 'status',
+    //   dataIndex: 'workStatus',
+    //   filterMultiple: false,
+    //   filters: Object.values(SurveyParticipantStatus).map((s) => ({
+    //     value: s,
+    //     text: <Tag color={statusColors[s]}>{surveyParticipantStatuses[s]}</Tag>,
+    //   })),
+    //   onFilter: (value: any, record) => value === record.workStatus,
+    //   render: (value: SurveyParticipantStatus) =>
+    //     value ? (
+    //       <Tag color={statusColors[value]}>
+    //         {surveyParticipantStatuses[value]}
+    //       </Tag>
+    //     ) : (
+    //       '-'
+    //     ),
+    // },
+    {
+      title: 'Comments',
+      key: 'comments',
+      sorter: (a, b) => a.comments! - b.comments!,
+      render: (value) => value.comments,
+    },
+    {
+      title: '',
+      render: (value) => <WorkDetailActions record={value} />,
+      fixed: 'right',
+    },
+  ]
+
+  const { query } = useRouter()
+
+  const workSurveyId = query.id as string
+
+  const { filter, setFilter } = useFilter(new SurveyDetailFilter())
+  const { data, loading } = useFetchWithCache(
+    [GET_PATHS.getSurveyDetail(workSurveyId), workSurveyId, filter],
+    () => client.getSurveyDetail(workSurveyId, filter),
+  )
+
+  console.log(data)
 
   return (
     <>
-      <SEO title={`Work - ${currentData?.title || '-'}`} />
+      <SEO title={`Work - ${data?.data?.title || '-'}`} />
 
       <Breadcrumb
         items={[
@@ -97,20 +132,31 @@ const EmployeePeerReviewsPage = () => {
             href: ROUTES.WORK,
           },
           {
-            label: currentData?.title,
+            label: data?.data?.title || '-',
           },
         ]}
       />
 
       <Space direction="vertical" size={24} style={{ width: '100%' }}>
-        <PageHeader backHref={ROUTES.WORK} title={currentData?.title} />
+        <PageHeader backHref={ROUTES.WORK} title={data?.data?.title || '-'} />
         <Table
-          dataSource={currentData?.employees || []}
+          dataSource={data?.data?.topics || []}
           columns={columns}
           rowKey={(row) => row.id as string}
           pagination={false}
           scroll={{ x: 'max-content' }}
+          loading={loading}
         />
+
+        <Row justify="end">
+          <Pagination
+            current={filter.page}
+            onChange={(page) => setFilter({ page })}
+            total={data?.total}
+            pageSize={filter.size}
+            hideOnSinglePage
+          />
+        </Row>
       </Space>
     </>
   )
