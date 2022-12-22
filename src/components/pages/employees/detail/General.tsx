@@ -11,7 +11,7 @@ import {
   Image,
 } from 'antd'
 import { useDisclosure } from '@dwarvesf/react-hooks'
-import { UserAvatar } from 'components/common/AvatarWithName'
+import { ProjectAvatar, UserAvatar } from 'components/common/AvatarWithName'
 import { DataRows } from 'components/common/DataRows'
 import { EditableDetailSectionCard } from 'components/common/EditableDetailSectionCard'
 import { DATE_FORMAT } from 'constants/date'
@@ -25,7 +25,7 @@ import { client, GET_PATHS } from 'libs/apis'
 import { mutate } from 'swr'
 import { useState } from 'react'
 import { EmployeeStatus, employeeStatuses } from 'constants/status'
-import { PreviewOpen, Star } from '@icon-park/react'
+import { Github, PreviewOpen, Star } from '@icon-park/react'
 import moment from 'moment'
 import { theme } from 'styles'
 import { ColumnsType } from 'antd/lib/table'
@@ -34,6 +34,7 @@ import { Button } from 'components/common/Button'
 import { DeploymentType, deploymentTypes } from 'constants/deploymentTypes'
 import { EditProfileAvatarModal } from 'components/pages/profile/EditProfileAvatarModal'
 import { getFirstLetterCapitalized } from 'utils/string'
+import { LinkWithIcon } from 'components/common/LinkWithIcon'
 import { EditPersonalInfoModal } from './EditPersonalInfoModal'
 import { EditSkillsModal } from './EditSkillsModal'
 import { EditGeneralInfoModal } from './EditGeneralInfoModal'
@@ -41,8 +42,7 @@ import { EditGeneralInfoModal } from './EditGeneralInfoModal'
 const projectColumns: ColumnsType<ViewEmployeeProjectData> = [
   {
     title: 'Name',
-    key: 'name',
-    dataIndex: 'name',
+    render: (value) => <ProjectAvatar project={value} />,
   },
   {
     title: 'Position',
@@ -199,21 +199,11 @@ export const General = (props: Props) => {
                       },
                       {
                         label: 'Email',
-                        value: (
-                          <a href={`mailto:${data.teamEmail}`}>
-                            {data.teamEmail}
-                          </a>
-                        ),
+                        value: data.teamEmail || '-',
                       },
                       {
                         label: 'Phone',
-                        value: data.phoneNumber ? (
-                          <a href={`tel:${data.phoneNumber}`}>
-                            {data.phoneNumber}
-                          </a>
-                        ) : (
-                          '-'
-                        ),
+                        value: data.phoneNumber || '-',
                       },
                       {
                         label: 'Line Manager',
@@ -227,13 +217,14 @@ export const General = (props: Props) => {
                       {
                         label: 'Github ID',
                         value: (
-                          <a
+                          <LinkWithIcon
                             href={`https://github.com/${data.githubID || ''}`}
                             target="_blank"
                             rel="noreferrer"
+                            icon={<Github />}
                           >
                             {data.githubID || '-'}
-                          </a>
+                          </LinkWithIcon>
                         ),
                       },
                       {
@@ -315,11 +306,7 @@ export const General = (props: Props) => {
                   { label: 'Address', value: data.address },
                   {
                     label: 'Personal Email',
-                    value: (
-                      <a href={`mailto:${data.personalEmail}`}>
-                        {data.personalEmail}
-                      </a>
-                    ),
+                    value: data.personalEmail || '-',
                   },
                 ]}
               />

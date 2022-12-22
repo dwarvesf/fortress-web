@@ -12,12 +12,11 @@ export const ProjectAvatar = (props: Props) => {
   const { project, avatarSize, fontSize } = props
 
   return (
-    <ProjectLink id={project.id!}>
-      <AvatarWithName
-        // avatar={project.avatar}
-        name={project.name}
-        {...{ avatarSize, fontSize }}
-      />
-    </ProjectLink>
+    <AvatarWithName
+      // avatar={project.avatar}
+      name={project.name}
+      renderName={(name) => <ProjectLink id={project.id!}>{name}</ProjectLink>}
+      {...{ avatarSize, fontSize }}
+    />
   )
 }

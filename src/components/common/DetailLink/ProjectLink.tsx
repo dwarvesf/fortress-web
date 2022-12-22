@@ -1,6 +1,6 @@
 import { ROUTES } from 'constants/routes'
-import Link from 'next/link'
 import { WithChildren } from 'types/common'
+import { LinkWithIcon } from '../LinkWithIcon'
 
 interface Props extends WithChildren {
   id: string
@@ -10,8 +10,6 @@ export const ProjectLink = (props: Props) => {
   const { id, children } = props
 
   return (
-    <Link href={ROUTES.PROJECT_DETAIL(id)}>
-      <a>{children}</a>
-    </Link>
+    <LinkWithIcon href={ROUTES.PROJECT_DETAIL(id)}>{children}</LinkWithIcon>
   )
 }

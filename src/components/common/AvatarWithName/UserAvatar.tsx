@@ -15,12 +15,15 @@ export const UserAvatar = (props: Props) => {
   const { user, avatarSize, fontSize } = props
 
   return (
-    <EmployeeLink id={user.id || user.employeeID || ''}>
-      <AvatarWithName
-        avatar={user.avatar}
-        name={user.displayName || user.fullName}
-        {...{ avatarSize, fontSize }}
-      />
-    </EmployeeLink>
+    <AvatarWithName
+      avatar={user.avatar}
+      name={user.displayName || user.fullName}
+      renderName={(name) => (
+        <EmployeeLink id={user.id || user.employeeID || ''}>
+          {name}
+        </EmployeeLink>
+      )}
+      {...{ avatarSize, fontSize }}
+    />
   )
 }
