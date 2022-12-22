@@ -31,7 +31,7 @@ export const WorkAveragePopover = (props: Props) => {
           >
             <div>
               <WorkAverageIcon
-                color={`${
+                backgroundColor={`${
                   likertScalesColors[e[0] as keyof typeof likertScalesColors]
                     .background
                 }`}

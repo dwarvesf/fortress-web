@@ -29,8 +29,11 @@ export const WorkAverage = (props: Props) => {
         }}
       >
         <WorkAverageIcon
-          color={`${
+          backgroundColor={`${
             likertScalesColors[mapScoreToLikertScale(record || {})].background
+          }`}
+          textColor={`${
+            likertScalesColors[mapScoreToLikertScale(record || {})].text
           }`}
           label={record?.average || 0}
         />
