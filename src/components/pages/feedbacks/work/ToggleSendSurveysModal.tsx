@@ -36,12 +36,24 @@ export const ToggleSendSurveysModal = (props: Props) => {
     () => client.getProjects(new ProjectListFilter()),
   )
 
-  const [checkedList, defaultSetCheckedList] = useState<boolean[]>([])
+  const [searchQuery, setSearchQuery] = useState<string>('')
+  const [checkedList, setCheckedList] = useState<boolean[]>([])
+
+  const setCheckedListbyId = useCallback(
+    (index: number) => {
+      const newCheckedList: boolean[] = []
+
+      checkedList.forEach((c, i) => {
+        newCheckedList.push(i === index ? !c : c)
+      })
+
+      setCheckedList(newCheckedList)
+    },
+    [checkedList],
+  )
 
   useEffect(() => {
-    defaultSetCheckedList(
-      new Array((projectsData?.data || []).length).fill(true),
-    )
+    setCheckedList(new Array((projectsData?.data || []).length).fill(true))
   }, [projectsData])
 
   useEffect(() => {
@@ -55,21 +67,6 @@ export const ToggleSendSurveysModal = (props: Props) => {
 
     setProjectsToSend(checkedProjectIds)
   }, [checkedList, projectsData, setProjectsToSend])
-
-  const [searchQuery, setSearchQuery] = useState('')
-
-  const toggleCheckedList = useCallback(
-    (index: number) => {
-      const newCheckedList: boolean[] = []
-
-      checkedList.forEach((c, i) => {
-        newCheckedList.push(i === index ? !c : c)
-      })
-
-      defaultSetCheckedList(newCheckedList)
-    },
-    [checkedList],
-  )
 
   const renderProjects = useMemo(() => {
     if (!(projectsData?.data || []).length) {
@@ -90,7 +87,7 @@ export const ToggleSendSurveysModal = (props: Props) => {
           <Typography.Text>{d?.name || '-'}</Typography.Text>
           <Switch
             checked={checkedList[i]}
-            onChange={() => toggleCheckedList(i)}
+            onChange={() => setCheckedListbyId(i)}
           />
         </Col>
       ))
@@ -117,13 +114,13 @@ export const ToggleSendSurveysModal = (props: Props) => {
             <Typography.Text>{d?.name || '-'}</Typography.Text>
             <Switch
               checked={checkedList[i]}
-              onChange={() => toggleCheckedList(i)}
+              onChange={() => setCheckedListbyId(i)}
             />
           </Col>
         ))
     }
     return <Empty description={`No projects for keyword "${searchQuery}"`} />
-  }, [checkedList, projectsData, searchQuery, toggleCheckedList])
+  }, [checkedList, projectsData, searchQuery, setCheckedListbyId])
 
   return (
     <Modal
