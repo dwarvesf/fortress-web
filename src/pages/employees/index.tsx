@@ -165,8 +165,8 @@ const columns = ({
   },
   {
     title: 'Discord ID',
-    key: 'discordID',
-    dataIndex: 'discordID',
+    key: 'discordName',
+    dataIndex: 'discordName',
     render: (value) => value || '-',
   },
   {

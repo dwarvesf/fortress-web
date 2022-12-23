@@ -120,7 +120,7 @@ const Default = () => {
                       },
                       {
                         label: 'Discord ID',
-                        value: user?.discordID || '',
+                        value: user?.discordName || '',
                       },
                       {
                         label: 'Github ID',
@@ -137,7 +137,7 @@ const Default = () => {
                           '-'
                         ),
                       },
-                      { label: 'Notion Email', value: user?.notionID },
+                      { label: 'Notion Email', value: user?.notionName },
                       { label: 'LinkedIn', value: '' },
                       { label: 'Shelter Address', value: user?.address },
                       { label: 'Permanent Address', value: '' },

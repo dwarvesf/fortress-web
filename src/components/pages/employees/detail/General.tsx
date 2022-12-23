@@ -214,7 +214,10 @@ export const General = (props: Props) => {
                           '-'
                         ),
                       },
-                      { label: 'Discord ID', value: data.discordID || '-' },
+                      {
+                        label: 'Discord ID',
+                        value: data.discordName || '-',
+                      },
                       {
                         label: 'Github ID',
                         value: data.githubID ? (
@@ -232,7 +235,7 @@ export const General = (props: Props) => {
                       },
                       {
                         label: 'Notion ID',
-                        value: data.notionID || '-',
+                        value: data.notionName || '-',
                       },
                     ]}
                   />
