@@ -2,10 +2,13 @@ import { useDisclosure } from '@dwarvesf/react-hooks'
 import { PreviewOpen } from '@icon-park/react'
 import { Row, Tooltip } from 'antd'
 import { Button } from 'components/common/Button'
-import { WorkResultModal } from './WorkResultModal'
+import { useFetchWithCache } from 'hooks/useFetchWithCache'
+import { GET_PATHS, client } from 'libs/apis'
+import { ViewTopic } from 'types/schema'
+import { SurveyResultModal } from '../SurveyResultModal'
 
 interface Props {
-  record: any
+  record: ViewTopic
 }
 
 export const WorkDetailActions = (props: Props) => {
@@ -16,6 +19,13 @@ export const WorkDetailActions = (props: Props) => {
     onOpen: openWorkResultDialog,
     onClose: closeWorkResultDialog,
   } = useDisclosure()
+
+  const { data } = useFetchWithCache(
+    [GET_PATHS.getSurveyTopic(record.eventID as string, record.id as string)],
+    () => client.getSurveyTopic(record.eventID as string, record.id as string),
+  )
+
+  const detail = data?.data
 
   return (
     <>
@@ -30,11 +40,15 @@ export const WorkDetailActions = (props: Props) => {
         </Tooltip>
       </Row>
 
-      <WorkResultModal
-        onClose={closeWorkResultDialog}
-        isOpen={isWorkResultDialogOpen}
-        record={record}
-      />
+      {detail?.participants![0].eventReviewerID !== undefined && (
+        <SurveyResultModal
+          onCancel={closeWorkResultDialog}
+          isOpen={isWorkResultDialogOpen}
+          eventID={record.eventID}
+          topicID={record.id}
+          reviewID={detail?.participants![0].eventReviewerID!}
+        />
+      )}
     </>
   )
 }

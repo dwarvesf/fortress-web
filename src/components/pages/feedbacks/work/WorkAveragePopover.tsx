@@ -4,6 +4,7 @@ import { likertScalesColors } from 'constants/colors'
 import { DomainTypes } from 'constants/feedbackTypes'
 import { ViewDomain } from 'types/schema'
 import { renderDomainLevels } from 'utils/level'
+import { camelToSnakeCase } from 'utils/string'
 import { WorkAverageIcon } from './WorkAverageIcon'
 
 interface Props {
@@ -40,12 +41,13 @@ export const WorkAveragePopover = (props: Props) => {
               <div>
                 <WorkAverageIcon
                   backgroundColor={`${
-                    likertScalesColors[e[0] as keyof typeof likertScalesColors]
-                      .background
+                    likertScalesColors[
+                      camelToSnakeCase(e[0]) as keyof typeof likertScalesColors
+                    ].background
                   }`}
                 />
                 <span style={{ marginLeft: 8 }}>
-                  {levels[e[0] as AgreementLevel]}
+                  {levels[camelToSnakeCase(e[0]) as AgreementLevel]}
                 </span>
               </div>
               <span style={{ fontSize: 17 }}>{e[1]}</span>

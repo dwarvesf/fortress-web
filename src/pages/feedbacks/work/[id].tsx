@@ -1,4 +1,4 @@
-import { Pagination, Row, Space, Table /*Tag*/ } from 'antd'
+import { Pagination, Row, Space, Table /*Tag*/, Tag } from 'antd'
 import { ColumnsType } from 'antd/lib/table'
 import { UserAvatar } from 'components/common/AvatarWithName'
 import { PageHeader } from 'components/common/PageHeader'
@@ -20,6 +20,11 @@ import { SurveyDetailFilter } from 'types/filters/SurveyDetailFilter'
 import { useRouter } from 'next/router'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
 import { ViewTopic } from 'types/schema'
+import { statusColors } from 'constants/colors'
+import {
+  SurveyParticipantStatus,
+  surveyParticipantStatuses,
+} from 'constants/status'
 
 const EmployeePeerReviewsPage = () => {
   const { data: projectsData } = useFetchWithCache(
@@ -58,37 +63,49 @@ const EmployeePeerReviewsPage = () => {
       onFilter: (value, record) => value === record?.project?.id,
       render: (value) => value.name,
     },
-    // {
-    //   title: 'Result',
-    //   key: 'result',
-    //   dataIndex: 'result',
-    //   render: (value) => (
-    //     <Space>
-    //       {value.map((d: any) => (
-    //         <WorkAverage record={d} />
-    //       ))}
-    //     </Space>
-    //   ),
-    // },
-    // {
-    //   title: 'Status',
-    //   key: 'status',
-    //   dataIndex: 'workStatus',
-    //   filterMultiple: false,
-    //   filters: Object.values(SurveyParticipantStatus).map((s) => ({
-    //     value: s,
-    //     text: <Tag color={statusColors[s]}>{surveyParticipantStatuses[s]}</Tag>,
-    //   })),
-    //   onFilter: (value: any, record) => value === record.workStatus,
-    //   render: (value: SurveyParticipantStatus) =>
-    //     value ? (
-    //       <Tag color={statusColors[value]}>
-    //         {surveyParticipantStatuses[value]}
-    //       </Tag>
-    //     ) : (
-    //       '-'
-    //     ),
-    // },
+    {
+      title: 'Workload',
+      key: 'workload',
+      dataIndex: 'domains',
+      // render: (value) => (
+      //   <WorkAverage domain="workload" record={value[0] || {}} />
+      // ),
+    },
+    {
+      title: 'Deadline',
+      key: 'deadline',
+      dataIndex: 'domains',
+      // render: (value) => (
+      //   <WorkAverage domain="deadline" record={value[1] || {}} />
+      // ),
+    },
+    {
+      title: 'Learning',
+      key: 'learning',
+      dataIndex: 'domains',
+      // render: (value) => (
+      //   <WorkAverage domain="learning" record={value[2] || {}} />
+      // ),
+    },
+    {
+      title: 'Status',
+      key: 'status',
+      dataIndex: 'workStatus',
+      filterMultiple: false,
+      filters: Object.values(SurveyParticipantStatus).map((s) => ({
+        value: s,
+        text: <Tag color={statusColors[s]}>{surveyParticipantStatuses[s]}</Tag>,
+      })),
+      // onFilter: (value: any, record) => value === record.workStatus,
+      // render: (value: SurveyParticipantStatus) =>
+      //   value ? (
+      //     <Tag color={statusColors[value]}>
+      //       {surveyParticipantStatuses[value]}
+      //     </Tag>
+      //   ) : (
+      //     '-'
+      //   ),
+    },
     {
       title: 'Comments',
       key: 'comments',
@@ -111,8 +128,6 @@ const EmployeePeerReviewsPage = () => {
     [GET_PATHS.getSurveyDetail(workSurveyId), workSurveyId, filter],
     () => client.getSurveyDetail(workSurveyId, filter),
   )
-
-  console.log(data)
 
   return (
     <>

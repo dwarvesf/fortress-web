@@ -23,3 +23,6 @@ export function parseJWT(token: string) {
 
   return JSON.parse(jsonPayload)
 }
+
+export const camelToSnakeCase = (str: string) =>
+  str.replace(/[A-Z]/g, (letter: string) => `-${letter.toLowerCase()}`)

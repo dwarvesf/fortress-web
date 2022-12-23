@@ -20,42 +20,6 @@ import { GET_PATHS, client } from 'libs/apis'
 import { SurveyListFilter } from 'types/filters/SurveyListFilter'
 import { useState } from 'react'
 
-// const mockWorkAverageData = [
-//   {
-//     name: 'workload',
-//     average: 3,
-//     count: {
-//       'strongly-disagree': 1,
-//       disagree: 5,
-//       mixed: 3,
-//       agree: 4,
-//       'strongly-agree': 2,
-//     },
-//   },
-//   {
-//     name: 'deadline',
-//     average: 2,
-//     count: {
-//       'strongly-disagree': 1,
-//       disagree: 2,
-//       mixed: 3,
-//       agree: 4,
-//       'strongly-agree': 0,
-//     },
-//   },
-//   {
-//     name: 'learning',
-//     average: 0,
-//     count: {
-//       'strongly-disagree': 0,
-//       disagree: 0,
-//       mixed: 0,
-//       agree: 0,
-//       'strongly-agree': 0,
-//     },
-//   },
-// ]
-
 const columns: ColumnsType<any> = [
   {
     title: 'Time',
@@ -75,7 +39,6 @@ const columns: ColumnsType<any> = [
     title: 'Workload',
     key: 'workload',
     dataIndex: 'domains',
-
     render: (value) => (
       <WorkAverage domain="workload" record={value[0] || {}} />
     ),
@@ -92,7 +55,6 @@ const columns: ColumnsType<any> = [
     title: 'Learning',
     key: 'learning',
     dataIndex: 'domains',
-
     render: (value) => (
       <WorkAverage domain="learning" record={value[2] || {}} />
     ),
