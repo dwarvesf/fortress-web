@@ -16,7 +16,7 @@ export const ProjectAvatar = (props: Props) => {
       // avatar={project.avatar}
       name={project.name}
       renderName={(name) => (
-        <ProjectLink id={project.id!} className="link">
+        <ProjectLink id={project.id!} className="styled">
           {name}
         </ProjectLink>
       )}

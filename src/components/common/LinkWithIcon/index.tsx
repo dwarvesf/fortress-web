@@ -15,14 +15,14 @@ export const LinkWithIcon = (props: Props) => {
     <Space>
       {icon}
       <Link href={href}>
-        <a className="link" {...rest}>
+        <a className="styled" {...rest}>
           {children}
         </a>
       </Link>
     </Space>
   ) : (
     <Link href={href}>
-      <a className="link" {...rest}>
+      <a className="styled" {...rest}>
         {children}
       </a>
     </Link>
