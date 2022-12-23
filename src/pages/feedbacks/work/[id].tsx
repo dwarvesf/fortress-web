@@ -3,12 +3,12 @@ import { ColumnsType } from 'antd/lib/table'
 import { UserAvatar } from 'components/common/AvatarWithName'
 import { PageHeader } from 'components/common/PageHeader'
 import { ROUTES } from 'constants/routes'
-// import { statusColors } from 'constants/colors'
-// import {
-//   SurveyParticipantStatus,
-//   surveyParticipantStatuses,
-// } from 'constants/status'
-// import { WorkAverage } from 'components/pages/feedbacks/work/WorkAverage'
+import { statusColors } from 'constants/colors'
+import {
+  SurveyParticipantStatus,
+  surveyParticipantStatuses,
+} from 'constants/status'
+import { WorkAverage } from 'components/pages/feedbacks/work/WorkAverage'
 import React from 'react'
 import { WorkDetailActions } from 'components/pages/feedbacks/work/WorkDetailActions'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
@@ -20,11 +20,6 @@ import { SurveyDetailFilter } from 'types/filters/SurveyDetailFilter'
 import { useRouter } from 'next/router'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
 import { ViewTopic } from 'types/schema'
-import { statusColors } from 'constants/colors'
-import {
-  SurveyParticipantStatus,
-  surveyParticipantStatuses,
-} from 'constants/status'
 
 const EmployeePeerReviewsPage = () => {
   const { data: projectsData } = useFetchWithCache(
@@ -67,44 +62,44 @@ const EmployeePeerReviewsPage = () => {
       title: 'Workload',
       key: 'workload',
       dataIndex: 'domains',
-      // render: (value) => (
-      //   <WorkAverage domain="workload" record={value[0] || {}} />
-      // ),
+      render: (value) => (
+        <WorkAverage domain="workload" record={value[0] || {}} />
+      ),
     },
     {
       title: 'Deadline',
       key: 'deadline',
       dataIndex: 'domains',
-      // render: (value) => (
-      //   <WorkAverage domain="deadline" record={value[1] || {}} />
-      // ),
+      render: (value) => (
+        <WorkAverage domain="deadline" record={value[1] || {}} />
+      ),
     },
     {
       title: 'Learning',
       key: 'learning',
       dataIndex: 'domains',
-      // render: (value) => (
-      //   <WorkAverage domain="learning" record={value[2] || {}} />
-      // ),
+      render: (value) => (
+        <WorkAverage domain="learning" record={value[2] || {}} />
+      ),
     },
     {
       title: 'Status',
       key: 'status',
-      dataIndex: 'workStatus',
+      dataIndex: 'status',
       filterMultiple: false,
       filters: Object.values(SurveyParticipantStatus).map((s) => ({
         value: s,
         text: <Tag color={statusColors[s]}>{surveyParticipantStatuses[s]}</Tag>,
       })),
-      // onFilter: (value: any, record) => value === record.workStatus,
-      // render: (value: SurveyParticipantStatus) =>
-      //   value ? (
-      //     <Tag color={statusColors[value]}>
-      //       {surveyParticipantStatuses[value]}
-      //     </Tag>
-      //   ) : (
-      //     '-'
-      //   ),
+      onFilter: (value, record) => value === record.status,
+      render: (value: SurveyParticipantStatus) =>
+        value ? (
+          <Tag color={statusColors[value]}>
+            {surveyParticipantStatuses[value]}
+          </Tag>
+        ) : (
+          '-'
+        ),
     },
     {
       title: 'Comments',

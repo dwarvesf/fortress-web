@@ -21,7 +21,10 @@ export const WorkDetailActions = (props: Props) => {
   } = useDisclosure()
 
   const { data } = useFetchWithCache(
-    [GET_PATHS.getSurveyTopic(record.eventID as string, record.id as string)],
+    [
+      GET_PATHS.getSurveyTopic(record.eventID as string, record.id as string),
+      'work-survey-detail',
+    ],
     () => client.getSurveyTopic(record.eventID as string, record.id as string),
   )
 
