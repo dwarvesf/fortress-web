@@ -1,4 +1,4 @@
-import { Pagination, Row, Space, Table /*Tag*/, Tag } from 'antd'
+import { Pagination, Row, Space, Table, Tag } from 'antd'
 import { ColumnsType } from 'antd/lib/table'
 import { UserAvatar } from 'components/common/AvatarWithName'
 import { PageHeader } from 'components/common/PageHeader'
@@ -20,6 +20,8 @@ import { SurveyDetailFilter } from 'types/filters/SurveyDetailFilter'
 import { useRouter } from 'next/router'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
 import { ViewTopic } from 'types/schema'
+import { ProjectLink } from 'components/common/DetailLink'
+import { Link as IconLink } from '@icon-park/react'
 
 const EmployeePeerReviewsPage = () => {
   const { data: projectsData } = useFetchWithCache(
@@ -56,7 +58,16 @@ const EmployeePeerReviewsPage = () => {
         text: p.name,
       })),
       onFilter: (value, record) => value === record?.project?.id,
-      render: (value) => value.name,
+      render: (value) => (
+        <Tag>
+          <ProjectLink id={value.id}>
+            <Space size={4}>
+              {value.name}
+              <IconLink />
+            </Space>
+          </ProjectLink>
+        </Tag>
+      ),
     },
     {
       title: 'Workload',
