@@ -35,7 +35,7 @@ import { useCallback, useState } from 'react'
 import qs from 'qs'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
-import { PreviewOpen, Star } from '@icon-park/react'
+import { PreviewOpen, Star, Link as IconLink } from '@icon-park/react'
 import { SEO } from 'components/common/SEO'
 import { LinkWithIcon } from 'components/common/LinkWithIcon'
 
@@ -83,7 +83,12 @@ const columns = ({
       <TagArray
         value={value}
         content={(project) => (
-          <ProjectLink id={project.id!}>{project.name}</ProjectLink>
+          <ProjectLink id={project.id!}>
+            <Space size={4}>
+              {project.name}
+              <IconLink />
+            </Space>
+          </ProjectLink>
         )}
         maxTag={2}
       />
