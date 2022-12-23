@@ -10,9 +10,10 @@ import { theme } from 'styles'
 import { Button } from 'components/common/Button'
 import { ROUTES } from 'constants/routes'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
-import { Edit, Link } from '@icon-park/react'
+import { Edit, Github } from '@icon-park/react'
 import { SEO } from 'components/common/SEO'
 import { getFirstLetterCapitalized } from 'utils/string'
+import { LinkWithIcon } from 'components/common/LinkWithIcon'
 
 const Default = () => {
   const { user, revalidate } = useAuthContext()
@@ -106,58 +107,31 @@ const Default = () => {
                       },
                       {
                         label: 'Team Email',
-                        value: (
-                          <a href={`mailto:${user?.teamEmail}`}>
-                            {user?.teamEmail}
-                          </a>
-                        ),
+                        value: user?.teamEmail || '-',
                       },
                       {
                         label: 'Personal Email',
-                        value: (
-                          <a href={`mailto:${user?.personalEmail}`}>
-                            {user?.personalEmail}
-                          </a>
-                        ),
+                        value: user?.personalEmail || '-',
                       },
                       {
                         label: 'Phone',
-                        value: (
-                          <a href={`tel:${user?.phoneNumber}`}>
-                            {user?.phoneNumber}
-                          </a>
-                        ),
+                        value: user?.phoneNumber || '-',
                       },
                       {
                         label: 'Discord ID',
-                        value: user?.discordID ? (
-                          <a
-                            href={`https://discord.com/channels/@me/${user.discordID}`}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            <Space>
-                              {user.discordID}
-                              <Link />
-                            </Space>
-                          </a>
-                        ) : (
-                          ''
-                        ),
+                        value: user?.discordID || '',
                       },
                       {
                         label: 'Github ID',
                         value: (
-                          <a
+                          <LinkWithIcon
                             href={`https://github.com/${user?.githubID}`}
                             target="_blank"
                             rel="noreferrer"
+                            icon={<Github />}
                           >
-                            <Space>
-                              {user?.githubID}
-                              <Link />
-                            </Space>
-                          </a>
+                            {user?.githubID || '-'}
+                          </LinkWithIcon>
                         ),
                       },
                       { label: 'Notion Email', value: user?.notionID },

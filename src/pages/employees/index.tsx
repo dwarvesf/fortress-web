@@ -35,7 +35,7 @@ import { useCallback, useState } from 'react'
 import qs from 'qs'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
-import { Github, PreviewOpen, Star } from '@icon-park/react'
+import { PreviewOpen, Star } from '@icon-park/react'
 import { SEO } from 'components/common/SEO'
 import { LinkWithIcon } from 'components/common/LinkWithIcon'
 
@@ -173,7 +173,6 @@ const columns = ({
         href={`https://github.com/${value}`}
         target="_blank"
         rel="noreferrer"
-        icon={<Github />}
       >
         {value || '-'}
       </LinkWithIcon>

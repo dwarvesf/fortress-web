@@ -1,15 +1,17 @@
 import { ROUTES } from 'constants/routes'
-import { WithChildren } from 'types/common'
-import { LinkWithIcon } from '../LinkWithIcon'
+import Link from 'next/link'
+import { AnchorHTMLAttributes } from 'react'
 
-interface Props extends WithChildren {
+interface Props extends AnchorHTMLAttributes<HTMLAnchorElement> {
   id: string
 }
 
 export const EmployeeLink = (props: Props) => {
-  const { id, children } = props
+  const { id, children, ...rest } = props
 
   return (
-    <LinkWithIcon href={ROUTES.EMPLOYEE_DETAIL(id)}>{children}</LinkWithIcon>
+    <Link href={ROUTES.EMPLOYEE_DETAIL(id)}>
+      <a {...rest}>{children}</a>
+    </Link>
   )
 }

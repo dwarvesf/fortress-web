@@ -19,7 +19,7 @@ export const UserAvatar = (props: Props) => {
       avatar={user.avatar}
       name={user.displayName || user.fullName}
       renderName={(name) => (
-        <EmployeeLink id={user.id || user.employeeID || ''}>
+        <EmployeeLink id={user.id || user.employeeID || ''} className="link">
           {name}
         </EmployeeLink>
       )}
