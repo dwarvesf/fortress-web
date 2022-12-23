@@ -6,10 +6,17 @@ interface Props {
   name?: string
   avatarSize?: number
   fontSize?: number
+  renderName?: (value?: string) => React.ReactNode
 }
 
 export const AvatarWithName = (props: Props) => {
-  const { avatar, name, avatarSize = 24, fontSize = 16 } = props
+  const {
+    avatar,
+    name,
+    avatarSize = 24,
+    fontSize = 16,
+    renderName = (value) => <span>{value}</span>,
+  } = props
 
   return (
     <Space direction="horizontal">
@@ -18,7 +25,7 @@ export const AvatarWithName = (props: Props) => {
           <span style={{ fontSize }}>{getFirstLetterCapitalized(name)}</span>
         )}
       </Avatar>
-      <span>{name}</span>
+      {renderName(name)}
     </Space>
   )
 }

@@ -35,8 +35,9 @@ import { useCallback, useState } from 'react'
 import qs from 'qs'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
-import { PreviewOpen, Star } from '@icon-park/react'
+import { PreviewOpen, Star, Link as IconLink } from '@icon-park/react'
 import { SEO } from 'components/common/SEO'
+import { LinkWithIcon } from 'components/common/LinkWithIcon'
 
 interface ColumnProps {
   filter: EmployeeListFilter
@@ -82,7 +83,12 @@ const columns = ({
       <TagArray
         value={value}
         content={(project) => (
-          <ProjectLink id={project.id!}>{project.name}</ProjectLink>
+          <ProjectLink id={project.id!}>
+            <Space size={4}>
+              {project.name}
+              <IconLink />
+            </Space>
+          </ProjectLink>
         )}
         maxTag={2}
       />
@@ -161,46 +167,27 @@ const columns = ({
     title: 'Discord ID',
     key: 'discordID',
     dataIndex: 'discordID',
-    render: (value) =>
-      (
-        <a
-          href={`https://discord.com/channels/@me/${value}`}
-          target="_blank"
-          rel="noreferrer"
-        >
-          {value}
-        </a>
-      ) || '-',
+    render: (value) => value || '-',
   },
   {
     title: 'Github ID',
     key: 'githubID',
     dataIndex: 'githubID',
-    render: (value) =>
-      value ? (
-        <a
-          href={`https://github.com/${value}`}
-          target="_blank"
-          rel="noreferrer"
-        >
-          {value}
-        </a>
-      ) : (
-        '-'
-      ),
+    render: (value) => (
+      <LinkWithIcon
+        href={`https://github.com/${value}`}
+        target="_blank"
+        rel="noreferrer"
+      >
+        {value || '-'}
+      </LinkWithIcon>
+    ),
   },
   {
     title: 'Working Email',
     key: 'teamEmail',
     dataIndex: 'teamEmail',
-    render: (value) =>
-      value ? (
-        <a href={`mailto:${value}`} target="_blank" rel="noreferrer">
-          {value}
-        </a>
-      ) : (
-        '-'
-      ),
+    render: (value) => value || '-',
   },
   {
     title: '',
