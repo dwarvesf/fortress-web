@@ -1,15 +1,20 @@
 import { Col, Row } from 'antd'
-import { agreementLevels } from 'constants/agreementLevel'
+import { AgreementLevel } from 'constants/agreementLevel'
 import { likertScalesColors } from 'constants/colors'
+import { DomainTypes } from 'constants/feedbackTypes'
 import { ViewDomain } from 'types/schema'
+import { renderDomainLevels } from 'utils/level'
 import { WorkAverageIcon } from './WorkAverageIcon'
 
 interface Props {
+  domain: DomainTypes
   record: ViewDomain
 }
 
 export const WorkAveragePopover = (props: Props) => {
-  const { record } = props
+  const { domain, record } = props
+
+  const levels = renderDomainLevels(domain)
 
   return (
     <>
@@ -40,7 +45,7 @@ export const WorkAveragePopover = (props: Props) => {
                   }`}
                 />
                 <span style={{ marginLeft: 8 }}>
-                  {agreementLevels[e[0] as keyof typeof likertScalesColors]}
+                  {levels[e[0] as AgreementLevel]}
                 </span>
               </div>
               <span style={{ fontSize: 17 }}>{e[1]}</span>

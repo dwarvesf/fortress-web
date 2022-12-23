@@ -10,7 +10,7 @@ import { PageHeader } from 'components/common/PageHeader'
 import { PageSpinner } from 'components/common/PageSpinner'
 import { SEO } from 'components/common/SEO'
 import { statusColors } from 'constants/colors'
-import { FeedbackQuestionType } from 'constants/feedbackTypes'
+import { DomainTypes, FeedbackQuestionType } from 'constants/feedbackTypes'
 import { ROUTES } from 'constants/routes'
 import { feedbackStatuses, ModelEventReviewerStatus } from 'constants/status'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
@@ -238,6 +238,7 @@ export const SurveyForm = () => {
                               detail.status ===
                               ModelEventReviewerStatus.EventReviewerStatusDone
                             }
+                            domain={field.domain as DomainTypes}
                             required
                           />
                         </Col>
