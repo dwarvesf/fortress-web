@@ -175,6 +175,7 @@ export const General = (props: Props) => {
                       onAfterSubmit={mutateEmployee}
                       avatar={data.avatar}
                       name={data.displayName || data.fullName}
+                      id={data.id}
                     />
                     <Select
                       loading={isLoading}
@@ -216,15 +217,17 @@ export const General = (props: Props) => {
                       { label: 'Discord ID', value: data.discordID || '-' },
                       {
                         label: 'Github ID',
-                        value: (
+                        value: data.githubID ? (
                           <LinkWithIcon
                             href={`https://github.com/${data.githubID || ''}`}
                             target="_blank"
                             rel="noreferrer"
                             icon={<Github />}
                           >
-                            {data.githubID || '-'}
+                            {data.githubID}
                           </LinkWithIcon>
+                        ) : (
+                          '-'
                         ),
                       },
                       {

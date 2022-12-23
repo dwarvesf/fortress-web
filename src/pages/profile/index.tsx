@@ -67,7 +67,8 @@ const Default = () => {
                         user?.avatar && (
                           <Image
                             src={user?.avatar}
-                            height={128}
+                            height="100%"
+                            width="100%"
                             style={{ objectFit: 'cover' }}
                             preview={{
                               mask: (
@@ -123,15 +124,17 @@ const Default = () => {
                       },
                       {
                         label: 'Github ID',
-                        value: (
+                        value: user?.githubID ? (
                           <LinkWithIcon
                             href={`https://github.com/${user?.githubID}`}
                             target="_blank"
                             rel="noreferrer"
                             icon={<Github />}
                           >
-                            {user?.githubID || '-'}
+                            {user.githubID}
                           </LinkWithIcon>
+                        ) : (
+                          '-'
                         ),
                       },
                       { label: 'Notion Email', value: user?.notionID },

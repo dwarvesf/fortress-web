@@ -39,8 +39,8 @@ export interface ModelLikertScaleCount {
   agree?: number
   disagree?: number
   mixed?: number
-  'strongly-agree'?: number
-  'strongly-disagree'?: number
+  stronglyAgree?: number
+  stronglyDisagree?: number
 }
 
 export interface ModelPosition {
@@ -57,6 +57,7 @@ export interface ModelRole {
   createdAt?: string
   deletedAt?: GormDeletedAt
   id?: string
+  level?: number
   name?: string
   updatedAt?: string
 }
@@ -174,6 +175,7 @@ export interface RequestUpdateEmployeeGeneralInfoInput {
   githubID?: string
   lineManagerID?: string
   notionID?: string
+  notionName?: string
   phone: string
 }
 
@@ -182,6 +184,7 @@ export interface RequestUpdateInfoInput {
   discordName?: string
   githubID?: string
   notionID?: string
+  notionName?: string
   personalEmail: string
   phoneNumber: string
   teamEmail: string
@@ -260,6 +263,10 @@ export interface ViewApiError {
 export interface ViewAuthData {
   accessToken?: string
   employee?: ViewEmployeeData
+}
+
+export interface ViewAuthUserResponse {
+  data?: ViewLoggedInUserData
 }
 
 export interface ViewBasicCountryInfo {
@@ -386,6 +393,7 @@ export interface ViewEmployeeData {
   lineManager?: ViewBasicEmployeeInfo
   mbti?: string
   notionID?: string
+  notionName?: string
   personalEmail?: string
   phoneNumber?: string
   positions?: ViewPosition[]
@@ -485,6 +493,16 @@ export interface ViewListWorkUnitResponse {
   data?: ViewWorkUnit[]
 }
 
+export interface ViewLoggedInUserData {
+  avatar?: string
+  displayName?: string
+  fullName?: string
+  id?: string
+  permissions?: string[]
+  role?: string
+  teamEmail?: string
+}
+
 export interface ViewMessageResponse {
   message?: string
 }
@@ -497,6 +515,7 @@ export interface ViewMetaData {
 
 export interface ViewPeerReviewer {
   eventReviewerID?: string
+  isForcedDone?: boolean
   relationship?: string
   reviewer?: ViewBasicEmployeeInfo
   status?: string
@@ -523,6 +542,7 @@ export interface ViewProfileData {
   githubID?: string
   id?: string
   notionID?: string
+  notionName?: string
   personalEmail?: string
   phoneNumber?: string
   teamEmail?: string
@@ -690,6 +710,7 @@ export interface ViewTopic {
   employee?: ViewBasicEmployeeInfo
   eventID?: string
   id?: string
+  isForcedDone?: boolean
   participants?: ViewBasicEmployeeInfo[]
   project?: ViewBasicProjectInfo
   result?: ViewSurveyResult
@@ -719,6 +740,7 @@ export interface ViewUpdateGeneralInfoEmployeeData {
   id?: string
   lineManager?: ViewBasicEmployeeInfo
   notionID?: string
+  notionName?: string
   phoneNumber?: string
   teamEmail?: string
   updatedAt?: string
@@ -747,6 +769,7 @@ export interface ViewUpdateProfileInfoData {
   githubID?: string
   id?: string
   notionID?: string
+  notionName?: string
   phoneNumber?: string
   /** basic info */
   teamEmail?: string

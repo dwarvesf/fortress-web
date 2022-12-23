@@ -173,15 +173,18 @@ const columns = ({
     title: 'Github ID',
     key: 'githubID',
     dataIndex: 'githubID',
-    render: (value) => (
-      <LinkWithIcon
-        href={`https://github.com/${value}`}
-        target="_blank"
-        rel="noreferrer"
-      >
-        {value || '-'}
-      </LinkWithIcon>
-    ),
+    render: (value) =>
+      value ? (
+        <LinkWithIcon
+          href={`https://github.com/${value}`}
+          target="_blank"
+          rel="noreferrer"
+        >
+          {value}
+        </LinkWithIcon>
+      ) : (
+        '-'
+      ),
   },
   {
     title: 'Working Email',
