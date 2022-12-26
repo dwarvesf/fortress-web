@@ -20,6 +20,7 @@ export const MemberTable = ({ data }: { data: ViewProjectMember[] }) => {
           ) : (
             'TBD'
           ),
+        fixed: 'left',
       },
       {
         title: 'Positions',

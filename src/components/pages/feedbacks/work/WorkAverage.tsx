@@ -10,12 +10,35 @@ import { WorkAveragePopover } from './WorkAveragePopover'
 interface Props {
   domain?: DomainTypes
   record: ViewDomain
+  showPopover?: boolean
 }
 
 export const WorkAverage = (props: Props) => {
-  const { domain = 'engagement', record } = props
+  const { domain = 'engagement', record, showPopover = true } = props
 
-  return (
+  const workAvgDotRender = (
+    <Button
+      style={{
+        padding: 0,
+        height: 'max-content',
+        background: 'none',
+        border: 'none',
+        borderRadius: '50%',
+      }}
+    >
+      <WorkAverageIcon
+        backgroundColor={`${
+          likertScalesColors[mapScoreToLikertScale(record || {})].background
+        }`}
+        textColor={`${
+          likertScalesColors[mapScoreToLikertScale(record || {})].text
+        }`}
+        label={record?.average || 0}
+      />
+    </Button>
+  )
+
+  return showPopover && record.average !== 0 ? (
     <Popover
       placement="bottom"
       title={
@@ -25,25 +48,9 @@ export const WorkAverage = (props: Props) => {
       }
       content={<WorkAveragePopover domain={domain} record={record} />}
     >
-      <Button
-        style={{
-          padding: 0,
-          height: 'max-content',
-          background: 'none',
-          border: 'none',
-          borderRadius: '50%',
-        }}
-      >
-        <WorkAverageIcon
-          backgroundColor={`${
-            likertScalesColors[mapScoreToLikertScale(record || {})].background
-          }`}
-          textColor={`${
-            likertScalesColors[mapScoreToLikertScale(record || {})].text
-          }`}
-          label={record?.average || 0}
-        />
-      </Button>
+      {workAvgDotRender}
     </Popover>
+  ) : (
+    workAvgDotRender
   )
 }
