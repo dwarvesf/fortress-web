@@ -1,14 +1,13 @@
-import { Pagination, Row, Space, Table, Tag } from 'antd'
+import { Button, Pagination, Row, Space, Table, Tag, Tooltip } from 'antd'
 import { ColumnsType } from 'antd/lib/table'
 import { UserAvatar } from 'components/common/AvatarWithName'
 import { PageHeader } from 'components/common/PageHeader'
 import { ROUTES } from 'constants/routes'
-import { statusColors } from 'constants/colors'
+import { likertScalesColors, statusColors } from 'constants/colors'
 import {
   SurveyParticipantStatus,
   surveyParticipantStatuses,
 } from 'constants/status'
-import { WorkAverage } from 'components/pages/feedbacks/work/WorkAverage'
 import React from 'react'
 import { WorkDetailActions } from 'components/pages/feedbacks/work/WorkDetailActions'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
@@ -19,9 +18,54 @@ import { GET_PATHS, client } from 'libs/apis'
 import { SurveyDetailFilter } from 'types/filters/SurveyDetailFilter'
 import { useRouter } from 'next/router'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
-import { ViewTopic } from 'types/schema'
+import { ViewDomain, ViewTopic } from 'types/schema'
 import { ProjectLink } from 'components/common/DetailLink'
 import { Link as IconLink } from '@icon-park/react'
+import { AgreementLevel } from 'constants/agreementLevel'
+import { getWorkSurveyDetailReview, renderDomainLevels } from 'utils/level'
+import { DomainTypes } from 'constants/feedbackTypes'
+import { WorkAverageIcon } from 'components/pages/feedbacks/work'
+import { mapScoreToLikertScale } from 'utils/score'
+
+const renderDomainAverageResult = (
+  record: ViewDomain[],
+  index: number,
+  domain: DomainTypes,
+) => {
+  const levels = renderDomainLevels(domain)
+  const domainAverageResult = getWorkSurveyDetailReview(record[index].count!)
+
+  const renderWorkAverage = (
+    <Button
+      style={{
+        padding: 0,
+        height: 'max-content',
+        background: 'none',
+        border: 'none',
+        borderRadius: '50%',
+      }}
+    >
+      <WorkAverageIcon
+        backgroundColor={`${
+          likertScalesColors[mapScoreToLikertScale(record[index] || {})]
+            .background
+        }`}
+        textColor={`${
+          likertScalesColors[mapScoreToLikertScale(record[index] || {})].text
+        }`}
+        label={record[index]?.average || 0}
+      />
+    </Button>
+  )
+
+  return domainAverageResult ? (
+    <Tooltip title={levels[domainAverageResult as AgreementLevel]}>
+      {renderWorkAverage}
+    </Tooltip>
+  ) : (
+    renderWorkAverage
+  )
+}
 
 const EmployeePeerReviewsPage = () => {
   const { data: projectsData } = useFetchWithCache(
@@ -73,25 +117,19 @@ const EmployeePeerReviewsPage = () => {
       title: 'Workload',
       key: 'workload',
       dataIndex: 'domains',
-      render: (value) => (
-        <WorkAverage domain="workload" record={value[0] || {}} />
-      ),
+      render: (value) => renderDomainAverageResult(value, 0, 'workload'),
     },
     {
       title: 'Deadline',
       key: 'deadline',
       dataIndex: 'domains',
-      render: (value) => (
-        <WorkAverage domain="deadline" record={value[1] || {}} />
-      ),
+      render: (value) => renderDomainAverageResult(value, 1, 'deadline'),
     },
     {
       title: 'Learning',
       key: 'learning',
       dataIndex: 'domains',
-      render: (value) => (
-        <WorkAverage domain="learning" record={value[2] || {}} />
-      ),
+      render: (value) => renderDomainAverageResult(value, 2, 'learning'),
     },
     {
       title: 'Status',
