@@ -16,7 +16,7 @@ interface Props {
 export const WorkAverage = (props: Props) => {
   const { domain = 'engagement', record, showPopover = true } = props
 
-  const renderWorkAverageDot = (
+  const workAvgDotRender = (
     <Button
       style={{
         padding: 0,
@@ -48,9 +48,9 @@ export const WorkAverage = (props: Props) => {
       }
       content={<WorkAveragePopover domain={domain} record={record} />}
     >
-      {renderWorkAverageDot}
+      {workAvgDotRender}
     </Popover>
   ) : (
-    renderWorkAverageDot
+    workAvgDotRender
   )
 }
