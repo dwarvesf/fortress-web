@@ -63,8 +63,12 @@ const Default = () => {
                   >
                     <Avatar
                       size={128}
+                      style={{
+                        border: `2px solid ${theme.colors.primary}`,
+                        userSelect: 'none',
+                      }}
                       src={
-                        user?.avatar && (
+                        user?.avatar ? (
                           <Image
                             src={user?.avatar}
                             height="100%"
@@ -78,18 +82,27 @@ const Default = () => {
                               ),
                             }}
                           />
+                        ) : (
+                          <div
+                            className="ant-image"
+                            style={{
+                              width: '100%',
+                              height: '100%',
+                              background: '#ccc',
+                            }}
+                          >
+                            <span style={{ fontSize: 64 }}>
+                              {getFirstLetterCapitalized(
+                                user?.displayName || user?.fullName,
+                              )}
+                            </span>
+                            <div className="ant-image-mask">
+                              <span style={{ fontSize: 16 }}>View avatar</span>
+                            </div>
+                          </div>
                         )
                       }
-                      style={{ border: `2px solid ${theme.colors.primary}` }}
-                    >
-                      {user?.avatar === '' && (
-                        <span style={{ fontSize: 20 }}>
-                          {getFirstLetterCapitalized(
-                            user.displayName || user.fullName,
-                          )}
-                        </span>
-                      )}
-                    </Avatar>
+                    />
                     <Button
                       type="primary"
                       icon={<Edit size={20} />}

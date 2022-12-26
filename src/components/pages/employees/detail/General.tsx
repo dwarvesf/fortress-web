@@ -150,25 +150,35 @@ export const General = (props: Props) => {
                         cursor: 'pointer',
                       }}
                       src={
-                        data.avatar && (
+                        data.avatar ? (
                           <Image
                             src={data.avatar}
                             height="100%"
                             width="100%"
                             style={{ objectFit: 'cover' }}
-                            preview={{ visible: false, mask: 'Edit' }}
+                            preview={{ visible: false, mask: 'Edit avatar' }}
                           />
+                        ) : (
+                          <div
+                            className="ant-image"
+                            style={{
+                              width: '100%',
+                              height: '100%',
+                              background: '#ccc',
+                            }}
+                          >
+                            <span style={{ fontSize: 64 }}>
+                              {getFirstLetterCapitalized(
+                                data.displayName || data.fullName,
+                              )}
+                            </span>
+                            <div className="ant-image-mask">
+                              <span style={{ fontSize: 16 }}>Edit avatar</span>
+                            </div>
+                          </div>
                         )
                       }
-                    >
-                      {!data.avatar && (
-                        <span style={{ fontSize: 64 }}>
-                          {getFirstLetterCapitalized(
-                            data.displayName || data.fullName,
-                          )}
-                        </span>
-                      )}
-                    </Avatar>
+                    />
                     <EditProfileAvatarModal
                       isOpen={isEditAvatarDialogOpen}
                       onClose={closeEditAvatarDialog}
