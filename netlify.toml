@@ -8,4 +8,5 @@
   package = "@netlify/plugin-nextjs"
 
 [context.master.environment]
-  BASE_URL = ''
+  BASE_URL = 'https://api.fortress.dwarvesf.com/api/v1'
+  GOOGLE_CLIENT_ID = '579303681879-lavu71osb0v5ko9nudn0p2dpppmbqjsb.apps.googleusercontent.com'
