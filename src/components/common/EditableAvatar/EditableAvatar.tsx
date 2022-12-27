@@ -32,6 +32,8 @@ export const EditableAvatar = (props: Props) => {
           userSelect: 'none',
           cursor: 'pointer',
         }}
+        // since mask is only available in Image,
+        // we copy its className to a div to fake a mask in case there is no avatar
         src={
           avatar ? (
             <Image
