@@ -9,6 +9,7 @@ import Link from 'next/link'
 import { Logo } from 'components/common/Logo'
 import { SEO } from 'components/common/SEO'
 import { brandLinks } from 'constants/links'
+import { IconDiscord } from 'components/icons'
 
 const LoginContainer = styled.div`
   background-color: ${theme.colors.primary};
@@ -183,7 +184,9 @@ const LoginPage = () => {
                 <Col>
                   <Link href={b.url} passHref>
                     <a target="_blank">
-                      <span>{b.icon}</span>
+                      <span>
+                        <IconDiscord />
+                      </span>
                     </a>
                   </Link>
                 </Col>
