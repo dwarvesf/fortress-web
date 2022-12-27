@@ -7,6 +7,7 @@ import { useState } from 'react'
 import { fullListPagination } from 'types/filters/Pagination'
 import { RequestUpdateEmployeeGeneralInfoInput } from 'types/schema'
 import { transformEmployeeDataToSelectOption } from 'utils/select'
+import PhoneInput from 'react-phone-input-2'
 import { getErrorMessage } from 'utils/string'
 
 interface Props {
@@ -22,6 +23,7 @@ export const EditGeneralInfoModal = (props: Props) => {
 
   const [form] = Form.useForm()
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
+  const [phoneNumber, setPhoneNumber] = useState<string>('')
 
   const onSubmit = async (
     values: Required<RequestUpdateEmployeeGeneralInfoInput>,
@@ -102,22 +104,21 @@ export const EditGeneralInfoModal = (props: Props) => {
           <Col span={24} md={{ span: 12 }}>
             <Form.Item
               label="Phone number"
-              name="phone"
               rules={[
                 {
                   required: true,
                   message: 'Please input phone number',
                 },
-                {
-                  pattern: /^\+?(?:[0-9] ?){6,14}[0-9]$/,
-                  message: 'Please input correct phone number format',
-                },
               ]}
             >
-              <Input
-                className="bordered"
-                type="text"
-                placeholder="Enter phone number"
+              <PhoneInput
+                country="vn"
+                onChange={(phone, data) => {
+                  if ('dialCode' in data) {
+                    setPhoneNumber(`+${data.dialCode} ${phone}`)
+                  }
+                }}
+                inputStyle={{ width: '100%' }}
               />
             </Form.Item>
           </Col>
