@@ -161,13 +161,13 @@ const columns = ({
     })),
   },
   {
-    title: 'Discord ID',
+    title: 'Discord',
     key: 'discordName',
     dataIndex: 'discordName',
     render: (value) => value || '-',
   },
   {
-    title: 'Github ID',
+    title: 'Github',
     key: 'githubID',
     dataIndex: 'githubID',
     render: (value) =>

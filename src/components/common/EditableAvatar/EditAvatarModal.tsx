@@ -16,6 +16,12 @@ import { theme } from 'styles'
 import { getFirstLetterCapitalized } from 'utils/string'
 import { v4 as uuid4 } from 'uuid'
 
+const title = {
+  profile: 'Edit Profile Avatar',
+  employee: 'Edit Employee Avatar',
+  project: 'Edit Project Avatar',
+}
+
 interface Props {
   isOpen: boolean
   onClose: () => void
@@ -24,12 +30,10 @@ interface Props {
   id?: string
   avatar?: string
   name?: string
-  title?: string
 }
 
 export const EditAvatarModal = (props: Props) => {
-  const { isOpen, onClose, onAfterSubmit, type, id, avatar, name, title } =
-    props
+  const { isOpen, onClose, onAfterSubmit, type, id, avatar, name } = props
 
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isUploading, setIsUploading] = useState(false)
@@ -84,7 +88,7 @@ export const EditAvatarModal = (props: Props) => {
       open={isOpen}
       onCancel={onClose}
       okButtonProps={{ loading: isSubmitting }}
-      title={title || 'Edit Avatar'}
+      title={title[type]}
       style={{ maxWidth: 400 }}
       destroyOnClose
       footer={null}

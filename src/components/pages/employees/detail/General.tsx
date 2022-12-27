@@ -2,13 +2,11 @@ import {
   Space,
   Col,
   Row,
-  Avatar,
   Select,
   notification,
   Tooltip,
   Card,
   Table,
-  Image,
 } from 'antd'
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { ProjectAvatar, UserAvatar } from 'components/common/AvatarWithName'
@@ -33,9 +31,8 @@ import { ROUTES } from 'constants/routes'
 import { ColumnsType } from 'antd/lib/table'
 import { Button } from 'components/common/Button'
 import { DeploymentType, deploymentTypes } from 'constants/deploymentTypes'
-import { getFirstLetterCapitalized } from 'utils/string'
 import { LinkWithIcon } from 'components/common/LinkWithIcon'
-import { EditAvatarModal } from 'components/common/EditAvatarModal'
+import { EditableAvatar } from 'components/common/EditableAvatar'
 import { EditPersonalInfoModal } from './EditPersonalInfoModal'
 import { EditSkillsModal } from './EditSkillsModal'
 import { EditGeneralInfoModal } from './EditGeneralInfoModal'
@@ -122,12 +119,6 @@ export const General = (props: Props) => {
     onClose: closeEditPersonalInfoDialog,
   } = useDisclosure()
 
-  const {
-    isOpen: isEditAvatarDialogOpen,
-    onOpen: openEditAvatarDialog,
-    onClose: closeEditAvatarDialog,
-  } = useDisclosure()
-
   return (
     <>
       <Space direction="vertical" size={24} style={{ width: '100%' }}>
@@ -144,53 +135,12 @@ export const General = (props: Props) => {
                     size={24}
                     style={{ justifyContent: 'center' }}
                   >
-                    <Avatar
-                      size={128}
-                      onClick={openEditAvatarDialog}
-                      style={{
-                        border: `2px solid ${theme.colors.primary}`,
-                        userSelect: 'none',
-                        cursor: 'pointer',
-                      }}
-                      src={
-                        data.avatar ? (
-                          <Image
-                            src={data.avatar}
-                            height="100%"
-                            width="100%"
-                            style={{ objectFit: 'cover' }}
-                            preview={{ visible: false, mask: 'Edit avatar' }}
-                          />
-                        ) : (
-                          <div
-                            className="ant-image"
-                            style={{
-                              width: '100%',
-                              height: '100%',
-                              background: '#ccc',
-                            }}
-                          >
-                            <span style={{ fontSize: 64 }}>
-                              {getFirstLetterCapitalized(
-                                data.displayName || data.fullName,
-                              )}
-                            </span>
-                            <div className="ant-image-mask">
-                              <span style={{ fontSize: 16 }}>Edit avatar</span>
-                            </div>
-                          </div>
-                        )
-                      }
-                    />
-                    <EditAvatarModal
-                      isOpen={isEditAvatarDialogOpen}
-                      onClose={closeEditAvatarDialog}
+                    <EditableAvatar
                       onAfterSubmit={mutateEmployee}
                       type="employee"
                       id={data.id}
                       avatar={data.avatar}
                       name={data.displayName || data.fullName}
-                      title="Edit Employee Avatar"
                     />
                     <Select
                       loading={isLoading}
@@ -230,11 +180,11 @@ export const General = (props: Props) => {
                         ),
                       },
                       {
-                        label: 'Discord ID',
+                        label: 'Discord',
                         value: data.discordName || '-',
                       },
                       {
-                        label: 'Github ID',
+                        label: 'Github',
                         value: data.githubID ? (
                           <LinkWithIcon
                             href={`https://github.com/${data.githubID || ''}`}
@@ -249,7 +199,7 @@ export const General = (props: Props) => {
                         ),
                       },
                       {
-                        label: 'Notion ID',
+                        label: 'Notion',
                         value: data.notionName || '-',
                       },
                     ]}
