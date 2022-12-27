@@ -109,16 +109,8 @@ export const EditGeneralInfoModal = (props: Props) => {
                   message: 'Please input phone number',
                 },
                 {
-                  min: 10,
-                  message: 'Phone number must be longer than 9 numbers',
-                },
-                {
-                  max: 12,
-                  message: 'Phone number must be shorter than 13 numbers',
-                },
-                {
-                  pattern: /^\d+$/,
-                  message: 'Phone number must contains only digits',
+                  pattern: /^\+?(?:[0-9] ?){6,14}[0-9]$/,
+                  message: 'Please input correct phone number format',
                 },
               ]}
             >
