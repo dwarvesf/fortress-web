@@ -34,7 +34,7 @@ export const EditAvatarModal = (props: Props) => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isUploading, setIsUploading] = useState(false)
 
-  const submit = async (file: File) => {
+  const onSubmit = async (file: File) => {
     try {
       setIsSubmitting(true)
       setIsUploading(true)
@@ -136,7 +136,7 @@ export const EditAvatarModal = (props: Props) => {
           maxCount={1}
           itemRender={() => null}
           customRequest={(options) => {
-            submit(options.file as File)
+            onSubmit(options.file as File)
           }}
         >
           <Button type="primary" icon={<UploadPicture size={20} />}>
