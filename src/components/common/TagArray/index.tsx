@@ -1,4 +1,4 @@
-import { Space, Tag, Tooltip } from 'antd'
+import { Row, Space, Tag, Tooltip } from 'antd'
 
 interface Props<T> {
   value?: T[]
@@ -40,13 +40,13 @@ export const TagArray = <T extends { id?: React.Key; name?: React.ReactNode }>({
         <Tooltip
           color="white"
           title={
-            <Space size={[0, 8]} style={{ marginLeft: 8 }}>
+            <Row gutter={[0, 8]} justify="center">
               {remainValue.map((each) => (
-                <Tag key={key(each)} color={color}>
+                <Tag key={key(each)} color={color} style={{ margin: '0 4px' }}>
                   {content(each)}
                 </Tag>
               ))}
-            </Space>
+            </Row>
           }
         >
           <Tag color={color}>{`+${remainValue.length} more`}</Tag>

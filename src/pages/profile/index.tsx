@@ -63,11 +63,16 @@ const Default = () => {
                   >
                     <Avatar
                       size={128}
+                      style={{
+                        border: `2px solid ${theme.colors.primary}`,
+                        userSelect: 'none',
+                      }}
                       src={
-                        user?.avatar && (
+                        user?.avatar ? (
                           <Image
                             src={user?.avatar}
-                            height={128}
+                            height="100%"
+                            width="100%"
                             style={{ objectFit: 'cover' }}
                             preview={{
                               mask: (
@@ -77,18 +82,27 @@ const Default = () => {
                               ),
                             }}
                           />
+                        ) : (
+                          <div
+                            className="ant-image"
+                            style={{
+                              width: '100%',
+                              height: '100%',
+                              background: '#ccc',
+                            }}
+                          >
+                            <span style={{ fontSize: 64 }}>
+                              {getFirstLetterCapitalized(
+                                user?.displayName || user?.fullName,
+                              )}
+                            </span>
+                            <div className="ant-image-mask">
+                              <span style={{ fontSize: 16 }}>View avatar</span>
+                            </div>
+                          </div>
                         )
                       }
-                      style={{ border: `2px solid ${theme.colors.primary}` }}
-                    >
-                      {user?.avatar === '' && (
-                        <span style={{ fontSize: 20 }}>
-                          {getFirstLetterCapitalized(
-                            user.displayName || user.fullName,
-                          )}
-                        </span>
-                      )}
-                    </Avatar>
+                    />
                     <Button
                       type="primary"
                       icon={<Edit size={20} />}
@@ -119,22 +133,24 @@ const Default = () => {
                       },
                       {
                         label: 'Discord ID',
-                        value: user?.discordID || '',
+                        value: user?.discordName || '',
                       },
                       {
                         label: 'Github ID',
-                        value: (
+                        value: user?.githubID ? (
                           <LinkWithIcon
                             href={`https://github.com/${user?.githubID}`}
                             target="_blank"
                             rel="noreferrer"
                             icon={<Github />}
                           >
-                            {user?.githubID || '-'}
+                            {user.githubID}
                           </LinkWithIcon>
+                        ) : (
+                          '-'
                         ),
                       },
-                      { label: 'Notion Email', value: user?.notionID },
+                      { label: 'Notion Email', value: user?.notionName },
                       { label: 'LinkedIn', value: '' },
                       { label: 'Shelter Address', value: user?.address },
                       { label: 'Permanent Address', value: '' },

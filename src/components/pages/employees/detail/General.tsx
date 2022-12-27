@@ -153,31 +153,42 @@ export const General = (props: Props) => {
                         cursor: 'pointer',
                       }}
                       src={
-                        data.avatar && (
+                        data.avatar ? (
                           <Image
                             src={data.avatar}
                             height="100%"
                             width="100%"
                             style={{ objectFit: 'cover' }}
-                            preview={{ visible: false, mask: 'Edit' }}
+                            preview={{ visible: false, mask: 'Edit avatar' }}
                           />
+                        ) : (
+                          <div
+                            className="ant-image"
+                            style={{
+                              width: '100%',
+                              height: '100%',
+                              background: '#ccc',
+                            }}
+                          >
+                            <span style={{ fontSize: 64 }}>
+                              {getFirstLetterCapitalized(
+                                data.displayName || data.fullName,
+                              )}
+                            </span>
+                            <div className="ant-image-mask">
+                              <span style={{ fontSize: 16 }}>Edit avatar</span>
+                            </div>
+                          </div>
                         )
                       }
-                    >
-                      {!data.avatar && (
-                        <span style={{ fontSize: 64 }}>
-                          {getFirstLetterCapitalized(
-                            data.displayName || data.fullName,
-                          )}
-                        </span>
-                      )}
-                    </Avatar>
+                    />
                     <EditProfileAvatarModal
                       isOpen={isEditAvatarDialogOpen}
                       onClose={closeEditAvatarDialog}
                       onAfterSubmit={mutateEmployee}
                       avatar={data.avatar}
                       name={data.displayName || data.fullName}
+                      id={data.id}
                     />
                     <Select
                       loading={isLoading}
@@ -216,23 +227,28 @@ export const General = (props: Props) => {
                           '-'
                         ),
                       },
-                      { label: 'Discord ID', value: data.discordID || '-' },
+                      {
+                        label: 'Discord ID',
+                        value: data.discordName || '-',
+                      },
                       {
                         label: 'Github ID',
-                        value: (
+                        value: data.githubID ? (
                           <LinkWithIcon
                             href={`https://github.com/${data.githubID || ''}`}
                             target="_blank"
                             rel="noreferrer"
                             icon={<Github />}
                           >
-                            {data.githubID || '-'}
+                            {data.githubID}
                           </LinkWithIcon>
+                        ) : (
+                          '-'
                         ),
                       },
                       {
                         label: 'Notion ID',
-                        value: data.notionID || '-',
+                        value: data.notionName || '-',
                       },
                     ]}
                   />

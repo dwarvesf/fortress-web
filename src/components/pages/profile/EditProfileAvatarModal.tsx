@@ -22,10 +22,11 @@ interface Props {
   onAfterSubmit: () => void
   avatar?: string
   name?: string
+  id?: string
 }
 
 export const EditProfileAvatarModal = (props: Props) => {
-  const { isOpen, onClose, onAfterSubmit, avatar, name } = props
+  const { isOpen, onClose, onAfterSubmit, avatar, name, id } = props
 
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isUploading, setIsUploading] = useState(false)
@@ -39,7 +40,11 @@ export const EditProfileAvatarModal = (props: Props) => {
 
       formData.append('file', file, `${uuid4() as string}.png`)
 
-      await client.uploadProfileAvatar(formData)
+      if (id) {
+        await client.uploadEmployeeAvatar(id, formData)
+      } else {
+        await client.uploadProfileAvatar(formData)
+      }
 
       notification.success({ message: 'Profile avatar updated successfully!' })
 

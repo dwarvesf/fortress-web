@@ -673,6 +673,19 @@ class Client {
       },
     )
   }
+
+  public uploadEmployeeAvatar(id: string, file: FormData) {
+    return fetcher<Response<ViewEmployeeContentData>>(
+      `${BASE_URL}/employees/${id}/upload-avatar`,
+      {
+        method: 'POST',
+        headers: {
+          ...this.formDataHeaders,
+        },
+        body: file,
+      },
+    )
+  }
 }
 
 const client = new Client()

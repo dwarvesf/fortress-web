@@ -31,7 +31,7 @@ export const ProfileDropdown = () => {
 
   return (
     <Dropdown overlay={menuRender}>
-      <Space align="center">
+      <Space align="center" style={{ cursor: 'pointer' }}>
         <span>{user?.displayName}</span>
         <Avatar
           size={32}
@@ -39,7 +39,9 @@ export const ProfileDropdown = () => {
             <Image
               src={user?.avatar}
               preview={false}
-              style={{ objectFit: 'cover', height: 32 }}
+              height="100%"
+              width="100%"
+              style={{ objectFit: 'cover' }}
             />
           }
         />
