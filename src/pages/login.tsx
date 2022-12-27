@@ -28,9 +28,6 @@ const LoginCardWrapper = styled(Card)`
   position: relative;
   display: flex;
   padding: 30px;
-
-  @media only screen and (min-width: 769px) {
-  }
 `
 
 const LoginCard = styled(Card)`
@@ -125,10 +122,12 @@ const LoginPage = () => {
               backgroundAttachment: 'scroll',
             }}
           />
+
           <LoginCard>
             <div style={{ marginBottom: 40 }}>
               <Logo hasText />
             </div>
+
             <span
               style={{
                 fontSize: 16,
@@ -138,6 +137,7 @@ const LoginPage = () => {
             >
               Welcome to <GradientText>Fortress</GradientText>!
             </span>
+
             <GoogleLoginButton onClick={() => login()}>
               <svg
                 role="img"
@@ -170,6 +170,7 @@ const LoginPage = () => {
                 </Col>
               ))}
             </SocialLinks>
+
             <span style={{ fontSize: 14, color: theme.colors.gray500 }}>
               A product of Dwarves, LLC
             </span>
