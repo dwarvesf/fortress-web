@@ -14,7 +14,7 @@ export const ProjectAvatar = (props: Props) => {
 
   return (
     <AvatarWithName
-      // avatar={project.avatar}
+      avatar={project.avatar}
       name={project.name}
       renderName={(name) => (
         <Link href={ROUTES.PROJECT_DETAIL(project.id || '')}>

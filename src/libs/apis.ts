@@ -44,6 +44,7 @@ import {
   ViewSurveyTopicDetailResponse,
   RequestUpdateTopicReviewersBody,
   ViewFeedbackReviewDetailResponse,
+  ViewProjectContentDataResponse,
 } from 'types/schema'
 import { EmployeeListFilter } from 'types/filters/EmployeeListFilter'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
@@ -677,6 +678,19 @@ class Client {
   public uploadEmployeeAvatar(id: string, file: FormData) {
     return fetcher<Response<ViewEmployeeContentData>>(
       `${BASE_URL}/employees/${id}/upload-avatar`,
+      {
+        method: 'POST',
+        headers: {
+          ...this.formDataHeaders,
+        },
+        body: file,
+      },
+    )
+  }
+
+  public uploadProjectAvatar(id: string, file: FormData) {
+    return fetcher<Response<ViewProjectContentDataResponse>>(
+      `${BASE_URL}/projects/${id}/upload-avatar`,
       {
         method: 'POST',
         headers: {

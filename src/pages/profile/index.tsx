@@ -3,7 +3,6 @@ import { Avatar, Col, Image, Row, Space } from 'antd'
 import { DataRows } from 'components/common/DataRows'
 import { EditableDetailSectionCard } from 'components/common/EditableDetailSectionCard'
 import { PageHeader } from 'components/common/PageHeader'
-import { EditProfileAvatarModal } from 'components/pages/profile/EditProfileAvatarModal'
 import { EditProfileInfoModal } from 'components/pages/profile/EditProfileInfoModal'
 import { useAuthContext } from 'context/auth'
 import { theme } from 'styles'
@@ -14,6 +13,7 @@ import { Edit, Github } from '@icon-park/react'
 import { SEO } from 'components/common/SEO'
 import { getFirstLetterCapitalized } from 'utils/string'
 import { LinkWithIcon } from 'components/common/LinkWithIcon'
+import { EditAvatarModal } from 'components/common/EditAvatarModal'
 
 const Default = () => {
   const { user, revalidate } = useAuthContext()
@@ -172,12 +172,14 @@ const Default = () => {
         onAfterSubmit={revalidate}
       />
 
-      <EditProfileAvatarModal
+      <EditAvatarModal
         isOpen={isEditAvatarDialogOpen}
         onClose={closeEditAvatarDialog}
         onAfterSubmit={revalidate}
+        type="profile"
         avatar={user?.avatar}
         name={user?.displayName || user?.fullName}
+        title="Edit Profile Avatar"
       />
     </>
   )

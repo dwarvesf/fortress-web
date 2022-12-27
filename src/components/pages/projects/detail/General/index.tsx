@@ -1,13 +1,15 @@
 import { useDisclosure } from '@dwarvesf/react-hooks'
-import { Space, Col, Row, Avatar, notification, Card } from 'antd'
+import { Space, Col, Row, Avatar, notification, Card, Image } from 'antd'
 import { AvatarArray } from 'components/common/AvatarArray'
 import { UserAvatar } from 'components/common/AvatarWithName'
 import { DataRows } from 'components/common/DataRows'
 import { EditableDetailSectionCard } from 'components/common/EditableDetailSectionCard'
+import { EditAvatarModal } from 'components/common/EditAvatarModal'
 import { AsyncSelect } from 'components/common/Select'
 import { DATE_FORMAT, SERVER_DATE_FORMAT } from 'constants/date'
 import { format } from 'date-fns'
 import { client, GET_PATHS } from 'libs/apis'
+import { theme } from 'styles'
 import { mutate } from 'swr'
 import { ViewProjectData } from 'types/schema'
 import { transformMetadataToSelectOption } from 'utils/select'
@@ -18,10 +20,11 @@ import { MemberTable } from './MemberTable'
 
 interface Props {
   data: ViewProjectData
+  mutateProject: () => void
 }
 
 export const General = (props: Props) => {
-  const { data } = props
+  const { data, mutateProject } = props
 
   const {
     isOpen: isEditProjectGeneralInfoDialogOpen,
@@ -33,6 +36,12 @@ export const General = (props: Props) => {
     isOpen: isEditProjectContactInfoDialogOpen,
     onOpen: openEditProjectContactInfoDialog,
     onClose: closeEditProjectContactInfoDialog,
+  } = useDisclosure()
+
+  const {
+    isOpen: isEditAvatarDialogOpen,
+    onOpen: openEditAvatarDialog,
+    onClose: closeEditAvatarDialog,
   } = useDisclosure()
 
   const onChangeStatus = async (value: string) => {
@@ -67,7 +76,49 @@ export const General = (props: Props) => {
                   >
                     <Avatar
                       size={128}
-                      icon={getFirstLetterCapitalized(data.name)}
+                      onClick={openEditAvatarDialog}
+                      style={{
+                        border: `2px solid ${theme.colors.primary}`,
+                        userSelect: 'none',
+                        cursor: 'pointer',
+                      }}
+                      src={
+                        data.avatar ? (
+                          <Image
+                            src={data.avatar}
+                            height="100%"
+                            width="100%"
+                            style={{ objectFit: 'cover' }}
+                            preview={{ visible: false, mask: 'Edit avatar' }}
+                          />
+                        ) : (
+                          <div
+                            className="ant-image"
+                            style={{
+                              width: '100%',
+                              height: '100%',
+                              background: '#ccc',
+                            }}
+                          >
+                            <span style={{ fontSize: 64 }}>
+                              {getFirstLetterCapitalized(data.name)}
+                            </span>
+                            <div className="ant-image-mask">
+                              <span style={{ fontSize: 16 }}>Edit avatar</span>
+                            </div>
+                          </div>
+                        )
+                      }
+                    />
+                    <EditAvatarModal
+                      isOpen={isEditAvatarDialogOpen}
+                      onClose={closeEditAvatarDialog}
+                      onAfterSubmit={mutateProject}
+                      type="project"
+                      id={data.id}
+                      avatar={data.avatar}
+                      name={data.name}
+                      title="Edit Project Avatar"
                     />
                     <AsyncSelect
                       style={{ width: '100%', border: '1px solid #d9d9d9' }}

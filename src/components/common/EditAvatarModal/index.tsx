@@ -20,18 +20,21 @@ interface Props {
   isOpen: boolean
   onClose: () => void
   onAfterSubmit: () => void
+  type: 'profile' | 'employee' | 'project'
+  id?: string
   avatar?: string
   name?: string
-  id?: string
+  title?: string
 }
 
-export const EditProfileAvatarModal = (props: Props) => {
-  const { isOpen, onClose, onAfterSubmit, avatar, name, id } = props
+export const EditAvatarModal = (props: Props) => {
+  const { isOpen, onClose, onAfterSubmit, type, id, avatar, name, title } =
+    props
 
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isUploading, setIsUploading] = useState(false)
 
-  const onSubmit = async (file: File) => {
+  const submit = async (file: File) => {
     try {
       setIsSubmitting(true)
       setIsUploading(true)
@@ -40,18 +43,35 @@ export const EditProfileAvatarModal = (props: Props) => {
 
       formData.append('file', file, `${uuid4() as string}.png`)
 
-      if (id) {
-        await client.uploadEmployeeAvatar(id, formData)
-      } else {
-        await client.uploadProfileAvatar(formData)
+      switch (type) {
+        case 'profile': {
+          await client.uploadProfileAvatar(formData)
+          notification.success({
+            message: 'Profile avatar updated successfully!',
+          })
+          break
+        }
+        case 'employee': {
+          await client.uploadEmployeeAvatar(id!, formData)
+          notification.success({
+            message: 'Employee avatar updated successfully!',
+          })
+          break
+        }
+        case 'project': {
+          await client.uploadProjectAvatar(id!, formData)
+          notification.success({
+            message: 'Project avatar updated successfully!',
+          })
+          break
+        }
+        default:
       }
-
-      notification.success({ message: 'Profile avatar updated successfully!' })
 
       onAfterSubmit()
     } catch (error: any) {
       notification.error({
-        message: error?.message || 'Could not update profile info',
+        message: error?.message || `Could not update ${type} avatar`,
       })
     } finally {
       setIsSubmitting(false)
@@ -64,7 +84,7 @@ export const EditProfileAvatarModal = (props: Props) => {
       open={isOpen}
       onCancel={onClose}
       okButtonProps={{ loading: isSubmitting }}
-      title="Edit Profile Avatar"
+      title={title || 'Edit Avatar'}
       style={{ maxWidth: 400 }}
       destroyOnClose
       footer={null}
@@ -116,7 +136,7 @@ export const EditProfileAvatarModal = (props: Props) => {
           maxCount={1}
           itemRender={() => null}
           customRequest={(options) => {
-            onSubmit(options.file as File)
+            submit(options.file as File)
           }}
         >
           <Button type="primary" icon={<UploadPicture size={20} />}>

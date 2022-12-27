@@ -33,9 +33,9 @@ import { ROUTES } from 'constants/routes'
 import { ColumnsType } from 'antd/lib/table'
 import { Button } from 'components/common/Button'
 import { DeploymentType, deploymentTypes } from 'constants/deploymentTypes'
-import { EditProfileAvatarModal } from 'components/pages/profile/EditProfileAvatarModal'
 import { getFirstLetterCapitalized } from 'utils/string'
 import { LinkWithIcon } from 'components/common/LinkWithIcon'
+import { EditAvatarModal } from 'components/common/EditAvatarModal'
 import { EditPersonalInfoModal } from './EditPersonalInfoModal'
 import { EditSkillsModal } from './EditSkillsModal'
 import { EditGeneralInfoModal } from './EditGeneralInfoModal'
@@ -182,13 +182,15 @@ export const General = (props: Props) => {
                         )
                       }
                     />
-                    <EditProfileAvatarModal
+                    <EditAvatarModal
                       isOpen={isEditAvatarDialogOpen}
                       onClose={closeEditAvatarDialog}
                       onAfterSubmit={mutateEmployee}
+                      type="employee"
+                      id={data.id}
                       avatar={data.avatar}
                       name={data.displayName || data.fullName}
-                      id={data.id}
+                      title="Edit Employee Avatar"
                     />
                     <Select
                       loading={isLoading}

@@ -18,7 +18,11 @@ const Default = () => {
 
   const { tabKey = 'general', setTabKey } = useTabWithQuery()
 
-  const { data, loading } = useFetchWithCache([GET_PATHS.getProjects, id], () =>
+  const {
+    data,
+    loading,
+    mutate: mutateProject,
+  } = useFetchWithCache([GET_PATHS.getProjects, id], () =>
     client.getProject(id as string),
   )
   const project = data?.data
@@ -55,7 +59,7 @@ const Default = () => {
           {
             key: 'general',
             label: 'General',
-            children: <General data={project} />,
+            children: <General data={project} mutateProject={mutateProject} />,
           },
           {
             key: 'members',
