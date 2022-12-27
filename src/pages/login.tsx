@@ -22,17 +22,32 @@ const LoginContainer = styled.div`
 const LoginCardWrapper = styled(Card)`
   background-color: ${theme.colors.white};
   align-items: center;
-  width: 60%;
+  justify-content: center;
+  width: max-content;
   max-width: 840px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   position: relative;
   display: flex;
-  padding: 30px;
+  padding: 0;
+
+  > .ant-card-body > div:first-child {
+    display: none;
+
+    @media only screen and (min-width: 769px) {
+      display: block;
+    }
+  }
+
+  @media only screen and (min-width: 769px) {
+    justify-content: flex-start;
+    width: 60%;
+    padding: 30px;
+  }
 `
 
 const LoginCard = styled(Card)`
   border: none !important;
-  width: 240px;
+  width: 250px;
   background-color: #fff0;
 
   .ant-card-body {
@@ -40,6 +55,10 @@ const LoginCard = styled(Card)`
     display: flex;
     align-items: flex-start;
     padding: 0;
+  }
+
+  @media only screen and (min-width: 769px) {
+    width: 240px;
   }
 `
 
