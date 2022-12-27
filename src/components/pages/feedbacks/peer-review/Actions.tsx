@@ -1,9 +1,10 @@
 import { Delete, PreviewOpen } from '@icon-park/react'
 import { Col, Modal, notification, Row, Tooltip } from 'antd'
 import { Button } from 'components/common/Button'
-import { PeerReviewEventLink } from 'components/common/DetailLink'
+import { ROUTES } from 'constants/routes'
 import { SurveyEventStatus } from 'constants/status'
 import { client } from 'libs/apis'
+import Link from 'next/link'
 import { useState } from 'react'
 import { ViewSurvey } from 'types/schema'
 
@@ -55,15 +56,17 @@ export const Actions = (props: Props) => {
   return (
     <Row justify="end" gutter={[8, 8]}>
       <Col>
-        <PeerReviewEventLink id={record.id}>
-          <Tooltip title="View">
-            <Button
-              type="text-primary"
-              size="small"
-              icon={<PreviewOpen size={20} />}
-            />
-          </Tooltip>
-        </PeerReviewEventLink>
+        <Link href={ROUTES.PEER_REVIEW_EVENT_DETAIL(record.id || '')}>
+          <a>
+            <Tooltip title="View">
+              <Button
+                type="text-primary"
+                size="small"
+                icon={<PreviewOpen size={20} />}
+              />
+            </Tooltip>
+          </a>
+        </Link>
       </Col>
       <Col>
         <Tooltip title="Delete">

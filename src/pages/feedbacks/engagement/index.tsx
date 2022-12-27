@@ -16,8 +16,9 @@ import { SurveyListFilter } from 'types/filters/SurveyListFilter'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 import { ROUTES } from 'constants/routes'
 import { SEO } from 'components/common/SEO'
+import { ViewSurvey } from 'types/schema'
 
-const columns: ColumnsType<any> = [
+const columns: ColumnsType<ViewSurvey> = [
   {
     title: 'Time',
     key: 'title',

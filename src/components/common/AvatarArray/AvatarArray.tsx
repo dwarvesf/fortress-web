@@ -1,9 +1,10 @@
 import { Avatar, Space, Tooltip } from 'antd'
+import { ROUTES } from 'constants/routes'
+import Link from 'next/link'
 import { theme } from 'styles'
 import { ViewEmployeeData, ViewProjectMember } from 'types/schema'
 import { getFirstLetterCapitalized } from 'utils/string'
 import { UserAvatar } from '../AvatarWithName'
-import { EmployeeLink } from '../DetailLink'
 
 interface Props {
   size?: number
@@ -20,37 +21,41 @@ export const AvatarArray = (props: Props) => {
     <Space direction="horizontal" size={0}>
       {data.slice(0, numOfVisibleAvatar).map((user, index: number) => {
         return (
-          <EmployeeLink
-            id={user.id || user.employeeID || ''}
+          <Link
+            href={ROUTES.EMPLOYEE_DETAIL(user.username || '')}
             key={user.id || user.employeeID}
           >
-            <Tooltip
-              title={
-                <span style={{ color: theme.colors.black }}>
-                  {user.displayName}
-                </span>
-              }
-              color="white"
-            >
-              <span
-                style={{
-                  marginLeft: index !== 0 ? offset : 0,
-                  borderStyle: 'solid',
-                  borderWidth: 0.5,
-                  borderColor: theme.colors.white,
-                }}
+            <a>
+              <Tooltip
+                title={
+                  <span style={{ color: theme.colors.black }}>
+                    {user.displayName}
+                  </span>
+                }
+                color="white"
               >
-                <Avatar
-                  src={user.avatar}
-                  size={size}
-                  icon={
-                    !user.avatar &&
-                    getFirstLetterCapitalized(user.displayName || user.fullName)
-                  }
-                />
-              </span>
-            </Tooltip>
-          </EmployeeLink>
+                <span
+                  style={{
+                    marginLeft: index !== 0 ? offset : 0,
+                    borderStyle: 'solid',
+                    borderWidth: 0.5,
+                    borderColor: theme.colors.white,
+                  }}
+                >
+                  <Avatar
+                    src={user.avatar}
+                    size={size}
+                    icon={
+                      !user.avatar &&
+                      getFirstLetterCapitalized(
+                        user.displayName || user.fullName,
+                      )
+                    }
+                  />
+                </span>
+              </Tooltip>
+            </a>
+          </Link>
         )
       })}
       {data.length > numOfVisibleAvatar ? (

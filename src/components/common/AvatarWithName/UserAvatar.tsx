@@ -1,11 +1,12 @@
+import { ROUTES } from 'constants/routes'
+import Link from 'next/link'
 import { ViewEmployeeData, ViewProjectMember } from 'types/schema'
-import { EmployeeLink } from '../DetailLink'
 import { AvatarWithName } from './AvatarWithName'
 
 interface Props {
   user: Pick<
     ViewEmployeeData & ViewProjectMember,
-    'id' | 'employeeID' | 'avatar' | 'displayName' | 'fullName'
+    'id' | 'employeeID' | 'avatar' | 'displayName' | 'fullName' | 'username'
   >
   avatarSize?: number
   fontSize?: number
@@ -20,9 +21,12 @@ export const UserAvatar = (props: Props) => {
       avatar={user.avatar}
       name={user.displayName || user.fullName}
       renderName={(name) => (
-        <EmployeeLink id={user.id || user.employeeID || ''} className="styled">
-          {name}
-        </EmployeeLink>
+        <Link
+          href={ROUTES.EMPLOYEE_DETAIL(user.username || '')}
+          className="styled"
+        >
+          <a className="styled">{name}</a>
+        </Link>
       )}
       {...{ avatarSize, fontSize }}
     />

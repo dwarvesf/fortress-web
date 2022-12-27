@@ -5,7 +5,6 @@ import Table, { ColumnsType } from 'antd/lib/table'
 import Link from 'next/link'
 import { AvatarArray } from 'components/common/AvatarArray'
 import { ProjectAvatar, UserAvatar } from 'components/common/AvatarWithName'
-import { ProjectLink } from 'components/common/DetailLink'
 import { Button } from 'components/common/Button'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
@@ -96,29 +95,18 @@ const columns = ({
     render: (value) => (
       <Row justify="end" gutter={[8, 8]}>
         <Col>
-          <ProjectLink id={value.id}>
-            <Tooltip title="View Detail">
-              <Button
-                type="text-primary"
-                size="small"
-                icon={<PreviewOpen size={20} />}
-              />
-            </Tooltip>
-          </ProjectLink>
+          <Link href={ROUTES.PROJECT_DETAIL(value.id)}>
+            <a>
+              <Tooltip title="View Detail">
+                <Button
+                  type="text-primary"
+                  size="small"
+                  icon={<PreviewOpen size={20} />}
+                />
+              </Tooltip>
+            </a>
+          </Link>
         </Col>
-        {/* <Col>
-            <Link href={ROUTES.EDIT_PROJECT(value.id)}>
-              <a>
-                <Tooltip title="Edit">
-                  <Button
-                    type="text-primary"
-                    size="small"
-                    icon={<EditOutlined />}
-                  />
-                </Tooltip>
-              </a>
-            </Link>
-          </Col> */}
       </Row>
     ),
     fixed: 'right',
