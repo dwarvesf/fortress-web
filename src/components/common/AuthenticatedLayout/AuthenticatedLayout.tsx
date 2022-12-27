@@ -72,10 +72,26 @@ export const AuthenticatedLayout = (props: Props) => {
     }
   }, [replace, isAuthenticated, pathname, isAuthenticating])
 
-  const activeMenuKey = useMemo(() => {
-    return items.find((item) => {
-      return isActivePath(item?.key as string, pathname)
-    })?.key as string
+  const activeMenuKeys = useMemo(() => {
+    const activeKeys: string[] = []
+
+    items.forEach((item) => {
+      if (isActivePath(item!.key as string, pathname)) {
+        activeKeys.push(item!.key as string)
+      }
+
+      // @ts-ignore
+      if (item.children) {
+        // @ts-ignore
+        item.children.forEach((subItem) => {
+          if (isActivePath(subItem!.key as string, pathname)) {
+            activeKeys.push(subItem!.key as string)
+          }
+        })
+      }
+    })
+
+    return activeKeys
   }, [pathname])
 
   if (isAuthenticating || (!isAuthenticated && pathname !== ROUTES.LOGIN)) {
@@ -91,11 +107,10 @@ export const AuthenticatedLayout = (props: Props) => {
       <Sider style={{ top: 0 }}>
         <SidebarLogo />
         <Menu
-          defaultSelectedKeys={['1']}
           mode="inline"
           items={items}
           onClick={({ key }) => push(key)}
-          activeKey={activeMenuKey}
+          selectedKeys={activeMenuKeys}
         />
       </Sider>
       <Layout style={{ overflow: 'hidden' }}>

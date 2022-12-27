@@ -108,7 +108,7 @@ const LoginPage = () => {
     if (isAuthenticated) {
       const redirectUrl = window.localStorage.getItem(LOGIN_REDIRECTION_KEY)
 
-      push(redirectUrl || ROUTES.DASHBOARD).then(() => {
+      push(redirectUrl || ROUTES.HOME).then(() => {
         window.localStorage.removeItem(LOGIN_REDIRECTION_KEY)
       })
     }

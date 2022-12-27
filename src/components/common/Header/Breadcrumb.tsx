@@ -1,5 +1,7 @@
 import Link from 'next/link'
 import { Breadcrumb as AntdBreadcrumb } from 'antd'
+import { ROUTES } from 'constants/routes'
+import { Home } from '@icon-park/react'
 import { Portal } from '../Portal'
 
 interface Props {
@@ -15,6 +17,13 @@ export const Breadcrumb = (props: Props) => {
   return (
     <Portal selector="#breadcrumb">
       <AntdBreadcrumb>
+        <AntdBreadcrumb.Item>
+          <Link href={ROUTES.HOME}>
+            <a>
+              <Home size={16} />
+            </a>
+          </Link>
+        </AntdBreadcrumb.Item>
         {items.map((item, index) => {
           if (item.href) {
             return (

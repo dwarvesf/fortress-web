@@ -81,10 +81,6 @@ const EmployeePeerReviewsPage = () => {
       <Breadcrumb
         items={[
           {
-            label: 'Dashboard',
-            href: ROUTES.DASHBOARD,
-          },
-          {
             label: 'Feedbacks',
           },
           {

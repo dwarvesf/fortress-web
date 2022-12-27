@@ -128,10 +128,6 @@ export const SurveyForm = () => {
       <Breadcrumb
         items={[
           {
-            label: 'Dashboard',
-            href: ROUTES.DASHBOARD,
-          },
-          {
             label: 'Feedbacks',
           },
           {
