@@ -4,11 +4,6 @@ import { PageHeader } from 'components/common/PageHeader'
 import Table, { ColumnsType } from 'antd/lib/table'
 import Link from 'next/link'
 import { UserAvatar } from 'components/common/AvatarWithName'
-import {
-  // EditEmployeeLink,
-  EmployeeLink,
-  ProjectLink,
-} from 'components/common/DetailLink'
 import { Button } from 'components/common/Button'
 import { EmployeeListFilter } from 'types/filters/EmployeeListFilter'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
@@ -83,12 +78,14 @@ const columns = ({
       <TagArray
         value={value}
         content={(project) => (
-          <ProjectLink id={project.id!}>
-            <Space size={4}>
-              {project.name}
-              <IconLink />
-            </Space>
-          </ProjectLink>
+          <Link href={ROUTES.PROJECT_DETAIL(project.id || '')}>
+            <a>
+              <Space size={4}>
+                {project.name}
+                <IconLink />
+              </Space>
+            </a>
+          </Link>
         )}
         maxTag={2}
       />
@@ -195,27 +192,18 @@ const columns = ({
     render: (value) => (
       <Row justify="end" gutter={[8, 8]}>
         <Col>
-          <EmployeeLink id={value.id}>
-            <Tooltip title="View Detail">
-              <Button
-                type="text-primary"
-                size="small"
-                icon={<PreviewOpen size={20} />}
-              />
-            </Tooltip>
-          </EmployeeLink>
+          <Link href={ROUTES.EMPLOYEE_DETAIL(value.username)}>
+            <a>
+              <Tooltip title="View Detail">
+                <Button
+                  type="text-primary"
+                  size="small"
+                  icon={<PreviewOpen size={20} />}
+                />
+              </Tooltip>
+            </a>
+          </Link>
         </Col>
-        {/* <Col>
-          <EditEmployeeLink id={value.id}>
-            <Tooltip title="Edit">
-              <Button
-                type="text-primary"
-                size="small"
-                icon={<EditOutlined />}
-              />
-            </Tooltip>
-          </EditEmployeeLink>
-        </Col> */}
       </Row>
     ),
     fixed: 'right',

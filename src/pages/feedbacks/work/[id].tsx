@@ -19,13 +19,13 @@ import { SurveyDetailFilter } from 'types/filters/SurveyDetailFilter'
 import { useRouter } from 'next/router'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
 import { ViewDomain, ViewTopic } from 'types/schema'
-import { ProjectLink } from 'components/common/DetailLink'
 import { Link as IconLink } from '@icon-park/react'
 import { AgreementLevel } from 'constants/agreementLevel'
 import { getWorkSurveyDetailReview, renderDomainLevels } from 'utils/level'
 import { DomainTypes } from 'constants/feedbackTypes'
 import { WorkAverageIcon } from 'components/pages/feedbacks/work'
 import { mapScoreToLikertScale } from 'utils/score'
+import Link from 'next/link'
 
 const renderDomainAverageResult = (
   record: ViewDomain[],
@@ -104,12 +104,14 @@ const EmployeePeerReviewsPage = () => {
       onFilter: (value, record) => value === record?.project?.id,
       render: (value) => (
         <Tag>
-          <ProjectLink id={value.id}>
-            <Space size={4}>
-              {value.name}
-              <IconLink />
-            </Space>
-          </ProjectLink>
+          <Link href={ROUTES.PROJECT_DETAIL(value.id)}>
+            <a>
+              <Space size={4}>
+                {value.name}
+                <IconLink />
+              </Space>
+            </a>
+          </Link>
         </Tag>
       ),
     },

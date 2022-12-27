@@ -2,9 +2,10 @@ import { useDisclosure } from '@dwarvesf/react-hooks'
 import { Delete, Edit, PreviewOpen } from '@icon-park/react'
 import { Col, Modal, notification, Row, Tooltip } from 'antd'
 import { Button } from 'components/common/Button'
-import { EmployeePeerReviewsLink } from 'components/common/DetailLink/EmployeePeerReviewsLink'
+import { ROUTES } from 'constants/routes'
 import { SurveyEventStatus } from 'constants/status'
 import { client } from 'libs/apis'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { ViewTopic } from 'types/schema'
@@ -68,15 +69,22 @@ export const PeerReviewEventDetailActions = (props: Props) => {
   return (
     <Row justify="end" gutter={[8, 8]}>
       <Col>
-        <EmployeePeerReviewsLink id={query.id as string} topicId={topic.id!}>
-          <Tooltip title="View">
-            <Button
-              type="text-primary"
-              size="small"
-              icon={<PreviewOpen size={20} />}
-            />
-          </Tooltip>
-        </EmployeePeerReviewsLink>
+        <Link
+          href={ROUTES.EMPLOYEE_PEER_REVIEWS(
+            query.id as string,
+            topic.id || '',
+          )}
+        >
+          <a>
+            <Tooltip title="View">
+              <Button
+                type="text-primary"
+                size="small"
+                icon={<PreviewOpen size={20} />}
+              />
+            </Tooltip>
+          </a>
+        </Link>
       </Col>
       <Col>
         <Tooltip title="Edit">

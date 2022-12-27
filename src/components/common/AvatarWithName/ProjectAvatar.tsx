@@ -1,5 +1,6 @@
+import { ROUTES } from 'constants/routes'
+import Link from 'next/link'
 import { ViewProjectData } from 'types/schema'
-import { ProjectLink } from '../DetailLink'
 import { AvatarWithName } from './AvatarWithName'
 
 interface Props {
@@ -16,9 +17,9 @@ export const ProjectAvatar = (props: Props) => {
       // avatar={project.avatar}
       name={project.name}
       renderName={(name) => (
-        <ProjectLink id={project.id!} className="styled">
-          {name}
-        </ProjectLink>
+        <Link href={ROUTES.PROJECT_DETAIL(project.id || '')}>
+          <a className="styled">{name}</a>
+        </Link>
       )}
       {...{ avatarSize, fontSize }}
     />

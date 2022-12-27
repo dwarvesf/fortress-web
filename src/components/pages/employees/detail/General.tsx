@@ -28,8 +28,9 @@ import { EmployeeStatus, employeeStatuses } from 'constants/status'
 import { Github, PreviewOpen, Star } from '@icon-park/react'
 import moment from 'moment'
 import { theme } from 'styles'
+import Link from 'next/link'
+import { ROUTES } from 'constants/routes'
 import { ColumnsType } from 'antd/lib/table'
-import { ProjectLink } from 'components/common/DetailLink'
 import { Button } from 'components/common/Button'
 import { DeploymentType, deploymentTypes } from 'constants/deploymentTypes'
 import { EditProfileAvatarModal } from 'components/pages/profile/EditProfileAvatarModal'
@@ -60,15 +61,17 @@ const projectColumns: ColumnsType<ViewEmployeeProjectData> = [
   {
     title: 'Action',
     render: (value) => (
-      <ProjectLink id={value.id}>
-        <Tooltip title="View Detail">
-          <Button
-            type="text-primary"
-            size="small"
-            icon={<PreviewOpen size={20} />}
-          />
-        </Tooltip>
-      </ProjectLink>
+      <Link href={ROUTES.PROJECT_DETAIL(value.id)}>
+        <a>
+          <Tooltip title="View Detail">
+            <Button
+              type="text-primary"
+              size="small"
+              icon={<PreviewOpen size={20} />}
+            />
+          </Tooltip>
+        </a>
+      </Link>
     ),
   },
 ]

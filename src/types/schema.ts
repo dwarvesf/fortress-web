@@ -405,6 +405,7 @@ export interface ViewEmployeeData {
   status?: string
   teamEmail?: string
   updatedAt?: string
+  username?: string
 }
 
 export interface ViewEmployeeListDataResponse {
@@ -546,15 +547,25 @@ export interface ViewProfileData {
   personalEmail?: string
   phoneNumber?: string
   teamEmail?: string
+  username?: string
 }
 
 export interface ViewProfileDataResponse {
   data?: ViewProfileData
 }
 
+export interface ViewProjectContentData {
+  url?: string
+}
+
+export interface ViewProjectContentDataResponse {
+  data?: ViewProjectContentData
+}
+
 export interface ViewProjectData {
   accountManager?: ViewProjectHead
   allowsSendingSurvey?: boolean
+  avatar?: string
   clientEmail?: string
   country?: ViewBasicCountryInfo
   createdAt?: string
@@ -766,6 +777,7 @@ export interface ViewUpdateProfileInfoData {
   /** basic info */
   teamEmail?: string
   updatedAt?: string
+  username?: string
 }
 
 export interface ViewUpdateProfileInfoResponse {
