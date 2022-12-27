@@ -45,7 +45,7 @@ const LoginCard = styled(Card)`
 
 const GradientText = styled.span`
   font-weight: 600;
-  font-size: 18px;
+  font-size: 19px;
   background-image: linear-gradient(to right, ${theme.colors.primary}, #726cf8);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -110,7 +110,7 @@ const LoginPage = () => {
         <LoginCardWrapper>
           <div
             style={{
-              width: 450,
+              width: 445,
               minHeight: 'calc(100% + 100px)',
               top: -50,
               right: -50,
