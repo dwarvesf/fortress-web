@@ -16,17 +16,24 @@ import { theme } from 'styles'
 import { getFirstLetterCapitalized } from 'utils/string'
 import { v4 as uuid4 } from 'uuid'
 
+const title = {
+  profile: 'Edit Profile Avatar',
+  employee: 'Edit Employee Avatar',
+  project: 'Edit Project Avatar',
+}
+
 interface Props {
   isOpen: boolean
   onClose: () => void
   onAfterSubmit: () => void
+  type: 'profile' | 'employee' | 'project'
+  id?: string
   avatar?: string
   name?: string
-  id?: string
 }
 
-export const EditProfileAvatarModal = (props: Props) => {
-  const { isOpen, onClose, onAfterSubmit, avatar, name, id } = props
+export const EditAvatarModal = (props: Props) => {
+  const { isOpen, onClose, onAfterSubmit, type, id, avatar, name } = props
 
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isUploading, setIsUploading] = useState(false)
@@ -40,18 +47,35 @@ export const EditProfileAvatarModal = (props: Props) => {
 
       formData.append('file', file, `${uuid4() as string}.png`)
 
-      if (id) {
-        await client.uploadEmployeeAvatar(id, formData)
-      } else {
-        await client.uploadProfileAvatar(formData)
+      switch (type) {
+        case 'profile': {
+          await client.uploadProfileAvatar(formData)
+          notification.success({
+            message: 'Profile avatar updated successfully!',
+          })
+          break
+        }
+        case 'employee': {
+          await client.uploadEmployeeAvatar(id!, formData)
+          notification.success({
+            message: 'Employee avatar updated successfully!',
+          })
+          break
+        }
+        case 'project': {
+          await client.uploadProjectAvatar(id!, formData)
+          notification.success({
+            message: 'Project avatar updated successfully!',
+          })
+          break
+        }
+        default:
       }
-
-      notification.success({ message: 'Profile avatar updated successfully!' })
 
       onAfterSubmit()
     } catch (error: any) {
       notification.error({
-        message: error?.message || 'Could not update profile info',
+        message: error?.message || `Could not update ${type} avatar`,
       })
     } finally {
       setIsSubmitting(false)
@@ -64,7 +88,7 @@ export const EditProfileAvatarModal = (props: Props) => {
       open={isOpen}
       onCancel={onClose}
       okButtonProps={{ loading: isSubmitting }}
-      title="Edit Profile Avatar"
+      title={title[type]}
       style={{ maxWidth: 400 }}
       destroyOnClose
       footer={null}

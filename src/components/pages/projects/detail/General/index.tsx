@@ -1,5 +1,5 @@
 import { useDisclosure } from '@dwarvesf/react-hooks'
-import { Space, Col, Row, Avatar, notification, Card } from 'antd'
+import { Space, Col, Row, notification, Card } from 'antd'
 import { AvatarArray } from 'components/common/AvatarArray'
 import { UserAvatar } from 'components/common/AvatarWithName'
 import { DataRows } from 'components/common/DataRows'
@@ -11,17 +11,18 @@ import { client, GET_PATHS } from 'libs/apis'
 import { mutate } from 'swr'
 import { ViewProjectData } from 'types/schema'
 import { transformMetadataToSelectOption } from 'utils/select'
-import { getFirstLetterCapitalized } from 'utils/string'
+import { EditableAvatar } from 'components/common/EditableAvatar'
 import { EditProjectContactInfoModal } from './EditProjectContactInfoModal'
 import { EditProjectGeneralInfoModal } from './EditProjectGeneralInfoModal'
 import { MemberTable } from './MemberTable'
 
 interface Props {
   data: ViewProjectData
+  mutateProject: () => void
 }
 
 export const General = (props: Props) => {
-  const { data } = props
+  const { data, mutateProject } = props
 
   const {
     isOpen: isEditProjectGeneralInfoDialogOpen,
@@ -65,9 +66,12 @@ export const General = (props: Props) => {
                     size={24}
                     style={{ justifyContent: 'center' }}
                   >
-                    <Avatar
-                      size={128}
-                      icon={getFirstLetterCapitalized(data.name)}
+                    <EditableAvatar
+                      onAfterSubmit={mutateProject}
+                      type="project"
+                      id={data.id}
+                      avatar={data.avatar}
+                      name={data.name}
                     />
                     <AsyncSelect
                       style={{ width: '100%', border: '1px solid #d9d9d9' }}

@@ -72,6 +72,7 @@ export interface ModelSeniority {
 }
 
 export interface ModelStack {
+  avatar?: string
   code?: string
   createdAt?: string
   deletedAt?: GormDeletedAt
@@ -280,6 +281,7 @@ export interface ViewBasicEmployeeInfo {
   displayName?: string
   fullName?: string
   id?: string
+  username?: string
 }
 
 export interface ViewBasicMember {
@@ -287,6 +289,7 @@ export interface ViewBasicMember {
   displayName?: string
   employeeID?: string
   fullName?: string
+  username?: string
 }
 
 export interface ViewBasicProjectHeadInfo {
@@ -295,6 +298,7 @@ export interface ViewBasicProjectHeadInfo {
   employeeID?: string
   fullName?: string
   position?: string
+  username?: string
 }
 
 export interface ViewBasicProjectInfo {
@@ -335,6 +339,7 @@ export interface ViewCreateMemberData {
   projectSlotID?: string
   seniority?: ModelSeniority
   status?: string
+  username?: string
 }
 
 export interface ViewCreateMemberDataResponse {
@@ -591,6 +596,7 @@ export interface ViewProjectHead {
   displayName?: string
   employeeID?: string
   fullName?: string
+  username?: string
 }
 
 export interface ViewProjectListDataResponse {
@@ -613,6 +619,7 @@ export interface ViewProjectMember {
   rate?: number
   seniority?: ModelSeniority
   status?: string
+  username?: string
 }
 
 export interface ViewProjectMemberListResponse {
@@ -649,13 +656,14 @@ export interface ViewSeniorityResponse {
 }
 
 export interface ViewStack {
+  avatar?: string
   code?: string
   id?: string
   name?: string
 }
 
 export interface ViewStackResponse {
-  data?: ModelChapter[]
+  data?: ModelStack[]
 }
 
 export interface ViewSubmitFeedback {
@@ -841,7 +849,7 @@ export interface ViewWorkUnit {
   members?: ViewBasicMember[]
   name?: string
   projectID?: string
-  stacks?: ViewMetaData[]
+  stacks?: ViewStack[]
   status?: string
   type?: string
   url?: string

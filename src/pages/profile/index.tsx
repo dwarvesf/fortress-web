@@ -1,19 +1,20 @@
 import { useDisclosure } from '@dwarvesf/react-hooks'
-import { Avatar, Col, Image, Row, Space } from 'antd'
+import { Col, Row, Space } from 'antd'
 import { DataRows } from 'components/common/DataRows'
 import { EditableDetailSectionCard } from 'components/common/EditableDetailSectionCard'
 import { PageHeader } from 'components/common/PageHeader'
-import { EditProfileAvatarModal } from 'components/pages/profile/EditProfileAvatarModal'
 import { EditProfileInfoModal } from 'components/pages/profile/EditProfileInfoModal'
 import { useAuthContext } from 'context/auth'
-import { theme } from 'styles'
 import { Button } from 'components/common/Button'
 import { ROUTES } from 'constants/routes'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 import { Edit, Github } from '@icon-park/react'
 import { SEO } from 'components/common/SEO'
-import { getFirstLetterCapitalized } from 'utils/string'
 import { LinkWithIcon } from 'components/common/LinkWithIcon'
+import {
+  EditableAvatar,
+  EditAvatarModal,
+} from 'components/common/EditableAvatar'
 
 const Default = () => {
   const { user, revalidate } = useAuthContext()
@@ -61,47 +62,12 @@ const Default = () => {
                     size={24}
                     style={{ justifyContent: 'center', alignItems: 'center' }}
                   >
-                    <Avatar
-                      size={128}
-                      style={{
-                        border: `2px solid ${theme.colors.primary}`,
-                        userSelect: 'none',
-                      }}
-                      src={
-                        user?.avatar ? (
-                          <Image
-                            src={user?.avatar}
-                            height="100%"
-                            width="100%"
-                            style={{ objectFit: 'cover' }}
-                            preview={{
-                              mask: (
-                                <span style={{ fontSize: 16 }}>
-                                  View avatar
-                                </span>
-                              ),
-                            }}
-                          />
-                        ) : (
-                          <div
-                            className="ant-image"
-                            style={{
-                              width: '100%',
-                              height: '100%',
-                              background: '#ccc',
-                            }}
-                          >
-                            <span style={{ fontSize: 64 }}>
-                              {getFirstLetterCapitalized(
-                                user?.displayName || user?.fullName,
-                              )}
-                            </span>
-                            <div className="ant-image-mask">
-                              <span style={{ fontSize: 16 }}>View avatar</span>
-                            </div>
-                          </div>
-                        )
-                      }
+                    <EditableAvatar
+                      onAfterSubmit={revalidate}
+                      type="profile"
+                      avatar={user?.avatar}
+                      name={user?.displayName || user?.fullName}
+                      editable={false}
                     />
                     <Button
                       type="primary"
@@ -132,11 +98,11 @@ const Default = () => {
                         value: user?.phoneNumber || '-',
                       },
                       {
-                        label: 'Discord ID',
+                        label: 'Discord',
                         value: user?.discordName || '',
                       },
                       {
-                        label: 'Github ID',
+                        label: 'Github',
                         value: user?.githubID ? (
                           <LinkWithIcon
                             href={`https://github.com/${user?.githubID}`}
@@ -150,7 +116,7 @@ const Default = () => {
                           '-'
                         ),
                       },
-                      { label: 'Notion Email', value: user?.notionName },
+                      { label: 'Notion', value: user?.notionName },
                       { label: 'LinkedIn', value: '' },
                       { label: 'Shelter Address', value: user?.address },
                       { label: 'Permanent Address', value: '' },
@@ -172,10 +138,11 @@ const Default = () => {
         onAfterSubmit={revalidate}
       />
 
-      <EditProfileAvatarModal
+      <EditAvatarModal
         isOpen={isEditAvatarDialogOpen}
         onClose={closeEditAvatarDialog}
         onAfterSubmit={revalidate}
+        type="profile"
         avatar={user?.avatar}
         name={user?.displayName || user?.fullName}
       />
