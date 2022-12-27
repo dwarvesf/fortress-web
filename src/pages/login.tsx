@@ -5,19 +5,13 @@ import { useRouter } from 'next/router'
 import { ROUTES } from 'constants/routes'
 import styled from 'styled-components'
 import { theme } from 'styles'
-import {
-  FacebookFilled,
-  GithubFilled,
-  GoogleOutlined as BaseGoogleOutlined,
-  LinkedinFilled,
-  TwitterOutlined,
-} from '@ant-design/icons'
 import Link from 'next/link'
 import { Logo } from 'components/common/Logo'
 import { SEO } from 'components/common/SEO'
+import { brandLinks } from 'constants/links'
 
 const LoginContainer = styled.div`
-  background-color: ${theme.colors.gray100};
+  background-color: ${theme.colors.primary};
   height: 100vh;
   width: 100vw;
   display: flex;
@@ -25,43 +19,51 @@ const LoginContainer = styled.div`
   align-items: center;
 `
 
+const LoginCardWrapper = styled(Card)`
+  background-color: ${theme.colors.white};
+  align-items: center;
+  width: 60%;
+  max-width: 840px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  position: relative;
+  display: flex;
+  padding: 30px;
+
+  @media only screen and (min-width: 769px) {
+  }
+`
+
 const LoginCard = styled(Card)`
-  border: 1px solid ${theme.colors.gray200};
-  width: 330px;
+  border: none !important;
+  width: 240px;
+  background-color: #fff0;
 
   .ant-card-body {
-    padding-top: 50px;
-    padding-bottom: 50px;
-    display: flex;
     flex-direction: column;
-    align-items: center;
+    display: flex;
+    align-items: flex-start;
+    padding: 0;
   }
 `
 
-const LoginHeading = styled(Typography.Title)`
-  display: flex;
-  align-items: center;
-  color: ${theme.colors.primary} !important;
-  margin-bottom: 35px !important;
-
-  svg {
-    margin-right: 4px;
-  }
-`
-
-const LoginWelcomeText = styled(Typography.Text)`
+const GradientText = styled.span`
   font-weight: 600;
-  margin-bottom: 20px;
+  font-size: 18px;
+  background-image: linear-gradient(to right, ${theme.colors.primary}, #726cf8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 `
 
 const GoogleLoginButton = styled(Button)`
   display: flex;
+  justify-content: center;
   border: none;
   align-items: center;
   background-color: ${theme.colors.primary};
-  border-radius: 7px;
-  font-weight: 400;
+  font-weight: 500;
   margin-bottom: 100px;
+  width: 100%;
+  position: relative;
 
   &:hover {
     background-color: ${theme.colors.pink700};
@@ -72,19 +74,13 @@ const GoogleLoginButton = styled(Button)`
   }
 `
 
-const GoogleOutlined = styled(BaseGoogleOutlined)`
-  svg {
-    font-size: 17px;
-    vertical-align: middle;
-  }
-`
-
 const SocialLinks = styled(Row)`
   margin-bottom: 10px;
+  justify-content: space-between;
 
   svg {
-    height: 20px;
-    width: 20px;
+    height: 16px;
+    width: 16px;
     color: ${theme.colors.gray500};
     transition: 0.3s ease-out;
   }
@@ -92,11 +88,6 @@ const SocialLinks = styled(Row)`
   span:hover svg {
     color: ${theme.colors.gray600};
   }
-`
-
-const CopyrightText = styled(Typography.Text)`
-  font-size: 14px;
-  color: ${theme.colors.gray500};
 `
 
 const LoginPage = () => {
@@ -119,68 +110,71 @@ const LoginPage = () => {
       <SEO title="Login" />
 
       <LoginContainer>
-        <LoginCard>
-          <LoginHeading level={2}>
-            <Row align="middle">
-              <Logo />
-              <span>Fortress</span>
-            </Row>
-          </LoginHeading>
-          <LoginWelcomeText>Welcome</LoginWelcomeText>
-          <GoogleLoginButton onClick={() => login()}>
-            <GoogleOutlined />
-            <Text>Login with Google</Text>
-          </GoogleLoginButton>
+        <LoginCardWrapper>
+          <div
+            style={{
+              width: 450,
+              minHeight: 'calc(100% + 100px)',
+              top: -50,
+              right: -50,
+              position: 'absolute',
+              backgroundImage: 'url(dwarves.png)',
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'top center',
+              backgroundSize: 'cover',
+              backgroundAttachment: 'scroll',
+            }}
+          />
+          <LoginCard>
+            <div style={{ marginBottom: 40 }}>
+              <Logo hasText />
+            </div>
+            <span
+              style={{
+                fontSize: 16,
+                fontWeight: 500,
+                marginBottom: 16,
+              }}
+            >
+              Welcome to <GradientText>Fortress</GradientText>!
+            </span>
+            <GoogleLoginButton onClick={() => login()}>
+              <svg
+                role="img"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                style={{
+                  width: 16,
+                  height: 16,
+                  color: '#fff',
+                  position: 'absolute',
+                  left: 10,
+                }}
+              >
+                <title>Google</title>
+                <path d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z" />
+              </svg>
 
-          <SocialLinks gutter={8}>
-            <Col>
-              <Link href="https://discord.gg/Y2vvH9rQE4" passHref>
-                <a target="_blank">
-                  <span>
-                    <svg
-                      role="img"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="currentColor"
-                    >
-                      <title>Discord</title>
-                      <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z" />
-                    </svg>
-                  </span>
-                </a>
-              </Link>
-            </Col>
-            <Col>
-              <Link href="https://github.com/dwarvesf" passHref>
-                <a target="_blank">
-                  <GithubFilled />
-                </a>
-              </Link>
-            </Col>
-            <Col>
-              <Link href="https://www.linkedin.com/company/dwarvesf/" passHref>
-                <a target="_blank">
-                  <LinkedinFilled />
-                </a>
-              </Link>
-            </Col>
-            <Col>
-              <Link href="https://twitter.com/dwarvesf" passHref>
-                <a target="_blank">
-                  <TwitterOutlined />
-                </a>
-              </Link>
-            </Col>
-            <Col>
-              <Link href="https://www.facebook.com/dwarvesf" passHref>
-                <a target="_blank">
-                  <FacebookFilled />
-                </a>
-              </Link>
-            </Col>
-          </SocialLinks>
-          <CopyrightText>A product of Dwarves, LLC</CopyrightText>
-        </LoginCard>
+              <Text>Login with Google</Text>
+            </GoogleLoginButton>
+
+            <SocialLinks gutter={12}>
+              {brandLinks.map((b) => (
+                <Col>
+                  <Link href={b.url} passHref>
+                    <a target="_blank">
+                      <span>{b.icon}</span>
+                    </a>
+                  </Link>
+                </Col>
+              ))}
+            </SocialLinks>
+            <span style={{ fontSize: 14, color: theme.colors.gray500 }}>
+              A product of Dwarves, LLC
+            </span>
+          </LoginCard>
+        </LoginCardWrapper>
       </LoginContainer>
     </>
   )

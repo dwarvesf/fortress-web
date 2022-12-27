@@ -18,7 +18,6 @@
     "release": "standard-version -a"
   },
   "dependencies": {
-    "@ant-design/icons": "^4.7.0",
     "@dwarvesf/react-hooks": "^0.7.0",
     "@dwarvesf/react-utils": "^0.4.1",
     "@icon-park/react": "^1.4.2",
