@@ -173,7 +173,7 @@ export const AddParticipantsModal = (props: Props) => {
               </div>,
             ]}
           >
-            <UserAvatar user={item} />
+            <UserAvatar user={item} isLink={false} />
           </List.Item>
         )}
       />

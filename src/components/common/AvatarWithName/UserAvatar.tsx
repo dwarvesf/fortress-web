@@ -9,12 +9,13 @@ interface Props {
   >
   avatarSize?: number
   fontSize?: number
+  isLink?: boolean
 }
 
 export const UserAvatar = (props: Props) => {
-  const { user, avatarSize, fontSize } = props
+  const { user, avatarSize, fontSize, isLink = true } = props
 
-  return (
+  return isLink ? (
     <AvatarWithName
       avatar={user.avatar}
       name={user.displayName || user.fullName}
@@ -23,6 +24,13 @@ export const UserAvatar = (props: Props) => {
           {name}
         </EmployeeLink>
       )}
+      {...{ avatarSize, fontSize }}
+    />
+  ) : (
+    <AvatarWithName
+      avatar={user.avatar}
+      name={user.displayName || user.fullName}
+      renderName={(name) => name}
       {...{ avatarSize, fontSize }}
     />
   )

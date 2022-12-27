@@ -48,7 +48,7 @@ export const FeedbackPreviewField = ({
             color={statusColors[answer.answer || '']}
             style={{ minWidth: 135, textAlign: 'center' }}
           >
-            {levels[answer.answer as AgreementLevel] || '-'}
+            {levels[answer.answer as AgreementLevel] || 'Not answered yet'}
           </Tag>
         </StyledListItem>
       )
