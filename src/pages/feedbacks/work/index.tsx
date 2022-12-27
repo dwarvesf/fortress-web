@@ -8,7 +8,6 @@ import { WorkAverage } from 'components/pages/feedbacks/work/WorkAverage'
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { ToggleSendSurveysModal } from 'components/pages/feedbacks/work/ToggleSendSurveysModal'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
-import { ROUTES } from 'constants/routes'
 import { Setting } from '@icon-park/react'
 import { SEO } from 'components/common/SEO'
 import { CreateWorkSurveyModal } from 'components/pages/feedbacks/work/CreateWorkSurveyModal'
@@ -104,10 +103,6 @@ const WorkPage = () => {
 
       <Breadcrumb
         items={[
-          {
-            label: 'Dashboard',
-            href: ROUTES.DASHBOARD,
-          },
           {
             label: 'Feedbacks',
           },

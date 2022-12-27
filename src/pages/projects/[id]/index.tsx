@@ -38,10 +38,6 @@ const Default = () => {
       <Breadcrumb
         items={[
           {
-            label: 'Dashboard',
-            href: ROUTES.DASHBOARD,
-          },
-          {
             label: 'Projects',
             href: ROUTES.PROJECTS,
           },

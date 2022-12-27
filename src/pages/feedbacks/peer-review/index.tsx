@@ -14,7 +14,6 @@ import { useFilter } from 'hooks/useFilter'
 import { SurveyListFilter } from 'types/filters/SurveyListFilter'
 import { FeedbackSubtype } from 'constants/feedbackTypes'
 import { ViewSurvey } from 'types/schema'
-import { ROUTES } from 'constants/routes'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 import { SEO } from 'components/common/SEO'
 
@@ -78,10 +77,6 @@ const PeerReviewPage = () => {
 
       <Breadcrumb
         items={[
-          {
-            label: 'Dashboard',
-            href: ROUTES.DASHBOARD,
-          },
           {
             label: 'Feedbacks',
           },

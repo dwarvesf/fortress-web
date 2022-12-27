@@ -14,7 +14,7 @@ const Container = styled.div`
 export const SidebarLogo = () => {
   return (
     <Container>
-      <Link href={ROUTES.DASHBOARD}>
+      <Link href={ROUTES.HOME}>
         <a>
           <Logo isWhite />
         </a>

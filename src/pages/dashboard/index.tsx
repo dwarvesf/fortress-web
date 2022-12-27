@@ -1,21 +1,19 @@
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
-import { SEO } from 'components/common/SEO'
 
-const Default = () => {
+const DashboardPage = () => {
   return (
     <>
-      <SEO title="Config" />
       <Breadcrumb
         items={[
           {
-            label: 'Config',
+            label: 'Dashboard',
           },
         ]}
       />
 
-      <div>Config</div>
+      <div>Dashboard</div>
     </>
   )
 }
 
-export default Default
+export default DashboardPage

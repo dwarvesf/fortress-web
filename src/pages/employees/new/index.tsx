@@ -25,10 +25,6 @@ const CreateEmployeePage = () => {
       <Breadcrumb
         items={[
           {
-            label: 'Dashboard',
-            href: ROUTES.DASHBOARD,
-          },
-          {
             label: 'Employees',
             href: ROUTES.EMPLOYEES,
           },

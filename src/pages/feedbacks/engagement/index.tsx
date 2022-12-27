@@ -14,7 +14,6 @@ import { useFilter } from 'hooks/useFilter'
 import { GET_PATHS, client } from 'libs/apis'
 import { SurveyListFilter } from 'types/filters/SurveyListFilter'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
-import { ROUTES } from 'constants/routes'
 import { SEO } from 'components/common/SEO'
 import { ViewSurvey } from 'types/schema'
 
@@ -72,10 +71,6 @@ const EmployeeEngagementPage = () => {
 
       <Breadcrumb
         items={[
-          {
-            label: 'Dashboard',
-            href: ROUTES.DASHBOARD,
-          },
           {
             label: 'Feedbacks',
           },

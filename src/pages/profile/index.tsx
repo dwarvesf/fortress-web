@@ -6,7 +6,6 @@ import { PageHeader } from 'components/common/PageHeader'
 import { EditProfileInfoModal } from 'components/pages/profile/EditProfileInfoModal'
 import { useAuthContext } from 'context/auth'
 import { Button } from 'components/common/Button'
-import { ROUTES } from 'constants/routes'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 import { Edit, Github } from '@icon-park/react'
 import { SEO } from 'components/common/SEO'
@@ -37,10 +36,6 @@ const Default = () => {
 
       <Breadcrumb
         items={[
-          {
-            label: 'Dashboard',
-            href: ROUTES.DASHBOARD,
-          },
           {
             label: 'Profile',
           },
