@@ -39,7 +39,11 @@ export const EditGeneralInfoModal = (props: Props) => {
   ) => {
     try {
       setIsSubmitting(true)
-      await client.updateEmployeeGeneralInfo(employeeID, values)
+
+      await client.updateEmployeeGeneralInfo(employeeID, {
+        ...values,
+        phone: phoneNumber,
+      })
 
       notification.success({
         message: "Employee's general info successfully updated!",
