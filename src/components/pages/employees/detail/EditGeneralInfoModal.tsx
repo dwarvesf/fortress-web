@@ -121,7 +121,6 @@ export const EditGeneralInfoModal = (props: Props) => {
                   }
                 }}
                 inputStyle={{ width: '100%' }}
-                countryCodeEditable={false}
               />
             </Form.Item>
           </Col>
