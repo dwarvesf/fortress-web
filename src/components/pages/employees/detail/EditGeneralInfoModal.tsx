@@ -113,9 +113,11 @@ export const EditGeneralInfoModal = (props: Props) => {
             >
               <PhoneInput
                 country="vn"
-                onChange={(phone, data) => {
+                onChange={(value, data) => {
                   if ('dialCode' in data) {
-                    setPhoneNumber(`+${data.dialCode} ${phone}`)
+                    setPhoneNumber(
+                      `+${data.dialCode} ${value.slice(data.dialCode.length)}`,
+                    )
                   }
                 }}
                 inputStyle={{ width: '100%' }}
