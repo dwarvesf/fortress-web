@@ -23,7 +23,7 @@ export const EditGeneralInfoModal = (props: Props) => {
 
   const [form] = Form.useForm()
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
-  const [phoneNumber, setPhoneNumber] = useState<string>('')
+  const [phoneNumber, setPhoneNumber] = useState<string>()
 
   const onSubmit = async (
     values: Required<RequestUpdateEmployeeGeneralInfoInput>,
@@ -119,6 +119,7 @@ export const EditGeneralInfoModal = (props: Props) => {
                   }
                 }}
                 inputStyle={{ width: '100%' }}
+                countryCodeEditable={false}
               />
             </Form.Item>
           </Col>

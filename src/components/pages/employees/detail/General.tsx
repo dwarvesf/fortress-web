@@ -35,6 +35,7 @@ import { DeploymentType, deploymentTypes } from 'constants/deploymentTypes'
 import { LinkWithIcon } from 'components/common/LinkWithIcon'
 import { EditableAvatar } from 'components/common/EditableAvatar'
 import { getErrorMessage } from 'utils/string'
+import { useRouter } from 'next/router'
 import { EditPersonalInfoModal } from './EditPersonalInfoModal'
 import { EditSkillsModal } from './EditSkillsModal'
 import { EditGeneralInfoModal } from './EditGeneralInfoModal'
@@ -85,6 +86,8 @@ export const General = (props: Props) => {
   const {
     query: { id: username },
   } = useRouter()
+
+  const { query } = useRouter()
 
   const [isLoading, setIsLoading] = useState(false)
 
