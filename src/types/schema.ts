@@ -115,6 +115,7 @@ export interface RequestCreateEmployeeInput {
 export interface RequestCreateProjectInput {
   accountManagerID: string
   clientEmail?: string
+  code?: string
   countryID: string
   deliveryManagerID?: string
   members?: RequestAssignMemberInput[]
@@ -127,7 +128,6 @@ export interface RequestCreateProjectInput {
 
 export interface RequestCreateSurveyFeedbackInput {
   fromDate?: string
-  projectIDs?: string[]
   quarter?: string
   toDate?: string
   type: string
@@ -148,17 +148,13 @@ export interface RequestDeleteTopicReviewersBody {
 }
 
 export interface RequestSendSurveyInput {
-  topics: RequestSurvey[]
+  topicIDs?: string[]
+  type: string
 }
 
 export interface RequestSubmitBody {
   answers: RequestBasicEventQuestionInput[]
   status: string
-}
-
-export interface RequestSurvey {
-  participants: string[]
-  topicID: string
 }
 
 export interface RequestUpdateContactInfoInput {
@@ -181,13 +177,19 @@ export interface RequestUpdateEmployeeGeneralInfoInput {
 }
 
 export interface RequestUpdateInfoInput {
+  city?: string
+  country?: string
   discordID?: string
   discordName?: string
   githubID?: string
+  linkedInName?: string
+  notionEmail?: string
   notionID?: string
   notionName?: string
+  permanentAddress?: string
   personalEmail: string
   phoneNumber: string
+  shelterAddress: string
   teamEmail: string
 }
 
@@ -302,6 +304,7 @@ export interface ViewBasicProjectHeadInfo {
 }
 
 export interface ViewBasicProjectInfo {
+  code?: string
   id?: string
   name?: string
   status?: string
@@ -349,6 +352,7 @@ export interface ViewCreateMemberDataResponse {
 export interface ViewCreateProjectData {
   accountManager?: ViewProjectHead
   clientEmail?: string
+  code?: string
   country?: ViewBasicCountryInfo
   createdAt?: string
   deletedAt?: GormDeletedAt
@@ -540,6 +544,8 @@ export interface ViewPositionResponse {
 export interface ViewProfileData {
   avatar?: string
   birthday?: string
+  city?: string
+  country?: string
   discordID?: string
   discordName?: string
   displayName?: string
@@ -547,10 +553,14 @@ export interface ViewProfileData {
   gender?: string
   githubID?: string
   id?: string
+  linkedInName?: string
+  notionEmail?: string
   notionID?: string
   notionName?: string
+  permanentAddress?: string
   personalEmail?: string
   phoneNumber?: string
+  shelterAddress?: string
   teamEmail?: string
   username?: string
 }
@@ -572,6 +582,7 @@ export interface ViewProjectData {
   allowsSendingSurvey?: boolean
   avatar?: string
   clientEmail?: string
+  code?: string
   country?: ViewBasicCountryInfo
   createdAt?: string
   deletedAt?: GormDeletedAt
@@ -773,15 +784,21 @@ export interface ViewUpdatePersonalEmployeeResponse {
 }
 
 export interface ViewUpdateProfileInfoData {
+  city?: string
+  country?: string
   createdAt?: string
   deletedAt?: GormDeletedAt
   discordID?: string
   discordName?: string
   githubID?: string
   id?: string
+  linkedInName?: string
+  notionEmail?: string
   notionID?: string
   notionName?: string
+  permanentAddress?: string
   phoneNumber?: string
+  shelterAddress?: string
   /** basic info */
   teamEmail?: string
   updatedAt?: string
@@ -845,6 +862,7 @@ export interface ViewUpdatedProject {
 }
 
 export interface ViewWorkUnit {
+  code?: string
   id?: string
   members?: ViewBasicMember[]
   name?: string

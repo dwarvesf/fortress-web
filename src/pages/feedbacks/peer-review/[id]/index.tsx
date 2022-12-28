@@ -34,6 +34,7 @@ import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 import { More } from '@icon-park/react'
 import { SEO } from 'components/common/SEO'
 import { getErrorMessage } from 'utils/string'
+import { FeedbackSubtype } from 'constants/feedbackTypes'
 
 interface ColumnProps {
   eventStatus?: SurveyEventStatus
@@ -114,11 +115,8 @@ const Default = () => {
         selectedRowKeys.includes(each.id!),
       )
       await client.sendSurvey(peerReviewId, {
-        topics: selectedPeerReviews.map((each) => ({
-          topicID: each.id!,
-          participants:
-            each.participants?.map((participant) => participant.id!) || [],
-        })),
+        topicIDs: selectedPeerReviews.map((each) => each.id!),
+        type: FeedbackSubtype.PEER_REVIEW,
       })
 
       notification.success({
