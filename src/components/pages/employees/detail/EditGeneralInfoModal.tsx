@@ -49,8 +49,8 @@ export const EditGeneralInfoModal = (props: Props) => {
         message: "Employee's general info successfully updated!",
       })
 
-      onAfterSubmit()
       onClose()
+      onAfterSubmit()
     } catch (error: any) {
       notification.error({
         message: getErrorMessage(
@@ -117,7 +117,6 @@ export const EditGeneralInfoModal = (props: Props) => {
           <Col span={24} md={{ span: 12 }}>
             <Form.Item
               label="Phone number"
-              name="phone"
               rules={[
                 {
                   required: true,
