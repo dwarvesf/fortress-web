@@ -3,7 +3,6 @@ import { AsyncSelect } from 'components/common/Select'
 import { renderEmployeeOption } from 'components/common/Select/renderers/employeeOption'
 import { EmployeeStatus } from 'constants/status'
 import { GET_PATHS, client } from 'libs/apis'
-import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { fullListPagination } from 'types/filters/Pagination'
 import { RequestUpdateEmployeeGeneralInfoInput } from 'types/schema'
@@ -11,6 +10,7 @@ import { transformEmployeeDataToSelectOption } from 'utils/select'
 import { getErrorMessage } from 'utils/string'
 
 interface Props {
+  employeeID: string
   isOpen: boolean
   initialValues?: RequestUpdateEmployeeGeneralInfoInput
   onClose: () => void
@@ -18,8 +18,7 @@ interface Props {
 }
 
 export const EditGeneralInfoModal = (props: Props) => {
-  const { isOpen, initialValues, onClose, onAfterSubmit } = props
-  const { query } = useRouter()
+  const { employeeID, isOpen, initialValues, onClose, onAfterSubmit } = props
 
   const [form] = Form.useForm()
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
@@ -29,7 +28,7 @@ export const EditGeneralInfoModal = (props: Props) => {
   ) => {
     try {
       setIsSubmitting(true)
-      await client.updateEmployeeGeneralInfo(query.id as string, values)
+      await client.updateEmployeeGeneralInfo(employeeID, values)
 
       notification.success({
         message: "Employee's general info successfully updated!",

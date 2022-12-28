@@ -9,7 +9,6 @@ import {
   Select,
 } from 'antd'
 import { client } from 'libs/apis'
-import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { RequestUpdatePersonalInfoInput } from 'types/schema'
 import moment from 'moment'
@@ -19,6 +18,7 @@ import { searchFilterOption } from 'utils/select'
 import { getErrorMessage } from 'utils/string'
 
 interface Props {
+  employeeID: string
   isOpen: boolean
   initialValues?: Omit<RequestUpdatePersonalInfoInput, 'dob'> & {
     dob: moment.Moment
@@ -28,8 +28,7 @@ interface Props {
 }
 
 export const EditPersonalInfoModal = (props: Props) => {
-  const { isOpen, initialValues, onClose, onAfterSubmit } = props
-  const { query } = useRouter()
+  const { employeeID, isOpen, initialValues, onClose, onAfterSubmit } = props
 
   const [form] = Form.useForm()
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
@@ -38,7 +37,7 @@ export const EditPersonalInfoModal = (props: Props) => {
     try {
       setIsSubmitting(true)
 
-      await client.updateEmployeePersonalInfo(query.id as string, values)
+      await client.updateEmployeePersonalInfo(employeeID, values)
 
       notification.success({
         message: "Employee's personal info successfully updated!",

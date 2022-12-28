@@ -10,7 +10,7 @@ import { useRouter } from 'next/router'
 
 const Default = () => {
   const {
-    query: { id },
+    query: { id: username },
   } = useRouter()
 
   // const { tabKey = 'general', setTabKey } = useTabWithQuery()
@@ -19,8 +19,8 @@ const Default = () => {
     data,
     loading,
     mutate: mutateEmployee,
-  } = useFetchWithCache([GET_PATHS.getEmployees, id], () =>
-    client.getEmployee(id as string),
+  } = useFetchWithCache([GET_PATHS.getEmployees, username], () =>
+    client.getEmployee(username as string),
   )
   const employee = data?.data
 

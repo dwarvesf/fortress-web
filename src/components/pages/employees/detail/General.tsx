@@ -27,6 +27,7 @@ import { Github, PreviewOpen, Star } from '@icon-park/react'
 import moment from 'moment'
 import { theme } from 'styles'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { ROUTES } from 'constants/routes'
 import { ColumnsType } from 'antd/lib/table'
 import { Button } from 'components/common/Button'
@@ -81,6 +82,9 @@ interface Props {
 
 export const General = (props: Props) => {
   const { data, mutateEmployee } = props
+  const {
+    query: { id: username },
+  } = useRouter()
 
   const [isLoading, setIsLoading] = useState(false)
 
@@ -298,6 +302,7 @@ export const General = (props: Props) => {
       </Space>
 
       <EditGeneralInfoModal
+        employeeID={data.id || ''}
         onClose={closeEditGeneralInfoDialog}
         isOpen={isEditGeneralInfoDialogOpen}
         initialValues={{
@@ -309,10 +314,11 @@ export const General = (props: Props) => {
           notionID: data.notionID,
           phone: data.phoneNumber || '',
         }}
-        onAfterSubmit={() => mutate([GET_PATHS.getEmployees, data.id])}
+        onAfterSubmit={() => mutate([GET_PATHS.getEmployees, username])}
       />
 
       <EditSkillsModal
+        employeeID={data.id || ''}
         onClose={closeEditSkillsDialog}
         isOpen={isEditSkillsDialogOpen}
         initialValues={{
@@ -324,10 +330,11 @@ export const General = (props: Props) => {
           seniority: data.seniority?.id || '',
           stacks: (data.stacks || []).map((s) => s.id || ''),
         }}
-        onAfterSubmit={() => mutate([GET_PATHS.getEmployees, data.id])}
+        onAfterSubmit={() => mutate([GET_PATHS.getEmployees, username])}
       />
 
       <EditPersonalInfoModal
+        employeeID={data.id || ''}
         onClose={closeEditPersonalInfoDialog}
         isOpen={isEditPersonalInfoDialogOpen}
         initialValues={{
@@ -336,7 +343,7 @@ export const General = (props: Props) => {
           address: data.address || '',
           personalEmail: data.personalEmail || '',
         }}
-        onAfterSubmit={() => mutate([GET_PATHS.getEmployees, data.id])}
+        onAfterSubmit={() => mutate([GET_PATHS.getEmployees, username])}
       />
     </>
   )

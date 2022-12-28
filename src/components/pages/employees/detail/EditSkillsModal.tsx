@@ -2,7 +2,6 @@ import { Col, Form, Modal, notification, Row, Select } from 'antd'
 import { AsyncSelect } from 'components/common/Select'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { GET_PATHS, client } from 'libs/apis'
-import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { theme } from 'styles'
 import { RequestUpdateSkillsInput } from 'types/schema'
@@ -13,6 +12,7 @@ import {
 import { getErrorMessage } from 'utils/string'
 
 interface Props {
+  employeeID: string
   isOpen: boolean
   initialValues?: RequestUpdateSkillsInput
   onClose: () => void
@@ -20,8 +20,7 @@ interface Props {
 }
 
 export const EditSkillsModal = (props: Props) => {
-  const { isOpen, initialValues, onClose, onAfterSubmit } = props
-  const { query } = useRouter()
+  const { employeeID, isOpen, initialValues, onClose, onAfterSubmit } = props
 
   const [form] = Form.useForm()
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
@@ -41,7 +40,7 @@ export const EditSkillsModal = (props: Props) => {
           values.leadingChapters &&
           values.leadingChapters.every((l) => selectedChapters.includes(l))
         ) &&
-        values.leadingChapters !== []
+        values.leadingChapters.length > 0
       ) {
         notification.error({
           message: 'Leading chapters must be chosen from selected chapters!',
@@ -49,7 +48,7 @@ export const EditSkillsModal = (props: Props) => {
       } else {
         setIsSubmitting(true)
 
-        await client.updateEmployeeSkills(query.id as string, values)
+        await client.updateEmployeeSkills(employeeID, values)
 
         notification.success({
           message: "Employee's skills successfully updated!",
