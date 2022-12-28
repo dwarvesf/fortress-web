@@ -35,7 +35,13 @@ export const CreatePeerReviewModal = (props: Props) => {
       onAfterSubmit()
     } catch (error: any) {
       notification.error({
-        message: error?.message || 'Could not create peer performance review',
+        message: 'Could not create peer performance review',
+        duration: 10_000_000,
+        description: (
+          <ul style={{ paddingLeft: 26 }}>
+            <li>{error?.message}</li>
+          </ul>
+        ),
       })
     } finally {
       setIsSubmitting(false)

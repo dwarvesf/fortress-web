@@ -12,6 +12,9 @@ export default async function fetcher<JSON = any>(
   }
   const error = new Error(res.statusText) as FetcherError
   error.response = res
+  // Parse error from the response
+  const detailError = await res.json()
+  error.message = detailError?.error || error.message
 
   return Promise.reject(error)
 }

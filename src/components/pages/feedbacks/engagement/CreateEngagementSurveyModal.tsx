@@ -35,9 +35,13 @@ export const CreateEngagementSurveyModal = (props: Props) => {
       onAfterSubmit()
     } catch (error: any) {
       notification.error({
-        message:
-          error?.message ||
-          'Could not create employee engagement survey event!',
+        message: 'Could not create employee engagement survey event!',
+        duration: 10_000_000,
+        description: (
+          <ul style={{ paddingLeft: 30 }}>
+            <li>{error?.message}</li>
+          </ul>
+        ),
       })
     } finally {
       setIsSubmitting(false)
