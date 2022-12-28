@@ -23,7 +23,16 @@ export const EditGeneralInfoModal = (props: Props) => {
 
   const [form] = Form.useForm()
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
-  const [phoneNumber, setPhoneNumber] = useState<string>()
+  const hasPrefix = initialValues?.phone.includes('+') || false
+
+  const [phoneNumber, setPhoneNumber] = useState<string>(
+    hasPrefix
+      ? initialValues?.phone.split(' ')[1] || ''
+      : initialValues?.phone || '',
+  )
+  const [dialCode, setDialCode] = useState<string>(
+    hasPrefix ? initialValues?.phone.split(' ')[0].slice(1) || '' : '84',
+  )
 
   const onSubmit = async (
     values: Required<RequestUpdateEmployeeGeneralInfoInput>,
@@ -36,8 +45,8 @@ export const EditGeneralInfoModal = (props: Props) => {
         message: "Employee's general info successfully updated!",
       })
 
-      onClose()
       onAfterSubmit()
+      onClose()
     } catch (error: any) {
       notification.error({
         message: getErrorMessage(
@@ -116,14 +125,18 @@ export const EditGeneralInfoModal = (props: Props) => {
                 country="vn"
                 onChange={(value, data) => {
                   if ('dialCode' in data) {
-                    setPhoneNumber(
-                      `+${data.dialCode} ${value.slice(data.dialCode.length)}`,
-                    )
+                    setDialCode(data.dialCode)
+
+                    if (hasPrefix) {
+                      setPhoneNumber(value.slice(data.dialCode.length))
+                    } else {
+                      setPhoneNumber(value)
+                    }
                   }
                 }}
                 inputStyle={{ width: '100%' }}
-                disableCountryCode={!initialValues?.phone.includes('+')}
-                disableCountryGuess={!initialValues?.phone.includes('+')}
+                disableCountryCode={!hasPrefix}
+                disableCountryGuess={!hasPrefix}
                 enableSearch
                 disableSearchIcon
               />
