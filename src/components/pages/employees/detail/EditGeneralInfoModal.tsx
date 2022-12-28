@@ -104,6 +104,7 @@ export const EditGeneralInfoModal = (props: Props) => {
           <Col span={24} md={{ span: 12 }}>
             <Form.Item
               label="Phone number"
+              name="phone"
               rules={[
                 {
                   required: true,
@@ -121,6 +122,10 @@ export const EditGeneralInfoModal = (props: Props) => {
                   }
                 }}
                 inputStyle={{ width: '100%' }}
+                disableCountryCode={!initialValues?.phone.includes('+')}
+                disableCountryGuess={!initialValues?.phone.includes('+')}
+                enableSearch
+                disableSearchIcon
               />
             </Form.Item>
           </Col>
