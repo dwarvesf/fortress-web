@@ -33,6 +33,7 @@ import { Button } from 'components/common/Button'
 import { DeploymentType, deploymentTypes } from 'constants/deploymentTypes'
 import { LinkWithIcon } from 'components/common/LinkWithIcon'
 import { EditableAvatar } from 'components/common/EditableAvatar'
+import { getErrorMessage } from 'utils/string'
 import { EditPersonalInfoModal } from './EditPersonalInfoModal'
 import { EditSkillsModal } from './EditSkillsModal'
 import { EditGeneralInfoModal } from './EditGeneralInfoModal'
@@ -94,7 +95,7 @@ export const General = (props: Props) => {
       mutate([GET_PATHS.getEmployees, data.id])
     } catch (error: any) {
       notification.error({
-        message: error?.message || 'Could not update employee status.',
+        message: getErrorMessage(error, 'Could not update employee status'),
       })
     } finally {
       setIsLoading(false)

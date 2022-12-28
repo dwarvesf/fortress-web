@@ -4,6 +4,7 @@ import { FeedbackSubtype } from 'constants/feedbackTypes'
 import { client } from 'libs/apis'
 import { useState } from 'react'
 import { RequestCreateSurveyFeedbackInput } from 'types/schema'
+import { getErrorMessage } from 'utils/string'
 
 interface Props {
   isOpen: boolean
@@ -35,7 +36,7 @@ export const CreateEngagementSurveyModal = (props: Props) => {
       onAfterSubmit()
     } catch (error: any) {
       notification.error({
-        message: ['Could not create event', error?.message].join(' - '),
+        message: getErrorMessage(error, 'Could not create event'),
       })
     } finally {
       setIsSubmitting(false)

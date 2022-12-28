@@ -9,6 +9,7 @@ import { client } from 'libs/apis'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { ViewProjectMember } from 'types/schema'
+import { getErrorMessage } from 'utils/string'
 import { MemberFormModal } from '../MemberForm/MemberFormModal'
 
 export const Actions = ({
@@ -45,7 +46,7 @@ export const Actions = ({
       onAfterAction()
     } catch (error: any) {
       notification.error({
-        message: error?.message || 'Could not delete this project member!',
+        message: getErrorMessage(error, 'Could not delete this project member'),
       })
     } finally {
       setIsLoading(false)

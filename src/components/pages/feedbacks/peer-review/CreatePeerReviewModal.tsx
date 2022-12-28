@@ -4,6 +4,7 @@ import { FeedbackSubtype } from 'constants/feedbackTypes'
 import { client } from 'libs/apis'
 import { useState } from 'react'
 import { RequestCreateSurveyFeedbackInput } from 'types/schema'
+import { getErrorMessage } from 'utils/string'
 
 interface Props {
   isOpen: boolean
@@ -35,13 +36,7 @@ export const CreatePeerReviewModal = (props: Props) => {
       onAfterSubmit()
     } catch (error: any) {
       notification.error({
-        message: 'Could not create peer performance review',
-        duration: 10_000_000,
-        description: (
-          <ul style={{ paddingLeft: 26 }}>
-            <li>{error?.message}</li>
-          </ul>
-        ),
+        message: getErrorMessage(error, 'Could not create event'),
       })
     } finally {
       setIsSubmitting(false)

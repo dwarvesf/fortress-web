@@ -18,6 +18,7 @@ import { client, GET_PATHS } from 'libs/apis'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
 import { RequestSubmitBody } from 'types/schema'
+import { getErrorMessage } from 'utils/string'
 import { SurveyReviewModal } from './SurveyReviewModal'
 
 export const SurveyForm = () => {
@@ -101,7 +102,7 @@ export const SurveyForm = () => {
       push(ROUTES.INBOX)
     } catch (error: any) {
       notification.error({
-        message: error?.message || 'Could not save the feedback as draft!',
+        message: getErrorMessage(error, 'Could not save the feedback as draft'),
       })
     } finally {
       setIsSubmitting(false)

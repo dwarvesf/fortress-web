@@ -5,6 +5,7 @@ import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { client, GET_PATHS } from 'libs/apis'
 import { useRouter } from 'next/router'
 import { useMemo, useState } from 'react'
+import { getErrorMessage } from 'utils/string'
 import { MemberForm, MemberFormValues } from '.'
 
 interface Props {
@@ -83,9 +84,10 @@ export const MemberFormModal = (props: Props) => {
       onAfterSubmit()
     } catch (error: any) {
       notification.error({
-        message:
-          error?.message ||
-          `Could not ${isEditing ? 'update' : 'create'} the member!`,
+        message: getErrorMessage(
+          error,
+          `Could not ${isEditing ? 'update' : 'create'} the member`,
+        ),
       })
     } finally {
       setIsLoading(false)
@@ -106,7 +108,7 @@ export const MemberFormModal = (props: Props) => {
       onAfterSubmit()
     } catch (error: any) {
       notification.error({
-        message: error?.message || `Could not unassign the member!`,
+        message: getErrorMessage(error, 'Could not unassign the member'),
       })
     } finally {
       setIsLoading(false)

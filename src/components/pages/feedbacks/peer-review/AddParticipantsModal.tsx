@@ -15,6 +15,7 @@ import { EmployeeListFilter } from 'types/filters/EmployeeListFilter'
 import { ViewTopic } from 'types/schema'
 import debounce from 'lodash.debounce'
 import { Close } from '@icon-park/react'
+import { getErrorMessage } from 'utils/string'
 
 interface Props {
   isOpen: boolean
@@ -69,7 +70,7 @@ export const AddParticipantsModal = (props: Props) => {
       onAfterSubmit()
     } catch (error: any) {
       notification.error({
-        message: error?.message || 'Could not edit participants',
+        message: getErrorMessage(error, 'Could not edit participants'),
       })
     } finally {
       setIsSubmitting(false)

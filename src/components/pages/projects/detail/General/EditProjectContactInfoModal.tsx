@@ -8,6 +8,7 @@ import { renderEmployeeOption } from 'components/common/Select/renderers/employe
 import { transformEmployeeDataToSelectOption } from 'utils/select'
 import { useRouter } from 'next/router'
 import { EmployeeStatus } from 'constants/status'
+import { getErrorMessage } from 'utils/string'
 
 type ProjectContactInfoFormValues = Partial<RequestUpdateContactInfoInput>
 
@@ -41,7 +42,10 @@ export const EditProjectContactInfoModal = (props: Props) => {
       onAfterSubmit()
     } catch (error: any) {
       notification.error({
-        message: error?.message || "Could not update project's contact info",
+        message: getErrorMessage(
+          error,
+          "Could not update project's contact info",
+        ),
       })
     } finally {
       setIsSubmitting(false)

@@ -7,6 +7,7 @@ import { client } from 'libs/apis'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { ViewPeerReviewer } from 'types/schema'
+import { getErrorMessage } from 'utils/string'
 import { SurveyResultModal } from '../SurveyResultModal'
 
 interface Props {
@@ -41,7 +42,10 @@ export const EmployeePeerReviewsAction = (props: Props) => {
       onAfterDelete()
     } catch (error: any) {
       notification.error({
-        message: error?.message || 'Could not delete peer performance review',
+        message: getErrorMessage(
+          error,
+          'Could not delete peer performance review',
+        ),
       })
     } finally {
       setIsLoading(false)

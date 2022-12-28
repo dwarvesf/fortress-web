@@ -13,7 +13,7 @@ import { Button } from 'components/common/Button'
 import { client } from 'libs/apis'
 import { useState } from 'react'
 import { theme } from 'styles'
-import { getFirstLetterCapitalized } from 'utils/string'
+import { getErrorMessage, getFirstLetterCapitalized } from 'utils/string'
 import { v4 as uuid4 } from 'uuid'
 
 const title = {
@@ -75,7 +75,7 @@ export const EditAvatarModal = (props: Props) => {
       onAfterSubmit()
     } catch (error: any) {
       notification.error({
-        message: error?.message || `Could not update ${type} avatar`,
+        message: getErrorMessage(error, `Could not update ${type} avatar`),
       })
     } finally {
       setIsSubmitting(false)

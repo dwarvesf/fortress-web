@@ -6,6 +6,7 @@ import { RequestUpdateProjectGeneralInfoInput } from 'types/schema'
 import { AsyncSelect } from 'components/common/Select'
 import { transformMetadataToSelectOption } from 'utils/select'
 import { useRouter } from 'next/router'
+import { getErrorMessage } from 'utils/string'
 
 type ProjectGeneralInfoFormValues =
   Partial<RequestUpdateProjectGeneralInfoInput>
@@ -40,7 +41,10 @@ export const EditProjectGeneralInfoModal = (props: Props) => {
       onAfterSubmit()
     } catch (error: any) {
       notification.error({
-        message: error?.message || "Could not update project's general info",
+        message: getErrorMessage(
+          error,
+          "Could not update project's general info",
+        ),
       })
     } finally {
       setIsSubmitting(false)
