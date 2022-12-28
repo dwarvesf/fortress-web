@@ -1,40 +1,34 @@
+import { RequestGetListEmployeeInput } from 'types/schema'
 import { Pagination } from './Pagination'
 
-interface Filter {
-  workingStatus?: string[]
-  keyword?: string
-  positionID?: string
-  stackID?: string
-  projectID?: string
-  chapterID?: string
-  seniorityID?: string
-}
-
-export class EmployeeListFilter extends Pagination implements Filter {
-  workingStatus?: string[]
-  keyword?: string
-  positionID?: string
-  stackID?: string
-  projectID?: string
-  chapterID?: string
-  seniorityID?: string
+export class EmployeeListFilter
+  extends Pagination
+  implements RequestGetListEmployeeInput
+{
+  keyword?
+  chapters?
+  positions?
+  projects?
+  seniorities?
+  stacks?
+  workingStatuses?
 
   constructor({
-    workingStatus,
-    keyword,
-    positionID,
-    stackID,
-    projectID,
-    chapterID,
-    seniorityID,
-  }: Filter = {}) {
+    keyword = '',
+    chapters = [],
+    positions = [],
+    projects = [],
+    seniorities = [],
+    stacks = [],
+    workingStatuses = [],
+  }: RequestGetListEmployeeInput = {}) {
     super()
-    this.workingStatus = workingStatus
     this.keyword = keyword
-    this.positionID = positionID
-    this.stackID = stackID
-    this.projectID = projectID
-    this.chapterID = chapterID
-    this.seniorityID = seniorityID
+    this.chapters = chapters
+    this.positions = positions
+    this.projects = projects
+    this.seniorities = seniorities
+    this.stacks = stacks
+    this.workingStatuses = workingStatuses
   }
 }

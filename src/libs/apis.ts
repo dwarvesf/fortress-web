@@ -145,13 +145,13 @@ class Client {
     })
   }
 
-  public getEmployees(filter: EmployeeListFilter) {
-    const queryString = qs.stringify(filter)
-
+  public getEmployees(data: EmployeeListFilter) {
     return fetcher<ViewEmployeeListDataResponse & Meta>(
-      `${BASE_URL}/employees?${queryString}`,
+      `${BASE_URL}/employees/search`,
       {
+        method: 'POST',
         headers: { ...this.privateHeaders },
+        body: JSON.stringify(data),
       },
     )
   }

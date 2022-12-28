@@ -22,6 +22,7 @@ import { FormInstance } from 'antd/es/form/Form'
 import { useEffect } from 'react'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { theme } from 'styles'
+import { fullListPagination } from 'types/filters/Pagination'
 
 export type MemberFormValues = Partial<RequestAssignMemberInput>
 
@@ -56,9 +57,8 @@ export const MemberForm = (props: Props) => {
       [GET_PATHS.getEmployees, excludedEmployeeIds.join(''), 'member-form'],
       () =>
         client.getEmployees({
-          page: 1,
-          size: 1000,
-          workingStatus: [EmployeeStatus.PROBATION, EmployeeStatus.FULLTIME],
+          ...fullListPagination,
+          workingStatuses: [EmployeeStatus.PROBATION, EmployeeStatus.FULLTIME],
         }),
     )
 

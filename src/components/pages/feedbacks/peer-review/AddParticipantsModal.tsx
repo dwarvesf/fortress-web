@@ -16,6 +16,7 @@ import { ViewTopic } from 'types/schema'
 import debounce from 'lodash.debounce'
 import { Close } from '@icon-park/react'
 import { getErrorMessage } from 'utils/string'
+import { fullListPagination } from 'types/filters/Pagination'
 
 interface Props {
   isOpen: boolean
@@ -33,12 +34,12 @@ export const AddParticipantsModal = (props: Props) => {
   const [value, setValue] = useState('')
   const { filter, setFilter } = useFilter(
     new EmployeeListFilter({
-      workingStatus: [EmployeeStatus.FULLTIME],
+      workingStatuses: [EmployeeStatus.FULLTIME],
     }),
   )
   const { data: employeeData, loading: employeeLoading } = useFetchWithCache(
     [GET_PATHS.getEmployees, filter],
-    () => client.getEmployees({ ...filter, size: 1000 }),
+    () => client.getEmployees({ ...filter, ...fullListPagination }),
   )
   const employees = employeeData?.data || []
   const { data: topicData, loading: topicLoading } = useFetchWithCache(

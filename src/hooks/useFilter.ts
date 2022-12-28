@@ -1,6 +1,12 @@
-import { useState } from 'react'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
 
-export const useFilter = <T>(initialValues: T) => {
+export const useFilter = <T extends {}>(
+  initialValues: T,
+  { shouldUpdateToQuery = false }: { shouldUpdateToQuery?: boolean } = {},
+) => {
+  const { pathname, query, replace } = useRouter()
+
   const [filter, _setFilter] = useState(initialValues)
 
   const setFilter = (value: Partial<T>) => {
@@ -18,6 +24,39 @@ export const useFilter = <T>(initialValues: T) => {
       _setFilter((o) => ({ ...o, ...value }))
     }
   }
+
+  useEffect(() => {
+    if (shouldUpdateToQuery) {
+      // Skip null & empty values
+      const filterToUpdate = Object.keys(filter).reduce(
+        (result, currentKey) => {
+          // @ts-ignore filter should be object
+          const currentValue = filter[currentKey]
+          if (
+            !currentValue ||
+            (Array.isArray(currentValue) && currentValue.length === 0)
+          ) {
+            return result
+          }
+
+          return {
+            ...result,
+            [currentKey]: currentValue,
+          }
+        },
+        {} as Partial<T>,
+      )
+
+      replace(
+        {
+          pathname,
+          query: { ...query, filter: JSON.stringify(filterToUpdate) },
+        },
+        undefined,
+        { shallow: true },
+      )
+    }
+  }, [filter]) // eslint-disable-line
 
   return { filter, setFilter }
 }

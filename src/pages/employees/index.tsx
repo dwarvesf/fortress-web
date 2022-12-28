@@ -27,12 +27,12 @@ import { theme } from 'styles'
 import { TagArray } from 'components/common/TagArray'
 import { useRouter } from 'next/router'
 import { useCallback, useState } from 'react'
-import qs from 'qs'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 import { PreviewOpen, Star, Link as IconLink } from '@icon-park/react'
 import { SEO } from 'components/common/SEO'
 import { LinkWithIcon } from 'components/common/LinkWithIcon'
+import { fullListPagination } from 'types/filters/Pagination'
 
 interface ColumnProps {
   filter: EmployeeListFilter
@@ -63,11 +63,10 @@ const columns = ({
     render: (value?: ViewPosition[]) => (
       <TagArray value={value} maxTag={2} color="blue" />
     ),
-    filterMultiple: false,
-    filteredValue: filter.positionID ? [filter.positionID] : [],
+    filteredValue: filter.positions,
     filters: positionsData.map((each) => ({
       text: each.name,
-      value: each.id!,
+      value: each.code!,
     })),
   },
   {
@@ -90,11 +89,10 @@ const columns = ({
         maxTag={2}
       />
     ),
-    filterMultiple: false,
-    filteredValue: filter.projectID ? [filter.projectID] : [],
+    filteredValue: filter.projects,
     filters: projectsData.map((each) => ({
       text: each.name,
-      value: each.id!,
+      value: each.code!,
     })),
   },
   {
@@ -104,11 +102,10 @@ const columns = ({
     render: (value: ViewStack[]) => (
       <TagArray value={value} maxTag={2} color="green" />
     ),
-    filterMultiple: false,
-    filteredValue: filter.stackID ? [filter.stackID] : [],
+    filteredValue: filter.stacks,
     filters: stacksData.map((each) => ({
       text: each.name,
-      value: each.id!,
+      value: each.code!,
     })),
   },
   {
@@ -134,11 +131,10 @@ const columns = ({
         color="purple"
       />
     ),
-    filterMultiple: false,
-    filteredValue: filter.chapterID ? [filter.chapterID] : [],
+    filteredValue: filter.chapters,
     filters: chaptersData.map((each) => ({
       text: each.name,
-      value: each.id!,
+      value: each.code!,
     })),
   },
   {
@@ -150,14 +146,13 @@ const columns = ({
   },
   {
     title: 'Seniority',
-    key: 'seniority',
+    key: 'seniorities',
     dataIndex: 'seniority',
     render: (value?: ModelSeniority) => value?.name || '-',
-    filterMultiple: false,
-    filteredValue: filter.seniorityID ? [filter.seniorityID] : [],
+    filteredValue: filter.seniorities,
     filters: senioritiesData.map((each) => ({
       text: each.name,
-      value: each.id!,
+      value: each.code!,
     })),
   },
   {
@@ -214,9 +209,17 @@ const columns = ({
 ]
 
 const Default = () => {
-  const { push, pathname, query } = useRouter()
+  const { query } = useRouter()
+  const queryFilter = query.filter ? JSON.parse(query.filter as string) : {}
+
   const [value, setValue] = useState((query.keyword || '') as string)
-  const { filter, setFilter } = useFilter(new EmployeeListFilter({ ...query }))
+  const { filter, setFilter } = useFilter(
+    new EmployeeListFilter({ ...queryFilter }),
+    {
+      shouldUpdateToQuery: true,
+    },
+  )
+
   const { data, loading } = useFetchWithCache(
     [GET_PATHS.getEmployees, filter],
     () => client.getEmployees(filter),
@@ -228,7 +231,8 @@ const Default = () => {
   )
   const { data: projectsData } = useFetchWithCache(
     [GET_PATHS.getProjects],
-    () => client.getProjects(new ProjectListFilter()),
+    () =>
+      client.getProjects({ ...new ProjectListFilter(), ...fullListPagination }),
   )
   const { data: stacksData } = useFetchWithCache(
     [GET_PATHS.getStackMetadata],
@@ -247,17 +251,6 @@ const Default = () => {
   const searchEmployees = useCallback(
     debounce((keyword: string) => {
       setFilter({ keyword })
-      push(
-        {
-          pathname,
-          query: qs.stringify(
-            { ...query, keyword: keyword || null },
-            { skipNulls: true },
-          ),
-        },
-        undefined,
-        { shallow: true },
-      )
     }, 1000),
     [],
   )
@@ -315,25 +308,7 @@ const Default = () => {
           pagination={false}
           scroll={{ x: 'max-content' }}
           onChange={(_, filters) => {
-            const newFilter = {
-              positionID: filters.positions?.[0] as string,
-              projectID: filters.projects?.[0] as string,
-              stackID: filters.stacks?.[0] as string,
-              chapterID: filters.chapters?.[0] as string,
-              seniorityID: filters.seniority?.[0] as string,
-            }
-            setFilter(newFilter)
-            push(
-              {
-                pathname,
-                query: qs.stringify(
-                  { ...query, ...newFilter },
-                  { skipNulls: true },
-                ),
-              },
-              undefined,
-              { shallow: true },
-            )
+            setFilter(filters)
           }}
         />
         <Row justify="end">

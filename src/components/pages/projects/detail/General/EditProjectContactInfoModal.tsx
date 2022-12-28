@@ -9,6 +9,7 @@ import { transformEmployeeDataToSelectOption } from 'utils/select'
 import { useRouter } from 'next/router'
 import { EmployeeStatus } from 'constants/status'
 import { getErrorMessage } from 'utils/string'
+import { fullListPagination } from 'types/filters/Pagination'
 
 type ProjectContactInfoFormValues = Partial<RequestUpdateContactInfoInput>
 
@@ -54,10 +55,8 @@ export const EditProjectContactInfoModal = (props: Props) => {
 
   const employeeOptionGetter = async () => {
     const { data } = await client.getEmployees({
-      page: 1,
-      size: 1000,
-      preload: false,
-      workingStatus: [EmployeeStatus.FULLTIME],
+      ...fullListPagination,
+      workingStatuses: [EmployeeStatus.FULLTIME],
     })
     return (data || []).map(transformEmployeeDataToSelectOption)
   }

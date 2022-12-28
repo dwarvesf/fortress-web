@@ -5,6 +5,7 @@ import { EmployeeStatus } from 'constants/status'
 import { GET_PATHS, client } from 'libs/apis'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
+import { fullListPagination } from 'types/filters/Pagination'
 import { RequestUpdateEmployeeGeneralInfoInput } from 'types/schema'
 import { transformEmployeeDataToSelectOption } from 'utils/select'
 import { getErrorMessage } from 'utils/string'
@@ -135,10 +136,8 @@ export const EditGeneralInfoModal = (props: Props) => {
               <AsyncSelect
                 optionGetter={async () => {
                   const { data } = await client.getEmployees({
-                    page: 1,
-                    size: 1000,
-                    preload: false,
-                    workingStatus: [EmployeeStatus.FULLTIME],
+                    ...fullListPagination,
+                    workingStatuses: [EmployeeStatus.FULLTIME],
                   })
                   return (data || []).map(transformEmployeeDataToSelectOption)
                 }}

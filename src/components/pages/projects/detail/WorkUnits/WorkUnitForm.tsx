@@ -10,6 +10,7 @@ import { WorkUnitType, workUnitTypes } from 'constants/workUnitTypes'
 import { client, GET_PATHS } from 'libs/apis'
 import { useRouter } from 'next/router'
 import { theme } from 'styles'
+import { fullListPagination } from 'types/filters/Pagination'
 import { RequestCreateWorkUnitBody } from 'types/schema'
 import {
   searchFilterOption,
@@ -73,10 +74,8 @@ export const WorkUnitForm = (props: Props) => {
                 const { data } = await client.getProjectMemberList(
                   projectId as string,
                   {
-                    page: 1,
-                    size: 1000,
+                    ...fullListPagination,
                     status: 'active',
-                    preload: false,
                   },
                 )
 
