@@ -18,6 +18,7 @@ import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 import { PreviewOpen } from '@icon-park/react'
 import { SEO } from 'components/common/SEO'
 import { ProjectStatus, projectStatuses } from 'constants/status'
+import { useRouter } from 'next/router'
 
 interface ColumnProps {
   filter: ProjectListFilter
@@ -114,8 +115,12 @@ const columns = ({
 ]
 
 const Default = () => {
+  const { query } = useRouter()
+  const queryFilter = query.filter ? JSON.parse(query.filter as string) : {}
+
   const { filter, setFilter } = useFilter(
-    new ProjectListFilter({ status: ProjectStatus.ACTIVE }),
+    new ProjectListFilter({ status: ProjectStatus.ACTIVE, ...queryFilter }),
+    { shouldUpdateToQuery: true },
   )
 
   const { data, loading } = useFetchWithCache(

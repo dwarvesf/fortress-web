@@ -8,6 +8,7 @@ import { projectTypes } from 'constants/projectTypes'
 import { EmployeeStatus } from 'constants/status'
 import { GET_PATHS, client } from 'libs/apis'
 import { theme } from 'styles'
+import { fullListPagination } from 'types/filters/Pagination'
 import { RequestCreateProjectInput } from 'types/schema'
 import {
   searchFilterOption,
@@ -26,10 +27,8 @@ export const ProjectForm = (props: Props) => {
 
   const employeeOptionGetter = async () => {
     const { data } = await client.getEmployees({
-      page: 1,
-      size: 1000,
-      preload: false,
-      workingStatus: [EmployeeStatus.FULLTIME],
+      ...fullListPagination,
+      workingStatuses: [EmployeeStatus.FULLTIME],
     })
     return (data || []).map(transformEmployeeDataToSelectOption)
   }
