@@ -7,6 +7,7 @@ import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { RequestUpdateEmployeeGeneralInfoInput } from 'types/schema'
 import { transformEmployeeDataToSelectOption } from 'utils/select'
+import { getErrorMessage } from 'utils/string'
 
 interface Props {
   isOpen: boolean
@@ -37,7 +38,10 @@ export const EditGeneralInfoModal = (props: Props) => {
       onAfterSubmit()
     } catch (error: any) {
       notification.error({
-        message: error?.message || "Could not update employee's general info!",
+        message: getErrorMessage(
+          error,
+          "Could not update employee's general info",
+        ),
       })
     } finally {
       setIsSubmitting(false)

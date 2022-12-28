@@ -13,6 +13,7 @@ import {
   ViewProjectMember,
   ViewSeniorityResponse,
 } from 'types/schema'
+import { getErrorMessage } from 'utils/string'
 import { ProjectMemberModal } from './ProjectMemberModal'
 
 export const Actions = ({
@@ -64,7 +65,7 @@ export const Actions = ({
       })
     } catch (error: any) {
       notification.error({
-        message: error?.message || 'Could not delete this project member!',
+        message: getErrorMessage(error, 'Could not delete this project member'),
       })
     } finally {
       setIsLoading(false)

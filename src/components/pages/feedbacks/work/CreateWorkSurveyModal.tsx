@@ -6,6 +6,7 @@ import { client } from 'libs/apis'
 import { useState } from 'react'
 import { RequestCreateSurveyFeedbackInput } from 'types/schema'
 import { format } from 'date-fns'
+import { getErrorMessage } from 'utils/string'
 
 interface Props {
   isOpen: boolean
@@ -40,7 +41,7 @@ export const CreateWorkSurveyModal = (props: Props) => {
       onAfterSubmit()
     } catch (error: any) {
       notification.error({
-        message: error?.message || 'Could not create work survey',
+        message: getErrorMessage(error, 'Could not create work survey'),
       })
     } finally {
       setIsSubmitting(false)

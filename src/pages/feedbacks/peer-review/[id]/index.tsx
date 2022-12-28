@@ -33,6 +33,7 @@ import debounce from 'lodash.debounce'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 import { More } from '@icon-park/react'
 import { SEO } from 'components/common/SEO'
+import { getErrorMessage } from 'utils/string'
 
 interface ColumnProps {
   eventStatus?: SurveyEventStatus
@@ -128,7 +129,10 @@ const Default = () => {
       mutateSurveyDetail()
     } catch (error: any) {
       notification.error({
-        message: error?.message || 'Could not send peer performance servey',
+        message: getErrorMessage(
+          error,
+          'Could not send peer performance servey',
+        ),
       })
     } finally {
       setIsLoading(false)
@@ -172,8 +176,10 @@ const Default = () => {
       router.push(ROUTES.PEER_REVIEW)
     } catch (error: any) {
       notification.error({
-        message:
-          error?.message || 'Could not delete peer performance review event',
+        message: getErrorMessage(
+          error,
+          'Could not delete peer performance review event',
+        ),
       })
     } finally {
       setIsLoading(false)
@@ -207,9 +213,10 @@ const Default = () => {
       mutateSurveyDetail()
     } catch (error: any) {
       notification.error({
-        message:
-          error?.message ||
+        message: getErrorMessage(
+          error,
           'Could not mark peer performance review event as done',
+        ),
       })
     } finally {
       setIsLoading(false)

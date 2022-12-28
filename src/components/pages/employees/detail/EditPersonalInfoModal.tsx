@@ -16,6 +16,7 @@ import moment from 'moment'
 import { SELECT_BOX_DATE_FORMAT } from 'constants/date'
 import { theme } from 'styles'
 import { searchFilterOption } from 'utils/select'
+import { getErrorMessage } from 'utils/string'
 
 interface Props {
   isOpen: boolean
@@ -47,7 +48,10 @@ export const EditPersonalInfoModal = (props: Props) => {
       onAfterSubmit()
     } catch (error: any) {
       notification.error({
-        message: error?.message || "Could not update employee's personal info!",
+        message: getErrorMessage(
+          error,
+          "Could not update employee's personal info",
+        ),
       })
     } finally {
       setIsSubmitting(false)

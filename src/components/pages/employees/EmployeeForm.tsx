@@ -14,6 +14,7 @@ import {
   searchFilterOption,
   transformMetadataToSelectOption,
 } from 'utils/select'
+import { getErrorMessage } from 'utils/string'
 
 interface Props {
   initialValues?: CreateEmployeeFormValues
@@ -57,7 +58,7 @@ export const EmployeeForm = (props: Props) => {
       setTimeout(() => push(ROUTES.EMPLOYEES))
     } catch (error: any) {
       notification.error({
-        message: error?.message || 'Could not create new employee!',
+        message: getErrorMessage(error, 'Could not create new employee'),
       })
     } finally {
       setIsSubmitting(false)

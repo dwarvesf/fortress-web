@@ -32,6 +32,7 @@ import { ViewTopic } from 'types/schema'
 import debounce from 'lodash.debounce'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 import { SEO } from 'components/common/SEO'
+import { getErrorMessage } from 'utils/string'
 
 const columns: ColumnsType<ViewTopic> = [
   {
@@ -93,7 +94,7 @@ const Default = () => {
       mutateSurveyDetail()
     } catch (error: any) {
       notification.error({
-        message: error?.message || 'Could not send engagement servey',
+        message: getErrorMessage(error, 'Could not send engagement servey'),
       })
     } finally {
       setIsLoading(false)
@@ -124,7 +125,7 @@ const Default = () => {
       mutateSurveyDetail()
     } catch (error: any) {
       notification.error({
-        message: error?.message || 'Could not close engagement survey',
+        message: getErrorMessage(error, 'Could not close engagement survey'),
       })
     } finally {
       setIsLoading(false)

@@ -4,6 +4,7 @@ import { client } from 'libs/apis'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { RequestCreateWorkUnitBody } from 'types/schema'
+import { getErrorMessage } from 'utils/string'
 import { WorkUnitForm } from './WorkUnitForm'
 
 interface Props {
@@ -54,9 +55,10 @@ export const WorkUnitModal = (props: Props) => {
       onAfterSubmit()
     } catch (error: any) {
       notification.error({
-        message:
-          error?.message ||
-          `Could not ${isEditing ? 'update' : 'create'} work unit!`,
+        message: getErrorMessage(
+          error,
+          `Could not ${isEditing ? 'update' : 'create'} work unit`,
+        ),
       })
     } finally {
       setIsSubmitting(false)

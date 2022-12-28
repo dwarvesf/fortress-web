@@ -27,6 +27,7 @@ import { FormWrapper } from 'components/common/FormWrapper'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 import { Plus } from '@icon-park/react'
 import { SEO } from 'components/common/SEO'
+import { getErrorMessage } from 'utils/string'
 
 const getPositionsFromIDs = (data: ModelPosition[], positionStrs: string[]) => {
   const result: ViewPosition[] = []
@@ -90,7 +91,7 @@ const CreateNewProjectPage = () => {
       setTimeout(() => push(ROUTES.PROJECTS))
     } catch (error: any) {
       notification.error({
-        message: error?.message || 'Could not create new project!',
+        message: getErrorMessage(error, 'Could not create new project'),
       })
     } finally {
       setIsSubmitting(false)

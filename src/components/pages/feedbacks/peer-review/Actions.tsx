@@ -7,6 +7,7 @@ import { client } from 'libs/apis'
 import Link from 'next/link'
 import { useState } from 'react'
 import { ViewSurvey } from 'types/schema'
+import { getErrorMessage } from 'utils/string'
 
 interface Props {
   record: ViewSurvey
@@ -31,8 +32,10 @@ export const Actions = (props: Props) => {
       onAfterDelete()
     } catch (error: any) {
       notification.error({
-        message:
-          error?.message || 'Could not delete peer performance review event',
+        message: getErrorMessage(
+          error,
+          'Could not delete peer performance review event',
+        ),
       })
     } finally {
       setIsLoading(false)

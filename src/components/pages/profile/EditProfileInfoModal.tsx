@@ -3,6 +3,7 @@ import { useForm } from 'antd/lib/form/Form'
 import { client } from 'libs/apis'
 import { useState } from 'react'
 import { ViewEmployeeData } from 'types/schema'
+import { getErrorMessage } from 'utils/string'
 
 type ProfileInfoFormValues = Pick<
   ViewEmployeeData,
@@ -38,7 +39,7 @@ export const EditProfileInfoModal = (props: Props) => {
       onAfterSubmit()
     } catch (error: any) {
       notification.error({
-        message: error?.message || 'Could not update profile info',
+        message: getErrorMessage(error, 'Could not update profile info'),
       })
     } finally {
       setIsSubmitting(false)

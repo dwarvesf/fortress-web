@@ -7,6 +7,7 @@ import { useRouter } from 'next/router'
 import { ProjectWorkUnitStatus } from 'constants/status'
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { Edit, FolderDownload, FolderUpload } from '@icon-park/react'
+import { getErrorMessage } from 'utils/string'
 import { WorkUnitModal } from '../WorkUnitModal'
 
 export const Actions = ({
@@ -54,9 +55,10 @@ export const Actions = ({
       onAfterAction()
     } catch (error: any) {
       notification.error({
-        message:
-          error?.message ||
-          `Could not ${isActive ? 'archive' : 'unarchive'} this work unit!`,
+        message: getErrorMessage(
+          error,
+          `Could not ${isActive ? 'archive' : 'unarchive'} this work unit`,
+        ),
       })
     } finally {
       setIsLoading(false)

@@ -10,6 +10,7 @@ import {
   searchFilterOption,
   transformMetadataToSelectOption,
 } from 'utils/select'
+import { getErrorMessage } from 'utils/string'
 
 interface Props {
   isOpen: boolean
@@ -59,7 +60,7 @@ export const EditSkillsModal = (props: Props) => {
       }
     } catch (error: any) {
       notification.error({
-        message: error?.message || "Could not update employee's skills!",
+        message: getErrorMessage(error, "Could not update employee's skills"),
       })
     } finally {
       setIsSubmitting(false)

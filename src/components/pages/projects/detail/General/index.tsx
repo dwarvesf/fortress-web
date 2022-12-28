@@ -12,6 +12,7 @@ import { mutate } from 'swr'
 import { ViewProjectData } from 'types/schema'
 import { transformMetadataToSelectOption } from 'utils/select'
 import { EditableAvatar } from 'components/common/EditableAvatar'
+import { getErrorMessage } from 'utils/string'
 import { EditProjectContactInfoModal } from './EditProjectContactInfoModal'
 import { EditProjectGeneralInfoModal } from './EditProjectGeneralInfoModal'
 import { MemberTable } from './MemberTable'
@@ -45,7 +46,7 @@ export const General = (props: Props) => {
       mutate([GET_PATHS.getProjects, data.id])
     } catch (error: any) {
       notification.error({
-        message: error?.message || 'Could not update project status.',
+        message: getErrorMessage(error, 'Could not update project status'),
       })
     }
   }

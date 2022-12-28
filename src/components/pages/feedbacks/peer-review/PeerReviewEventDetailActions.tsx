@@ -9,6 +9,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { ViewTopic } from 'types/schema'
+import { getErrorMessage } from 'utils/string'
 import { AddParticipantsModal } from './AddParticipantsModal'
 
 interface Props {
@@ -43,8 +44,10 @@ export const PeerReviewEventDetailActions = (props: Props) => {
       onAfterDelete()
     } catch (error: any) {
       notification.error({
-        message:
-          error?.message || 'Could not delete peer performance review item',
+        message: getErrorMessage(
+          error,
+          'Could not delete peer performance review item',
+        ),
       })
     } finally {
       setIsLoading(false)

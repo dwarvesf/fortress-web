@@ -8,6 +8,7 @@ import {
   ViewPositionResponse,
   ViewSeniorityResponse,
 } from 'types/schema'
+import { getErrorMessage } from 'utils/string'
 import { MemberForm, MemberFormValues } from '../detail/Member/MemberForm'
 
 interface Props {
@@ -69,9 +70,10 @@ export const ProjectMemberModal = (props: Props) => {
       onClose()
     } catch (error: any) {
       notification.error({
-        message:
-          error?.message ||
+        message: getErrorMessage(
+          error,
           `Could not ${isEditing ? 'update' : 'assign'} the member!`,
+        ),
       })
     } finally {
       setIsSubmitting(false)
