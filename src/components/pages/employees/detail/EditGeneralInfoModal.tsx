@@ -42,7 +42,7 @@ export const EditGeneralInfoModal = (props: Props) => {
 
       await client.updateEmployeeGeneralInfo(employeeID, {
         ...values,
-        phone: phoneNumber,
+        phone: phoneNumber || values.phone,
       })
 
       notification.success({
