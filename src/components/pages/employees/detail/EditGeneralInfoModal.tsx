@@ -42,7 +42,10 @@ export const EditGeneralInfoModal = (props: Props) => {
 
       await client.updateEmployeeGeneralInfo(employeeID, {
         ...values,
-        phone: phoneNumber || values.phone,
+        phone:
+          phoneNumber && phoneNumber[phoneNumber.length - 1] !== ' ' // happens when admin edit phone number but then erase, the value is then looks like '+84 '
+            ? phoneNumber
+            : initialValues?.phone!,
       })
 
       notification.success({
