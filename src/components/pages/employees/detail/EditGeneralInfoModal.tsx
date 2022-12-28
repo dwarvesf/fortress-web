@@ -113,7 +113,6 @@ export const EditGeneralInfoModal = (props: Props) => {
             >
               <PhoneInput
                 country="vn"
-                value={initialValues?.phone}
                 onChange={(value, data) => {
                   if ('dialCode' in data) {
                     setPhoneNumber(
