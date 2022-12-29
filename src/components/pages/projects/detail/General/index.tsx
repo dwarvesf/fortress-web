@@ -13,6 +13,8 @@ import { ViewProjectData } from 'types/schema'
 import { transformMetadataToSelectOption } from 'utils/select'
 import { EditableAvatar } from 'components/common/EditableAvatar'
 import { getErrorMessage } from 'utils/string'
+import { Permission } from 'constants/permission'
+import { useAuthContext } from 'context/auth'
 import { EditProjectContactInfoModal } from './EditProjectContactInfoModal'
 import { EditProjectGeneralInfoModal } from './EditProjectGeneralInfoModal'
 import { MemberTable } from './MemberTable'
@@ -24,6 +26,9 @@ interface Props {
 
 export const General = (props: Props) => {
   const { data, mutateProject } = props
+  const { permissions } = useAuthContext()
+
+  const isEditable = permissions.includes(Permission.PROJECTS_EDIT)
 
   const {
     isOpen: isEditProjectGeneralInfoDialogOpen,
@@ -59,6 +64,7 @@ export const General = (props: Props) => {
             <EditableDetailSectionCard
               title="Overview"
               onEdit={openEditProjectGeneralInfoDialog}
+              permission={Permission.PROJECTS_EDIT}
             >
               <Row gutter={24}>
                 <Col span={24} lg={{ span: 8 }}>
@@ -73,9 +79,11 @@ export const General = (props: Props) => {
                       id={data.id}
                       avatar={data.avatar}
                       name={data.name}
+                      editable={isEditable}
                     />
                     <AsyncSelect
                       style={{ width: '100%', border: '1px solid #d9d9d9' }}
+                      disabled={!isEditable}
                       value={data.status}
                       optionGetter={async () =>
                         (await client.getProjectStatusMetadata()).data.map(
@@ -125,6 +133,7 @@ export const General = (props: Props) => {
             <EditableDetailSectionCard
               title="Contact Info"
               onEdit={openEditProjectContactInfoDialog}
+              permission={Permission.PROJECTS_EDIT}
             >
               <DataRows
                 data={[

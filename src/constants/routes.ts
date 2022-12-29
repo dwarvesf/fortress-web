@@ -5,7 +5,6 @@ export const ROUTES = {
   PROJECTS: '/projects',
   ADD_PROJECT: '/projects/new',
   PROJECT_DETAIL: (id: string) => `/projects/${id}`,
-  EDIT_PROJECT: (id: string) => `/projects/${id}/edit`,
   EMPLOYEES: '/employees',
   ADD_EMPLOYEE: '/employees/new',
   EMPLOYEE_DETAIL: (id: string) => `/employees/${id}`,

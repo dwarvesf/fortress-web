@@ -266,69 +266,64 @@ const Default = () => {
         ]}
       />
 
-      <AuthenticatedContent
-        permission={Permission.EMPLOYEES_READ}
-        fallback="403"
-      >
-        <Space direction="vertical" size={24} style={{ width: '100%' }}>
-          <PageHeader
-            title="Employees"
-            rightRender={
-              <>
-                <Col style={{ width: 256 }}>
-                  <Input
-                    placeholder="Search employees"
-                    bordered
-                    value={value}
-                    onChange={(e) => {
-                      setValue(e.target.value)
-                      searchEmployees(e.target.value)
-                    }}
-                  />
-                </Col>
-                <AuthenticatedContent
-                  permission={Permission.EMPLOYEES_CREATE}
-                  as={Col}
-                >
-                  <Link href={ROUTES.ADD_EMPLOYEE}>
-                    <a>
-                      <Button type="primary">Add Employee</Button>
-                    </a>
-                  </Link>
-                </AuthenticatedContent>
-              </>
-            }
+      <Space direction="vertical" size={24} style={{ width: '100%' }}>
+        <PageHeader
+          title="Employees"
+          rightRender={
+            <>
+              <Col style={{ width: 256 }}>
+                <Input
+                  placeholder="Search employees"
+                  bordered
+                  value={value}
+                  onChange={(e) => {
+                    setValue(e.target.value)
+                    searchEmployees(e.target.value)
+                  }}
+                />
+              </Col>
+              <AuthenticatedContent
+                permission={Permission.EMPLOYEES_CREATE}
+                as={Col}
+              >
+                <Link href={ROUTES.ADD_EMPLOYEE}>
+                  <a>
+                    <Button type="primary">Add Employee</Button>
+                  </a>
+                </Link>
+              </AuthenticatedContent>
+            </>
+          }
+        />
+        <Table
+          loading={loading}
+          dataSource={employees}
+          columns={columns({
+            filter,
+            positionsData: positionsData?.data || [],
+            projectsData: projectsData?.data || [],
+            stacksData: stacksData?.data || [],
+            chaptersData: chaptersData?.data || [],
+            senioritiesData: senioritiesData?.data || [],
+          })}
+          rowKey={(row) => row.id as string}
+          pagination={false}
+          scroll={{ x: 'max-content' }}
+          onChange={(_, filters) => {
+            setFilter(filters)
+          }}
+        />
+        <Row justify="end">
+          <Pagination
+            current={filter.page}
+            onChange={(page) => setFilter({ page })}
+            total={data?.total}
+            pageSize={filter.size}
+            hideOnSinglePage
+            size="small"
           />
-          <Table
-            loading={loading}
-            dataSource={employees}
-            columns={columns({
-              filter,
-              positionsData: positionsData?.data || [],
-              projectsData: projectsData?.data || [],
-              stacksData: stacksData?.data || [],
-              chaptersData: chaptersData?.data || [],
-              senioritiesData: senioritiesData?.data || [],
-            })}
-            rowKey={(row) => row.id as string}
-            pagination={false}
-            scroll={{ x: 'max-content' }}
-            onChange={(_, filters) => {
-              setFilter(filters)
-            }}
-          />
-          <Row justify="end">
-            <Pagination
-              current={filter.page}
-              onChange={(page) => setFilter({ page })}
-              total={data?.total}
-              pageSize={filter.size}
-              hideOnSinglePage
-              size="small"
-            />
-          </Row>
-        </Space>
-      </AuthenticatedContent>
+        </Row>
+      </Space>
     </>
   )
 }

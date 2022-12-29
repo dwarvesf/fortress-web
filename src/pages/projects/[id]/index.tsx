@@ -5,7 +5,9 @@ import { SEO } from 'components/common/SEO'
 import { General } from 'components/pages/projects/detail/General'
 import { Member } from 'components/pages/projects/detail/Member'
 import { WorkUnits } from 'components/pages/projects/detail/WorkUnits'
+import { Permission } from 'constants/permission'
 import { ROUTES } from 'constants/routes'
+import { useAuthContext } from 'context/auth'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { useTabWithQuery } from 'hooks/useTabWithQuery'
 import { client, GET_PATHS } from 'libs/apis'
@@ -15,6 +17,7 @@ const Default = () => {
   const {
     query: { id },
   } = useRouter()
+  const { permissions } = useAuthContext()
 
   const { tabKey = 'general', setTabKey } = useTabWithQuery()
 
@@ -61,6 +64,7 @@ const Default = () => {
             key: 'members',
             label: 'Members',
             children: <Member data={project} />,
+            permission: Permission.PROJECTMEMBERS_READ,
           },
           // {
           //   key: 'performance',
@@ -71,6 +75,7 @@ const Default = () => {
             key: 'work-units',
             label: 'Work Units',
             children: <WorkUnits data={project} />,
+            permission: Permission.PROJECTWORKUNITS_READ,
           },
           // {
           //   key: 'stakeholders',
@@ -82,7 +87,9 @@ const Default = () => {
           //   label: 'Document',
           //   children: 'Document',
           // },
-        ]}
+        ].filter(({ permission, ...item }) =>
+          permission && !permissions.includes(permission) ? null : item,
+        )}
       />
     </>
   )

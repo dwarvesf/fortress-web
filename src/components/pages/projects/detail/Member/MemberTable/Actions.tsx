@@ -1,8 +1,10 @@
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { Delete, Edit } from '@icon-park/react'
 import { Col, Modal, notification, Row, Tooltip } from 'antd'
+import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
 import { Button } from 'components/common/Button'
 import { SERVER_DATE_FORMAT } from 'constants/date'
+import { Permission } from 'constants/permission'
 import { ProjectMemberStatus } from 'constants/status'
 import { format } from 'date-fns'
 import { client } from 'libs/apis'
@@ -62,7 +64,10 @@ export const Actions = ({
   return (
     <>
       <Row justify="end" gutter={[8, 8]}>
-        <Col>
+        <AuthenticatedContent
+          permission={Permission.PROJECTMEMBERS_EDIT}
+          as={Col}
+        >
           <Tooltip title="Edit">
             <Button
               type="text-primary"
@@ -71,8 +76,11 @@ export const Actions = ({
               onClick={openEditDialog}
             />
           </Tooltip>
-        </Col>
-        <Col>
+        </AuthenticatedContent>
+        <AuthenticatedContent
+          permission={Permission.PROJECTMEMBERS_DELETE}
+          as={Col}
+        >
           <Tooltip title="Delete">
             <Button
               type="text-primary"
@@ -81,7 +89,7 @@ export const Actions = ({
               onClick={confirmDelete}
             />
           </Tooltip>
-        </Col>
+        </AuthenticatedContent>
       </Row>
       {isEditDialogOpen && (
         <MemberFormModal

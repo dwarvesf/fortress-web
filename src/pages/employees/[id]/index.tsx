@@ -1,10 +1,8 @@
-import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 import { PageHeader } from 'components/common/PageHeader'
 import { PageSpinner } from 'components/common/PageSpinner'
 import { SEO } from 'components/common/SEO'
 import { General } from 'components/pages/employees/detail/General'
-import { Permission } from 'constants/permission'
 import { ROUTES } from 'constants/routes'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { client, GET_PATHS } from 'libs/apis'
@@ -46,16 +44,12 @@ const Default = () => {
         ]}
       />
 
-      <AuthenticatedContent
-        permission={Permission.EMPLOYEES_READ}
-        fallback="403"
-      >
-        <PageHeader
-          title={employee?.displayName || ''}
-          backHref={ROUTES.EMPLOYEES}
-        />
-        <General data={employee} mutateEmployee={mutateEmployee} />
-        {/* <Tabs
+      <PageHeader
+        title={employee?.displayName || ''}
+        backHref={ROUTES.EMPLOYEES}
+      />
+      <General data={employee} mutateEmployee={mutateEmployee} />
+      {/* <Tabs
         defaultActiveKey={tabKey}
         onTabClick={setTabKey}
         items={[
@@ -71,7 +65,6 @@ const Default = () => {
           // },
         ]}
       /> */}
-      </AuthenticatedContent>
     </>
   )
 }

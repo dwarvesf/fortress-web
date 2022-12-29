@@ -1,3 +1,5 @@
+import { ROUTES } from './routes'
+
 export enum Permission {
   AUTH_READ = 'auth.read',
   EMPLOYEES_READ = 'employees.read',
@@ -27,4 +29,13 @@ export enum Permission {
   SURVEYS_READ = 'surveys.read',
   SURVEYS_EDIT = 'surveys.edit',
   SURVEYS_DELETE = 'surveys.delete',
+}
+
+export const pagePermissions = {
+  [ROUTES.EMPLOYEES]: Permission.EMPLOYEES_READ,
+  [ROUTES.EMPLOYEE_DETAIL('[id]')]: Permission.EMPLOYEES_READ,
+  [ROUTES.ADD_EMPLOYEE]: Permission.EMPLOYEES_CREATE,
+  [ROUTES.PROJECTS]: Permission.PROJECTS_READ,
+  [ROUTES.PROJECT_DETAIL('[id]')]: Permission.PROJECTS_READ,
+  [ROUTES.ADD_PROJECT]: Permission.PROJECTS_CREATE,
 }

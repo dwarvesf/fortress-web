@@ -5,14 +5,16 @@ import {
   Mail,
   Setting,
 } from '@icon-park/react'
-import { MenuProps, Layout, Menu } from 'antd'
-import { Permission } from 'constants/permission'
+import { Layout, Menu } from 'antd'
+import { ItemType } from 'antd/lib/menu/hooks/useItems'
+import { pagePermissions, Permission } from 'constants/permission'
 import { ROUTES } from 'constants/routes'
 import { LOGIN_REDIRECTION_KEY, useAuthContext } from 'context/auth'
 import { useRouter } from 'next/router'
 import React, { useEffect, useMemo } from 'react'
 import { WithChildren } from 'types/common'
 import { isActivePath } from 'utils/link'
+import { AuthenticatedContent } from '../AuthenticatedContent'
 import { Header } from '../Header'
 import { PageSpinner } from '../PageSpinner'
 import { SidebarLogo } from './SidebarLogo'
@@ -23,14 +25,17 @@ const {
   Sider,
 } = Layout
 
-type MenuItem = Required<MenuProps>['items'][number]
+interface MenuItem {
+  content: ItemType & { children?: MenuItem[] }
+  permission?: string
+}
 
 function getItem(
   label: React.ReactNode,
   key: React.Key,
   icon?: React.ReactNode,
   children?: MenuItem[],
-): MenuItem {
+) {
   return {
     key,
     icon,
@@ -39,28 +44,55 @@ function getItem(
   }
 }
 
-const getItems = (permissions: string[]): MenuItem[] => [
-  getItem('Dashboard', ROUTES.DASHBOARD, <ChartLine size={24} />),
-  permissions.includes(Permission.PROJECTS_READ)
-    ? getItem('Projects', ROUTES.PROJECTS, <AllApplication size={24} />)
-    : null,
-  permissions.includes(Permission.EMPLOYEES_READ)
-    ? getItem('Employees', ROUTES.EMPLOYEES, <EveryUser size={24} />)
-    : null,
-  getItem('Feedbacks', ROUTES.FEEDBACKS, <Mail size={24} />, [
-    permissions.includes(Permission.FEEDBACKS_READ)
-      ? getItem('Inbox', ROUTES.INBOX)
-      : null,
-    ...(permissions.includes(Permission.SURVEYS_READ)
-      ? [
-          getItem('Peer review', ROUTES.PEER_REVIEW),
-          getItem('Engagement', ROUTES.ENGAGEMENT),
-          getItem('Work', ROUTES.WORK),
-        ]
-      : []),
-  ]),
-  getItem('Config', ROUTES.CONFIG, <Setting size={24} />),
+const items: MenuItem[] = [
+  {
+    content: getItem('Dashboard', ROUTES.DASHBOARD, <ChartLine size={24} />),
+  },
+  {
+    content: getItem('Projects', ROUTES.PROJECTS, <AllApplication size={24} />),
+    permission: Permission.PROJECTS_READ,
+  },
+  {
+    content: getItem('Employees', ROUTES.EMPLOYEES, <EveryUser size={24} />),
+    permission: Permission.EMPLOYEES_READ,
+  },
+  {
+    content: getItem('Feedbacks', ROUTES.FEEDBACKS, <Mail size={24} />, [
+      {
+        content: getItem('Inbox', ROUTES.INBOX),
+        permission: Permission.FEEDBACKS_READ,
+      },
+      {
+        content: getItem('Peer review', ROUTES.PEER_REVIEW),
+        permission: Permission.SURVEYS_READ,
+      },
+      {
+        content: getItem('Engagement', ROUTES.ENGAGEMENT),
+        permission: Permission.SURVEYS_READ,
+      },
+      {
+        content: getItem('Work', ROUTES.WORK),
+        permission: Permission.SURVEYS_READ,
+      },
+    ]),
+  },
+  {
+    content: getItem('Config', ROUTES.CONFIG, <Setting size={24} />),
+  },
 ]
+
+const filterItems = (items: MenuItem[], permissions: string[]): ItemType[] => {
+  return items.flatMap(({ permission, content: { children, ...item } }) => {
+    return permission && !permissions.includes(permission)
+      ? []
+      : [
+          {
+            ...item,
+            children: children ? filterItems(children, permissions) : undefined,
+          },
+        ]
+  })
+}
 
 interface Props extends WithChildren {}
 
@@ -86,17 +118,15 @@ export const AuthenticatedLayout = (props: Props) => {
   const activeMenuKeys = useMemo(() => {
     const activeKeys: string[] = []
 
-    getItems(permissions).forEach((item) => {
+    items.forEach(({ content: item }) => {
       if (!item) return
 
       if (isActivePath(item.key as string, pathname)) {
         activeKeys.push(item.key as string)
       }
 
-      // @ts-ignore
       if (item.children) {
-        // @ts-ignore
-        item.children.forEach((subItem) => {
+        item.children.forEach(({ content: subItem }) => {
           if (!subItem) return
           if (isActivePath(subItem.key as string, pathname)) {
             activeKeys.push(subItem.key as string)
@@ -106,7 +136,7 @@ export const AuthenticatedLayout = (props: Props) => {
     })
 
     return activeKeys
-  }, [pathname, permissions])
+  }, [pathname])
 
   if (isAuthenticating || (!isAuthenticated && pathname !== ROUTES.LOGIN)) {
     return <PageSpinner />
@@ -122,15 +152,23 @@ export const AuthenticatedLayout = (props: Props) => {
         <SidebarLogo />
         <Menu
           mode="inline"
-          items={getItems(permissions)}
+          items={filterItems(items, permissions)}
           onClick={({ key }) => push(key)}
           selectedKeys={activeMenuKeys}
+          defaultOpenKeys={activeMenuKeys}
         />
       </Sider>
       <Layout style={{ overflow: 'hidden' }}>
         <Header />
         <Content style={{ overflow: 'auto' }}>
-          <div style={{ padding: 24 }}>{children}</div>
+          <div style={{ padding: 24 }}>
+            <AuthenticatedContent
+              permission={pagePermissions[pathname]}
+              fallback="403"
+            >
+              {children}
+            </AuthenticatedContent>
+          </div>
           {/* <Footer>Dwarves, LLC © 2015 - 2022 All rights reserved.</Footer> */}
         </Content>
       </Layout>

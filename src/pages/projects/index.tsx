@@ -19,6 +19,8 @@ import { PreviewOpen } from '@icon-park/react'
 import { SEO } from 'components/common/SEO'
 import { ProjectStatus, projectStatuses } from 'constants/status'
 import { useRouter } from 'next/router'
+import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
+import { Permission } from 'constants/permission'
 
 interface ColumnProps {
   filter: ProjectListFilter
@@ -168,13 +170,16 @@ const Default = () => {
                   )}
                 />
               </Col>
-              <Col>
+              <AuthenticatedContent
+                permission={Permission.PROJECTS_CREATE}
+                as={Col}
+              >
                 <Link href={ROUTES.ADD_PROJECT}>
                   <a>
                     <Button type="primary">Add Project</Button>
                   </a>
                 </Link>
-              </Col>
+              </AuthenticatedContent>
             </>
           }
         />
