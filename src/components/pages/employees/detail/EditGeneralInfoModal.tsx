@@ -41,14 +41,14 @@ export const EditGeneralInfoModal = (props: Props) => {
 
       await client.updateEmployeeGeneralInfo(employeeID, {
         ...values,
-        phone: `+${dialCode} ${removeLeadingZero(
-          values.phone.includes(' ') // need to check this for the case submit without editing
-            ? // in case phone is not edited, the value has the form +84 12345...
-              values.phone.split(' ')[1]
-            : // otherwise its value is passed from PhoneInput's
-              // onChange and has the form of 8412345...
+        phone: values.phone.includes(' ') // need to check this for the case submit without editing
+          ? // in case phone is not edited, the value has the form +84 12345...
+            values.phone
+          : // otherwise its value is passed from PhoneInput's
+            // onChange and has the form of 8412345...
+            `+${dialCode} ${removeLeadingZero(
               values.phone.slice(dialCode.length),
-        )}`,
+            )}`,
       })
 
       notification.success({
