@@ -111,14 +111,30 @@ export const EditPersonalInfoModal = (props: Props) => {
 
           <Col span={24}>
             <Form.Item
+              label="Personal email"
+              name="personalEmail"
+              rules={[
+                { required: true, message: 'Please input personal email' },
+                { type: 'email', message: 'Wrong email format' },
+              ]}
+            >
+              <Input
+                className="bordered"
+                type="email"
+                placeholder="Enter personal email"
+              />
+            </Form.Item>
+          </Col>
+
+          <Col span={24}>
+            <Form.Item
               label="Address"
               name="address"
               rules={[
                 { required: true, message: 'Please input address' },
                 {
                   max: 200,
-                  message:
-                    'Address must be less than or equal to 200 characters',
+                  message: 'Must be less than or equal to 200 characters',
                 },
               ]}
             >
@@ -132,17 +148,20 @@ export const EditPersonalInfoModal = (props: Props) => {
 
           <Col span={24}>
             <Form.Item
-              label="Personal email"
-              name="personalEmail"
+              label="Place of Residence"
+              name="placeOfResidence"
               rules={[
-                { required: true, message: 'Please input personal email' },
-                { type: 'email', message: 'Wrong email format' },
+                { required: true, message: 'Please input place of residence' },
+                {
+                  max: 200,
+                  message: 'Must be less than or equal to 200 characters',
+                },
               ]}
             >
               <Input
                 className="bordered"
-                type="email"
-                placeholder="Enter personal email"
+                type="text"
+                placeholder="Enter address"
               />
             </Form.Item>
           </Col>

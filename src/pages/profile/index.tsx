@@ -113,10 +113,13 @@ const Default = () => {
                       },
                       { label: 'Notion', value: user?.notionName },
                       { label: 'LinkedIn', value: '' },
-                      { label: 'Shelter Address', value: user?.address },
-                      { label: 'Permanent Address', value: '' },
-                      { label: 'Country', value: '' },
-                      { label: 'City', value: '' },
+                      { label: 'Address', value: user?.address },
+                      { label: 'City', value: user?.city },
+                      { label: 'Country', value: user?.country },
+                      {
+                        label: 'Place of Residence',
+                        value: user?.placeOfResidence,
+                      },
                     ]}
                   />
                 </Col>
