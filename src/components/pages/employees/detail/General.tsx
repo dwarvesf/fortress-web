@@ -207,6 +207,10 @@ export const General = (props: Props) => {
                         label: 'Notion',
                         value: data.notionName || '-',
                       },
+                      {
+                        label: 'LinkedIn',
+                        value: data.linkedInName || '-',
+                      },
                     ]}
                   />
                 </Col>
@@ -279,10 +283,14 @@ export const General = (props: Props) => {
                       : '',
                   },
                   { label: 'Gender', value: data.gender },
-                  { label: 'Address', value: data.address },
                   {
                     label: 'Personal Email',
                     value: data.personalEmail || '-',
+                  },
+                  { label: 'Address', value: data.address },
+                  {
+                    label: 'Place of Residence',
+                    value: data.placeOfResidence,
                   },
                 ]}
               />
@@ -306,12 +314,9 @@ export const General = (props: Props) => {
         onClose={closeEditGeneralInfoDialog}
         isOpen={isEditGeneralInfoDialogOpen}
         initialValues={{
-          discordID: data.discordID,
           email: data.teamEmail || '',
           fullName: data.fullName || '',
-          githubID: data.githubID,
           lineManagerID: data.lineManager?.id || '',
-          notionID: data.notionID,
           phone: data.phoneNumber || '',
         }}
         onAfterSubmit={() => mutate([GET_PATHS.getEmployees, username])}
@@ -340,8 +345,9 @@ export const General = (props: Props) => {
         initialValues={{
           dob: data.birthday ? moment(data.birthday) : moment(),
           gender: data.gender || '',
-          address: data.address || '',
           personalEmail: data.personalEmail || '',
+          address: data.address || '',
+          placeOfResidence: data.placeOfResidence || '',
         }}
         onAfterSubmit={() => mutate([GET_PATHS.getEmployees, username])}
       />

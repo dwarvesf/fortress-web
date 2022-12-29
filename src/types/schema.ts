@@ -192,6 +192,7 @@ export interface RequestUpdateEmployeeGeneralInfoInput {
 }
 
 export interface RequestUpdateInfoInput {
+  address?: string
   city?: string
   country?: string
   discordID?: string
@@ -201,10 +202,9 @@ export interface RequestUpdateInfoInput {
   notionEmail?: string
   notionID?: string
   notionName?: string
-  permanentAddress?: string
   personalEmail: string
   phoneNumber: string
-  shelterAddress: string
+  placeOfResidence: string
   teamEmail: string
 }
 
@@ -227,6 +227,7 @@ export interface RequestUpdatePersonalInfoInput {
   dob: string
   gender: string
   personalEmail: string
+  placeOfResidence?: string
 }
 
 export interface RequestUpdateProjectGeneralInfoInput {
@@ -415,11 +416,13 @@ export interface ViewEmployeeData {
   joinedDate?: string
   leftDate?: string
   lineManager?: ViewBasicEmployeeInfo
+  linkedInName?: string
   mbti?: string
   notionID?: string
   notionName?: string
   personalEmail?: string
   phoneNumber?: string
+  placeOfResidence?: string
   positions?: ViewPosition[]
   projects?: ViewEmployeeProjectData[]
   roles?: ViewRole[]
@@ -557,6 +560,7 @@ export interface ViewPositionResponse {
 }
 
 export interface ViewProfileData {
+  address?: string
   avatar?: string
   birthday?: string
   city?: string
@@ -572,10 +576,9 @@ export interface ViewProfileData {
   notionEmail?: string
   notionID?: string
   notionName?: string
-  permanentAddress?: string
   personalEmail?: string
   phoneNumber?: string
-  shelterAddress?: string
+  placeOfResidence?: string
   teamEmail?: string
   username?: string
 }
@@ -791,6 +794,7 @@ export interface ViewUpdatePersonalEmployeeData {
   gender?: string
   id?: string
   personalEmail?: string
+  placeOfResidence?: string
   updatedAt?: string
 }
 
@@ -799,6 +803,7 @@ export interface ViewUpdatePersonalEmployeeResponse {
 }
 
 export interface ViewUpdateProfileInfoData {
+  address?: string
   city?: string
   country?: string
   createdAt?: string
@@ -811,9 +816,8 @@ export interface ViewUpdateProfileInfoData {
   notionEmail?: string
   notionID?: string
   notionName?: string
-  permanentAddress?: string
   phoneNumber?: string
-  shelterAddress?: string
+  placeOfResidence?: string
   /** basic info */
   teamEmail?: string
   updatedAt?: string

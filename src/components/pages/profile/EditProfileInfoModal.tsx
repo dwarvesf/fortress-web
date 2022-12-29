@@ -2,17 +2,18 @@ import { Col, Form, Input, Modal, notification, Row } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
 import { client } from 'libs/apis'
 import { useState } from 'react'
-import { ViewEmployeeData } from 'types/schema'
+import { ViewProfileData } from 'types/schema'
 import { getErrorMessage } from 'utils/string'
 
 type ProfileInfoFormValues = Pick<
-  ViewEmployeeData,
+  ViewProfileData,
   | 'phoneNumber'
-  | 'discordID'
-  | 'githubID'
   | 'personalEmail'
   | 'teamEmail'
-  | 'notionID'
+  | 'address'
+  | 'city'
+  | 'country'
+  | 'placeOfResidence'
 >
 
 interface Props {
@@ -91,41 +92,18 @@ export const EditProfileInfoModal = (props: Props) => {
             </Form.Item>
           </Col>
           <Col span={24} md={{ span: 12 }}>
-            <Form.Item label="Discord ID" name="discordID">
-              <Input placeholder="Enter Discord ID" className="bordered" />
-            </Form.Item>
-          </Col>
-          <Col span={24} md={{ span: 12 }}>
-            <Form.Item label="Github ID" name="githubID">
-              <Input placeholder="Enter Github ID" className="bordered" />
-            </Form.Item>
-          </Col>
-          <Col span={24} md={{ span: 12 }}>
-            <Form.Item label="Notion Email" name="notionID">
-              <Input placeholder="Enter Notion Email" className="bordered" />
-            </Form.Item>
-          </Col>
-          <Col span={24} md={{ span: 12 }}>
-            <Form.Item label="LinkedIn" name="linkedInID">
-              <Input placeholder="Enter LinkedIn" className="bordered" />
-            </Form.Item>
-          </Col>
-          <Col span={24} md={{ span: 12 }}>
             <Form.Item
-              label="Shelter Address"
-              name="shelterAddress"
+              label="Address"
+              name="address"
               required
               rules={[{ required: true }]}
             >
-              <Input placeholder="Enter Shelter Address" className="bordered" />
+              <Input placeholder="Enter Address" className="bordered" />
             </Form.Item>
           </Col>
           <Col span={24} md={{ span: 12 }}>
-            <Form.Item label="Permanent Address" name="permanentAddress">
-              <Input
-                placeholder="Enter Permanent Address"
-                className="bordered"
-              />
+            <Form.Item label="City" name="city">
+              <Input placeholder="Enter City" className="bordered" />
             </Form.Item>
           </Col>
           <Col span={24} md={{ span: 12 }}>
@@ -134,8 +112,11 @@ export const EditProfileInfoModal = (props: Props) => {
             </Form.Item>
           </Col>
           <Col span={24} md={{ span: 12 }}>
-            <Form.Item label="City" name="city">
-              <Input placeholder="Enter City" className="bordered" />
+            <Form.Item label="Place of Residence" name="placeOfResidence">
+              <Input
+                placeholder="Enter Place of Residence"
+                className="bordered"
+              />
             </Form.Item>
           </Col>
         </Row>

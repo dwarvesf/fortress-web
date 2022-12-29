@@ -146,45 +146,6 @@ export const EditGeneralInfoModal = (props: Props) => {
               />
             </Form.Item>
           </Col>
-
-          <Col span={24} md={{ span: 12 }}>
-            <Form.Item
-              label="Discord ID"
-              name="discordID"
-              rules={[
-                {
-                  pattern: /^.{3,32}#[0-9]{4}$/,
-                  message: 'Please input accurate Discord ID',
-                },
-              ]}
-            >
-              <Input
-                className="bordered"
-                type="text"
-                placeholder="Enter Discord ID"
-              />
-            </Form.Item>
-          </Col>
-
-          <Col span={24} md={{ span: 12 }}>
-            <Form.Item label="GitHub ID" name="githubID">
-              <Input
-                className="bordered"
-                type="text"
-                placeholder="Enter GitHub ID"
-              />
-            </Form.Item>
-          </Col>
-
-          <Col span={24} md={{ span: 12 }}>
-            <Form.Item label="Notion ID" name="notionID">
-              <Input
-                className="bordered"
-                type="text"
-                placeholder="Enter Notion ID"
-              />
-            </Form.Item>
-          </Col>
         </Row>
       </Form>
     </Modal>

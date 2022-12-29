@@ -9,12 +9,12 @@ import { notification } from 'antd'
 import { parseJWT } from 'utils/string'
 import { getCookie, setCookie, removeCookie } from 'utils/cookie'
 import { useAsyncEffect } from '@dwarvesf/react-hooks'
-import { ViewEmployeeData } from 'types/schema'
+import { ViewProfileData } from 'types/schema'
 
 interface AuthContextValues {
   isAuthenticated: boolean
   isAuthenticating: boolean
-  user?: ViewEmployeeData
+  user?: ViewProfileData
   login: () => void
   logout: () => void
   revalidate: () => void
@@ -30,7 +30,7 @@ const [Provider, useAuthContext] = createContext<AuthContextValues>({
 const AuthContextProvider = ({ children }: WithChildren) => {
   const [authToken, setAuthToken] = useState('')
   const [isAuthenticating, setIsAuthenticating] = useState<boolean>(true)
-  const [user, setUser] = useState<ViewEmployeeData>()
+  const [user, setUser] = useState<ViewProfileData>()
   const [fetchTrigger, setFetchTrigger] = useState(Date.now())
 
   const login = useGoogleLogin({
