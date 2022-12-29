@@ -33,6 +33,7 @@ import debounce from 'lodash.debounce'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 import { SEO } from 'components/common/SEO'
 import { getErrorMessage } from 'utils/string'
+import { FeedbackSubtype } from 'constants/feedbackTypes'
 
 const columns: ColumnsType<ViewTopic> = [
   {
@@ -81,10 +82,8 @@ const Default = () => {
       setIsLoading(true)
 
       await client.sendSurvey(engagementId, {
-        topics: engagements.map((each) => ({
-          topicID: each.id!,
-          participants: [each.employee?.id!],
-        })),
+        topicIDs: [],
+        type: FeedbackSubtype.ENGAGEMENT,
       })
 
       notification.success({
