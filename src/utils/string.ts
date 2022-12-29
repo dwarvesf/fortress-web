@@ -31,3 +31,32 @@ export const getErrorMessage = (error?: any, prefix?: string) => {
   const message = [prefix, error?.message].join(' - ')
   return message || 'Unknown error'
 }
+
+export const removeLeadingZero = (phoneNumber: string) =>
+  (phoneNumber || '')[0] === '0' ? phoneNumber.slice(1) : phoneNumber
+
+export const formatPhoneNumber = (dialCode: string, phoneNumber?: string) => {
+  if (phoneNumber === undefined) return ''
+
+  // array containing 2 parts of full phone number
+  // dial code & phone number
+  const phoneNumberElements: string[] = []
+
+  // if phone number has the form +84 12345...
+  // parse the first part as '84' and the second part as '12345...'
+  if (phoneNumber.includes('+')) {
+    const parsedDialCode = phoneNumber.split(' ')[0].slice(1)
+    const parsedPhoneNumber = phoneNumber.split(' ')[1]
+
+    phoneNumberElements.push(
+      parsedDialCode,
+      removeLeadingZero(parsedPhoneNumber),
+    )
+  } else {
+    // if phone number has only numbers part (012345...)
+    // remove leading 0 and join with the dialCode param
+    phoneNumberElements.push(dialCode, removeLeadingZero(phoneNumber))
+  }
+
+  return `+${phoneNumberElements.join(' ')}`
+}
