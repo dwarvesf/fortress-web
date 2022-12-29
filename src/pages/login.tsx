@@ -8,7 +8,8 @@ import { theme } from 'styles'
 import Link from 'next/link'
 import { Logo } from 'components/common/Logo'
 import { SEO } from 'components/common/SEO'
-import { brandLinks } from 'constants/links'
+import { socialLinks } from 'constants/socials'
+import { SVGIcon } from 'components/common/SVGIcon'
 
 const LoginContainer = styled.div`
   background-color: ${theme.colors.primary};
@@ -179,11 +180,13 @@ const LoginPage = () => {
             </GoogleLoginButton>
 
             <SocialLinks gutter={12}>
-              {brandLinks.map((b) => (
+              {socialLinks.map((s) => (
                 <Col>
-                  <Link href={b.url} passHref>
+                  <Link href={s.url} passHref>
                     <a target="_blank">
-                      <span>{b.icon}</span>
+                      <span>
+                        <SVGIcon name={s.name} />
+                      </span>
                     </a>
                   </Link>
                 </Col>
