@@ -62,14 +62,6 @@ const LoginCard = styled(Card)`
   }
 `
 
-const GradientText = styled.span`
-  font-weight: 600;
-  font-size: 19px;
-  background-image: linear-gradient(to right, ${theme.colors.primary}, #726cf8);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-`
-
 const GoogleLoginButton = styled(Button)`
   display: flex;
   justify-content: center;
@@ -152,7 +144,17 @@ const LoginPage = () => {
                 marginBottom: 16,
               }}
             >
-              Welcome to <GradientText>Fortress</GradientText>!
+              Welcome to{' '}
+              <span
+                style={{
+                  fontWeight: 600,
+                  fontSize: 19,
+                  color: theme.colors.primary,
+                }}
+              >
+                Fortress
+              </span>
+              !
             </span>
 
             <GoogleLoginButton onClick={() => login()}>
