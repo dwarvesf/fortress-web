@@ -5,7 +5,6 @@ import SVG from 'react-inlinesvg'
 interface SVGIconProps extends SVGProps<SVGElement> {
   name: SocialLinkTypes
   size?: number
-  color?: string
 }
 
 export const SVGIcon = (props: SVGIconProps) => {
