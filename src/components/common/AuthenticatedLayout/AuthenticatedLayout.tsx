@@ -6,6 +6,7 @@ import {
   Setting,
 } from '@icon-park/react'
 import { MenuProps, Layout, Menu } from 'antd'
+import { Permission } from 'constants/permission'
 import { ROUTES } from 'constants/routes'
 import { LOGIN_REDIRECTION_KEY, useAuthContext } from 'context/auth'
 import { useRouter } from 'next/router'
@@ -35,18 +36,28 @@ function getItem(
     icon,
     children,
     label,
-  } as MenuItem
+  }
 }
 
-const items: MenuItem[] = [
+const getItems = (permissions: string[]): MenuItem[] => [
   getItem('Dashboard', ROUTES.DASHBOARD, <ChartLine size={24} />),
-  getItem('Projects', ROUTES.PROJECTS, <AllApplication size={24} />),
-  getItem('Employees', ROUTES.EMPLOYEES, <EveryUser size={24} />),
+  permissions.includes(Permission.PROJECTS_READ)
+    ? getItem('Projects', ROUTES.PROJECTS, <AllApplication size={24} />)
+    : null,
+  permissions.includes(Permission.EMPLOYEES_READ)
+    ? getItem('Employees', ROUTES.EMPLOYEES, <EveryUser size={24} />)
+    : null,
   getItem('Feedbacks', ROUTES.FEEDBACKS, <Mail size={24} />, [
-    getItem('Inbox', ROUTES.INBOX),
-    getItem('Peer review', ROUTES.PEER_REVIEW),
-    getItem('Engagement', ROUTES.ENGAGEMENT),
-    getItem('Work', ROUTES.WORK),
+    permissions.includes(Permission.FEEDBACKS_READ)
+      ? getItem('Inbox', ROUTES.INBOX)
+      : null,
+    ...(permissions.includes(Permission.SURVEYS_READ)
+      ? [
+          getItem('Peer review', ROUTES.PEER_REVIEW),
+          getItem('Engagement', ROUTES.ENGAGEMENT),
+          getItem('Work', ROUTES.WORK),
+        ]
+      : []),
   ]),
   getItem('Config', ROUTES.CONFIG, <Setting size={24} />),
 ]
@@ -56,7 +67,7 @@ interface Props extends WithChildren {}
 export const AuthenticatedLayout = (props: Props) => {
   const { children } = props
 
-  const { isAuthenticated, isAuthenticating } = useAuthContext()
+  const { isAuthenticated, isAuthenticating, permissions } = useAuthContext()
 
   const { replace, push, pathname } = useRouter()
 
@@ -75,24 +86,27 @@ export const AuthenticatedLayout = (props: Props) => {
   const activeMenuKeys = useMemo(() => {
     const activeKeys: string[] = []
 
-    items.forEach((item) => {
-      if (isActivePath(item!.key as string, pathname)) {
-        activeKeys.push(item!.key as string)
+    getItems(permissions).forEach((item) => {
+      if (!item) return
+
+      if (isActivePath(item.key as string, pathname)) {
+        activeKeys.push(item.key as string)
       }
 
       // @ts-ignore
       if (item.children) {
         // @ts-ignore
         item.children.forEach((subItem) => {
-          if (isActivePath(subItem!.key as string, pathname)) {
-            activeKeys.push(subItem!.key as string)
+          if (!subItem) return
+          if (isActivePath(subItem.key as string, pathname)) {
+            activeKeys.push(subItem.key as string)
           }
         })
       }
     })
 
     return activeKeys
-  }, [pathname])
+  }, [pathname, permissions])
 
   if (isAuthenticating || (!isAuthenticated && pathname !== ROUTES.LOGIN)) {
     return <PageSpinner />
@@ -108,7 +122,7 @@ export const AuthenticatedLayout = (props: Props) => {
         <SidebarLogo />
         <Menu
           mode="inline"
-          items={items}
+          items={getItems(permissions)}
           onClick={({ key }) => push(key)}
           selectedKeys={activeMenuKeys}
         />

@@ -39,6 +39,8 @@ import { LinkWithIcon } from 'components/common/LinkWithIcon'
 import { EditableAvatar } from 'components/common/EditableAvatar'
 import { getErrorMessage } from 'utils/string'
 import { EmployeeListFilter } from 'types/filters/EmployeeListFilter'
+import { Permission } from 'constants/permission'
+import { useAuthContext } from 'context/auth'
 import { EditPersonalInfoModal } from './EditPersonalInfoModal'
 import { EditSkillsModal } from './EditSkillsModal'
 import { EditGeneralInfoModal } from './EditGeneralInfoModal'
@@ -119,6 +121,9 @@ export const General = (props: Props) => {
   } = useRouter()
 
   const [isLoading, setIsLoading] = useState(false)
+  const { permissions } = useAuthContext()
+
+  const isEditable = permissions.includes(Permission.EMPLOYEES_EDIT)
 
   const onChangeStatus = async (value: string) => {
     try {
@@ -164,6 +169,7 @@ export const General = (props: Props) => {
             <EditableDetailSectionCard
               title="Profile"
               onEdit={openEditGeneralInfoDialog}
+              permission={Permission.EMPLOYEES_EDIT}
             >
               <Row gutter={[24, 24]}>
                 <Col span={24} lg={{ span: 8 }}>
@@ -178,9 +184,11 @@ export const General = (props: Props) => {
                       id={data.id}
                       avatar={data.avatar}
                       name={data.displayName || data.fullName}
+                      editable={isEditable}
                     />
                     <Select
                       loading={isLoading}
+                      disabled={!isEditable}
                       style={{ width: '100%' }}
                       value={data.status}
                       onChange={onChangeStatus}
@@ -266,6 +274,7 @@ export const General = (props: Props) => {
             <EditableDetailSectionCard
               title="Skills"
               onEdit={openEditSkillsDialog}
+              permission={Permission.EMPLOYEES_EDIT}
             >
               <DataRows
                 data={[
@@ -349,6 +358,7 @@ export const General = (props: Props) => {
             <EditableDetailSectionCard
               title="Personal Info"
               onEdit={openEditPersonalInfoDialog}
+              permission={Permission.EMPLOYEES_EDIT}
             >
               <DataRows
                 data={[
