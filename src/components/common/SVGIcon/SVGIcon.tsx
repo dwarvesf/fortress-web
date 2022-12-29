@@ -1,9 +1,9 @@
-import { SocialIconTypes } from 'constants/socials'
+import { IconName } from 'constants/socials'
 import React, { SVGProps } from 'react'
 import SVG from 'react-inlinesvg'
 
 interface SVGIconProps extends SVGProps<SVGElement> {
-  name: SocialIconTypes
+  name: IconName
   size?: number
 }
 

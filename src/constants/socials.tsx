@@ -1,4 +1,4 @@
-export type SocialIconTypes =
+export type IconName =
   | 'discord'
   | 'github'
   | 'twitter'
@@ -7,7 +7,7 @@ export type SocialIconTypes =
   | 'google'
 
 interface SocialLink {
-  name: SocialIconTypes
+  name: IconName
   url: string
 }
 
