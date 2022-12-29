@@ -4,6 +4,7 @@ export type SocialLinkTypes =
   | 'twitter'
   | 'linkedin'
   | 'facebook'
+  | 'google'
 
 interface SocialLink {
   name: SocialLinkTypes
