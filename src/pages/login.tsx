@@ -158,7 +158,7 @@ const LoginPage = () => {
               !
             </span>
 
-            <GoogleLoginButton onClick={() => login()}>
+            <GoogleLoginButton onClick={login}>
               <SVGIcon
                 name="google"
                 style={{
@@ -184,9 +184,9 @@ const LoginPage = () => {
               ))}
             </SocialLinks>
 
-            <span style={{ fontSize: 14, color: theme.colors.gray500 }}>
+            <Text style={{ fontSize: 14, color: theme.colors.gray500 }}>
               A product of Dwarves, LLC
-            </span>
+            </Text>
           </LoginCard>
         </LoginCardWrapper>
       </LoginContainer>
