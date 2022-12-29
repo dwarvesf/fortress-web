@@ -8,7 +8,11 @@ import { fullListPagination } from 'types/filters/Pagination'
 import { RequestUpdateEmployeeGeneralInfoInput } from 'types/schema'
 import { transformEmployeeDataToSelectOption } from 'utils/select'
 import PhoneInput from 'react-phone-input-2'
-import { getErrorMessage } from 'utils/string'
+import {
+  formatPhoneNumber,
+  getErrorMessage,
+  removeLeadingZero,
+} from 'utils/string'
 
 interface Props {
   employeeID: string
@@ -25,11 +29,6 @@ export const EditGeneralInfoModal = (props: Props) => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
   const hasPrefix = initialValues?.phone.includes('+') || false
 
-  const [phoneNumber, setPhoneNumber] = useState<string>(
-    hasPrefix
-      ? initialValues?.phone.split(' ')[1] || ''
-      : initialValues?.phone || '',
-  )
   const [dialCode, setDialCode] = useState<string>(
     hasPrefix ? initialValues?.phone.split(' ')[0].slice(1) || '' : '84',
   )
@@ -42,7 +41,14 @@ export const EditGeneralInfoModal = (props: Props) => {
 
       await client.updateEmployeeGeneralInfo(employeeID, {
         ...values,
-        phone: `+${dialCode} ${phoneNumber}`,
+        phone: `+${dialCode} ${removeLeadingZero(
+          values.phone.includes(' ') // need to check this for the case submit without editing
+            ? // in case phone is not edited, the value has the form +84 12345...
+              values.phone.split(' ')[1]
+            : // otherwise its value is passed from PhoneInput's
+              // onChange and has the form of 8412345...
+              values.phone.slice(dialCode.length),
+        )}`,
       })
 
       notification.success({
@@ -75,7 +81,16 @@ export const EditGeneralInfoModal = (props: Props) => {
       destroyOnClose
       title="Edit General Info"
     >
-      <Form form={form} onFinish={onSubmit} initialValues={initialValues}>
+      <Form
+        form={form}
+        onFinish={onSubmit}
+        initialValues={{
+          ...initialValues,
+          // pass phone manually since antd Form pass value through
+          // 'name' attr and overwrite PhoneInput's value
+          phone: formatPhoneNumber(dialCode, initialValues?.phone),
+        }}
+      >
         <Row gutter={24}>
           <Col span={24} md={{ span: 12 }}>
             <Form.Item
@@ -117,6 +132,7 @@ export const EditGeneralInfoModal = (props: Props) => {
           <Col span={24} md={{ span: 12 }}>
             <Form.Item
               label="Phone number"
+              name="phone"
               rules={[
                 {
                   required: true,
@@ -126,15 +142,11 @@ export const EditGeneralInfoModal = (props: Props) => {
             >
               <PhoneInput
                 country="vn"
-                value={
-                  hasPrefix
-                    ? initialValues?.phone
-                    : `+${dialCode} ${initialValues?.phone}`
-                }
                 onChange={(value, data) => {
+                  // store dial code and phone number individually
+                  form.setFieldValue('phone', value)
                   if ('dialCode' in data) {
                     setDialCode(data.dialCode)
-                    setPhoneNumber(value.slice(data.dialCode.length))
                   }
                 }}
                 inputStyle={{ width: '100%' }}
