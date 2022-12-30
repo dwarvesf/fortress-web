@@ -12,7 +12,7 @@ export const ProfileDropdown = () => {
         {
           key: 'profile',
           label: (
-            <Link href={ROUTES.PROFILE}>
+            <Link href={ROUTES.PROFILE} style={{ width: '100%' }}>
               <a style={{ textDecoration: 'none' }}>Profile</a>
             </Link>
           ),
@@ -20,7 +20,7 @@ export const ProfileDropdown = () => {
         {
           key: 'logout',
           label: (
-            <Space role="button" onClick={logout}>
+            <Space role="button" onClick={logout} style={{ width: '100%' }}>
               Logout
             </Space>
           ),

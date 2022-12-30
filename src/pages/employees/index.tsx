@@ -117,10 +117,7 @@ const columns = ({
         value={value}
         content={(chapter) =>
           chapter.leadID === record.id ? (
-            <Tooltip
-              color={theme.colors.primary}
-              title={`${chapter.name} lead`}
-            >
+            <Tooltip title={`${chapter.name} lead`}>
               {chapter.name} <Star style={{ color: theme.colors.primary }} />
             </Tooltip>
           ) : (
