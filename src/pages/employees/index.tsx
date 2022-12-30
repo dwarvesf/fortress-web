@@ -77,7 +77,7 @@ const columns = ({
       <TagArray
         value={value}
         content={(project) => (
-          <Link href={ROUTES.PROJECT_DETAIL(project.id || '')}>
+          <Link href={ROUTES.PROJECT_DETAIL(project.code || '')}>
             <a>
               <Space size={4}>
                 {project.name}

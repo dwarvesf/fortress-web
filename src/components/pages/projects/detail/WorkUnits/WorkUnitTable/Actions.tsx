@@ -3,7 +3,6 @@ import { Button } from 'components/common/Button'
 import { ViewWorkUnit } from 'types/schema'
 import { useState } from 'react'
 import { client } from 'libs/apis'
-import { useRouter } from 'next/router'
 import { ProjectWorkUnitStatus } from 'constants/status'
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { Edit, FolderDownload, FolderUpload } from '@icon-park/react'
@@ -18,10 +17,6 @@ export const Actions = ({
   onAfterAction: () => void
 }) => {
   const {
-    query: { id: projectId },
-  } = useRouter()
-
-  const {
     isOpen: isEditWorkUnitDialogOpen,
     onOpen: openEditWorkUnitDialog,
     onClose: closeEditWorkUnitDialog,
@@ -29,21 +24,16 @@ export const Actions = ({
 
   const [isLoading, setIsLoading] = useState(false)
   const isActive = record.status === ProjectWorkUnitStatus.ACTIVE
+  const projectID = record.projectID || ''
 
   const onArchiveUnarchive = async () => {
     try {
       setIsLoading(true)
 
       if (isActive) {
-        await client.archiveProjectWorkUnit(
-          projectId as string,
-          record.id || '',
-        )
+        await client.archiveProjectWorkUnit(projectID, record.id || '')
       } else {
-        await client.unarchiveProjectWorkUnit(
-          projectId as string,
-          record.id || '',
-        )
+        await client.unarchiveProjectWorkUnit(projectID, record.id || '')
       }
 
       notification.success({
@@ -98,6 +88,7 @@ export const Actions = ({
       </Row>
       {isEditWorkUnitDialogOpen && (
         <WorkUnitModal
+          projectID={projectID}
           isEditing
           initialValues={{
             name: record.name || '',
@@ -107,7 +98,7 @@ export const Actions = ({
             stacks: (record.stacks || []).map((s) => s.id || ''),
             url: record.url || '',
           }}
-          rowID={record.id}
+          rowID={record.id || ''}
           isOpen={isEditWorkUnitDialogOpen}
           onClose={closeEditWorkUnitDialog}
           onAfterSubmit={onAfterAction}

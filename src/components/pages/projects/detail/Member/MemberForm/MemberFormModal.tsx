@@ -3,8 +3,8 @@ import { useForm } from 'antd/lib/form/Form'
 import { ProjectMemberStatus } from 'constants/status'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { client, GET_PATHS } from 'libs/apis'
-import { useRouter } from 'next/router'
 import { useMemo, useState } from 'react'
+import { fullListPagination } from 'types/filters/Pagination'
 import { getErrorMessage } from 'utils/string'
 import { MemberForm, MemberFormValues } from '.'
 
@@ -12,6 +12,7 @@ interface Props {
   isOpen: boolean
   isEditing?: boolean
   initialValues?: MemberFormValues
+  projectID: string
   projectSlotID?: string
   projectMemberID?: string
   onClose: () => void
@@ -20,13 +21,10 @@ interface Props {
 
 export const MemberFormModal = (props: Props) => {
   const {
-    query: { id: projectId },
-  } = useRouter()
-
-  const {
     isOpen,
     isEditing = false,
     initialValues,
+    projectID,
     projectSlotID = '',
     projectMemberID = '',
     onClose,
@@ -37,11 +35,10 @@ export const MemberFormModal = (props: Props) => {
   const [isLoading, setIsLoading] = useState(false)
 
   const { data: allData } = useFetchWithCache(
-    [GET_PATHS.getProjectMemberList, projectId],
+    [GET_PATHS.getProjectMemberList, projectID],
     () =>
-      client.getProjectMemberList(projectId as string, {
-        page: 1,
-        size: 999,
+      client.getProjectMemberList(projectID, {
+        ...fullListPagination,
       }),
   )
   // eslint-disable-next-line
@@ -68,9 +65,9 @@ export const MemberFormModal = (props: Props) => {
       }
 
       if (!isEditing) {
-        await client.createProjectMember(projectId as string, formValues)
+        await client.createProjectMember(projectID, formValues)
       } else {
-        await client.updateProjectMember(projectId as string, {
+        await client.updateProjectMember(projectID, {
           ...formValues,
           projectSlotID,
         })
@@ -98,7 +95,7 @@ export const MemberFormModal = (props: Props) => {
     try {
       setIsLoading(true)
 
-      await client.unassignProjectMember(projectId as string, projectMemberID)
+      await client.unassignProjectMember(projectID, projectMemberID)
 
       notification.success({
         message: `Member unassigned successfully!`,

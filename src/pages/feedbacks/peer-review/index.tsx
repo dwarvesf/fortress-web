@@ -16,6 +16,8 @@ import { FeedbackSubtype } from 'constants/feedbackTypes'
 import { ViewSurvey } from 'types/schema'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 import { SEO } from 'components/common/SEO'
+import { ROUTES } from 'constants/routes'
+import Link from 'next/link'
 
 interface ColumnProps {
   onAfterDelete: () => void
@@ -26,7 +28,11 @@ const columns = ({ onAfterDelete }: ColumnProps): ColumnsType<ViewSurvey> => [
     title: 'Time',
     key: 'title',
     dataIndex: 'title',
-    render: (value) => value || '-',
+    render: (value, record) => (
+      <Link href={ROUTES.PEER_REVIEW_EVENT_DETAIL(record.id || '')}>
+        <a className="styled">{value || '-'}</a>
+      </Link>
+    ),
     fixed: 'left',
   },
   {

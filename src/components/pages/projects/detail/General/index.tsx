@@ -176,6 +176,7 @@ export const General = (props: Props) => {
         </Row>
       </Space>
       <EditProjectGeneralInfoModal
+        projectID={data.id || ''}
         isOpen={isEditProjectGeneralInfoDialogOpen}
         initialValues={{
           ...data,
@@ -189,6 +190,7 @@ export const General = (props: Props) => {
         onAfterSubmit={() => mutate([GET_PATHS.getProjects, data.id])}
       />
       <EditProjectContactInfoModal
+        projectID={data.id || ''}
         isOpen={isEditProjectContactInfoDialogOpen}
         initialValues={{
           ...data,

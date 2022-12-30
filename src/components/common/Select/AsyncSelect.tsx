@@ -1,8 +1,8 @@
 import { notification, Select, SelectProps } from 'antd'
 import { DefaultOptionType as BaseDefaultOptionType } from 'antd/lib/select'
-import { useEffect, useState } from 'react'
+import { useFetchWithCache } from 'hooks/useFetchWithCache'
+import { useEffect } from 'react'
 import { theme } from 'styles'
-import useSWR from 'swr'
 import { searchFilterOption } from 'utils/select'
 
 type DefaultOptionType = Omit<BaseDefaultOptionType, 'label'> & { label: any }
@@ -22,10 +22,11 @@ export const AsyncSelect = (props: Props) => {
     style,
     ...rest
   } = props
-  const [isLoading, setIsLoading] = useState<boolean>(true)
-  const [options, setOptions] = useState<DefaultOptionType[]>([])
-
-  const { data: optionsData, error } = useSWR<DefaultOptionType[], Error>(
+  const {
+    data: options = [],
+    error,
+    loading,
+  } = useFetchWithCache<DefaultOptionType[], Error>(
     typeof swrKeys === 'string' ? [swrKeys] : swrKeys,
     optionGetter,
     {
@@ -34,24 +35,19 @@ export const AsyncSelect = (props: Props) => {
   )
 
   useEffect(() => {
-    if (optionsData) {
-      setOptions(optionsData)
-      setIsLoading(false)
-    }
     if (error) {
-      setIsLoading(false)
       notification.error({
         message: error.message || 'Could not fetch data!',
       })
     }
-  }, [error, optionsData])
+  }, [error])
 
   return (
     <Select
       style={{ background: theme.colors.white, ...style }}
-      placeholder={isLoading ? 'Fetching data' : placeholder}
-      loading={isLoading}
-      disabled={isLoading}
+      placeholder={loading ? 'Fetching data' : placeholder}
+      loading={loading}
+      disabled={loading}
       showSearch
       showArrow
       options={typeof customOptionRenderer === 'function' ? undefined : options}

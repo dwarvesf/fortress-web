@@ -214,6 +214,7 @@ export const Member = (props: Props) => {
                 label: `All (${allMembers.length})`,
                 children: (
                   <MemberTable
+                    projectID={project.id || ''}
                     data={allMembers}
                     isLoading={isAllLoading}
                     onAfterAction={mutate}
@@ -225,6 +226,7 @@ export const Member = (props: Props) => {
                 label: `Pending (${pendingMembers.length})`,
                 children: (
                   <MemberTable
+                    projectID={project.id || ''}
                     data={pendingMembers}
                     isLoading={isPendingLoading}
                     onAfterAction={mutate}
@@ -236,6 +238,7 @@ export const Member = (props: Props) => {
                 label: `On-boarding (${onboardingMembers.length})`,
                 children: (
                   <MemberTable
+                    projectID={project.id || ''}
                     data={onboardingMembers}
                     isLoading={isOnboardingLoading}
                     onAfterAction={mutate}
@@ -247,6 +250,7 @@ export const Member = (props: Props) => {
                 label: `Active (${activeMembers.length})`,
                 children: (
                   <MemberTable
+                    projectID={project.id || ''}
                     data={activeMembers}
                     isLoading={isActiveLoading}
                     onAfterAction={mutate}
@@ -258,6 +262,7 @@ export const Member = (props: Props) => {
                 label: `Inactive (${inactiveMembers.length})`,
                 children: (
                   <MemberTable
+                    projectID={project.id || ''}
                     data={inactiveMembers}
                     isLoading={isInactiveLoading}
                     onAfterAction={mutate}
@@ -272,6 +277,7 @@ export const Member = (props: Props) => {
       {isAddNewMemberDialogOpen && (
         <MemberFormModal
           key={tabKey}
+          projectID={project.id || ''}
           isOpen={isAddNewMemberDialogOpen}
           onClose={closeAddNewMemberDialog}
           onAfterSubmit={mutate}
