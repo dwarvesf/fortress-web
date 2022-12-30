@@ -31,6 +31,7 @@ export enum Permission {
   SURVEYS_DELETE = 'surveys.delete',
 }
 
+// the permission that needs to access to a certain page
 export const pagePermissions = {
   [ROUTES.EMPLOYEES]: Permission.EMPLOYEES_READ,
   [ROUTES.EMPLOYEE_DETAIL('[id]')]: Permission.EMPLOYEES_READ,
