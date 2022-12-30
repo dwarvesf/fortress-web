@@ -1,6 +1,6 @@
-import { IconName } from 'constants/socials'
 import React, { SVGProps } from 'react'
 import SVG from 'react-inlinesvg'
+import { IconName } from './types'
 
 interface SVGIconProps extends SVGProps<SVGElement> {
   name: IconName

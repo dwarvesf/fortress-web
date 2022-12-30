@@ -172,6 +172,27 @@ export const EditGeneralInfoModal = (props: Props) => {
               />
             </Form.Item>
           </Col>
+
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item label="Discord" name="discordName">
+              <Input placeholder="Enter Discord Name" className="bordered" />
+            </Form.Item>
+          </Col>
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item label="Github" name="githubID">
+              <Input placeholder="Enter Github ID" className="bordered" />
+            </Form.Item>
+          </Col>
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item label="Notion" name="notionName">
+              <Input placeholder="Enter Notion Name" className="bordered" />
+            </Form.Item>
+          </Col>
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item label="LinkedIn" name="linkedInName">
+              <Input placeholder="Enter LinkedIn Name" className="bordered" />
+            </Form.Item>
+          </Col>
         </Row>
       </Form>
     </Modal>
