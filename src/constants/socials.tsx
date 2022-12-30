@@ -1,10 +1,4 @@
-export type IconName =
-  | 'discord'
-  | 'github'
-  | 'twitter'
-  | 'linkedin'
-  | 'facebook'
-  | 'google'
+import { IconName } from 'components/common/SVGIcon/types'
 
 interface SocialLink {
   name: IconName

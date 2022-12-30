@@ -7,13 +7,14 @@ import { EditProfileInfoModal } from 'components/pages/profile/EditProfileInfoMo
 import { useAuthContext } from 'context/auth'
 import { Button } from 'components/common/Button'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
-import { Edit, Github } from '@icon-park/react'
+import { Edit } from '@icon-park/react'
 import { SEO } from 'components/common/SEO'
 import { LinkWithIcon } from 'components/common/LinkWithIcon'
 import {
   EditableAvatar,
   EditAvatarModal,
 } from 'components/common/EditableAvatar'
+import { SVGIcon } from 'components/common/SVGIcon'
 
 const Default = () => {
   const { user, revalidate } = useAuthContext()
@@ -94,25 +95,44 @@ const Default = () => {
                       },
                       {
                         label: 'Discord',
-                        value: user?.discordName || '',
+                        value: (
+                          <Space>
+                            <SVGIcon name="discord" />
+                            {user?.discordName || ''}
+                          </Space>
+                        ),
                       },
                       {
                         label: 'Github',
-                        value: user?.githubID ? (
+                        value: (
                           <LinkWithIcon
                             href={`https://github.com/${user?.githubID}`}
                             target="_blank"
                             rel="noreferrer"
-                            icon={<Github />}
+                            icon={<SVGIcon name="github" />}
                           >
-                            {user.githubID}
+                            {user?.githubID || '-'}
                           </LinkWithIcon>
-                        ) : (
-                          '-'
                         ),
                       },
-                      { label: 'Notion', value: user?.notionName },
-                      { label: 'LinkedIn', value: '' },
+                      {
+                        label: 'Notion',
+                        value: (
+                          <Space>
+                            <SVGIcon name="notion" />
+                            {user?.notionName || ''}
+                          </Space>
+                        ),
+                      },
+                      {
+                        label: 'LinkedIn',
+                        value: (
+                          <Space>
+                            <SVGIcon name="linkedin" />
+                            {user?.linkedInName || ''}
+                          </Space>
+                        ),
+                      },
                       { label: 'Address', value: user?.address },
                       { label: 'City', value: user?.city },
                       { label: 'Country', value: user?.country },

@@ -69,7 +69,7 @@ export const EditProfileInfoModal = (props: Props) => {
     >
       <Form form={form} onFinish={onSubmit} initialValues={initialValues}>
         <Row gutter={24}>
-          <Col span={24} md={{ span: 12 }}>
+          <Col span={24}>
             <Form.Item
               label="Phone Number"
               name="phoneNumber"

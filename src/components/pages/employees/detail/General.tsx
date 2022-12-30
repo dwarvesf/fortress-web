@@ -23,7 +23,8 @@ import { client, GET_PATHS } from 'libs/apis'
 import { mutate } from 'swr'
 import { useState } from 'react'
 import { EmployeeStatus, employeeStatuses } from 'constants/status'
-import { Github, PreviewOpen, Star } from '@icon-park/react'
+import { SVGIcon } from 'components/common/SVGIcon'
+import { PreviewOpen, Star } from '@icon-park/react'
 import moment from 'moment'
 import { theme } from 'styles'
 import Link from 'next/link'
@@ -186,30 +187,43 @@ export const General = (props: Props) => {
                       },
                       {
                         label: 'Discord',
-                        value: data.discordName || '-',
+                        value: (
+                          <Space>
+                            <SVGIcon name="discord" />
+                            {data?.discordName || ''}
+                          </Space>
+                        ),
                       },
                       {
                         label: 'Github',
-                        value: data.githubID ? (
+                        value: (
                           <LinkWithIcon
-                            href={`https://github.com/${data.githubID || ''}`}
+                            href={`https://github.com/${data?.githubID}`}
                             target="_blank"
                             rel="noreferrer"
-                            icon={<Github />}
+                            icon={<SVGIcon name="github" />}
                           >
-                            {data.githubID}
+                            {data.githubID || ''}
                           </LinkWithIcon>
-                        ) : (
-                          '-'
                         ),
                       },
                       {
                         label: 'Notion',
-                        value: data.notionName || '-',
+                        value: (
+                          <Space>
+                            <SVGIcon name="notion" />
+                            {data?.notionName || ''}
+                          </Space>
+                        ),
                       },
                       {
                         label: 'LinkedIn',
-                        value: data.linkedInName || '-',
+                        value: (
+                          <Space>
+                            <SVGIcon name="linkedin" />
+                            {data?.linkedInName || ''}
+                          </Space>
+                        ),
                       },
                     ]}
                   />
@@ -320,6 +334,10 @@ export const General = (props: Props) => {
           fullName: data.fullName || '',
           lineManagerID: data.lineManager?.id || '',
           phone: data.phoneNumber || '',
+          discordName: data.discordName || '',
+          githubID: data.githubID || '',
+          notionName: data.notionName || '',
+          linkedInName: data.linkedInName || '',
         }}
         onAfterSubmit={() => mutate([GET_PATHS.getEmployees, username])}
       />
