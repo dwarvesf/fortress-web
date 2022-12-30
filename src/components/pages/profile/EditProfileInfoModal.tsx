@@ -1,6 +1,7 @@
-import { Col, Form, Input, Modal, notification, Row } from 'antd'
+import { Col, Form, Input, Modal, notification, Row, Select } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
-import { client } from 'libs/apis'
+import { useFetchWithCache } from 'hooks/useFetchWithCache'
+import { client, GET_PATHS } from 'libs/apis'
 import { useState } from 'react'
 import { ViewProfileData } from 'types/schema'
 import { getErrorMessage } from 'utils/string'
@@ -28,6 +29,13 @@ export const EditProfileInfoModal = (props: Props) => {
 
   const [form] = useForm()
   const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const { data: countryData, loading: isCountryLoading } = useFetchWithCache(
+    [GET_PATHS.getCountryMetadata],
+    () => client.getCountryMetadata(),
+  )
+  const countries = countryData?.data || []
+  const country = Form.useWatch('country', form)
 
   const onSubmit = async (values: ProfileInfoFormValues) => {
     try {
@@ -91,7 +99,7 @@ export const EditProfileInfoModal = (props: Props) => {
               <Input placeholder="Enter personal email" className="bordered" />
             </Form.Item>
           </Col>
-          <Col span={24} md={{ span: 12 }}>
+          <Col span={24}>
             <Form.Item
               label="Address"
               name="address"
@@ -102,16 +110,39 @@ export const EditProfileInfoModal = (props: Props) => {
             </Form.Item>
           </Col>
           <Col span={24} md={{ span: 12 }}>
-            <Form.Item label="City" name="city">
-              <Input placeholder="Enter City" className="bordered" />
-            </Form.Item>
-          </Col>
-          <Col span={24} md={{ span: 12 }}>
             <Form.Item label="Country" name="country">
-              <Input placeholder="Enter Country" className="bordered" />
+              <Select
+                loading={isCountryLoading}
+                placeholder="Select country"
+                options={countries.map((c) => {
+                  return {
+                    label: c.name,
+                    value: c.name,
+                  }
+                })}
+              />
             </Form.Item>
           </Col>
           <Col span={24} md={{ span: 12 }}>
+            <Form.Item label="City" name="city">
+              <Select
+                loading={isCountryLoading}
+                placeholder="Select city"
+                options={
+                  countries
+                    .find((c) => c.name === country)
+                    // @ts-ignore
+                    ?.cities.map((city) => {
+                      return {
+                        label: city,
+                        value: city,
+                      }
+                    }) || []
+                }
+              />
+            </Form.Item>
+          </Col>
+          <Col span={24}>
             <Form.Item label="Place of Residence" name="placeOfResidence">
               <Input
                 placeholder="Enter Place of Residence"

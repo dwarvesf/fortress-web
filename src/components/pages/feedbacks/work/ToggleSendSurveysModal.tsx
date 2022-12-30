@@ -9,14 +9,7 @@ import {
   Switch,
   Typography,
 } from 'antd'
-import {
-  Dispatch,
-  SetStateAction,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import debounce from 'lodash.debounce'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { GET_PATHS, client } from 'libs/apis'
@@ -25,11 +18,10 @@ import { ProjectListFilter } from 'types/filters/ProjectListFilter'
 interface Props {
   isOpen: boolean
   onClose: () => void
-  setProjectsToSend: Dispatch<SetStateAction<string[]>>
 }
 
 export const ToggleSendSurveysModal = (props: Props) => {
-  const { isOpen, onClose, setProjectsToSend } = props
+  const { isOpen, onClose } = props
 
   const { data: projectsData } = useFetchWithCache(
     [GET_PATHS.getProjects, 'toggle-projects-to-send-survey'],
@@ -64,9 +56,7 @@ export const ToggleSendSurveysModal = (props: Props) => {
         checkedProjectIds.push(projectsData?.data[id].id!)
       }
     })
-
-    setProjectsToSend(checkedProjectIds)
-  }, [checkedList, projectsData, setProjectsToSend])
+  }, [checkedList, projectsData])
 
   const renderProjects = useMemo(() => {
     if (!(projectsData?.data || []).length) {

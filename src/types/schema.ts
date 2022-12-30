@@ -186,6 +186,8 @@ export interface RequestUpdateEmployeeGeneralInfoInput {
   fullName: string
   githubID?: string
   lineManagerID?: string
+  linkedInName?: string
+  notionEmail?: string
   notionID?: string
   notionName?: string
   phone: string
@@ -195,13 +197,6 @@ export interface RequestUpdateInfoInput {
   address?: string
   city?: string
   country?: string
-  discordID?: string
-  discordName?: string
-  githubID?: string
-  linkedInName?: string
-  notionEmail?: string
-  notionID?: string
-  notionName?: string
   personalEmail: string
   phoneNumber: string
   placeOfResidence: string
@@ -224,6 +219,8 @@ export interface RequestUpdateMemberInput {
 
 export interface RequestUpdatePersonalInfoInput {
   address: string
+  city?: string
+  country?: string
   dob: string
   gender: string
   personalEmail: string
@@ -620,6 +617,10 @@ export interface ViewProjectData {
   updatedAt?: string
 }
 
+export interface ViewProjectDataResponse {
+  data?: ViewProjectData
+}
+
 export interface ViewProjectHead {
   avatar?: string
   displayName?: string
@@ -779,6 +780,8 @@ export interface ViewUpdateGeneralInfoEmployeeData {
   githubID?: string
   id?: string
   lineManager?: ViewBasicEmployeeInfo
+  linkedInName?: string
+  notionEmail?: string
   notionID?: string
   notionName?: string
   phoneNumber?: string
@@ -789,6 +792,8 @@ export interface ViewUpdateGeneralInfoEmployeeData {
 export interface ViewUpdatePersonalEmployeeData {
   address?: string
   birthday?: string
+  city?: string
+  country?: string
   createdAt?: string
   deletedAt?: GormDeletedAt
   gender?: string

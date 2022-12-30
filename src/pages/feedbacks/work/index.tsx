@@ -11,20 +11,25 @@ import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 import { Setting } from '@icon-park/react'
 import { SEO } from 'components/common/SEO'
 import { CreateWorkSurveyModal } from 'components/pages/feedbacks/work/CreateWorkSurveyModal'
-import moment from 'moment'
 import { FeedbackSubtype } from 'constants/feedbackTypes'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { useFilter } from 'hooks/useFilter'
 import { GET_PATHS, client } from 'libs/apis'
 import { SurveyListFilter } from 'types/filters/SurveyListFilter'
-import { useState } from 'react'
+import Link from 'next/link'
+import { ROUTES } from 'constants/routes'
+import { ViewSurvey } from 'types/schema'
 
-const columns: ColumnsType<any> = [
+const columns: ColumnsType<ViewSurvey> = [
   {
     title: 'Time',
     key: 'title',
     dataIndex: 'title',
-    render: (value) => value || '-',
+    render: (value, record) => (
+      <Link href={ROUTES.WORK_DETAIL(record.id || '')}>
+        <a className="styled">{value || '-'}</a>
+      </Link>
+    ),
     fixed: 'left',
   },
   {
@@ -78,8 +83,6 @@ const WorkPage = () => {
     onClose: closeCreateWorkSurveyDialog,
   } = useDisclosure()
 
-  const [projectsToSend, setProjectsToSend] = useState<string[]>([])
-
   const { filter, setFilter } = useFilter(
     new SurveyListFilter(FeedbackSubtype.WORK),
   )
@@ -91,11 +94,6 @@ const WorkPage = () => {
   } = useFetchWithCache([GET_PATHS.getSurveys, filter], () =>
     client.getSurveys(filter),
   )
-
-  const today = new Date()
-
-  const tomorrow = new Date()
-  tomorrow.setDate(today.getDate() + 1)
 
   return (
     <>
@@ -155,18 +153,12 @@ const WorkPage = () => {
       <ToggleSendSurveysModal
         onClose={closeToggleSendSurveyDialog}
         isOpen={isToggleSendSurveyDialogOpen}
-        setProjectsToSend={setProjectsToSend}
       />
 
       <CreateWorkSurveyModal
         onClose={closeCreateWorkSurveyDialog}
         isOpen={isCreateWorkSurveyDialogOpen}
-        initialValues={{
-          fromDate: moment(),
-          toDate: moment(tomorrow),
-        }}
         onAfterSubmit={mutateSurveys}
-        projectsToSend={projectsToSend}
       />
     </>
   )

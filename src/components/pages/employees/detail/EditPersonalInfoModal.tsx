@@ -8,7 +8,7 @@ import {
   Row,
   Select,
 } from 'antd'
-import { client } from 'libs/apis'
+import { client, GET_PATHS } from 'libs/apis'
 import { useState } from 'react'
 import { RequestUpdatePersonalInfoInput } from 'types/schema'
 import moment from 'moment'
@@ -16,6 +16,7 @@ import { SELECT_BOX_DATE_FORMAT } from 'constants/date'
 import { theme } from 'styles'
 import { searchFilterOption } from 'utils/select'
 import { getErrorMessage } from 'utils/string'
+import { useFetchWithCache } from 'hooks/useFetchWithCache'
 
 interface Props {
   employeeID: string
@@ -32,6 +33,13 @@ export const EditPersonalInfoModal = (props: Props) => {
 
   const [form] = Form.useForm()
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
+
+  const { data: countryData, loading: isCountryLoading } = useFetchWithCache(
+    [GET_PATHS.getCountryMetadata],
+    () => client.getCountryMetadata(),
+  )
+  const countries = countryData?.data || []
+  const country = Form.useWatch('country', form)
 
   const onSubmit = async (values: Required<RequestUpdatePersonalInfoInput>) => {
     try {
@@ -71,7 +79,7 @@ export const EditPersonalInfoModal = (props: Props) => {
     >
       <Form form={form} onFinish={onSubmit} initialValues={initialValues}>
         <Row gutter={24}>
-          <Col span={24}>
+          <Col span={24} md={{ span: 12 }}>
             <Form.Item
               label="Date of birth"
               name="dob"
@@ -88,7 +96,7 @@ export const EditPersonalInfoModal = (props: Props) => {
             </Form.Item>
           </Col>
 
-          <Col span={24}>
+          <Col span={24} md={{ span: 12 }}>
             <Form.Item
               label="Gender"
               name="gender"
@@ -142,6 +150,40 @@ export const EditPersonalInfoModal = (props: Props) => {
                 className="bordered"
                 type="text"
                 placeholder="Enter address"
+              />
+            </Form.Item>
+          </Col>
+
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item label="Country" name="country">
+              <Select
+                loading={isCountryLoading}
+                placeholder="Select country"
+                options={countries.map((c) => {
+                  return {
+                    label: c.name,
+                    value: c.name,
+                  }
+                })}
+              />
+            </Form.Item>
+          </Col>
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item label="City" name="city">
+              <Select
+                loading={isCountryLoading}
+                placeholder="Select city"
+                options={
+                  countries
+                    .find((c) => c.name === country)
+                    // @ts-ignore
+                    ?.cities.map((city) => {
+                      return {
+                        label: city,
+                        value: city,
+                      }
+                    }) || []
+                }
               />
             </Form.Item>
           </Col>
