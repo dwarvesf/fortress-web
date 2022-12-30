@@ -714,7 +714,7 @@ class Client {
   ) {
     const queryString = qs.stringify({ allowsSendingSurvey })
 
-    return fetcher<any>(
+    return fetcher<ViewMessageResponse>(
       `${BASE_URL}/projects/${id}/sending-survey-state?${queryString}`,
       {
         method: 'PUT',
