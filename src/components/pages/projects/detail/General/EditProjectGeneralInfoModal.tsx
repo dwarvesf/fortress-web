@@ -69,7 +69,7 @@ export const EditProjectGeneralInfoModal = (props: Props) => {
             label="Name"
             name="name"
             required
-            rules={[{ required: true }]}
+            rules={[{ required: true, message: 'Required' }]}
           >
             <Input placeholder="Enter project's name" className="bordered" />
           </Form.Item>
@@ -84,7 +84,7 @@ export const EditProjectGeneralInfoModal = (props: Props) => {
             label="Country"
             name="countryID"
             required
-            rules={[{ required: true }]}
+            rules={[{ required: true, message: 'Required' }]}
           >
             <AsyncSelect
               placeholder="Select project's country"
@@ -106,6 +106,7 @@ export const EditProjectGeneralInfoModal = (props: Props) => {
                   transformMetadataToSelectOption,
                 )
               }
+              allowClear
             />
           </Form.Item>
         </Space>

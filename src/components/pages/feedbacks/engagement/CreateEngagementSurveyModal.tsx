@@ -57,7 +57,7 @@ export const CreateEngagementSurveyModal = (props: Props) => {
         <Form.Item
           label="Quarter"
           name="quarter"
-          rules={[{ required: true, message: 'Please select quarter' }]}
+          rules={[{ required: true, message: 'Required' }]}
         >
           <Select
             placeholder="Select quarter"
@@ -70,7 +70,7 @@ export const CreateEngagementSurveyModal = (props: Props) => {
         <Form.Item
           label="Year"
           name="year"
-          rules={[{ required: true, message: 'Please select year' }]}
+          rules={[{ required: true, message: 'Required' }]}
         >
           <Select
             placeholder="Select year"

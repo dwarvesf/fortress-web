@@ -78,14 +78,14 @@ export const EditProjectContactInfoModal = (props: Props) => {
           <Form.Item
             label="Client email"
             name="clientEmail"
-            rules={[{ type: 'email' }]}
+            rules={[{ type: 'email', message: 'Wrong email format' }]}
           >
             <Input placeholder="Enter client email" className="bordered" />
           </Form.Item>
           <Form.Item
             label="Project email"
             name="projectEmail"
-            rules={[{ type: 'email' }]}
+            rules={[{ type: 'email', message: 'Wrong email format' }]}
           >
             <Input placeholder="Enter project email" className="bordered" />
           </Form.Item>
@@ -93,7 +93,7 @@ export const EditProjectContactInfoModal = (props: Props) => {
             label="Account manager"
             name="accountManagerID"
             required
-            rules={[{ required: true }]}
+            rules={[{ required: true, message: 'Wrong email format' }]}
           >
             <AsyncSelect
               placeholder="Select project's account manager"
@@ -108,6 +108,7 @@ export const EditProjectContactInfoModal = (props: Props) => {
               swrKeys={[GET_PATHS.getEmployees, 'delivery-manager']}
               optionGetter={employeeOptionGetter}
               customOptionRenderer={renderEmployeeOption}
+              allowClear
             />
           </Form.Item>
         </Space>

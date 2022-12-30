@@ -61,7 +61,7 @@ export const CreatePeerReviewModal = (props: Props) => {
           label="Quarters"
           name="quarter"
           required
-          rules={[{ required: true }]}
+          rules={[{ required: true, message: 'Required' }]}
         >
           <Select
             placeholder="Select quarters"
@@ -75,7 +75,7 @@ export const CreatePeerReviewModal = (props: Props) => {
           label="Year"
           name="year"
           required
-          rules={[{ required: true }]}
+          rules={[{ required: true, message: 'Required' }]}
         >
           <Select
             placeholder="Select year"

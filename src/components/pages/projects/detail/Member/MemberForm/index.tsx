@@ -109,12 +109,7 @@ export const MemberForm = (props: Props) => {
             label="Member"
             name="employeeID"
             required={!isPending}
-            rules={[
-              {
-                required: !isPending,
-                message: 'Please select member',
-              },
-            ]}
+            rules={[{ required: !isPending, message: 'Required' }]}
           >
             <Select
               style={{
@@ -145,7 +140,7 @@ export const MemberForm = (props: Props) => {
             label="Seniority"
             name="seniorityID"
             required
-            rules={[{ required: true, message: 'Please select seniority' }]}
+            rules={[{ required: true, message: 'Required' }]}
           >
             <Select
               style={{
@@ -171,7 +166,7 @@ export const MemberForm = (props: Props) => {
             label="Positions"
             name="positions"
             required
-            rules={[{ required: true, message: 'Please select positions' }]}
+            rules={[{ required: true, message: 'Required' }]}
           >
             <Select
               mode="multiple"
@@ -199,9 +194,7 @@ export const MemberForm = (props: Props) => {
             label="Deployment Type"
             name="deploymentType"
             required
-            rules={[
-              { required: true, message: 'Please select deployment type' },
-            ]}
+            rules={[{ required: true, message: 'Required' }]}
           >
             <Select
               placeholder="Select deployment type"
@@ -219,10 +212,7 @@ export const MemberForm = (props: Props) => {
             label="Joined Date"
             name="joinedDate"
             rules={[
-              {
-                required: isAssigning && !isPending,
-                message: 'Please select joined date',
-              },
+              { required: isAssigning && !isPending, message: 'Required' },
             ]}
           >
             <Input
@@ -236,12 +226,7 @@ export const MemberForm = (props: Props) => {
           <Form.Item
             label="Left Date"
             name="leftDate"
-            rules={[
-              {
-                required: isInactive,
-                message: 'Please select left date',
-              },
-            ]}
+            rules={[{ required: isInactive, message: 'Required' }]}
           >
             <Input
               type="date"
@@ -255,7 +240,7 @@ export const MemberForm = (props: Props) => {
             label="Rate"
             name="rate"
             required
-            rules={[{ required: true, message: 'Please input rate' }]}
+            rules={[{ required: true, message: 'Required' }]}
           >
             <Input
               type="number"
@@ -277,7 +262,7 @@ export const MemberForm = (props: Props) => {
           <Form.Item
             label="Status"
             name="status"
-            rules={[{ required: isAssigning, message: 'Please select status' }]}
+            rules={[{ required: isAssigning, message: 'Required' }]}
           >
             <Select
               placeholder="Select status"

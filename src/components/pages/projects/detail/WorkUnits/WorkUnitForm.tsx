@@ -44,7 +44,7 @@ export const WorkUnitForm = (props: Props) => {
             label="Name"
             name="name"
             rules={[
-              { required: true, message: 'Please input name' },
+              { required: true, message: 'Required' },
               {
                 max: 99,
                 message: 'Name must be less than 100 characters',
@@ -90,6 +90,7 @@ export const WorkUnitForm = (props: Props) => {
               ]}
               placeholder="Select work unit's members"
               customOptionRenderer={renderEmployeeOption}
+              allowClear
             />
           </Form.Item>
         </Col>
@@ -98,7 +99,7 @@ export const WorkUnitForm = (props: Props) => {
           <Form.Item
             label="Tech stack"
             name="stacks"
-            rules={[{ required: true, message: 'Please select tech stack' }]}
+            rules={[{ required: true, message: 'Required' }]}
           >
             <AsyncSelect
               mode="multiple"
@@ -120,7 +121,7 @@ export const WorkUnitForm = (props: Props) => {
           <Form.Item
             label="Type"
             name="type"
-            rules={[{ required: true, message: 'Please select type' }]}
+            rules={[{ required: true, message: 'Required' }]}
           >
             <Select
               style={{ background: theme.colors.white }}

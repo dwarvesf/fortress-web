@@ -95,7 +95,7 @@ export const CreateWorkSurveyModal = (props: Props) => {
           label="From date"
           name="fromDate"
           required
-          rules={[{ required: true, message: 'Please select start date' }]}
+          rules={[{ required: true, message: 'Required' }]}
         >
           <DatePicker
             format={SELECT_BOX_DATE_FORMAT}
@@ -129,7 +129,7 @@ export const CreateWorkSurveyModal = (props: Props) => {
           label="To date"
           name="toDate"
           required
-          rules={[{ required: true }]}
+          rules={[{ required: true, message: 'Required' }]}
         >
           <DatePicker
             format={SELECT_BOX_DATE_FORMAT}

@@ -35,6 +35,7 @@ import { DeploymentType, deploymentTypes } from 'constants/deploymentTypes'
 import { LinkWithIcon } from 'components/common/LinkWithIcon'
 import { EditableAvatar } from 'components/common/EditableAvatar'
 import { getErrorMessage } from 'utils/string'
+import { EmployeeListFilter } from 'types/filters/EmployeeListFilter'
 import { EditPersonalInfoModal } from './EditPersonalInfoModal'
 import { EditSkillsModal } from './EditSkillsModal'
 import { EditGeneralInfoModal } from './EditGeneralInfoModal'
@@ -263,7 +264,25 @@ export const General = (props: Props) => {
                   { label: 'Seniority', value: data.seniority?.name },
                   {
                     label: 'Stack',
-                    value: data.stacks?.map((stack) => stack.name).join(', '),
+                    value:
+                      (data.stacks || []).length > 0
+                        ? data.stacks?.map((stack, index) => (
+                            <>
+                              <Link
+                                href={`${
+                                  ROUTES.EMPLOYEES
+                                }?filter=${JSON.stringify(
+                                  new EmployeeListFilter({
+                                    stacks: [stack.code!],
+                                  }),
+                                )}`}
+                              >
+                                {stack.name}
+                              </Link>
+                              {index !== (data.stacks || []).length - 1 && ', '}
+                            </>
+                          ))
+                        : '-',
                   },
                 ]}
               />

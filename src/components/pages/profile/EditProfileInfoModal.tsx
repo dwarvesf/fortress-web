@@ -74,7 +74,7 @@ export const EditProfileInfoModal = (props: Props) => {
               label="Phone Number"
               name="phoneNumber"
               required
-              rules={[{ required: true }]}
+              rules={[{ required: true, message: 'Required' }]}
             >
               <Input placeholder="Enter phone number" className="bordered" />
             </Form.Item>
@@ -84,7 +84,10 @@ export const EditProfileInfoModal = (props: Props) => {
               label="Team Email"
               name="teamEmail"
               required
-              rules={[{ required: true, type: 'email' }]}
+              rules={[
+                { required: true, message: 'Required' },
+                { type: 'email', message: 'Wrong email format' },
+              ]}
             >
               <Input placeholder="Enter team email" className="bordered" />
             </Form.Item>
@@ -94,7 +97,10 @@ export const EditProfileInfoModal = (props: Props) => {
               label="Personal Email"
               name="personalEmail"
               required
-              rules={[{ required: true, type: 'email' }]}
+              rules={[
+                { required: true, message: 'Required' },
+                { type: 'email', message: 'Wrong email format' },
+              ]}
             >
               <Input placeholder="Enter personal email" className="bordered" />
             </Form.Item>
@@ -104,7 +110,7 @@ export const EditProfileInfoModal = (props: Props) => {
               label="Address"
               name="address"
               required
-              rules={[{ required: true }]}
+              rules={[{ required: true, message: 'Required' }]}
             >
               <Input placeholder="Enter Address" className="bordered" />
             </Form.Item>
