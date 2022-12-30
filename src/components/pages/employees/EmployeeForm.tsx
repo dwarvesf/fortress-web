@@ -117,7 +117,7 @@ export const EmployeeForm = (props: Props) => {
               label="Full name"
               name="fullName"
               rules={[
-                { required: true, message: 'Please input full name' },
+                { required: true, message: 'Required' },
                 {
                   max: 99,
                   message: 'Full name must be less than 100 characters',
@@ -137,7 +137,7 @@ export const EmployeeForm = (props: Props) => {
               label="Display name"
               name="displayName"
               rules={[
-                { required: true, message: 'Please input display name' },
+                { required: true, message: 'Required' },
                 {
                   max: 99,
                   message: 'Display name must be less than 100 characters',
@@ -156,7 +156,7 @@ export const EmployeeForm = (props: Props) => {
             <Form.Item
               label="Status"
               name="status"
-              rules={[{ required: true, message: 'Please select status' }]}
+              rules={[{ required: true, message: 'Required' }]}
             >
               <Select
                 style={{ background: theme.colors.white }}
@@ -182,7 +182,7 @@ export const EmployeeForm = (props: Props) => {
               label="Team email"
               name="teamEmail"
               rules={[
-                { required: true, message: 'Please input team email' },
+                { required: true, message: 'Required' },
                 { type: 'email', message: 'Wrong email format' },
               ]}
             >
@@ -199,10 +199,7 @@ export const EmployeeForm = (props: Props) => {
               label="Personal email"
               name="personalEmail"
               rules={[
-                {
-                  required: true,
-                  message: 'Please input personal email',
-                },
+                { required: true, message: 'Required' },
                 { type: 'email', message: 'Wrong email format' },
               ]}
             >
@@ -218,7 +215,7 @@ export const EmployeeForm = (props: Props) => {
             <Form.Item
               label="Positions"
               name="positions"
-              rules={[{ required: true, message: 'Please select positions' }]}
+              rules={[{ required: true, message: 'Required' }]}
             >
               <AsyncSelect
                 mode="multiple"
@@ -236,7 +233,7 @@ export const EmployeeForm = (props: Props) => {
             <Form.Item
               label="Seniority"
               name="seniorityID"
-              rules={[{ required: true, message: 'Please select seniority' }]}
+              rules={[{ required: true, message: 'Required' }]}
             >
               <AsyncSelect
                 optionGetter={async () => {
@@ -253,7 +250,7 @@ export const EmployeeForm = (props: Props) => {
             <Form.Item
               label="Salary"
               name="salary"
-              rules={[{ required: true, message: 'Please input salary' }]}
+              rules={[{ required: true, message: 'Required' }]}
             >
               <Input
                 className="bordered"
@@ -268,9 +265,7 @@ export const EmployeeForm = (props: Props) => {
             <Form.Item
               label="Account role"
               name="roleID"
-              rules={[
-                { required: true, message: 'Please select account role' },
-              ]}
+              rules={[{ required: true, message: 'Required' }]}
             >
               <AsyncSelect
                 optionGetter={async () => {

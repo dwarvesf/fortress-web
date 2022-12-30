@@ -97,7 +97,7 @@ export const EditGeneralInfoModal = (props: Props) => {
               label="Full name"
               name="fullName"
               rules={[
-                { required: true, message: 'Please input full name' },
+                { required: true, message: 'Required' },
                 {
                   max: 99,
                   message: 'Full name must be less than 100 characters',
@@ -117,7 +117,7 @@ export const EditGeneralInfoModal = (props: Props) => {
               label="Team email"
               name="email"
               rules={[
-                { required: true, message: 'Please input team email' },
+                { required: true, message: 'Required' },
                 { type: 'email', message: 'Wrong email format' },
               ]}
             >
@@ -133,12 +133,7 @@ export const EditGeneralInfoModal = (props: Props) => {
             <Form.Item
               label="Phone number"
               name="phone"
-              rules={[
-                {
-                  required: true,
-                  message: 'Please input phone number',
-                },
-              ]}
+              rules={[{ required: true, message: 'Required' }]}
             >
               <PhoneInput
                 country="vn"
@@ -149,7 +144,7 @@ export const EditGeneralInfoModal = (props: Props) => {
                     setDialCode(data.dialCode)
                   }
                 }}
-                inputStyle={{ width: '100%' }}
+                inputStyle={{ width: '100%', height: 40 }}
                 enableSearch
                 disableSearchIcon
               />
@@ -169,6 +164,7 @@ export const EditGeneralInfoModal = (props: Props) => {
                 swrKeys={[GET_PATHS.getEmployees, 'line-manager']}
                 placeholder="Select line manager"
                 customOptionRenderer={renderEmployeeOption}
+                allowClear
               />
             </Form.Item>
           </Col>

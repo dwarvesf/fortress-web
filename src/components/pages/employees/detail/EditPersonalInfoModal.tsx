@@ -83,9 +83,7 @@ export const EditPersonalInfoModal = (props: Props) => {
             <Form.Item
               label="Date of birth"
               name="dob"
-              rules={[
-                { required: true, message: 'Please select date of birth' },
-              ]}
+              rules={[{ required: true, message: 'Required' }]}
             >
               <DatePicker
                 format={SELECT_BOX_DATE_FORMAT}
@@ -100,7 +98,7 @@ export const EditPersonalInfoModal = (props: Props) => {
             <Form.Item
               label="Gender"
               name="gender"
-              rules={[{ required: true, message: 'Please select gender' }]}
+              rules={[{ required: true, message: 'Required' }]}
             >
               <Select
                 style={{ background: theme.colors.white }}
@@ -122,7 +120,7 @@ export const EditPersonalInfoModal = (props: Props) => {
               label="Personal email"
               name="personalEmail"
               rules={[
-                { required: true, message: 'Please input personal email' },
+                { required: true, message: 'Required' },
                 { type: 'email', message: 'Wrong email format' },
               ]}
             >
@@ -139,7 +137,7 @@ export const EditPersonalInfoModal = (props: Props) => {
               label="Address"
               name="address"
               rules={[
-                { required: true, message: 'Please input address' },
+                { required: true, message: 'Required' },
                 {
                   max: 200,
                   message: 'Must be less than or equal to 200 characters',
@@ -193,7 +191,7 @@ export const EditPersonalInfoModal = (props: Props) => {
               label="Place of Residence"
               name="placeOfResidence"
               rules={[
-                { required: true, message: 'Please input place of residence' },
+                { required: true, message: 'Required' },
                 {
                   max: 200,
                   message: 'Must be less than or equal to 200 characters',

@@ -84,7 +84,7 @@ export const EditSkillsModal = (props: Props) => {
             <Form.Item
               label="Positions"
               name="positions"
-              rules={[{ required: true, message: 'Please select positions' }]}
+              rules={[{ required: true, message: 'Required' }]}
             >
               <AsyncSelect
                 mode="multiple"
@@ -122,6 +122,7 @@ export const EditSkillsModal = (props: Props) => {
 
                   setSelectedChapters(newSelectedChapters)
                 }}
+                allowClear
               />
             </Form.Item>
           </Col>
@@ -154,7 +155,7 @@ export const EditSkillsModal = (props: Props) => {
             <Form.Item
               label="Seniority"
               name="seniority"
-              rules={[{ required: true, message: 'Please select seniority' }]}
+              rules={[{ required: true, message: 'Required' }]}
             >
               <AsyncSelect
                 optionGetter={async () => {
@@ -171,7 +172,7 @@ export const EditSkillsModal = (props: Props) => {
             <Form.Item
               label="Tech stack"
               name="stacks"
-              rules={[{ required: true, message: 'Please select stack' }]}
+              rules={[{ required: true, message: 'Required' }]}
             >
               <AsyncSelect
                 mode="multiple"

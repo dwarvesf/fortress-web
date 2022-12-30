@@ -47,7 +47,7 @@ export const ProjectForm = (props: Props) => {
             label="Project name"
             name="name"
             rules={[
-              { required: true, message: 'Please input project name' },
+              { required: true, message: 'Required' },
               {
                 max: 99,
                 message: 'Display name must be less than 100 characters',
@@ -66,7 +66,7 @@ export const ProjectForm = (props: Props) => {
           <Form.Item
             label="Status"
             name="status"
-            rules={[{ required: true, message: 'Please select status' }]}
+            rules={[{ required: true, message: 'Required' }]}
           >
             <AsyncSelect
               optionGetter={async () => {
@@ -87,12 +87,7 @@ export const ProjectForm = (props: Props) => {
           <Form.Item
             label="Account manager"
             name="accountManagerID"
-            rules={[
-              {
-                required: true,
-                message: 'Please select account manager',
-              },
-            ]}
+            rules={[{ required: true, message: 'Required' }]}
           >
             <AsyncSelect
               optionGetter={employeeOptionGetter}
@@ -111,7 +106,7 @@ export const ProjectForm = (props: Props) => {
           <Form.Item
             label="Country"
             name="countryID"
-            rules={[{ required: true, message: 'Please select country' }]}
+            rules={[{ required: true, message: 'Required' }]}
           >
             <AsyncSelect
               optionGetter={async () => {
@@ -134,6 +129,7 @@ export const ProjectForm = (props: Props) => {
               ]}
               placeholder="Select delivery manager"
               customOptionRenderer={renderEmployeeOption}
+              allowClear
             />
           </Form.Item>
         </Col>
@@ -155,7 +151,7 @@ export const ProjectForm = (props: Props) => {
             label="Project email"
             name="projectEmail"
             rules={[
-              { required: true, message: 'Please input project email' },
+              { required: true, message: 'Required' },
               { type: 'email', message: 'Wrong email format' },
             ]}
           >
@@ -172,7 +168,7 @@ export const ProjectForm = (props: Props) => {
             label="Client email"
             name="clientEmail"
             rules={[
-              { required: true, message: 'Please input client email' },
+              { required: true, message: 'Required' },
               { type: 'email', message: 'Wrong email format' },
             ]}
           >
@@ -188,7 +184,7 @@ export const ProjectForm = (props: Props) => {
           <Form.Item
             label="Type"
             name="type"
-            rules={[{ required: true, message: 'Please select type' }]}
+            rules={[{ required: true, message: 'Required' }]}
           >
             <Select
               style={{ background: theme.colors.white }}
