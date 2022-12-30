@@ -279,7 +279,7 @@ const Default = () => {
                 />
               </Col>
               <AuthenticatedContent
-                permission={Permission.SURVEYS_EDIT}
+                permission={Permission.SURVEYS_CREATE}
                 as={Col}
               >
                 <Button
@@ -308,7 +308,7 @@ const Default = () => {
                         </Menu.Item>
                       </AuthenticatedContent>
                       <AuthenticatedContent
-                        permission={Permission.SURVEYS_DELETE}
+                        permission={Permission.SURVEYS_EDIT}
                       >
                         <Menu.Item
                           disabled={status !== SurveyEventStatus.DRAFT}

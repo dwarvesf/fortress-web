@@ -126,7 +126,7 @@ const WorkPage = () => {
                 </Button>
               </AuthenticatedContent>
               <AuthenticatedContent
-                permission={Permission.SURVEYS_EDIT}
+                permission={Permission.PROJECTS_EDIT}
                 as={Col}
               >
                 <Button type="default" onClick={openToggleSendSurveyDialog}>

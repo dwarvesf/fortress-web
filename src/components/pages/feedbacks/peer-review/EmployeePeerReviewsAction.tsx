@@ -71,7 +71,10 @@ export const EmployeePeerReviewsAction = (props: Props) => {
 
   return (
     <Row justify="end" gutter={[8, 8]}>
-      <Col>
+      <AuthenticatedContent
+        permission={Permission.EMPLOYEEEVENTQUESTIONS_READ}
+        as={Col}
+      >
         <Tooltip title="View">
           <Button
             type="text-primary"
@@ -83,8 +86,8 @@ export const EmployeePeerReviewsAction = (props: Props) => {
             }
           />
         </Tooltip>
-      </Col>
-      <AuthenticatedContent permission={Permission.SURVEYS_DELETE} as={Col}>
+      </AuthenticatedContent>
+      <AuthenticatedContent permission={Permission.SURVEYS_EDIT} as={Col}>
         <Tooltip title="Delete">
           <Button
             type="text-primary"

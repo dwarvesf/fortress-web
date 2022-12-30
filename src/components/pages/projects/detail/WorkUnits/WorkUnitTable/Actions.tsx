@@ -74,7 +74,7 @@ export const Actions = ({
           </Tooltip>
         </AuthenticatedContent>
         <AuthenticatedContent
-          permission={Permission.PROJECTWORKUNITS_DELETE}
+          permission={Permission.PROJECTWORKUNITS_EDIT}
           as={Col}
         >
           <Tooltip title={isActive ? 'Archive' : 'Unarchive'}>

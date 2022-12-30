@@ -242,7 +242,7 @@ export const SurveyForm = () => {
                             done={
                               detail.status ===
                                 ModelEventReviewerStatus.EventReviewerStatusDone ||
-                              !permissions.includes(Permission.FEEDBACKS_EDIT)
+                              !permissions.includes(Permission.FEEDBACKS_CREATE)
                             }
                             domain={field.domain as DomainTypes}
                             required
