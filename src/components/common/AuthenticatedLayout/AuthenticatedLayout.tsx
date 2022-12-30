@@ -14,7 +14,7 @@ import { useRouter } from 'next/router'
 import React, { useEffect, useMemo } from 'react'
 import { WithChildren } from 'types/common'
 import { isActivePath } from 'utils/link'
-import { AuthenticatedContent } from '../AuthenticatedContent'
+import { AuthenticatedPage } from '../AuthenticatedPage'
 import { Header } from '../Header'
 import { PageSpinner } from '../PageSpinner'
 import { SidebarLogo } from './SidebarLogo'
@@ -82,16 +82,16 @@ const items: MenuItem[] = [
 ]
 
 const filterItems = (items: MenuItem[], permissions: string[]): ItemType[] => {
-  return items.flatMap(({ permission, content: { children, ...item } }) => {
-    return permission && !permissions.includes(permission)
+  return items.flatMap(({ permission, content: { children, ...item } }) =>
+    permission && !permissions.includes(permission)
       ? []
       : [
           {
             ...item,
             children: children ? filterItems(children, permissions) : undefined,
           },
-        ]
-  })
+        ],
+  )
 }
 
 interface Props extends WithChildren {}
@@ -120,19 +120,16 @@ export const AuthenticatedLayout = (props: Props) => {
 
     items.forEach(({ content: item }) => {
       if (!item) return
-
       if (isActivePath(item.key as string, pathname)) {
         activeKeys.push(item.key as string)
       }
 
-      if (item.children) {
-        item.children.forEach(({ content: subItem }) => {
-          if (!subItem) return
-          if (isActivePath(subItem.key as string, pathname)) {
-            activeKeys.push(subItem.key as string)
-          }
-        })
-      }
+      item.children?.forEach(({ content: subItem }) => {
+        if (!subItem) return
+        if (isActivePath(subItem.key as string, pathname)) {
+          activeKeys.push(subItem.key as string)
+        }
+      })
     })
 
     return activeKeys
@@ -162,12 +159,9 @@ export const AuthenticatedLayout = (props: Props) => {
         <Header />
         <Content style={{ overflow: 'auto' }}>
           <div style={{ padding: 24 }}>
-            <AuthenticatedContent
-              permission={pagePermissions[pathname]}
-              fallback="403"
-            >
+            <AuthenticatedPage permission={pagePermissions[pathname]}>
               {children}
-            </AuthenticatedContent>
+            </AuthenticatedPage>
           </div>
           {/* <Footer>Dwarves, LLC © 2015 - 2022 All rights reserved.</Footer> */}
         </Content>

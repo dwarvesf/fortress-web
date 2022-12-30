@@ -18,6 +18,8 @@ import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 import { SEO } from 'components/common/SEO'
 import { ROUTES } from 'constants/routes'
 import Link from 'next/link'
+import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
+import { Permission } from 'constants/permission'
 
 interface ColumnProps {
   onAfterDelete: () => void
@@ -96,9 +98,11 @@ const PeerReviewPage = () => {
         <PageHeader
           title="Peer performance review"
           rightRender={
-            <Button type="primary" onClick={openCreatePeerReviewModal}>
-              Create
-            </Button>
+            <AuthenticatedContent permission={Permission.SURVEYS_CREATE}>
+              <Button type="primary" onClick={openCreatePeerReviewModal}>
+                Create
+              </Button>
+            </AuthenticatedContent>
           }
         />
         <Table

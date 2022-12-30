@@ -19,6 +19,8 @@ import { SurveyListFilter } from 'types/filters/SurveyListFilter'
 import Link from 'next/link'
 import { ROUTES } from 'constants/routes'
 import { ViewSurvey } from 'types/schema'
+import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
+import { Permission } from 'constants/permission'
 
 const columns: ColumnsType<ViewSurvey> = [
   {
@@ -115,16 +117,22 @@ const WorkPage = () => {
           title="Work"
           rightRender={
             <>
-              <Col>
+              <AuthenticatedContent
+                permission={Permission.SURVEYS_CREATE}
+                as={Col}
+              >
                 <Button type="primary" onClick={openCreateWorkSurveyDialog}>
                   Add event
                 </Button>
-              </Col>
-              <Col>
+              </AuthenticatedContent>
+              <AuthenticatedContent
+                permission={Permission.SURVEYS_EDIT}
+                as={Col}
+              >
                 <Button type="default" onClick={openToggleSendSurveyDialog}>
                   <Setting size={24} />
                 </Button>
-              </Col>
+              </AuthenticatedContent>
             </>
           }
         />

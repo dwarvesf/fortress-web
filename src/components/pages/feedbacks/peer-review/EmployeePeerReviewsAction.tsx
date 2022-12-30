@@ -1,7 +1,9 @@
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { Delete, PreviewOpen } from '@icon-park/react'
 import { Col, Modal, notification, Row, Tooltip } from 'antd'
+import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
 import { Button } from 'components/common/Button'
+import { Permission } from 'constants/permission'
 import { SurveyParticipantStatus } from 'constants/status'
 import { client } from 'libs/apis'
 import { useRouter } from 'next/router'
@@ -82,7 +84,7 @@ export const EmployeePeerReviewsAction = (props: Props) => {
           />
         </Tooltip>
       </Col>
-      <Col>
+      <AuthenticatedContent permission={Permission.SURVEYS_DELETE} as={Col}>
         <Tooltip title="Delete">
           <Button
             type="text-primary"
@@ -94,7 +96,7 @@ export const EmployeePeerReviewsAction = (props: Props) => {
             }
           />
         </Tooltip>
-      </Col>
+      </AuthenticatedContent>
 
       {isPreviewDialogOpen && (
         <SurveyResultModal

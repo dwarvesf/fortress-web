@@ -1,6 +1,8 @@
 import { Delete, PreviewOpen } from '@icon-park/react'
 import { Col, Modal, notification, Row, Tooltip } from 'antd'
+import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
 import { Button } from 'components/common/Button'
+import { Permission } from 'constants/permission'
 import { ROUTES } from 'constants/routes'
 import { SurveyEventStatus } from 'constants/status'
 import { client } from 'libs/apis'
@@ -71,7 +73,7 @@ export const Actions = (props: Props) => {
           </a>
         </Link>
       </Col>
-      <Col>
+      <AuthenticatedContent permission={Permission.SURVEYS_DELETE} as={Col}>
         <Tooltip title="Delete">
           <Button
             type="text-primary"
@@ -81,7 +83,7 @@ export const Actions = (props: Props) => {
             disabled={record.status !== SurveyEventStatus.DRAFT}
           />
         </Tooltip>
-      </Col>
+      </AuthenticatedContent>
     </Row>
   )
 }
