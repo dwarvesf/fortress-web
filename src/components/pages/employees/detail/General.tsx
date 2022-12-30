@@ -288,6 +288,8 @@ export const General = (props: Props) => {
                     value: data.personalEmail || '-',
                   },
                   { label: 'Address', value: data.address },
+                  { label: 'Country', value: data.country },
+                  { label: 'City', value: data.city },
                   {
                     label: 'Place of Residence',
                     value: data.placeOfResidence,
@@ -347,6 +349,8 @@ export const General = (props: Props) => {
           gender: data.gender || '',
           personalEmail: data.personalEmail || '',
           address: data.address || '',
+          country: data.country || '',
+          city: data.city || '',
           placeOfResidence: data.placeOfResidence || '',
         }}
         onAfterSubmit={() => mutate([GET_PATHS.getEmployees, username])}

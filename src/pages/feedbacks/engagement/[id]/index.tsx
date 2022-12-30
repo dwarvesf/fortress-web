@@ -101,10 +101,9 @@ const Default = () => {
   }
 
   const confirmSendServey = () => {
-    const total = engagements.length
     Modal.confirm({
       title: 'Send servey',
-      content: `Do you want to send survey to ${total} people?`,
+      content: `Do you want to send this survey out?`,
       okText: 'Send',
       okButtonProps: { loading: isLoading },
       onOk: onSendServey,

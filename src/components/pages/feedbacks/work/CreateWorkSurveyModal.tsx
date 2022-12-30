@@ -7,23 +7,16 @@ import { useState } from 'react'
 import { RequestCreateSurveyFeedbackInput } from 'types/schema'
 import { format } from 'date-fns'
 import { getErrorMessage } from 'utils/string'
+import moment from 'moment'
 
 interface Props {
   isOpen: boolean
-  initialValues: Partial<
-    Omit<RequestCreateSurveyFeedbackInput, 'fromDate' | 'toDate'> & {
-      fromDate: moment.Moment
-      toDate: moment.Moment
-    }
-  >
   onClose: () => void
   onAfterSubmit: () => void
-  projectsToSend: string[]
 }
 
 export const CreateWorkSurveyModal = (props: Props) => {
-  const { isOpen, initialValues, onClose, onAfterSubmit, projectsToSend } =
-    props
+  const { isOpen, onClose, onAfterSubmit } = props
   const [form] = useForm()
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -60,8 +53,21 @@ export const CreateWorkSurveyModal = (props: Props) => {
         ? String(format(new Date(values.toDate), SERVER_DATE_FORMAT))
         : '',
       type: FeedbackSubtype.WORK,
-      projectIDs: projectsToSend,
     }
+  }
+
+  // Default initial values = next monday -> friday 2 weeks after
+  let fromDate: moment.Moment
+  let toDate: moment.Moment
+  const today = moment().isoWeekday()
+  // If today is not Monday, set for monday next week
+  if (today !== 1) {
+    fromDate = moment().add(1, 'week').isoWeekday(1)
+    toDate = moment().add(2, 'week').isoWeekday(5)
+  } else {
+    // Else set for this week
+    fromDate = moment().isoWeekday(1)
+    toDate = moment().add(1, 'week').isoWeekday(5)
   }
 
   return (
@@ -77,7 +83,14 @@ export const CreateWorkSurveyModal = (props: Props) => {
       destroyOnClose
       title="New event"
     >
-      <Form form={form} onFinish={onSubmit} initialValues={initialValues}>
+      <Form
+        form={form}
+        onFinish={onSubmit}
+        initialValues={{
+          fromDate,
+          toDate,
+        }}
+      >
         <Form.Item
           label="From date"
           name="fromDate"
@@ -89,6 +102,27 @@ export const CreateWorkSurveyModal = (props: Props) => {
             style={{ width: '100%' }}
             placeholder="Select start date"
             className="bordered"
+            onChange={(value) => {
+              form.setFieldValue('fromDate', value)
+              // Also set the end date to the Friday of next week
+              form.setFieldValue(
+                'toDate',
+                moment(value).add(1, 'week').isoWeekday(5),
+              )
+            }}
+            disabledDate={(date) => {
+              // Disable date if it's before today
+              if (date.isBefore(new Date())) {
+                return true
+              }
+
+              // Disable date if it's not Monday
+              if (date.isoWeekday() !== 1) {
+                return true
+              }
+
+              return false
+            }}
           />
         </Form.Item>
         <Form.Item
@@ -102,6 +136,7 @@ export const CreateWorkSurveyModal = (props: Props) => {
             style={{ width: '100%' }}
             placeholder="Select end date"
             className="bordered"
+            disabled
           />
         </Form.Item>
       </Form>
