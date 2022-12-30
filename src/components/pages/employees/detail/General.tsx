@@ -7,6 +7,7 @@ import {
   Tooltip,
   Card,
   Table,
+  Tag,
 } from 'antd'
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { ProjectAvatar, UserAvatar } from 'components/common/AvatarWithName'
@@ -22,7 +23,7 @@ import {
 } from 'types/schema'
 import { client, GET_PATHS } from 'libs/apis'
 import { mutate } from 'swr'
-import { useState } from 'react'
+import { ReactElement, useState } from 'react'
 import { EmployeeStatus, employeeStatuses } from 'constants/status'
 import { Github, PreviewOpen, Star } from '@icon-park/react'
 import moment from 'moment'
@@ -82,17 +83,30 @@ interface Props {
   mutateEmployee: () => void
 }
 
-const renderSkillLinkWithFilter = (
-  filter: RequestGetListEmployeeInput,
-  name: string,
-) => {
+const renderTagLinkWithFilter = ({
+  filter,
+  name,
+  isRenderedAsTag = true,
+  color,
+}: {
+  filter: RequestGetListEmployeeInput
+  name: ReactElement | string
+  isRenderedAsTag?: boolean
+  color?: string
+}) => {
   return (
     <Link
       href={`${ROUTES.EMPLOYEES}?filter=${JSON.stringify(
         new EmployeeListFilter(filter),
       )}`}
     >
-      {name}
+      {isRenderedAsTag ? (
+        <Tag style={{ cursor: 'pointer' }} color={color}>
+          {name}
+        </Tag>
+      ) : (
+        name
+      )}
     </Link>
   )
 }
@@ -245,17 +259,14 @@ export const General = (props: Props) => {
                     label: 'Positions',
                     value:
                       (data.positions || []).length > 0
-                        ? data.positions?.map((position, index) => (
-                            <>
-                              {renderSkillLinkWithFilter(
-                                {
-                                  positions: [position.code!],
-                                },
-                                position.name || '-',
-                              )}
-                              {index !== (data.positions || []).length - 1 &&
-                                ', '}
-                            </>
+                        ? data.positions?.map((position) => (
+                            <span key={position.id}>
+                              {renderTagLinkWithFilter({
+                                filter: { positions: [position.code!] },
+                                name: position.name || '-',
+                                color: 'blue',
+                              })}
+                            </span>
                           ))
                         : '-',
                   },
@@ -263,31 +274,27 @@ export const General = (props: Props) => {
                     label: 'Chapters',
                     value:
                       data.chapters && data.chapters.length
-                        ? data.chapters?.map((chapter, id) => (
+                        ? data.chapters?.map((chapter) => (
                             <span key={chapter.id}>
-                              {chapter.leadID === data?.id ? (
-                                <Tooltip title={`${chapter.name} lead`}>
-                                  {renderSkillLinkWithFilter(
-                                    {
-                                      chapters: [chapter.code!],
-                                    },
-                                    chapter.name || '-',
-                                  )}
-                                  <Star
-                                    style={{ color: theme.colors.primary }}
-                                  />
-                                </Tooltip>
-                              ) : (
-                                renderSkillLinkWithFilter(
-                                  {
-                                    chapters: [chapter.code!],
-                                  },
-                                  chapter.name || '-',
-                                )
-                              )}
-                              {id !== (data.chapters?.length || 0) - 1
-                                ? ', '
-                                : ''}
+                              {renderTagLinkWithFilter({
+                                filter: {
+                                  chapters: [chapter.code!],
+                                },
+                                name:
+                                  chapter.leadID === data?.id ? (
+                                    <Tooltip title={`${chapter.name} lead`}>
+                                      {chapter.name || '-'}
+                                      <Star
+                                        style={{
+                                          color: theme.colors.primary,
+                                        }}
+                                      />
+                                    </Tooltip>
+                                  ) : (
+                                    chapter.name || '-'
+                                  ),
+                                color: 'purple',
+                              })}
                             </span>
                           ))
                         : '-',
@@ -295,27 +302,28 @@ export const General = (props: Props) => {
                   {
                     label: 'Seniority',
                     value:
-                      renderSkillLinkWithFilter(
-                        {
+                      renderTagLinkWithFilter({
+                        filter: {
                           seniorities: [data.seniority?.code!],
                         },
-                        data.seniority?.name || '-',
-                      ) || '-',
+                        name: data.seniority?.name || '-',
+                        isRenderedAsTag: false,
+                      }) || '-',
                   },
                   {
                     label: 'Stack',
                     value:
                       (data.stacks || []).length > 0
-                        ? data.stacks?.map((stack, index) => (
-                            <>
-                              {renderSkillLinkWithFilter(
-                                {
+                        ? data.stacks?.map((stack) => (
+                            <span key={stack.id}>
+                              {renderTagLinkWithFilter({
+                                filter: {
                                   stacks: [stack.code!],
                                 },
-                                stack.name || '-',
-                              )}
-                              {index !== (data.stacks || []).length - 1 && ', '}
-                            </>
+                                name: stack.name || '-',
+                                color: 'green',
+                              })}
+                            </span>
                           ))
                         : '-',
                   },
