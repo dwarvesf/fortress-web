@@ -3,8 +3,13 @@ import { useForm } from 'antd/lib/form/Form'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { client, GET_PATHS } from 'libs/apis'
 import { useState } from 'react'
+import PhoneInput from 'react-phone-input-2'
 import { ViewProfileData } from 'types/schema'
-import { getErrorMessage } from 'utils/string'
+import {
+  formatPhoneNumber,
+  getErrorMessage,
+  removeLeadingZero,
+} from 'utils/string'
 
 type ProfileInfoFormValues = Pick<
   ViewProfileData,
@@ -29,6 +34,13 @@ export const EditProfileInfoModal = (props: Props) => {
 
   const [form] = useForm()
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const hasPrefix = (initialValues?.phoneNumber || '').includes('+') || false
+
+  const [dialCode, setDialCode] = useState<string>(
+    hasPrefix
+      ? (initialValues?.phoneNumber || '').split(' ')[0].slice(1) || ''
+      : '84',
+  )
 
   const { data: countryData, loading: isCountryLoading } = useFetchWithCache(
     [GET_PATHS.getCountryMetadata],
@@ -40,7 +52,17 @@ export const EditProfileInfoModal = (props: Props) => {
   const onSubmit = async (values: ProfileInfoFormValues) => {
     try {
       setIsSubmitting(true)
-      await client.updateProfile(values)
+      await client.updateProfile({
+        ...values,
+        phoneNumber: (values.phoneNumber || '-').includes(' ') // need to check this for the case submit without editing
+          ? // in case phoneNumber is not edited, the value has the form +84 12345...
+            values.phoneNumber
+          : // otherwise its value is passed from PhoneInput's
+            // onChange and has the form of 8412345...
+            `+${dialCode} ${removeLeadingZero(
+              (values.phoneNumber || '').slice(dialCode.length),
+            )}`,
+      })
 
       notification.success({ message: 'Profile info updated successfully!' })
 
@@ -67,16 +89,34 @@ export const EditProfileInfoModal = (props: Props) => {
       destroyOnClose
       title="Edit Profile"
     >
-      <Form form={form} onFinish={onSubmit} initialValues={initialValues}>
+      <Form
+        form={form}
+        onFinish={onSubmit}
+        initialValues={{
+          ...initialValues,
+          phoneNumber: formatPhoneNumber(dialCode, initialValues.phoneNumber),
+        }}
+      >
         <Row gutter={24}>
-          <Col span={24} md={{ span: 12 }}>
+          <Col span={24}>
             <Form.Item
-              label="Phone Number"
+              label="Phone number"
               name="phoneNumber"
-              required
               rules={[{ required: true, message: 'Required' }]}
             >
-              <Input placeholder="Enter phone number" className="bordered" />
+              <PhoneInput
+                country="vn"
+                onChange={(value, data) => {
+                  // store dial code and phone number individually
+                  form.setFieldValue('phoneNumber', value)
+                  if ('dialCode' in data) {
+                    setDialCode(data.dialCode)
+                  }
+                }}
+                inputStyle={{ width: '100%', height: 40 }}
+                enableSearch
+                disableSearchIcon
+              />
             </Form.Item>
           </Col>
           <Col span={24} md={{ span: 12 }}>

@@ -399,6 +399,8 @@ export interface ViewEmployeeData {
   avatar?: string
   birthday?: string
   chapters?: ViewChapter[]
+  city?: string
+  country?: string
   createdAt?: string
   deletedAt?: GormDeletedAt
   discordID?: string
@@ -437,6 +439,7 @@ export interface ViewEmployeeListDataResponse {
 }
 
 export interface ViewEmployeeProjectData {
+  code?: string
   deploymentType?: string
   id?: string
   name?: string

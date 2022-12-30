@@ -15,6 +15,7 @@ import { EditableDetailSectionCard } from 'components/common/EditableDetailSecti
 import { DATE_FORMAT } from 'constants/date'
 import { format } from 'date-fns'
 import {
+  RequestGetListEmployeeInput,
   ViewEmployeeData,
   ViewEmployeeProjectData,
   ViewPosition,
@@ -79,6 +80,21 @@ const projectColumns: ColumnsType<ViewEmployeeProjectData> = [
 interface Props {
   data: ViewEmployeeData
   mutateEmployee: () => void
+}
+
+const renderSkillLinkWithFilter = (
+  filter: RequestGetListEmployeeInput,
+  name: string,
+) => {
+  return (
+    <Link
+      href={`${ROUTES.EMPLOYEES}?filter=${JSON.stringify(
+        new EmployeeListFilter(filter),
+      )}`}
+    >
+      {name}
+    </Link>
+  )
 }
 
 export const General = (props: Props) => {
@@ -227,55 +243,77 @@ export const General = (props: Props) => {
                 data={[
                   {
                     label: 'Positions',
-                    value: data.positions
-                      ?.map((position) => position.name)
-                      .join(', '),
+                    value:
+                      (data.positions || []).length > 0
+                        ? data.positions?.map((position, index) => (
+                            <>
+                              {renderSkillLinkWithFilter(
+                                {
+                                  positions: [position.code!],
+                                },
+                                position.name || '-',
+                              )}
+                              {index !== (data.positions || []).length - 1 &&
+                                ', '}
+                            </>
+                          ))
+                        : '-',
                   },
                   {
                     label: 'Chapters',
                     value:
                       data.chapters && data.chapters.length
-                        ? data.chapters?.map((chapter, id) =>
-                            chapter.leadID === data?.id ? (
-                              <>
+                        ? data.chapters?.map((chapter, id) => (
+                            <span key={chapter.id}>
+                              {chapter.leadID === data?.id ? (
                                 <Tooltip title={`${chapter.name} lead`}>
-                                  {chapter.name}{' '}
+                                  {renderSkillLinkWithFilter(
+                                    {
+                                      chapters: [chapter.code!],
+                                    },
+                                    chapter.name || '-',
+                                  )}
                                   <Star
                                     style={{ color: theme.colors.primary }}
                                   />
                                 </Tooltip>
-                                {id !== (data.chapters?.length || 0) - 1
-                                  ? ', '
-                                  : ''}
-                              </>
-                            ) : (
-                              `${chapter.name}${
-                                id !== (data.chapters?.length || 0) - 1
-                                  ? ', '
-                                  : ''
-                              }`
-                            ),
-                          )
-                        : null,
+                              ) : (
+                                renderSkillLinkWithFilter(
+                                  {
+                                    chapters: [chapter.code!],
+                                  },
+                                  chapter.name || '-',
+                                )
+                              )}
+                              {id !== (data.chapters?.length || 0) - 1
+                                ? ', '
+                                : ''}
+                            </span>
+                          ))
+                        : '-',
                   },
-                  { label: 'Seniority', value: data.seniority?.name },
+                  {
+                    label: 'Seniority',
+                    value:
+                      renderSkillLinkWithFilter(
+                        {
+                          seniorities: [data.seniority?.code!],
+                        },
+                        data.seniority?.name || '-',
+                      ) || '-',
+                  },
                   {
                     label: 'Stack',
                     value:
                       (data.stacks || []).length > 0
                         ? data.stacks?.map((stack, index) => (
                             <>
-                              <Link
-                                href={`${
-                                  ROUTES.EMPLOYEES
-                                }?filter=${JSON.stringify(
-                                  new EmployeeListFilter({
-                                    stacks: [stack.code!],
-                                  }),
-                                )}`}
-                              >
-                                {stack.name}
-                              </Link>
+                              {renderSkillLinkWithFilter(
+                                {
+                                  stacks: [stack.code!],
+                                },
+                                stack.name || '-',
+                              )}
                               {index !== (data.stacks || []).length - 1 && ', '}
                             </>
                           ))
