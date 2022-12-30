@@ -54,13 +54,13 @@ export const EditProfileInfoModal = (props: Props) => {
       setIsSubmitting(true)
       await client.updateProfile({
         ...values,
-        phoneNumber: (values.phoneNumber || '-').includes(' ') // need to check this for the case submit without editing
+        phoneNumber: values.phoneNumber?.includes(' ') // need to check this for the case submit without editing
           ? // in case phoneNumber is not edited, the value has the form +84 12345...
             values.phoneNumber
           : // otherwise its value is passed from PhoneInput's
             // onChange and has the form of 8412345...
             `+${dialCode} ${removeLeadingZero(
-              (values.phoneNumber || '').slice(dialCode.length),
+              values.phoneNumber!.slice(dialCode.length),
             )}`,
       })
 
