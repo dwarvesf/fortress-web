@@ -111,6 +111,7 @@ export const WorkUnits = (props: Props) => {
       </Space>
       {isAddNewWorkUnitDialogOpen && (
         <WorkUnitModal
+          projectID={project.id || ''}
           key={tabKey}
           isOpen={isAddNewWorkUnitDialogOpen}
           onClose={closeAddNewWorkUnitDialog}

@@ -5,13 +5,13 @@ import { useState } from 'react'
 import { RequestUpdateProjectGeneralInfoInput } from 'types/schema'
 import { AsyncSelect } from 'components/common/Select'
 import { transformMetadataToSelectOption } from 'utils/select'
-import { useRouter } from 'next/router'
 import { getErrorMessage } from 'utils/string'
 
 type ProjectGeneralInfoFormValues =
   Partial<RequestUpdateProjectGeneralInfoInput>
 
 interface Props {
+  projectID: string
   isOpen: boolean
   initialValues: ProjectGeneralInfoFormValues
   onClose: () => void
@@ -19,10 +19,7 @@ interface Props {
 }
 
 export const EditProjectGeneralInfoModal = (props: Props) => {
-  const { isOpen, initialValues, onClose, onAfterSubmit } = props
-  const {
-    query: { id: productId },
-  } = useRouter()
+  const { projectID, isOpen, initialValues, onClose, onAfterSubmit } = props
 
   const [form] = useForm()
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -31,7 +28,7 @@ export const EditProjectGeneralInfoModal = (props: Props) => {
     try {
       setIsSubmitting(true)
 
-      await client.updateProjectGeneralInfo(productId as string, values)
+      await client.updateProjectGeneralInfo(projectID, values)
 
       notification.success({
         message: "Project's general info updated successfully!",

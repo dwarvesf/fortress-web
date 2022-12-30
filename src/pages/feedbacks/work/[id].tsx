@@ -104,7 +104,7 @@ const EmployeePeerReviewsPage = () => {
       onFilter: (value, record) => value === record?.project?.id,
       render: (value) => (
         <Tag>
-          <Link href={ROUTES.PROJECT_DETAIL(value.id)}>
+          <Link href={ROUTES.PROJECT_DETAIL(value.code)}>
             <a>
               <Space size={4}>
                 {value.name}

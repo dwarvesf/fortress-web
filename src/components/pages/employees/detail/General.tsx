@@ -60,7 +60,7 @@ const projectColumns: ColumnsType<ViewEmployeeProjectData> = [
   {
     title: 'Action',
     render: (value) => (
-      <Link href={ROUTES.PROJECT_DETAIL(value.id)}>
+      <Link href={ROUTES.PROJECT_DETAIL(value.code)}>
         <a>
           <Tooltip title="View Detail">
             <Button

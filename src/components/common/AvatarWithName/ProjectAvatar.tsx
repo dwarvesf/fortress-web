@@ -17,7 +17,7 @@ export const ProjectAvatar = (props: Props) => {
       avatar={project.avatar}
       name={project.name}
       renderName={(name) => (
-        <Link href={ROUTES.PROJECT_DETAIL(project.id || '')}>
+        <Link href={ROUTES.PROJECT_DETAIL(project.code || '')}>
           <a className="styled">{name}</a>
         </Link>
       )}

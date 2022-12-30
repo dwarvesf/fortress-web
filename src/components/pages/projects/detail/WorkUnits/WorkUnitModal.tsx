@@ -1,7 +1,6 @@
 import { Modal, notification } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
 import { client } from 'libs/apis'
-import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { RequestCreateWorkUnitBody } from 'types/schema'
 import { getErrorMessage } from 'utils/string'
@@ -10,6 +9,7 @@ import { WorkUnitForm } from './WorkUnitForm'
 interface Props {
   isOpen: boolean
   isEditing?: boolean
+  projectID: string
   rowID?: string
   initialValues?: RequestCreateWorkUnitBody
   onClose: () => void
@@ -18,13 +18,10 @@ interface Props {
 
 export const WorkUnitModal = (props: Props) => {
   const {
-    query: { id: projectId },
-  } = useRouter()
-
-  const {
     isOpen,
     isEditing = false,
-    rowID,
+    rowID = '',
+    projectID,
     initialValues,
     onClose,
     onAfterSubmit,
@@ -38,13 +35,9 @@ export const WorkUnitModal = (props: Props) => {
       setIsSubmitting(true)
 
       if (!isEditing) {
-        await client.addProjectWorkUnit(projectId as string, values)
+        await client.addProjectWorkUnit(projectID, values)
       } else {
-        await client.editProjectWorkUnit(
-          projectId as string,
-          rowID as string,
-          values,
-        )
+        await client.editProjectWorkUnit(projectID, rowID, values)
       }
 
       notification.success({
@@ -78,6 +71,7 @@ export const WorkUnitModal = (props: Props) => {
       title={`${isEditing ? 'Edit' : 'Create new'} Work unit`}
     >
       <WorkUnitForm
+        projectID={projectID}
         isEditing={isEditing}
         form={form}
         initialValues={initialValues}

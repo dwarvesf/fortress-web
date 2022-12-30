@@ -6,23 +6,20 @@ import { SERVER_DATE_FORMAT } from 'constants/date'
 import { ProjectMemberStatus } from 'constants/status'
 import { format } from 'date-fns'
 import { client } from 'libs/apis'
-import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { ViewProjectMember } from 'types/schema'
 import { getErrorMessage } from 'utils/string'
 import { MemberFormModal } from '../MemberForm/MemberFormModal'
 
 export const Actions = ({
+  projectID,
   record,
   onAfterAction,
 }: {
+  projectID: string
   record: ViewProjectMember
   onAfterAction: () => void
 }) => {
-  const {
-    query: { id: projectId },
-  } = useRouter()
-
   const {
     isOpen: isEditDialogOpen,
     onOpen: openEditDialog,
@@ -34,10 +31,7 @@ export const Actions = ({
   const onDelete = async () => {
     try {
       setIsLoading(true)
-      await client.deleteProjectMember(
-        projectId as string,
-        record.employeeID || '',
-      )
+      await client.deleteProjectMember(projectID, record.employeeID || '')
 
       notification.success({
         message: 'Project member deleted successfully!',
@@ -92,6 +86,7 @@ export const Actions = ({
       {isEditDialogOpen && (
         <MemberFormModal
           isEditing
+          projectID={projectID}
           isOpen={isEditDialogOpen}
           onClose={closeEditDialog}
           projectSlotID={record.projectSlotID}

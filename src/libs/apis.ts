@@ -193,13 +193,13 @@ class Client {
   }
 
   public getProjectMemberList(
-    projectId: string,
+    projectID: string,
     filter: ProjectMemberListFilter,
   ) {
     const queryString = qs.stringify(filter)
 
     return fetcher<ViewProjectMemberListResponse & Meta>(
-      `${BASE_URL}/projects/${projectId}/members?${queryString}`,
+      `${BASE_URL}/projects/${projectID}/members?${queryString}`,
       {
         headers: { ...this.privateHeaders },
       },
@@ -333,11 +333,11 @@ class Client {
   }
 
   public createProjectMember(
-    projectId: string,
+    projectID: string,
     data: Partial<RequestAssignMemberInput>,
   ) {
     return fetcher<Response<ViewProjectMember>>(
-      `${BASE_URL}/projects/${projectId}/members`,
+      `${BASE_URL}/projects/${projectID}/members`,
       {
         method: 'POST',
         headers: {
@@ -349,11 +349,11 @@ class Client {
   }
 
   public updateProjectMember(
-    projectId: string,
+    projectID: string,
     data: Partial<RequestUpdateMemberInput>,
   ) {
     return fetcher<Response<ViewProjectMember>>(
-      `${BASE_URL}/projects/${projectId}/members`,
+      `${BASE_URL}/projects/${projectID}/members`,
       {
         method: 'PUT',
         headers: {
@@ -364,9 +364,9 @@ class Client {
     )
   }
 
-  public deleteProjectMember(projectId: string, memberId: string) {
+  public deleteProjectMember(projectID: string, memberId: string) {
     return fetcher<any>(
-      `${BASE_URL}/projects/${projectId}/members/${memberId}`,
+      `${BASE_URL}/projects/${projectID}/members/${memberId}`,
       {
         method: 'DELETE',
         headers: {
@@ -376,9 +376,9 @@ class Client {
     )
   }
 
-  public unassignProjectMember(projectId: string, memberId: string) {
+  public unassignProjectMember(projectID: string, memberId: string) {
     return fetcher<any>(
-      `${BASE_URL}/projects/${projectId}/members/${memberId}`,
+      `${BASE_URL}/projects/${projectID}/members/${memberId}`,
       {
         method: 'PUT',
         headers: {
@@ -421,13 +421,13 @@ class Client {
   }
 
   public getProjectWorkUnits(
-    projectId: string,
+    projectID: string,
     filter: ProjectWorkUnitListFilter,
   ) {
     const queryString = qs.stringify(filter)
 
     return fetcher<Response<ViewWorkUnit[]>>(
-      `${BASE_URL}/projects/${projectId}/work-units?${queryString}`,
+      `${BASE_URL}/projects/${projectID}/work-units?${queryString}`,
       {
         headers: {
           ...this.privateHeaders,
@@ -436,9 +436,9 @@ class Client {
     )
   }
 
-  public archiveProjectWorkUnit(projectId: string, workUnitId: string) {
+  public archiveProjectWorkUnit(projectID: string, workUnitId: string) {
     return fetcher(
-      `${BASE_URL}/projects/${projectId}/work-units/${workUnitId}/archive`,
+      `${BASE_URL}/projects/${projectID}/work-units/${workUnitId}/archive`,
       {
         method: 'PUT',
         headers: {
@@ -448,9 +448,9 @@ class Client {
     )
   }
 
-  public unarchiveProjectWorkUnit(projectId: string, workUnitId: string) {
+  public unarchiveProjectWorkUnit(projectID: string, workUnitId: string) {
     return fetcher(
-      `${BASE_URL}/projects/${projectId}/work-units/${workUnitId}/unarchive`,
+      `${BASE_URL}/projects/${projectID}/work-units/${workUnitId}/unarchive`,
       {
         method: 'PUT',
         headers: {
@@ -474,11 +474,11 @@ class Client {
   }
 
   public addProjectWorkUnit(
-    projectId: string,
+    projectID: string,
     data: RequestCreateWorkUnitBody,
   ) {
     return fetcher<Response<ViewWorkUnit[]>>(
-      `${BASE_URL}/projects/${projectId}/work-units`,
+      `${BASE_URL}/projects/${projectID}/work-units`,
       {
         method: 'POST',
         headers: {
@@ -490,12 +490,12 @@ class Client {
   }
 
   public editProjectWorkUnit(
-    projectId: string,
+    projectID: string,
     workUnitId: string,
     data: RequestUpdateWorkUnitBody,
   ) {
     return fetcher<ViewMessageResponse>(
-      `${BASE_URL}/projects/${projectId}/work-units/${workUnitId}`,
+      `${BASE_URL}/projects/${projectID}/work-units/${workUnitId}`,
       {
         method: 'PUT',
         headers: {

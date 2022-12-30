@@ -8,7 +8,6 @@ import {
 } from 'constants/status'
 import { WorkUnitType, workUnitTypes } from 'constants/workUnitTypes'
 import { client, GET_PATHS } from 'libs/apis'
-import { useRouter } from 'next/router'
 import { theme } from 'styles'
 import { fullListPagination } from 'types/filters/Pagination'
 import { RequestCreateWorkUnitBody } from 'types/schema'
@@ -19,18 +18,15 @@ import {
 } from 'utils/select'
 
 interface Props {
+  projectID: string
   initialValues?: RequestCreateWorkUnitBody
   form: FormInstance<any>
-  onSubmit: (values: RequestCreateWorkUnitBody) => void
   isEditing?: boolean
+  onSubmit: (values: RequestCreateWorkUnitBody) => void
 }
 
 export const WorkUnitForm = (props: Props) => {
-  const { initialValues, isEditing = false, form, onSubmit } = props
-
-  const {
-    query: { id: projectId },
-  } = useRouter()
+  const { projectID, initialValues, isEditing = false, form, onSubmit } = props
 
   return (
     <Form
@@ -72,7 +68,7 @@ export const WorkUnitForm = (props: Props) => {
               maxTagCount={undefined}
               optionGetter={async () => {
                 const { data } = await client.getProjectMemberList(
-                  projectId as string,
+                  projectID as string,
                   {
                     ...fullListPagination,
                     status: 'active',
@@ -85,7 +81,7 @@ export const WorkUnitForm = (props: Props) => {
               }}
               swrKeys={[
                 GET_PATHS.getEmployees,
-                projectId as string,
+                projectID as string,
                 'work-unit-member',
               ]}
               placeholder="Select work unit's members"
@@ -105,7 +101,7 @@ export const WorkUnitForm = (props: Props) => {
               placeholder="Select work unit's stack"
               swrKeys={[
                 GET_PATHS.getStackMetadata,
-                projectId as string,
+                projectID as string,
                 'work-unit-stack',
               ]}
               optionGetter={async () => {

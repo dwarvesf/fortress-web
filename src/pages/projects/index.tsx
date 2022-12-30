@@ -96,7 +96,7 @@ const columns = ({
     render: (value) => (
       <Row justify="end" gutter={[8, 8]}>
         <Col>
-          <Link href={ROUTES.PROJECT_DETAIL(value.id)}>
+          <Link href={ROUTES.PROJECT_DETAIL(value.code)}>
             <a>
               <Tooltip title="View Detail">
                 <Button

@@ -8,6 +8,8 @@ import { format } from 'date-fns'
 import { useMemo } from 'react'
 import { ViewFeedback } from 'types/schema'
 import { DATETIME_FORMAT } from 'constants/date'
+import Link from 'next/link'
+import { ROUTES } from 'constants/routes'
 import { Actions } from './Actions'
 
 export const FeedbackInputTable = ({
@@ -26,6 +28,15 @@ export const FeedbackInputTable = ({
         key: 'topic',
         dataIndex: 'title',
         fixed: 'left',
+        render: (value, record) => (
+          <Link
+            href={`${ROUTES.FEEDBACK_INBOX_DETAIL(record.topicID || '')}?type=${
+              record.type
+            }&subtype=${record.subtype}&eventID=${record.eventID}`}
+          >
+            <a className="styled">{value || '-'}</a>
+          </Link>
+        ),
       },
       {
         title: 'Type',

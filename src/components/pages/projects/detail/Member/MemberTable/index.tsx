@@ -14,10 +14,12 @@ import { capitalizeFirstLetter } from 'utils/string'
 import { Actions } from './Actions'
 
 export const MemberTable = ({
+  projectID,
   data,
   isLoading,
   onAfterAction,
 }: {
+  projectID: string
   data: ViewProjectMember[]
   isLoading: boolean
   onAfterAction: () => void
@@ -80,12 +82,16 @@ export const MemberTable = ({
       {
         key: 'actions',
         render: (value) => (
-          <Actions record={value} onAfterAction={onAfterAction} />
+          <Actions
+            projectID={projectID}
+            record={value}
+            onAfterAction={onAfterAction}
+          />
         ),
         fixed: 'right',
       },
     ] as ColumnsType<ViewProjectMember>
-  }, [onAfterAction])
+  }, [projectID, onAfterAction])
 
   return (
     <Table

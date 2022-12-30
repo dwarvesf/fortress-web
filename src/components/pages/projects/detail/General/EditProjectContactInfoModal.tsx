@@ -6,7 +6,6 @@ import { RequestUpdateContactInfoInput } from 'types/schema'
 import { AsyncSelect } from 'components/common/Select'
 import { renderEmployeeOption } from 'components/common/Select/renderers/employeeOption'
 import { transformEmployeeDataToSelectOption } from 'utils/select'
-import { useRouter } from 'next/router'
 import { EmployeeStatus } from 'constants/status'
 import { getErrorMessage } from 'utils/string'
 import { fullListPagination } from 'types/filters/Pagination'
@@ -14,6 +13,7 @@ import { fullListPagination } from 'types/filters/Pagination'
 type ProjectContactInfoFormValues = Partial<RequestUpdateContactInfoInput>
 
 interface Props {
+  projectID: string
   isOpen: boolean
   initialValues: ProjectContactInfoFormValues
   onClose: () => void
@@ -21,10 +21,7 @@ interface Props {
 }
 
 export const EditProjectContactInfoModal = (props: Props) => {
-  const { isOpen, initialValues, onClose, onAfterSubmit } = props
-  const {
-    query: { id: productId },
-  } = useRouter()
+  const { projectID, isOpen, initialValues, onClose, onAfterSubmit } = props
 
   const [form] = useForm()
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -33,7 +30,7 @@ export const EditProjectContactInfoModal = (props: Props) => {
     try {
       setIsSubmitting(true)
 
-      await client.updateProjectContactInfo(productId as string, values)
+      await client.updateProjectContactInfo(projectID, values)
 
       notification.success({
         message: "Project's contact info updated successfully!",
