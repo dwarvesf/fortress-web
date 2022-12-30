@@ -45,6 +45,7 @@ import {
   RequestUpdateTopicReviewersBody,
   ViewFeedbackReviewDetailResponse,
   ViewProjectContentDataResponse,
+  ViewAuthUserResponse,
 } from 'types/schema'
 import { EmployeeListFilter } from 'types/filters/EmployeeListFilter'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
@@ -699,6 +700,12 @@ class Client {
         body: file,
       },
     )
+  }
+
+  public getAuth() {
+    return fetcher<ViewAuthUserResponse>(`${BASE_URL}/auth/me`, {
+      headers: { ...this.privateHeaders },
+    })
   }
 }
 

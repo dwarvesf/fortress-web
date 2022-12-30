@@ -1,7 +1,9 @@
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { Delete, Edit, PreviewOpen } from '@icon-park/react'
 import { Col, Modal, notification, Row, Tooltip } from 'antd'
+import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
 import { Button } from 'components/common/Button'
+import { Permission } from 'constants/permission'
 import { ROUTES } from 'constants/routes'
 import { SurveyEventStatus } from 'constants/status'
 import { client } from 'libs/apis'
@@ -89,7 +91,7 @@ export const PeerReviewEventDetailActions = (props: Props) => {
           </a>
         </Link>
       </Col>
-      <Col>
+      <AuthenticatedContent permission={Permission.SURVEYS_EDIT} as={Col}>
         <Tooltip title="Edit">
           <Button
             type="text-primary"
@@ -99,8 +101,8 @@ export const PeerReviewEventDetailActions = (props: Props) => {
             disabled={eventStatus === SurveyEventStatus.DONE}
           />
         </Tooltip>
-      </Col>
-      <Col>
+      </AuthenticatedContent>
+      <AuthenticatedContent permission={Permission.SURVEYS_DELETE} as={Col}>
         <Tooltip title="Delete">
           <Button
             type="text-primary"
@@ -112,7 +114,7 @@ export const PeerReviewEventDetailActions = (props: Props) => {
             }
           />
         </Tooltip>
-      </Col>
+      </AuthenticatedContent>
 
       {isAddParticipantsModalOpen && (
         <AddParticipantsModal

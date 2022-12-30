@@ -1,9 +1,11 @@
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { Plus } from '@icon-park/react'
 import { Card, Pagination, Row, Space, Tabs } from 'antd'
+import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
 import { Button } from 'components/common/Button'
 import { SERVER_DATE_FORMAT } from 'constants/date'
 import { DeploymentType } from 'constants/deploymentTypes'
+import { Permission } from 'constants/permission'
 import { ProjectMemberStatus } from 'constants/status'
 import { format } from 'date-fns'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
@@ -200,13 +202,17 @@ export const Member = (props: Props) => {
             tabBarStyle={{ padding: '20px 20px 0' }}
             onTabClick={onTabChange}
             tabBarExtraContent={
-              <Button
-                type="primary"
-                icon={<Plus size={20} />}
-                onClick={openAddNewMemberDialog}
+              <AuthenticatedContent
+                permission={Permission.PROJECTMEMBERS_CREATE}
               >
-                Add New
-              </Button>
+                <Button
+                  type="primary"
+                  icon={<Plus size={20} />}
+                  onClick={openAddNewMemberDialog}
+                >
+                  Add New
+                </Button>
+              </AuthenticatedContent>
             }
             items={[
               {

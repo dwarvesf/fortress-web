@@ -18,6 +18,7 @@ interface AuthContextValues {
   login: () => void
   logout: () => void
   revalidate: () => void
+  permissions: string[]
 }
 
 export const AUTH_TOKEN_KEY = 'fortress-token'
@@ -32,6 +33,7 @@ const AuthContextProvider = ({ children }: WithChildren) => {
   const [isAuthenticating, setIsAuthenticating] = useState<boolean>(true)
   const [user, setUser] = useState<ViewProfileData>()
   const [fetchTrigger, setFetchTrigger] = useState(Date.now())
+  const [permissions, setPermissions] = useState<string[]>([])
 
   const login = useGoogleLogin({
     flow: 'auth-code',
@@ -92,6 +94,8 @@ const AuthContextProvider = ({ children }: WithChildren) => {
       try {
         const profile = await client.getProfile()
         setUser(profile.data)
+        const auth = await client.getAuth()
+        setPermissions(auth.data?.permissions || [])
       } catch (error) {
         console.error(error)
       } finally {
@@ -113,6 +117,7 @@ const AuthContextProvider = ({ children }: WithChildren) => {
         login,
         logout,
         revalidate,
+        permissions,
       }}
     >
       {children}

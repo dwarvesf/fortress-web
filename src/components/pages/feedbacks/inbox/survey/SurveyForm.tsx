@@ -1,6 +1,7 @@
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { Col, Empty, Form, notification, Row, Space, Switch, Tag } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
+import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
 import { Button } from 'components/common/Button'
 import { FeedbackFormField } from 'components/common/Feedbacks/FeedbackFormField'
 import { FormWrapper } from 'components/common/FormWrapper'
@@ -11,8 +12,10 @@ import { PageSpinner } from 'components/common/PageSpinner'
 import { SEO } from 'components/common/SEO'
 import { statusColors } from 'constants/colors'
 import { DomainTypes, FeedbackQuestionType } from 'constants/feedbackTypes'
+import { Permission } from 'constants/permission'
 import { ROUTES } from 'constants/routes'
 import { feedbackStatuses, ModelEventReviewerStatus } from 'constants/status'
+import { useAuthContext } from 'context/auth'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { client, GET_PATHS } from 'libs/apis'
 import { useRouter } from 'next/router'
@@ -26,6 +29,7 @@ export const SurveyForm = () => {
     query: { id: topicID, eventID },
     push,
   } = useRouter()
+  const { permissions } = useAuthContext()
 
   const { data, loading, mutate } = useFetchWithCache(
     [GET_PATHS.getFeedbacks, topicID, eventID],
@@ -162,35 +166,39 @@ export const SurveyForm = () => {
               footer={
                 detail.status !==
                 ModelEventReviewerStatus.EventReviewerStatusDone ? (
-                  <Row gutter={8} justify="space-between" align="middle">
-                    <Col>
-                      <Space>
-                        <Switch
-                          checked={showNote}
-                          onChange={(checked) => setShowNote(checked)}
-                        />
-                        <span>Show note</span>
-                      </Space>
-                    </Col>
-                    <Col>
-                      <Row gutter={8}>
-                        <Col>
-                          <Button
-                            type="default"
-                            onClick={onSaveDraft}
-                            loading={isSubmitting}
-                          >
-                            Save Draft
-                          </Button>
-                        </Col>
-                        <Col>
-                          <Button type="primary" onClick={form.submit}>
-                            Preview & Send
-                          </Button>
-                        </Col>
-                      </Row>
-                    </Col>
-                  </Row>
+                  <AuthenticatedContent
+                    permission={Permission.FEEDBACKS_CREATE}
+                  >
+                    <Row gutter={8} justify="space-between" align="middle">
+                      <Col>
+                        <Space>
+                          <Switch
+                            checked={showNote}
+                            onChange={(checked) => setShowNote(checked)}
+                          />
+                          <span>Show note</span>
+                        </Space>
+                      </Col>
+                      <Col>
+                        <Row gutter={8}>
+                          <Col>
+                            <Button
+                              type="default"
+                              onClick={onSaveDraft}
+                              loading={isSubmitting}
+                            >
+                              Save Draft
+                            </Button>
+                          </Col>
+                          <Col>
+                            <Button type="primary" onClick={form.submit}>
+                              Preview & Send
+                            </Button>
+                          </Col>
+                        </Row>
+                      </Col>
+                    </Row>
+                  </AuthenticatedContent>
                 ) : undefined
               }
             >
@@ -233,7 +241,8 @@ export const SurveyForm = () => {
                             showNote={showNote}
                             done={
                               detail.status ===
-                              ModelEventReviewerStatus.EventReviewerStatusDone
+                                ModelEventReviewerStatus.EventReviewerStatusDone ||
+                              !permissions.includes(Permission.FEEDBACKS_CREATE)
                             }
                             domain={field.domain as DomainTypes}
                             required

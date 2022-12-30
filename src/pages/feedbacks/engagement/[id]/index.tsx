@@ -34,6 +34,8 @@ import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 import { SEO } from 'components/common/SEO'
 import { getErrorMessage } from 'utils/string'
 import { FeedbackSubtype } from 'constants/feedbackTypes'
+import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
+import { Permission } from 'constants/permission'
 
 const columns: ColumnsType<ViewTopic> = [
   {
@@ -188,7 +190,10 @@ const Default = () => {
                   }, 500)}
                 />
               </Col>
-              <Col>
+              <AuthenticatedContent
+                permission={Permission.SURVEYS_EDIT}
+                as={Col}
+              >
                 <Button
                   type="primary"
                   disabled={
@@ -203,7 +208,7 @@ const Default = () => {
                 >
                   {status === SurveyEventStatus.DRAFT ? 'Send' : 'Close'}
                 </Button>
-              </Col>
+              </AuthenticatedContent>
             </>
           }
         />

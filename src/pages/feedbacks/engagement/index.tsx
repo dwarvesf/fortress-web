@@ -18,6 +18,8 @@ import { SEO } from 'components/common/SEO'
 import { ViewSurvey } from 'types/schema'
 import { ROUTES } from 'constants/routes'
 import Link from 'next/link'
+import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
+import { Permission } from 'constants/permission'
 
 const columns: ColumnsType<ViewSurvey> = [
   {
@@ -90,9 +92,11 @@ const EmployeeEngagementPage = () => {
         <PageHeader
           title="Employee engagement"
           rightRender={
-            <Button type="primary" onClick={openCreateEngagementSurveyModal}>
-              Create
-            </Button>
+            <AuthenticatedContent permission={Permission.SURVEYS_CREATE}>
+              <Button type="primary" onClick={openCreateEngagementSurveyModal}>
+                Create
+              </Button>
+            </AuthenticatedContent>
           }
         />
         <Table

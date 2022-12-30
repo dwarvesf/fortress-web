@@ -33,6 +33,8 @@ import { PreviewOpen, Star, Link as IconLink } from '@icon-park/react'
 import { SEO } from 'components/common/SEO'
 import { LinkWithIcon } from 'components/common/LinkWithIcon'
 import { fullListPagination } from 'types/filters/Pagination'
+import { Permission } from 'constants/permission'
+import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
 
 interface ColumnProps {
   filter: EmployeeListFilter
@@ -280,13 +282,16 @@ const Default = () => {
                   }}
                 />
               </Col>
-              <Col>
+              <AuthenticatedContent
+                permission={Permission.EMPLOYEES_CREATE}
+                as={Col}
+              >
                 <Link href={ROUTES.ADD_EMPLOYEE}>
                   <a>
                     <Button type="primary">Add Employee</Button>
                   </a>
                 </Link>
-              </Col>
+              </AuthenticatedContent>
             </>
           }
         />

@@ -7,6 +7,8 @@ import { ProjectWorkUnitStatus } from 'constants/status'
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { Edit, FolderDownload, FolderUpload } from '@icon-park/react'
 import { getErrorMessage } from 'utils/string'
+import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
+import { Permission } from 'constants/permission'
 import { WorkUnitModal } from '../WorkUnitModal'
 
 export const Actions = ({
@@ -58,7 +60,10 @@ export const Actions = ({
   return (
     <>
       <Row justify="end" gutter={[8, 8]}>
-        <Col>
+        <AuthenticatedContent
+          permission={Permission.PROJECTWORKUNITS_EDIT}
+          as={Col}
+        >
           <Tooltip title="Edit">
             <Button
               type="text-primary"
@@ -67,8 +72,11 @@ export const Actions = ({
               onClick={openEditWorkUnitDialog}
             />
           </Tooltip>
-        </Col>
-        <Col>
+        </AuthenticatedContent>
+        <AuthenticatedContent
+          permission={Permission.PROJECTWORKUNITS_EDIT}
+          as={Col}
+        >
           <Tooltip title={isActive ? 'Archive' : 'Unarchive'}>
             <Button
               type="text-primary"
@@ -84,7 +92,7 @@ export const Actions = ({
               loading={isLoading}
             />
           </Tooltip>
-        </Col>
+        </AuthenticatedContent>
       </Row>
       {isEditWorkUnitDialogOpen && (
         <WorkUnitModal

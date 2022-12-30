@@ -35,6 +35,8 @@ import { More } from '@icon-park/react'
 import { SEO } from 'components/common/SEO'
 import { getErrorMessage } from 'utils/string'
 import { FeedbackSubtype } from 'constants/feedbackTypes'
+import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
+import { Permission } from 'constants/permission'
 
 interface ColumnProps {
   eventStatus?: SurveyEventStatus
@@ -276,7 +278,10 @@ const Default = () => {
                   }, 500)}
                 />
               </Col>
-              <Col>
+              <AuthenticatedContent
+                permission={Permission.SURVEYS_CREATE}
+                as={Col}
+              >
                 <Button
                   type="primary"
                   disabled={!selectedRowKeys.length || isLoading}
@@ -285,25 +290,33 @@ const Default = () => {
                 >
                   Send
                 </Button>
-              </Col>
+              </AuthenticatedContent>
               <Col style={{ display: 'flex', alignItems: 'center' }}>
                 <Dropdown
                   placement="bottomRight"
                   trigger={['click']}
                   overlay={
                     <Menu>
-                      <Menu.Item
-                        disabled={status !== SurveyEventStatus.INPROGRESS}
-                        onClick={confirmMarkDone}
+                      <AuthenticatedContent
+                        permission={Permission.SURVEYS_EDIT}
                       >
-                        Mark done
-                      </Menu.Item>
-                      <Menu.Item
-                        disabled={status !== SurveyEventStatus.DRAFT}
-                        onClick={confirmDelete}
+                        <Menu.Item
+                          disabled={status !== SurveyEventStatus.INPROGRESS}
+                          onClick={confirmMarkDone}
+                        >
+                          Mark done
+                        </Menu.Item>
+                      </AuthenticatedContent>
+                      <AuthenticatedContent
+                        permission={Permission.SURVEYS_EDIT}
                       >
-                        Delete
-                      </Menu.Item>
+                        <Menu.Item
+                          disabled={status !== SurveyEventStatus.DRAFT}
+                          onClick={confirmDelete}
+                        >
+                          Delete
+                        </Menu.Item>
+                      </AuthenticatedContent>
                     </Menu>
                   }
                 >

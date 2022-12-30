@@ -1,7 +1,9 @@
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { Plus } from '@icon-park/react'
 import { Card, Space, Tabs } from 'antd'
+import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
 import { Button } from 'components/common/Button'
+import { Permission } from 'constants/permission'
 import { ProjectWorkUnitStatus } from 'constants/status'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { useFilter } from 'hooks/useFilter'
@@ -74,13 +76,17 @@ export const WorkUnits = (props: Props) => {
             tabBarStyle={{ padding: '20px 20px 0' }}
             onTabClick={onTabChange}
             tabBarExtraContent={
-              <Button
-                type="primary"
-                icon={<Plus size={20} />}
-                onClick={openAddNewWorkUnitDialog}
+              <AuthenticatedContent
+                permission={Permission.PROJECTWORKUNITS_CREATE}
               >
-                Add New
-              </Button>
+                <Button
+                  type="primary"
+                  icon={<Plus size={20} />}
+                  onClick={openAddNewWorkUnitDialog}
+                >
+                  Add New
+                </Button>
+              </AuthenticatedContent>
             }
             items={[
               {
