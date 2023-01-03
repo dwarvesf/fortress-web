@@ -158,6 +158,7 @@ export const EditProfileInfoModal = (props: Props) => {
           <Col span={24} md={{ span: 12 }}>
             <Form.Item label="Country" name="country">
               <Select
+                showSearch
                 loading={isCountryLoading}
                 placeholder="Select country"
                 options={countries.map((c) => {
@@ -172,6 +173,7 @@ export const EditProfileInfoModal = (props: Props) => {
           <Col span={24} md={{ span: 12 }}>
             <Form.Item label="City" name="city">
               <Select
+                showSearch
                 loading={isCountryLoading}
                 placeholder="Select city"
                 options={
