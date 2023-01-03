@@ -148,7 +148,7 @@ export const ProjectForm = (props: Props) => {
 
         <Col span={24} md={{ span: 12 }}>
           <Form.Item
-            label="Project email"
+            label="Project Email"
             name="projectEmail"
             rules={[
               { required: true, message: 'Required' },

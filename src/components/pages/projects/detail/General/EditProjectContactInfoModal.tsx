@@ -80,9 +80,12 @@ export const EditProjectContactInfoModal = (props: Props) => {
             <Input placeholder="Enter client email" className="bordered" />
           </Form.Item>
           <Form.Item
-            label="Project email"
+            label="Project Email"
             name="projectEmail"
-            rules={[{ type: 'email', message: 'Wrong email format' }]}
+            rules={[
+              { type: 'email', message: 'Wrong email format' },
+              { required: true, message: 'Required' },
+            ]}
           >
             <Input placeholder="Enter project email" className="bordered" />
           </Form.Item>
