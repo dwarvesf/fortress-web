@@ -149,11 +149,11 @@ const WorkPage = () => {
         <Row justify="end">
           <Pagination
             current={filter.page}
-            onChange={(page) => setFilter({ page })}
+            onChange={(page, pageSize) => setFilter({ page, size: pageSize })}
             total={surveysData?.total}
             pageSize={filter.size}
             size="small"
-            hideOnSinglePage
+            showSizeChanger
           />
         </Row>
       </Space>

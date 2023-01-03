@@ -116,10 +116,11 @@ const PeerReviewPage = () => {
         <Row justify="end">
           <Pagination
             current={filter.page}
-            onChange={(page) => setFilter({ page })}
+            onChange={(page, pageSize) => setFilter({ page, size: pageSize })}
             total={data?.total}
             pageSize={filter.size}
-            hideOnSinglePage
+            size="small"
+            showSizeChanger
           />
         </Row>
 

@@ -81,10 +81,11 @@ const Default = () => {
       <Row justify="end">
         <Pagination
           current={filter.page}
-          onChange={(page) => setFilter({ page })}
+          onChange={(page, pageSize) => setFilter({ page, pageSize })}
           total={data?.total}
           pageSize={filter.size}
-          hideOnSinglePage
+          size="small"
+          showSizeChanger
         />
       </Row>
     )
