@@ -8,7 +8,6 @@ import { AsyncSelect } from 'components/common/Select'
 import { DATE_FORMAT, SERVER_DATE_FORMAT } from 'constants/date'
 import { format } from 'date-fns'
 import { client, GET_PATHS } from 'libs/apis'
-import { mutate } from 'swr'
 import { ViewProjectData } from 'types/schema'
 import { transformMetadataToSelectOption } from 'utils/select'
 import { EditableAvatar } from 'components/common/EditableAvatar'
@@ -48,7 +47,7 @@ export const General = (props: Props) => {
 
       // Refetch project data
       notification.success({ message: 'Project status updated successfully!' })
-      mutate([GET_PATHS.getProjects, data.id])
+      mutateProject()
     } catch (error: any) {
       notification.error({
         message: getErrorMessage(error, 'Could not update project status'),
@@ -196,7 +195,7 @@ export const General = (props: Props) => {
           countryID: data.country?.id || '',
         }}
         onClose={closeEditProjectGeneralInfoDialog}
-        onAfterSubmit={() => mutate([GET_PATHS.getProjects, data.id])}
+        onAfterSubmit={mutateProject}
       />
       <EditProjectContactInfoModal
         projectID={data.id || ''}
@@ -207,7 +206,7 @@ export const General = (props: Props) => {
           deliveryManagerID: data.deliveryManager?.employeeID || '',
         }}
         onClose={closeEditProjectContactInfoDialog}
-        onAfterSubmit={() => mutate([GET_PATHS.getProjects, data.id])}
+        onAfterSubmit={mutateProject}
       />
     </>
   )
