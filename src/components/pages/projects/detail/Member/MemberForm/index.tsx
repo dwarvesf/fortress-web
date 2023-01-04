@@ -68,7 +68,7 @@ export const MemberForm = (props: Props) => {
     )
 
   const { data: positionsData, loading: isPositionsDataLoading } =
-    useFetchWithCache([GET_PATHS.getPositionMetadata, 'member-form'], () =>
+    useFetchWithCache([GET_PATHS.getPositionMetadata], () =>
       client.getPositionsMetadata(),
     )
 

@@ -73,11 +73,7 @@ export const ProjectForm = (props: Props) => {
                 const { data } = await client.getProjectStatusMetadata()
                 return data.map(transformMetadataToSelectOption)
               }}
-              swrKeys={[
-                GET_PATHS.getProjectStatusMetadata,
-                'status',
-                'project-form',
-              ]}
+              swrKeys={[GET_PATHS.getProjectStatusMetadata]}
               placeholder="Select project status"
               customOptionRenderer={renderStatusOption}
             />
@@ -92,11 +88,7 @@ export const ProjectForm = (props: Props) => {
           >
             <AsyncSelect
               optionGetter={employeeOptionGetter}
-              swrKeys={[
-                GET_PATHS.getEmployees,
-                'account-manager',
-                'project-form',
-              ]}
+              swrKeys={[GET_PATHS.getEmployees]}
               placeholder="Select account manager"
               customOptionRenderer={renderEmployeeOption}
             />
@@ -114,11 +106,7 @@ export const ProjectForm = (props: Props) => {
                 const { data } = await client.getCountryMetadata()
                 return data.map(transformMetadataToSelectOption)
               }}
-              swrKeys={[
-                GET_PATHS.getCountryMetadata,
-                'country',
-                'project-form',
-              ]}
+              swrKeys={[GET_PATHS.getCountryMetadata]}
               placeholder="Select project country"
             />
           </Form.Item>
@@ -127,11 +115,7 @@ export const ProjectForm = (props: Props) => {
           <Form.Item label="Delivery manager" name="deliveryManagerID">
             <AsyncSelect
               optionGetter={employeeOptionGetter}
-              swrKeys={[
-                GET_PATHS.getEmployees,
-                'delivery-manager',
-                'project-form',
-              ]}
+              swrKeys={[GET_PATHS.getEmployees]}
               placeholder="Select delivery manager"
               customOptionRenderer={renderEmployeeOption}
               allowClear
