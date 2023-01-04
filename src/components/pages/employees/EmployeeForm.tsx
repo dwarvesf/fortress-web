@@ -223,7 +223,11 @@ export const EmployeeForm = (props: Props) => {
                   const { data } = await client.getPositionsMetadata()
                   return data?.map(transformMetadataToSelectOption) || []
                 }}
-                swrKeys={[GET_PATHS.getPositionMetadata, 'add-employee']}
+                swrKeys={[
+                  GET_PATHS.getPositionMetadata,
+                  'positions',
+                  'employee-form',
+                ]}
                 placeholder="Select positions"
               />
             </Form.Item>
@@ -240,7 +244,11 @@ export const EmployeeForm = (props: Props) => {
                   const { data } = await client.getSenioritiesMetadata()
                   return data?.map(transformMetadataToSelectOption) || []
                 }}
-                swrKeys={[GET_PATHS.getSeniorityMetadata, 'add-employee']}
+                swrKeys={[
+                  GET_PATHS.getSeniorityMetadata,
+                  'seniority',
+                  'employee-form',
+                ]}
                 placeholder="Select seniority"
               />
             </Form.Item>
@@ -272,7 +280,11 @@ export const EmployeeForm = (props: Props) => {
                   const { data } = await client.getAccountRolesMetadata()
                   return data?.map(transformMetadataToSelectOption) || []
                 }}
-                swrKeys={GET_PATHS.getAccountRoleMetadata}
+                swrKeys={[
+                  GET_PATHS.getAccountRoleMetadata,
+                  'account-role',
+                  'employee-form',
+                ]}
                 placeholder="Select account role"
               />
             </Form.Item>

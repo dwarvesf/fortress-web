@@ -96,7 +96,8 @@ export const General = (props: Props) => {
                       onChange={onChangeStatus}
                       swrKeys={[
                         GET_PATHS.getProjectStatusMetadata,
-                        'async-select',
+                        'status',
+                        'project-detail-general',
                       ]}
                     />
                   </Space>

@@ -161,7 +161,11 @@ export const EditGeneralInfoModal = (props: Props) => {
                   })
                   return (data || []).map(transformEmployeeDataToSelectOption)
                 }}
-                swrKeys={[GET_PATHS.getEmployees, 'line-manager']}
+                swrKeys={[
+                  GET_PATHS.getEmployees,
+                  'line-manager',
+                  'edit-general-info',
+                ]}
                 placeholder="Select line manager"
                 customOptionRenderer={renderEmployeeOption}
                 allowClear

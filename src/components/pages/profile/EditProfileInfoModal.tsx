@@ -167,6 +167,7 @@ export const EditProfileInfoModal = (props: Props) => {
                     value: c.name,
                   }
                 })}
+                allowClear
               />
             </Form.Item>
           </Col>
@@ -187,11 +188,16 @@ export const EditProfileInfoModal = (props: Props) => {
                       }
                     }) || []
                 }
+                allowClear
               />
             </Form.Item>
           </Col>
           <Col span={24}>
-            <Form.Item label="Place of Residence" name="placeOfResidence">
+            <Form.Item
+              label="Place of Residence"
+              name="placeOfResidence"
+              rules={[{ required: true, message: 'Required' }]}
+            >
               <Input
                 placeholder="Enter Place of Residence"
                 className="bordered"

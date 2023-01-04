@@ -92,7 +92,11 @@ export const EditSkillsModal = (props: Props) => {
                   const { data } = await client.getPositionsMetadata()
                   return data?.map(transformMetadataToSelectOption) || []
                 }}
-                swrKeys={[GET_PATHS.getPositionMetadata, 'edit-skills']}
+                swrKeys={[
+                  GET_PATHS.getPositionMetadata,
+                  'positions',
+                  'edit-skills',
+                ]}
                 placeholder="Select positions"
               />
             </Form.Item>
@@ -106,7 +110,11 @@ export const EditSkillsModal = (props: Props) => {
                   const { data } = await client.getChaptersMetadata()
                   return data?.map(transformMetadataToSelectOption) || []
                 }}
-                swrKeys={[GET_PATHS.getChapterMetadata, 'edit-skills']}
+                swrKeys={[
+                  GET_PATHS.getChapterMetadata,
+                  'chapters',
+                  'edit-skills',
+                ]}
                 placeholder="Select chapters"
                 // Store selected chapters list to render options for selecting leading chapters
                 // since an employee has to be in chapter to become a chapter lead
@@ -162,7 +170,11 @@ export const EditSkillsModal = (props: Props) => {
                   const { data } = await client.getSenioritiesMetadata()
                   return data?.map(transformMetadataToSelectOption) || []
                 }}
-                swrKeys={[GET_PATHS.getSeniorityMetadata, 'edit-skills']}
+                swrKeys={[
+                  GET_PATHS.getSeniorityMetadata,
+                  'seniority',
+                  'edit-skills',
+                ]}
                 placeholder="Select seniority"
               />
             </Form.Item>
@@ -180,7 +192,7 @@ export const EditSkillsModal = (props: Props) => {
                   const { data } = await client.getStackMetadata()
                   return data?.map(transformMetadataToSelectOption) || []
                 }}
-                swrKeys={[GET_PATHS.getStackMetadata, 'edit-skills']}
+                swrKeys={[GET_PATHS.getStackMetadata, 'stack', 'edit-skills']}
                 placeholder="Select tech stack"
               />
             </Form.Item>

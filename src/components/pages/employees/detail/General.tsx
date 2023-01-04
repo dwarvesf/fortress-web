@@ -230,7 +230,7 @@ export const General = (props: Props) => {
                         value: (
                           <Space>
                             <SVGIcon name="discord" />
-                            {data?.discordName || ''}
+                            {data?.discordName || '-'}
                           </Space>
                         ),
                       },
@@ -243,7 +243,7 @@ export const General = (props: Props) => {
                             rel="noreferrer"
                             icon={<SVGIcon name="github" />}
                           >
-                            {data.githubID || ''}
+                            {data.githubID || '-'}
                           </LinkWithIcon>
                         ),
                       },
@@ -252,7 +252,7 @@ export const General = (props: Props) => {
                         value: (
                           <Space>
                             <SVGIcon name="notion" />
-                            {data?.notionName || ''}
+                            {data?.notionName || '-'}
                           </Space>
                         ),
                       },
@@ -261,7 +261,7 @@ export const General = (props: Props) => {
                         value: (
                           <Space>
                             <SVGIcon name="linkedin" />
-                            {data?.linkedInName || ''}
+                            {data?.linkedInName || '-'}
                           </Space>
                         ),
                       },
@@ -307,7 +307,7 @@ export const General = (props: Props) => {
                                 name:
                                   chapter.leadID === data?.id ? (
                                     <Tooltip title={`${chapter.name} lead`}>
-                                      {chapter.name || '-'}
+                                      {chapter.name || '-'}{' '}
                                       <Star
                                         style={{
                                           color: theme.colors.primary,

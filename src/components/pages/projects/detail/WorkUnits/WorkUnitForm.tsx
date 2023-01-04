@@ -82,7 +82,8 @@ export const WorkUnitForm = (props: Props) => {
               swrKeys={[
                 GET_PATHS.getEmployees,
                 projectID as string,
-                'work-unit-member',
+                'members',
+                'work-unit-form',
               ]}
               placeholder="Select work unit's members"
               customOptionRenderer={renderEmployeeOption}
@@ -103,7 +104,8 @@ export const WorkUnitForm = (props: Props) => {
               swrKeys={[
                 GET_PATHS.getStackMetadata,
                 projectID as string,
-                'work-unit-stack',
+                'stack',
+                'work-unit-form',
               ]}
               optionGetter={async () => {
                 const { data } = await client.getStackMetadata()
