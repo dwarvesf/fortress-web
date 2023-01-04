@@ -26,10 +26,7 @@ interface Props extends ModalProps {
 export const SurveyResultModal = (props: Props) => {
   const { isOpen, onCancel, eventID = '', topicID = '', reviewID = '' } = props
   const { data: reviewDetail } = useFetchWithCache(
-    [
-      GET_PATHS.getSurveyReviewDetail(eventID, topicID, reviewID),
-      'work-survey-view-result',
-    ],
+    [GET_PATHS.getSurveyReviewDetail(eventID, topicID, reviewID)],
     () => client.getSurveyReviewDetail(eventID, topicID, reviewID),
   )
 

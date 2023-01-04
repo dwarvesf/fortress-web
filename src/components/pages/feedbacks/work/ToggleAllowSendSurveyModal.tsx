@@ -31,11 +31,7 @@ export const ToggleAllowSendSurveyModal = (props: Props) => {
   )
 
   const { data: projectsData, mutate } = useFetchWithCache(
-    [
-      GET_PATHS.getProjects,
-      'toggle-send-survey-status',
-      JSON.stringify(filter),
-    ],
+    [GET_PATHS.getProjects, JSON.stringify(filter)],
     () => client.getProjects(filter),
   )
 

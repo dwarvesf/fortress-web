@@ -28,9 +28,8 @@ export const EditSkillsModal = (props: Props) => {
     initialValues?.chapters || [],
   )
 
-  const { data } = useFetchWithCache(
-    [GET_PATHS.getChapterMetadata, 'chapter-lead', 'edit-skills'],
-    () => client.getChaptersMetadata(),
+  const { data } = useFetchWithCache([GET_PATHS.getChapterMetadata], () =>
+    client.getChaptersMetadata(),
   )
 
   const onSubmit = async (values: Required<RequestUpdateSkillsInput>) => {

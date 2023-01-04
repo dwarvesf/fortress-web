@@ -54,7 +54,7 @@ export const MemberForm = (props: Props) => {
 
   const { data: employeesData, loading: isEmployeesDataLoading } =
     useFetchWithCache(
-      [GET_PATHS.getEmployees, excludedEmployeeIds.join(''), 'member-form'],
+      [GET_PATHS.getEmployees, excludedEmployeeIds.join('')],
       () =>
         client.getEmployees({
           ...fullListPagination,
@@ -63,7 +63,7 @@ export const MemberForm = (props: Props) => {
     )
 
   const { data: senioritiesData, loading: isSenioritiesDataLoading } =
-    useFetchWithCache([GET_PATHS.getSeniorityMetadata, 'member-form'], () =>
+    useFetchWithCache([GET_PATHS.getSeniorityMetadata], () =>
       client.getSenioritiesMetadata(),
     )
 
