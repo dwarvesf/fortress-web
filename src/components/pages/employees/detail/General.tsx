@@ -375,8 +375,8 @@ export const General = (props: Props) => {
                     value: data.personalEmail || '-',
                   },
                   { label: 'Address', value: data.address },
-                  { label: 'Country', value: data.country },
                   { label: 'City', value: data.city },
+                  { label: 'Country', value: data.country },
                   {
                     label: 'Place of Residence',
                     value: data.placeOfResidence,
