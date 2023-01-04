@@ -15,10 +15,10 @@ interface AuthContextValues {
   isAuthenticated: boolean
   isAuthenticating: boolean
   user?: ViewProfileData
+  permissions: string[]
   login: () => void
   logout: () => void
   revalidate: () => void
-  permissions: string[]
 }
 
 export const AUTH_TOKEN_KEY = 'fortress-token'
@@ -114,10 +114,10 @@ const AuthContextProvider = ({ children }: WithChildren) => {
         isAuthenticated,
         isAuthenticating,
         user,
+        permissions,
         login,
         logout,
         revalidate,
-        permissions,
       }}
     >
       {children}
