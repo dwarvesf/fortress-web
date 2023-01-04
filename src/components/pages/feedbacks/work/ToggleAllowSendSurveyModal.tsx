@@ -4,66 +4,88 @@ import {
   Empty,
   Input,
   Modal,
+  notification,
   Row,
   Space,
   Switch,
   Typography,
 } from 'antd'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import debounce from 'lodash.debounce'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { GET_PATHS, client } from 'libs/apis'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
+import { useFilter } from 'hooks/useFilter'
+import { ViewProjectData } from 'types/schema'
+import { getErrorMessage } from 'utils/string'
 
 interface Props {
   isOpen: boolean
   onClose: () => void
 }
 
-export const ToggleSendSurveysModal = (props: Props) => {
+export const ToggleAllowSendSurveyModal = (props: Props) => {
   const { isOpen, onClose } = props
+  const { filter } = useFilter(
+    new ProjectListFilter({ sort: '-start_date, -name', status: 'active' }),
+  )
 
-  const { data: projectsData } = useFetchWithCache(
-    [GET_PATHS.getProjects, 'toggle-projects-to-send-survey'],
-    () => client.getProjects(new ProjectListFilter()),
+  const { data: projectsData, mutate } = useFetchWithCache(
+    [
+      GET_PATHS.getProjects,
+      'toggle-send-survey-status',
+      JSON.stringify(filter),
+    ],
+    () => client.getProjects(filter),
   )
 
   const [searchQuery, setSearchQuery] = useState<string>('')
-  const [checkedList, setCheckedList] = useState<boolean[]>([])
+  const projectsList = useMemo(() => projectsData?.data || [], [projectsData])
 
-  const setCheckedListbyId = useCallback(
-    (index: number) => {
-      const newCheckedList: boolean[] = []
+  const sendSurveyStatusList = useMemo(() => {
+    return projectsList.map((d) => d.allowsSendingSurvey || false)
+  }, [projectsList])
 
-      checkedList.forEach((c, i) => {
-        newCheckedList.push(i === index ? !c : c)
-      })
+  const renderSwitch = useCallback(
+    (d: ViewProjectData, index: number) => {
+      return (
+        <Switch
+          checked={sendSurveyStatusList[index]}
+          onChange={async (checked) => {
+            try {
+              await client.updateProjectsSendSurveyStatus(d.id!, checked)
 
-      setCheckedList(newCheckedList)
+              notification.success({
+                message: `Survey config of ${
+                  d?.name || 'this project'
+                } updated successfully!`,
+              })
+
+              mutate()
+            } catch (error: any) {
+              notification.error({
+                message: getErrorMessage(
+                  error,
+                  `Could not update survey config of ${
+                    d?.name || 'this project'
+                  }`,
+                ),
+              })
+            }
+          }}
+          style={{ margin: 8 }}
+        />
+      )
     },
-    [checkedList],
+    [sendSurveyStatusList, mutate],
   )
 
-  useEffect(() => {
-    setCheckedList(new Array((projectsData?.data || []).length).fill(true))
-  }, [projectsData])
-
-  useEffect(() => {
-    const checkedProjectIds: string[] = []
-
-    checkedList.forEach((checked, id) => {
-      if (checked && projectsData?.data) {
-        checkedProjectIds.push(projectsData?.data[id].id!)
-      }
-    })
-  }, [checkedList, projectsData])
-
   const renderProjects = useMemo(() => {
-    if (!(projectsData?.data || []).length) {
+    if (projectsList.length === 0) {
       return <Empty description="No projects data" />
     }
     if (!searchQuery) {
-      return (projectsData?.data || []).map((d, i) => (
+      return projectsList.map((d, i) => (
         <Col
           key={i}
           span={24}
@@ -75,19 +97,16 @@ export const ToggleSendSurveysModal = (props: Props) => {
           }}
         >
           <Typography.Text>{d?.name || '-'}</Typography.Text>
-          <Switch
-            checked={checkedList[i]}
-            onChange={() => setCheckedListbyId(i)}
-          />
+          {renderSwitch(d, i)}
         </Col>
       ))
     }
     if (
-      (projectsData?.data || []).find((d) =>
+      projectsList.find((d) =>
         (d?.name || '-').toLowerCase().includes(searchQuery.toLowerCase()),
       )
     ) {
-      return (projectsData?.data || [])
+      return projectsList
         .filter((d) =>
           (d?.name || '-').toLowerCase().includes(searchQuery.toLowerCase()),
         )
@@ -102,15 +121,12 @@ export const ToggleSendSurveysModal = (props: Props) => {
             }}
           >
             <Typography.Text>{d?.name || '-'}</Typography.Text>
-            <Switch
-              checked={checkedList[i]}
-              onChange={() => setCheckedListbyId(i)}
-            />
+            {renderSwitch(d, i)}
           </Col>
         ))
     }
     return <Empty description={`No projects for keyword "${searchQuery}"`} />
-  }, [checkedList, projectsData, searchQuery, setCheckedListbyId])
+  }, [projectsList, renderSwitch, searchQuery])
 
   return (
     <Modal
@@ -135,7 +151,7 @@ export const ToggleSendSurveysModal = (props: Props) => {
       <Space
         direction="vertical"
         split={<Divider style={{ marginTop: 12, marginBottom: 12 }} />}
-        style={{ width: '100%', height: 400, overflowY: 'auto' }}
+        style={{ width: '100%', height: 400, overflowY: 'auto', gap: 0 }}
       >
         {renderProjects}
       </Space>

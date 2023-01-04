@@ -707,6 +707,21 @@ class Client {
       headers: { ...this.privateHeaders },
     })
   }
+
+  public updateProjectsSendSurveyStatus(
+    id: string,
+    allowsSendingSurvey: boolean,
+  ) {
+    const queryString = qs.stringify({ allowsSendingSurvey })
+
+    return fetcher<ViewMessageResponse>(
+      `${BASE_URL}/projects/${id}/sending-survey-state?${queryString}`,
+      {
+        method: 'PUT',
+        headers: { ...this.privateHeaders },
+      },
+    )
+  }
 }
 
 const client = new Client()
