@@ -97,7 +97,7 @@ export const EditProjectContactInfoModal = (props: Props) => {
           >
             <AsyncSelect
               placeholder="Select project's account manager"
-              swrKeys={[GET_PATHS.getEmployees]}
+              swrKeys={GET_PATHS.getEmployees}
               optionGetter={employeeOptionGetter}
               customOptionRenderer={renderEmployeeOption}
             />
@@ -105,7 +105,7 @@ export const EditProjectContactInfoModal = (props: Props) => {
           <Form.Item label="Delivery manager" name="deliveryManagerID">
             <AsyncSelect
               placeholder="Select project's delivery manager"
-              swrKeys={[GET_PATHS.getEmployees]}
+              swrKeys={GET_PATHS.getEmployees}
               optionGetter={employeeOptionGetter}
               customOptionRenderer={renderEmployeeOption}
               allowClear

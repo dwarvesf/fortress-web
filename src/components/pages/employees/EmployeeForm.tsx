@@ -223,7 +223,7 @@ export const EmployeeForm = (props: Props) => {
                   const { data } = await client.getPositionsMetadata()
                   return data?.map(transformMetadataToSelectOption) || []
                 }}
-                swrKeys={[GET_PATHS.getPositionMetadata]}
+                swrKeys={GET_PATHS.getPositionMetadata}
                 placeholder="Select positions"
               />
             </Form.Item>
@@ -240,7 +240,7 @@ export const EmployeeForm = (props: Props) => {
                   const { data } = await client.getSenioritiesMetadata()
                   return data?.map(transformMetadataToSelectOption) || []
                 }}
-                swrKeys={[GET_PATHS.getSeniorityMetadata]}
+                swrKeys={GET_PATHS.getSeniorityMetadata}
                 placeholder="Select seniority"
               />
             </Form.Item>

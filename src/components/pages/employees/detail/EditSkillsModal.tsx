@@ -92,7 +92,7 @@ export const EditSkillsModal = (props: Props) => {
                   const { data } = await client.getPositionsMetadata()
                   return data?.map(transformMetadataToSelectOption) || []
                 }}
-                swrKeys={[GET_PATHS.getPositionMetadata]}
+                swrKeys={GET_PATHS.getPositionMetadata}
                 placeholder="Select positions"
               />
             </Form.Item>
@@ -106,7 +106,7 @@ export const EditSkillsModal = (props: Props) => {
                   const { data } = await client.getChaptersMetadata()
                   return data?.map(transformMetadataToSelectOption) || []
                 }}
-                swrKeys={[GET_PATHS.getChapterMetadata]}
+                swrKeys={GET_PATHS.getChapterMetadata}
                 placeholder="Select chapters"
                 // Store selected chapters list to render options for selecting leading chapters
                 // since an employee has to be in chapter to become a chapter lead
@@ -162,7 +162,7 @@ export const EditSkillsModal = (props: Props) => {
                   const { data } = await client.getSenioritiesMetadata()
                   return data?.map(transformMetadataToSelectOption) || []
                 }}
-                swrKeys={[GET_PATHS.getSeniorityMetadata]}
+                swrKeys={GET_PATHS.getSeniorityMetadata}
                 placeholder="Select seniority"
               />
             </Form.Item>
@@ -180,7 +180,7 @@ export const EditSkillsModal = (props: Props) => {
                   const { data } = await client.getStackMetadata()
                   return data?.map(transformMetadataToSelectOption) || []
                 }}
-                swrKeys={[GET_PATHS.getStackMetadata]}
+                swrKeys={GET_PATHS.getStackMetadata}
                 placeholder="Select tech stack"
               />
             </Form.Item>
