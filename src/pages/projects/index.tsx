@@ -201,17 +201,17 @@ const Default = () => {
             }}
             className="shadowed"
           />
+          <Row justify="end">
+            <Pagination
+              current={filter.page}
+              onChange={(page, pageSize) => setFilter({ page, size: pageSize })}
+              total={data?.total}
+              pageSize={filter.size}
+              size="small"
+              showSizeChanger
+            />
+          </Row>
         </div>
-        <Row justify="end">
-          <Pagination
-            current={filter.page}
-            onChange={(page, pageSize) => setFilter({ page, size: pageSize })}
-            total={data?.total}
-            pageSize={filter.size}
-            size="small"
-            showSizeChanger
-          />
-        </Row>
       </Space>
     </>
   )
