@@ -124,7 +124,7 @@ const Default = () => {
         items={[
           {
             key: 'all',
-            label: `All (${allFeedbacks.length})`,
+            label: `All (${allData?.total || 0})`,
             children: (
               <FeedbackInputTable
                 data={allFeedbacks}
@@ -135,7 +135,7 @@ const Default = () => {
           },
           {
             key: 'draft',
-            label: `Draft (${draftFeedbacks.length})`,
+            label: `Draft (${draftData?.total || 0})`,
             children: (
               <FeedbackInputTable
                 data={draftFeedbacks}
@@ -146,7 +146,7 @@ const Default = () => {
           },
           {
             key: 'done',
-            label: `Done (${doneFeedbacks.length})`,
+            label: `Done (${doneData?.total || 0})`,
             children: (
               <FeedbackInputTable
                 data={doneFeedbacks}

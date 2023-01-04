@@ -510,7 +510,7 @@ class Client {
   public getPersonalFeedbacks(filter: FeedbackListFilter) {
     const queryString = qs.stringify(filter)
 
-    return fetcher<ViewListFeedbackResponse>(
+    return fetcher<ViewListFeedbackResponse & Meta>(
       `${BASE_URL}/feedbacks?${queryString}`,
       {
         headers: {

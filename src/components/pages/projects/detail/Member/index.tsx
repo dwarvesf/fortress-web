@@ -218,7 +218,7 @@ export const Member = (props: Props) => {
             items={[
               {
                 key: '',
-                label: `All (${allMembers.length})`,
+                label: `All (${allData?.total || 0})`,
                 children: (
                   <MemberTable
                     projectID={project.id || ''}
@@ -230,7 +230,7 @@ export const Member = (props: Props) => {
               },
               {
                 key: ProjectMemberStatus.PENDING,
-                label: `Pending (${pendingMembers.length})`,
+                label: `Pending (${pendingData?.total || 0})`,
                 children: (
                   <MemberTable
                     projectID={project.id || ''}
@@ -242,7 +242,7 @@ export const Member = (props: Props) => {
               },
               {
                 key: ProjectMemberStatus.ONBOARDING,
-                label: `On-boarding (${onboardingMembers.length})`,
+                label: `On-boarding (${onboardingData?.total || 0})`,
                 children: (
                   <MemberTable
                     projectID={project.id || ''}
@@ -254,7 +254,7 @@ export const Member = (props: Props) => {
               },
               {
                 key: ProjectMemberStatus.ACTIVE,
-                label: `Active (${activeMembers.length})`,
+                label: `Active (${activeData?.total || 0})`,
                 children: (
                   <MemberTable
                     projectID={project.id || ''}
@@ -266,7 +266,7 @@ export const Member = (props: Props) => {
               },
               {
                 key: ProjectMemberStatus.INACTIVE,
-                label: `Inactive (${inactiveMembers.length})`,
+                label: `Inactive (${inactiveData?.total || 0})`,
                 children: (
                   <MemberTable
                     projectID={project.id || ''}

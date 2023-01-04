@@ -34,6 +34,7 @@ import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
 import { employeeStatuses, EmployeeStatus } from 'constants/status'
 import { statusColors } from 'constants/colors'
 import { useAuthContext } from 'context/auth'
+import { TotalResultCount } from 'components/common/Table/TotalResultCount'
 
 const Default = () => {
   const { query } = useRouter()
@@ -334,27 +335,30 @@ const Default = () => {
             </>
           }
         />
-        <Table
-          loading={loading}
-          dataSource={employees}
-          columns={columns}
-          rowKey={(row) => row.id as string}
-          pagination={false}
-          scroll={{ x: 'max-content' }}
-          onChange={(_, filters) => {
-            setFilter(filters)
-          }}
-        />
-        <Row justify="end">
-          <Pagination
-            current={filter.page}
-            onChange={(page, pageSize) => setFilter({ page, size: pageSize })}
-            total={data?.total}
-            pageSize={filter.size}
-            size="small"
-            showSizeChanger
+        <div>
+          <TotalResultCount count={data?.total} />
+          <Table
+            loading={loading}
+            dataSource={employees}
+            columns={columns}
+            rowKey={(row) => row.id as string}
+            pagination={false}
+            scroll={{ x: 'max-content' }}
+            onChange={(_, filters) => {
+              setFilter(filters)
+            }}
           />
-        </Row>
+          <Row justify="end">
+            <Pagination
+              current={filter.page}
+              onChange={(page, pageSize) => setFilter({ page, size: pageSize })}
+              total={data?.total}
+              pageSize={filter.size}
+              size="small"
+              showSizeChanger
+            />
+          </Row>
+        </div>
       </Space>
     </>
   )
