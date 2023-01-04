@@ -5,7 +5,6 @@ import { renderEmployeeOption } from 'components/common/Select/renderers/employe
 import { renderStatusOption } from 'components/common/Select/renderers/statusOption'
 import { SELECT_BOX_DATE_FORMAT } from 'constants/date'
 import { projectTypes } from 'constants/projectTypes'
-import { EmployeeStatus } from 'constants/status'
 import { GET_PATHS, client } from 'libs/apis'
 import { theme } from 'styles'
 import { fullListPagination } from 'types/filters/Pagination'
@@ -28,7 +27,6 @@ export const ProjectForm = (props: Props) => {
   const employeeOptionGetter = async () => {
     const { data } = await client.getEmployees({
       ...fullListPagination,
-      workingStatuses: [EmployeeStatus.FULLTIME],
     })
     return (data || []).map(transformEmployeeDataToSelectOption)
   }

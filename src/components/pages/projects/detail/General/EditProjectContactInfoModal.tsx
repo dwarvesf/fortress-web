@@ -6,7 +6,6 @@ import { RequestUpdateContactInfoInput } from 'types/schema'
 import { AsyncSelect } from 'components/common/Select'
 import { renderEmployeeOption } from 'components/common/Select/renderers/employeeOption'
 import { transformEmployeeDataToSelectOption } from 'utils/select'
-import { EmployeeStatus } from 'constants/status'
 import { getErrorMessage } from 'utils/string'
 import { fullListPagination } from 'types/filters/Pagination'
 
@@ -53,7 +52,6 @@ export const EditProjectContactInfoModal = (props: Props) => {
   const employeeOptionGetter = async () => {
     const { data } = await client.getEmployees({
       ...fullListPagination,
-      workingStatuses: [EmployeeStatus.FULLTIME],
     })
     return (data || []).map(transformEmployeeDataToSelectOption)
   }

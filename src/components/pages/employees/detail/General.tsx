@@ -248,7 +248,7 @@ export const General = (props: Props) => {
                             rel="noreferrer"
                             icon={<SVGIcon name="github" />}
                           >
-                            {data.githubID || '-'}
+                            {data.githubID || ''}
                           </LinkWithIcon>
                         ),
                       },
