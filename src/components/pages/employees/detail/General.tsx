@@ -98,7 +98,7 @@ const menteeColumns: ColumnsType<ViewMenteeInfo> = [
     title: 'Seniority',
     key: 'seniority',
     dataIndex: 'seniority',
-    render: (value: ModelSeniority) => value.name || '-',
+    render: (value?: ModelSeniority) => value?.name || '-',
   },
   {
     title: 'Action',
