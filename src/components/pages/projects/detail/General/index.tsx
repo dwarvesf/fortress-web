@@ -7,6 +7,7 @@ import { EditableDetailSectionCard } from 'components/common/EditableDetailSecti
 import { AsyncSelect } from 'components/common/Select'
 import { DATE_FORMAT, SERVER_DATE_FORMAT } from 'constants/date'
 import { format } from 'date-fns'
+import { mutate } from 'swr'
 import { client, GET_PATHS } from 'libs/apis'
 import { ViewProjectData } from 'types/schema'
 import { transformMetadataToSelectOption } from 'utils/select'
@@ -20,11 +21,10 @@ import { MemberTable } from './MemberTable'
 
 interface Props {
   data: ViewProjectData
-  mutateProject: () => void
 }
 
 export const General = (props: Props) => {
-  const { data, mutateProject } = props
+  const { data } = props
   const { permissions } = useAuthContext()
 
   const isEditable = permissions.includes(Permission.PROJECTS_EDIT)
@@ -40,6 +40,10 @@ export const General = (props: Props) => {
     onOpen: openEditProjectContactInfoDialog,
     onClose: closeEditProjectContactInfoDialog,
   } = useDisclosure()
+
+  const mutateProject = () => {
+    mutate([GET_PATHS.getProjects, data.code])
+  }
 
   const onChangeStatus = async (value: string) => {
     try {

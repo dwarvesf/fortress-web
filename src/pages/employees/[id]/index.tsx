@@ -15,12 +15,9 @@ const Default = () => {
 
   // const { tabKey = 'general', setTabKey } = useTabWithQuery()
 
-  const {
-    data,
-    loading,
-    mutate: mutateEmployee,
-  } = useFetchWithCache([GET_PATHS.getEmployees, username], () =>
-    client.getEmployee(username as string),
+  const { data, loading } = useFetchWithCache(
+    [GET_PATHS.getEmployees, username],
+    () => client.getEmployee(username as string),
   )
   const employee = data?.data
 
@@ -48,7 +45,7 @@ const Default = () => {
         title={employee?.displayName || ''}
         backHref={ROUTES.EMPLOYEES}
       />
-      <General data={employee} mutateEmployee={mutateEmployee} />
+      <General data={employee} />
       {/* <Tabs
         defaultActiveKey={tabKey}
         onTabClick={setTabKey}

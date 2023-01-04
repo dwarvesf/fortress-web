@@ -22,15 +22,14 @@ import {
   ViewPosition,
 } from 'types/schema'
 import { client, GET_PATHS } from 'libs/apis'
-import { mutate } from 'swr'
 import { ReactElement, useState } from 'react'
 import { EmployeeStatus, employeeStatuses } from 'constants/status'
 import { SVGIcon } from 'components/common/SVGIcon'
 import { PreviewOpen, Star } from '@icon-park/react'
 import moment from 'moment'
+import { mutate } from 'swr'
 import { theme } from 'styles'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
 import { ROUTES } from 'constants/routes'
 import { ColumnsType } from 'antd/lib/table'
 import { Button } from 'components/common/Button'
@@ -81,11 +80,6 @@ const projectColumns: ColumnsType<ViewEmployeeProjectData> = [
   },
 ]
 
-interface Props {
-  data: ViewEmployeeData
-  mutateEmployee: () => void
-}
-
 const renderTagLinkWithFilter = ({
   filter,
   name,
@@ -103,27 +97,34 @@ const renderTagLinkWithFilter = ({
         new EmployeeListFilter(filter),
       )}`}
     >
-      {isRenderedAsTag ? (
-        <Tag style={{ cursor: 'pointer' }} color={color}>
-          {name}
-        </Tag>
-      ) : (
-        name
-      )}
+      <a>
+        {isRenderedAsTag ? (
+          <Tag style={{ cursor: 'pointer' }} color={color}>
+            {name}
+          </Tag>
+        ) : (
+          name
+        )}
+      </a>
     </Link>
   )
 }
 
+interface Props {
+  data: ViewEmployeeData
+}
+
 export const General = (props: Props) => {
-  const { data, mutateEmployee } = props
-  const {
-    query: { id: username },
-  } = useRouter()
+  const { data } = props
 
   const [isLoading, setIsLoading] = useState(false)
   const { permissions } = useAuthContext()
 
   const isEditable = permissions.includes(Permission.EMPLOYEES_EDIT)
+
+  const mutateEmployee = () => {
+    mutate([GET_PATHS.getEmployees, data.username])
+  }
 
   const onChangeStatus = async (value: string) => {
     try {
@@ -133,7 +134,7 @@ export const General = (props: Props) => {
 
       // Refetch user data
       notification.success({ message: 'Employee status updated successfully!' })
-      mutate([GET_PATHS.getEmployees, data.id])
+      mutateEmployee()
     } catch (error: any) {
       notification.error({
         message: getErrorMessage(error, 'Could not update employee status'),
@@ -411,7 +412,7 @@ export const General = (props: Props) => {
           notionName: data.notionName || '',
           linkedInName: data.linkedInName || '',
         }}
-        onAfterSubmit={() => mutate([GET_PATHS.getEmployees, username])}
+        onAfterSubmit={mutateEmployee}
       />
 
       <EditSkillsModal
@@ -427,7 +428,7 @@ export const General = (props: Props) => {
           seniority: data.seniority?.id || '',
           stacks: (data.stacks || []).map((s) => s.id || ''),
         }}
-        onAfterSubmit={() => mutate([GET_PATHS.getEmployees, username])}
+        onAfterSubmit={mutateEmployee}
       />
 
       <EditPersonalInfoModal
@@ -443,7 +444,7 @@ export const General = (props: Props) => {
           city: data.city || '',
           placeOfResidence: data.placeOfResidence || '',
         }}
-        onAfterSubmit={() => mutate([GET_PATHS.getEmployees, username])}
+        onAfterSubmit={mutateEmployee}
       />
     </>
   )

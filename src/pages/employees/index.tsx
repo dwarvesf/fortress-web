@@ -35,6 +35,7 @@ import { LinkWithIcon } from 'components/common/LinkWithIcon'
 import { fullListPagination } from 'types/filters/Pagination'
 import { Permission } from 'constants/permission'
 import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
+import { EmployeeStatus } from 'constants/status'
 
 interface ColumnProps {
   filter: EmployeeListFilter
@@ -213,7 +214,12 @@ const Default = () => {
 
   const [value, setValue] = useState((query.keyword || '') as string)
   const { filter, setFilter } = useFilter(
-    new EmployeeListFilter({ ...queryFilter }),
+    new EmployeeListFilter({
+      ...queryFilter,
+      workingStatuses: Object.values(EmployeeStatus).filter(
+        (status) => status !== EmployeeStatus.LEFT,
+      ),
+    }),
     {
       shouldUpdateToQuery: true,
     },
