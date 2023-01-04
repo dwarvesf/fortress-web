@@ -47,7 +47,7 @@ export const Member = (props: Props) => {
     loading: isAllLoading,
     mutate: mutateAll,
   } = useFetchWithCache(
-    [GET_PATHS.getProjectMemberList(project.id || ''), allFilter],
+    [GET_PATHS.getProjectMemberList(project.id!), allFilter],
     () => client.getProjectMemberList(project.id || '', allFilter),
   )
   // eslint-disable-next-line
@@ -58,7 +58,7 @@ export const Member = (props: Props) => {
     loading: isPendingLoading,
     mutate: mutatePending,
   } = useFetchWithCache(
-    [GET_PATHS.getProjectMemberList(project.id || ''), pendingFilter],
+    [GET_PATHS.getProjectMemberList(project.id!), pendingFilter],
     () => client.getProjectMemberList(project.id || '', pendingFilter),
   )
   // eslint-disable-next-line
@@ -69,7 +69,7 @@ export const Member = (props: Props) => {
     loading: isOnboardingLoading,
     mutate: mutateOnboarding,
   } = useFetchWithCache(
-    [GET_PATHS.getProjectMemberList(project.id || ''), onboardingFilter],
+    [GET_PATHS.getProjectMemberList(project.id!), onboardingFilter],
     () => client.getProjectMemberList(project.id || '', onboardingFilter),
   )
   // eslint-disable-next-line
@@ -80,7 +80,7 @@ export const Member = (props: Props) => {
     loading: isActiveLoading,
     mutate: mutateActive,
   } = useFetchWithCache(
-    [GET_PATHS.getProjectMemberList(project.id || ''), activeFilter],
+    [GET_PATHS.getProjectMemberList(project.id!), activeFilter],
     () => client.getProjectMemberList(project.id || '', activeFilter),
   )
   // eslint-disable-next-line
@@ -91,7 +91,7 @@ export const Member = (props: Props) => {
     loading: isInactiveLoading,
     mutate: mutateInactive,
   } = useFetchWithCache(
-    [GET_PATHS.getProjectMemberList(project.id || ''), inactiveFilter],
+    [GET_PATHS.getProjectMemberList(project.id!), inactiveFilter],
     () => client.getProjectMemberList(project.id || '', inactiveFilter),
   )
   // eslint-disable-next-line

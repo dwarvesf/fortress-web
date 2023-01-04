@@ -85,7 +85,7 @@ export const EditProjectGeneralInfoModal = (props: Props) => {
           >
             <AsyncSelect
               placeholder="Select project's country"
-              swrKeys={[GET_PATHS.getCountryMetadata]}
+              swrKeys={GET_PATHS.getCountryMetadata}
               optionGetter={async () =>
                 (await client.getCountryMetadata()).data.map(
                   transformMetadataToSelectOption,
@@ -97,7 +97,7 @@ export const EditProjectGeneralInfoModal = (props: Props) => {
             <AsyncSelect
               mode="multiple"
               placeholder="Select project's stacks"
-              swrKeys={[GET_PATHS.getStackMetadata]}
+              swrKeys={GET_PATHS.getStackMetadata}
               optionGetter={async () =>
                 ((await client.getStackMetadata()).data || []).map(
                   transformMetadataToSelectOption,

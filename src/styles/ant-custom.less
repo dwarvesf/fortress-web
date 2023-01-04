@@ -152,12 +152,18 @@
   height: 49px;
 }
 
-.ant-card-body > .ant-table-wrapper .ant-table-cell:first-of-type {
-  padding-left: 24px;
-}
+.ant-card-body{
+  > .ant-table-wrapper{
+    .ant-table-cell:first-of-type {
+      padding-left: 24px;
+    }
 
-.ant-card-body > .ant-table-wrapper .ant-table-cell:last-of-type {
-  padding-right: 24px;
+    .ant-table-cell:last-of-type {
+      padding-right: 24px;
+    }
+
+    border-radius: 0;
+  }
 }
 
 .ant-input[type='date'] {

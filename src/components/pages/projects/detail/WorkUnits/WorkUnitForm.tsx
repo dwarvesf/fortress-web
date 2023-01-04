@@ -79,11 +79,7 @@ export const WorkUnitForm = (props: Props) => {
                   .filter((d) => d.employeeID !== '')
                   .map(transformProjectMemberDataToSelectOption)
               }}
-              swrKeys={[
-                GET_PATHS.getEmployees,
-                projectID as string,
-                'work-unit-member',
-              ]}
+              swrKeys={[GET_PATHS.getEmployees, projectID as string]}
               placeholder="Select work unit's members"
               customOptionRenderer={renderEmployeeOption}
               allowClear
@@ -100,11 +96,7 @@ export const WorkUnitForm = (props: Props) => {
             <AsyncSelect
               mode="multiple"
               placeholder="Select work unit's stack"
-              swrKeys={[
-                GET_PATHS.getStackMetadata,
-                projectID as string,
-                'work-unit-stack',
-              ]}
+              swrKeys={[GET_PATHS.getStackMetadata, projectID as string]}
               optionGetter={async () => {
                 const { data } = await client.getStackMetadata()
                 return data?.map(transformMetadataToSelectOption) || []

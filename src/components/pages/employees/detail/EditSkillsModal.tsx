@@ -28,9 +28,8 @@ export const EditSkillsModal = (props: Props) => {
     initialValues?.chapters || [],
   )
 
-  const { data } = useFetchWithCache(
-    [GET_PATHS.getChapterMetadata, 'chapter-lead', 'edit-skills'],
-    () => client.getChaptersMetadata(),
+  const { data } = useFetchWithCache([GET_PATHS.getChapterMetadata], () =>
+    client.getChaptersMetadata(),
   )
 
   const onSubmit = async (values: Required<RequestUpdateSkillsInput>) => {
@@ -92,7 +91,7 @@ export const EditSkillsModal = (props: Props) => {
                   const { data } = await client.getPositionsMetadata()
                   return data?.map(transformMetadataToSelectOption) || []
                 }}
-                swrKeys={[GET_PATHS.getPositionMetadata, 'edit-skills']}
+                swrKeys={GET_PATHS.getPositionMetadata}
                 placeholder="Select positions"
               />
             </Form.Item>
@@ -106,7 +105,7 @@ export const EditSkillsModal = (props: Props) => {
                   const { data } = await client.getChaptersMetadata()
                   return data?.map(transformMetadataToSelectOption) || []
                 }}
-                swrKeys={[GET_PATHS.getChapterMetadata, 'edit-skills']}
+                swrKeys={GET_PATHS.getChapterMetadata}
                 placeholder="Select chapters"
                 // Store selected chapters list to render options for selecting leading chapters
                 // since an employee has to be in chapter to become a chapter lead
@@ -162,7 +161,7 @@ export const EditSkillsModal = (props: Props) => {
                   const { data } = await client.getSenioritiesMetadata()
                   return data?.map(transformMetadataToSelectOption) || []
                 }}
-                swrKeys={[GET_PATHS.getSeniorityMetadata, 'edit-skills']}
+                swrKeys={GET_PATHS.getSeniorityMetadata}
                 placeholder="Select seniority"
               />
             </Form.Item>
@@ -180,7 +179,7 @@ export const EditSkillsModal = (props: Props) => {
                   const { data } = await client.getStackMetadata()
                   return data?.map(transformMetadataToSelectOption) || []
                 }}
-                swrKeys={[GET_PATHS.getStackMetadata, 'edit-skills']}
+                swrKeys={GET_PATHS.getStackMetadata}
                 placeholder="Select tech stack"
               />
             </Form.Item>

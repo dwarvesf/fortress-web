@@ -1,6 +1,7 @@
-import { Spin, Tabs } from 'antd'
+import { Tabs } from 'antd'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 import { PageHeader } from 'components/common/PageHeader'
+import { PageSpinner } from 'components/common/PageSpinner'
 import { SEO } from 'components/common/SEO'
 import { General } from 'components/pages/projects/detail/General'
 import { Member } from 'components/pages/projects/detail/Member'
@@ -27,7 +28,7 @@ const Default = () => {
   const project = data?.data
 
   if (loading || !project) {
-    return <Spin size="large" />
+    return <PageSpinner />
   }
 
   return (

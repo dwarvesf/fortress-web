@@ -35,7 +35,7 @@ export const WorkUnits = (props: Props) => {
     loading: isActiveLoading,
     mutate: mutateActive,
   } = useFetchWithCache(
-    [GET_PATHS.getProjectMemberList(project.id || ''), activeFilter],
+    [GET_PATHS.getProjectMemberList(project.id!), activeFilter],
     () => client.getProjectWorkUnits(project.id || '', activeFilter),
   )
   // eslint-disable-next-line
@@ -46,7 +46,7 @@ export const WorkUnits = (props: Props) => {
     loading: isArchivedLoading,
     mutate: mutateArchived,
   } = useFetchWithCache(
-    [GET_PATHS.getProjectMemberList(project.id || ''), archivedFilter],
+    [GET_PATHS.getProjectMemberList(project.id!), archivedFilter],
     () => client.getProjectWorkUnits(project.id || '', archivedFilter),
   )
   // eslint-disable-next-line

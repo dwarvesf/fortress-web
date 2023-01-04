@@ -69,7 +69,7 @@ const renderDomainAverageResult = (
 
 const EmployeePeerReviewsPage = () => {
   const { data: projectsData } = useFetchWithCache(
-    [GET_PATHS.getProjects, 'toggle-projects-to-send-survey'],
+    [GET_PATHS.getProjects],
     () => client.getProjects(new ProjectListFilter()),
   )
 
@@ -84,6 +84,7 @@ const EmployeePeerReviewsPage = () => {
             user={{
               id: value.id,
               avatar: value.avatar,
+              username: value.username,
               displayName: value.displayName,
               fullName: value.fullName,
             }}
