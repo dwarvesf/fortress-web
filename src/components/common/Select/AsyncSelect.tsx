@@ -20,6 +20,7 @@ export const AsyncSelect = (props: Props) => {
     customOptionRenderer,
     placeholder = '',
     style,
+    value,
     ...rest
   } = props
   const {
@@ -53,6 +54,8 @@ export const AsyncSelect = (props: Props) => {
       options={typeof customOptionRenderer === 'function' ? undefined : options}
       filterOption={searchFilterOption}
       maxTagCount="responsive"
+      // Do not show value when it's loading
+      value={loading ? undefined : value}
       {...rest}
     >
       {typeof customOptionRenderer === 'function' &&
