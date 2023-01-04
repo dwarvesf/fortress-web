@@ -27,14 +27,13 @@ import { client, GET_PATHS } from 'libs/apis'
 import { ReactElement, useState } from 'react'
 import { EmployeeStatus, employeeStatuses } from 'constants/status'
 import { SVGIcon } from 'components/common/SVGIcon'
-import { PreviewOpen, Star } from '@icon-park/react'
+import { Star } from '@icon-park/react'
 import moment from 'moment'
 import { mutate } from 'swr'
 import { theme } from 'styles'
 import Link from 'next/link'
 import { ROUTES } from 'constants/routes'
 import { ColumnsType } from 'antd/lib/table'
-import { Button } from 'components/common/Button'
 import { DeploymentType, deploymentTypes } from 'constants/deploymentTypes'
 import { LinkWithIcon } from 'components/common/LinkWithIcon'
 import { EditableAvatar } from 'components/common/EditableAvatar'
@@ -64,22 +63,6 @@ const projectColumns: ColumnsType<ViewEmployeeProjectData> = [
     dataIndex: 'deploymentType',
     render: (value: DeploymentType) => deploymentTypes[value] || '-',
   },
-  {
-    title: 'Action',
-    render: (value) => (
-      <Link href={ROUTES.PROJECT_DETAIL(value.code)}>
-        <a>
-          <Tooltip title="View Detail">
-            <Button
-              type="text-primary"
-              size="small"
-              icon={<PreviewOpen size={20} />}
-            />
-          </Tooltip>
-        </a>
-      </Link>
-    ),
-  },
 ]
 
 const menteeColumns: ColumnsType<ViewMenteeInfo> = [
@@ -99,22 +82,6 @@ const menteeColumns: ColumnsType<ViewMenteeInfo> = [
     key: 'seniority',
     dataIndex: 'seniority',
     render: (value?: ModelSeniority) => value?.name || '-',
-  },
-  {
-    title: 'Action',
-    render: (value) => (
-      <Link href={ROUTES.EMPLOYEE_DETAIL(value.username)}>
-        <a>
-          <Tooltip title="View Detail">
-            <Button
-              type="text-primary"
-              size="small"
-              icon={<PreviewOpen size={20} />}
-            />
-          </Tooltip>
-        </a>
-      </Link>
-    ),
   },
 ]
 
@@ -424,25 +391,29 @@ export const General = (props: Props) => {
             </EditableDetailSectionCard>
           </Col>
           <Col span={24} lg={{ span: 16 }}>
-            <Card title="Projects">
+            <Card title="Projects" bodyStyle={{ padding: '1px 0 0 0' }}>
               <Table
                 dataSource={data.projects}
                 columns={projectColumns}
                 rowKey={(row) => row.id as string}
                 pagination={false}
+                style={{ borderRadius: '0.5rem' }}
               />
             </Card>
           </Col>
-          <Col span={24} lg={{ span: 16 }}>
-            <Card title="Mentees">
-              <Table
-                dataSource={data.mentees}
-                columns={menteeColumns}
-                rowKey={(row) => row.id as string}
-                pagination={false}
-              />
-            </Card>
-          </Col>
+          {!!data.mentees?.length && (
+            <Col span={24} lg={{ span: 16 }}>
+              <Card title="Mentees" bodyStyle={{ padding: '1px 0 0 0' }}>
+                <Table
+                  dataSource={data.mentees}
+                  columns={menteeColumns}
+                  rowKey={(row) => row.id as string}
+                  pagination={false}
+                  style={{ borderRadius: '0.5rem' }}
+                />
+              </Card>
+            </Col>
+          )}
         </Row>
       </Space>
 
