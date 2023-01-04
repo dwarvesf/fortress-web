@@ -40,8 +40,9 @@ const Default = () => {
   const queryFilter = query.filter ? JSON.parse(query.filter as string) : {}
 
   const { permissions } = useAuthContext()
-  // FIXME: Should use a better flag, like: employees.statusRead
-  const canFilterStatus = permissions.includes(Permission.EMPLOYEES_CREATE)
+  const canFilterStatus = permissions.includes(
+    Permission.EMPLOYEES_READ_FILTERBYALLSTATUSES,
+  )
 
   const [value, setValue] = useState((query.keyword || '') as string)
   const { filter, setFilter } = useFilter(

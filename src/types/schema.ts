@@ -81,6 +81,10 @@ export interface ModelStack {
   updatedAt?: string
 }
 
+export interface RequestAddMenteeInput {
+  menteeID: string
+}
+
 export interface RequestAssignMemberInput {
   deploymentType: string
   discount?: number
@@ -112,6 +116,11 @@ export interface RequestCreateEmployeeInput {
   teamEmail: string
 }
 
+export interface RequestCreatePositionInput {
+  code: string
+  name: string
+}
+
 export interface RequestCreateProjectInput {
   accountManagerID: string
   clientEmail?: string
@@ -124,6 +133,12 @@ export interface RequestCreateProjectInput {
   startDate?: string
   status: string
   type?: string
+}
+
+export interface RequestCreateStackInput {
+  avatar?: string
+  code: string
+  name: string
 }
 
 export interface RequestCreateSurveyFeedbackInput {
@@ -227,6 +242,11 @@ export interface RequestUpdatePersonalInfoInput {
   placeOfResidence?: string
 }
 
+export interface RequestUpdatePositionBody {
+  code?: string
+  name?: string
+}
+
 export interface RequestUpdateProjectGeneralInfoInput {
   countryID: string
   name: string
@@ -240,6 +260,12 @@ export interface RequestUpdateSkillsInput {
   positions: string[]
   seniority: string
   stacks: string[]
+}
+
+export interface RequestUpdateStackBody {
+  avatar?: string
+  code?: string
+  name?: string
 }
 
 export interface RequestUpdateTopicReviewersBody {
@@ -417,6 +443,7 @@ export interface ViewEmployeeData {
   lineManager?: ViewBasicEmployeeInfo
   linkedInName?: string
   mbti?: string
+  mentees?: ViewMenteeInfo[]
   notionID?: string
   notionName?: string
   personalEmail?: string
@@ -529,6 +556,16 @@ export interface ViewLoggedInUserData {
   permissions?: string[]
   role?: string
   teamEmail?: string
+}
+
+export interface ViewMenteeInfo {
+  avatar?: string
+  displayName?: string
+  fullName?: string
+  id?: string
+  positions?: ModelPosition[]
+  seniority?: ModelSeniority
+  username?: string
 }
 
 export interface ViewMessageResponse {
