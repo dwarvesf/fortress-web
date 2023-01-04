@@ -56,7 +56,9 @@ export const ToggleAllowSendSurveyModal = (props: Props) => {
               await client.updateProjectsSendSurveyStatus(d.id!, checked)
 
               notification.success({
-                message: 'Send survey status updated successfully!',
+                message: `Survey config of ${
+                  d?.name || 'this project'
+                } updated successfully!`,
               })
 
               mutate()
@@ -64,7 +66,9 @@ export const ToggleAllowSendSurveyModal = (props: Props) => {
               notification.error({
                 message: getErrorMessage(
                   error,
-                  'Could not update send survey status',
+                  `Could not update survey config of ${
+                    d?.name || 'this project'
+                  }`,
                 ),
               })
             }
