@@ -4,6 +4,7 @@ import {
   Empty,
   Input,
   Modal,
+  notification,
   Row,
   Space,
   Switch,
@@ -16,22 +17,23 @@ import { GET_PATHS, client } from 'libs/apis'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
 import { useFilter } from 'hooks/useFilter'
 import { ViewProjectData } from 'types/schema'
+import { getErrorMessage } from 'utils/string'
 
 interface Props {
   isOpen: boolean
   onClose: () => void
 }
 
-export const ToggleSendSurveysModal = (props: Props) => {
+export const ToggleAllowSendSurveyModal = (props: Props) => {
   const { isOpen, onClose } = props
   const { filter } = useFilter(
-    new ProjectListFilter({ sort: '-start_date, -name' }),
+    new ProjectListFilter({ sort: '-start_date, -name', status: 'active' }),
   )
 
   const { data: projectsData, mutate } = useFetchWithCache(
     [
       GET_PATHS.getProjects,
-      'toggle-projects-to-send-survey',
+      'toggle-send-survey-status',
       JSON.stringify(filter),
     ],
     () => client.getProjects(filter),
@@ -40,7 +42,7 @@ export const ToggleSendSurveysModal = (props: Props) => {
   const [searchQuery, setSearchQuery] = useState<string>('')
   const projectsList = useMemo(() => projectsData?.data || [], [projectsData])
 
-  const checkedList = useMemo(() => {
+  const sendSurveyStatusList = useMemo(() => {
     return projectsList.map((d) => d.allowsSendingSurvey || false)
   }, [projectsList])
 
@@ -48,17 +50,30 @@ export const ToggleSendSurveysModal = (props: Props) => {
     (d: ViewProjectData, index: number) => {
       return (
         <Switch
-          checked={checkedList[index]}
+          checked={sendSurveyStatusList[index]}
           onChange={async (checked) => {
-            await client
-              .updateProjectsSendSurveyStatus(d.id!, checked)
-              .then(() => mutate())
+            try {
+              await client.updateProjectsSendSurveyStatus(d.id!, checked)
+
+              notification.success({
+                message: 'Send survey status updated successfully!',
+              })
+
+              mutate()
+            } catch (error: any) {
+              notification.error({
+                message: getErrorMessage(
+                  error,
+                  'Could not update send survey status',
+                ),
+              })
+            }
           }}
           style={{ margin: 8 }}
         />
       )
     },
-    [checkedList, mutate],
+    [sendSurveyStatusList, mutate],
   )
 
   const renderProjects = useMemo(() => {

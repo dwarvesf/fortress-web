@@ -6,7 +6,7 @@ import { ProgressColumn } from 'components/common/ProgressColumn'
 import { Actions } from 'components/pages/feedbacks/work'
 import { WorkAverage } from 'components/pages/feedbacks/work/WorkAverage'
 import { useDisclosure } from '@dwarvesf/react-hooks'
-import { ToggleSendSurveysModal } from 'components/pages/feedbacks/work/ToggleSendSurveysModal'
+import { ToggleAllowSendSurveyModal } from 'components/pages/feedbacks/work/ToggleAllowSendSurveyModal'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 import { Setting } from '@icon-park/react'
 import { SEO } from 'components/common/SEO'
@@ -158,7 +158,7 @@ const WorkPage = () => {
         </Row>
       </Space>
 
-      <ToggleSendSurveysModal
+      <ToggleAllowSendSurveyModal
         onClose={closeToggleSendSurveyDialog}
         isOpen={isToggleSendSurveyDialogOpen}
       />
