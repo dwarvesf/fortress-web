@@ -215,7 +215,7 @@ export const General = (props: Props) => {
                       },
                       {
                         label: 'Phone',
-                        value: data.phoneNumber || '-',
+                        value: String(data.phoneNumber) || '-',
                       },
                       {
                         label: 'Line Manager',

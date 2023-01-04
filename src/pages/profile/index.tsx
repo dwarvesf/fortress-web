@@ -91,7 +91,7 @@ const Default = () => {
                       },
                       {
                         label: 'Phone',
-                        value: user?.phoneNumber || '-',
+                        value: String(user?.phoneNumber) || '-',
                       },
                       {
                         label: 'Discord',
