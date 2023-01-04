@@ -16,9 +16,11 @@ import { EditableDetailSectionCard } from 'components/common/EditableDetailSecti
 import { DATE_FORMAT } from 'constants/date'
 import { format } from 'date-fns'
 import {
+  ModelSeniority,
   RequestGetListEmployeeInput,
   ViewEmployeeData,
   ViewEmployeeProjectData,
+  ViewMenteeInfo,
   ViewPosition,
 } from 'types/schema'
 import { client, GET_PATHS } from 'libs/apis'
@@ -66,6 +68,42 @@ const projectColumns: ColumnsType<ViewEmployeeProjectData> = [
     title: 'Action',
     render: (value) => (
       <Link href={ROUTES.PROJECT_DETAIL(value.code)}>
+        <a>
+          <Tooltip title="View Detail">
+            <Button
+              type="text-primary"
+              size="small"
+              icon={<PreviewOpen size={20} />}
+            />
+          </Tooltip>
+        </a>
+      </Link>
+    ),
+  },
+]
+
+const menteeColumns: ColumnsType<ViewMenteeInfo> = [
+  {
+    title: 'Name',
+    render: (value) => <UserAvatar user={value} />,
+  },
+  {
+    title: 'Position',
+    key: 'positions',
+    dataIndex: 'positions',
+    render: (value?: ViewPosition[]) =>
+      value?.map((each) => each.name).join(', ') || '-',
+  },
+  {
+    title: 'Seniority',
+    key: 'seniority',
+    dataIndex: 'seniority',
+    render: (value: ModelSeniority) => value.name || '-',
+  },
+  {
+    title: 'Action',
+    render: (value) => (
+      <Link href={ROUTES.EMPLOYEE_DETAIL(value.username)}>
         <a>
           <Tooltip title="View Detail">
             <Button
@@ -390,6 +428,16 @@ export const General = (props: Props) => {
               <Table
                 dataSource={data.projects}
                 columns={projectColumns}
+                rowKey={(row) => row.id as string}
+                pagination={false}
+              />
+            </Card>
+          </Col>
+          <Col span={24} lg={{ span: 16 }}>
+            <Card title="Mentees">
+              <Table
+                dataSource={data.mentees}
+                columns={menteeColumns}
                 rowKey={(row) => row.id as string}
                 pagination={false}
               />
