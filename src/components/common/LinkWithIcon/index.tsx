@@ -11,7 +11,7 @@ interface Props extends Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'href'> {
 export const LinkWithIcon = (props: Props) => {
   const { href, children, icon, ...rest } = props
 
-  const linkRender = href ? (
+  const textRender = href ? (
     <Link href={href}>
       <a className="styled" {...rest}>
         {children}
@@ -24,9 +24,9 @@ export const LinkWithIcon = (props: Props) => {
   return icon ? (
     <Space>
       {icon}
-      {linkRender}
+      {textRender}
     </Space>
   ) : (
-    linkRender
+    textRender
   )
 }
