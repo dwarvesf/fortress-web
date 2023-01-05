@@ -168,11 +168,7 @@ export const EditSkillsModal = (props: Props) => {
           </Col>
 
           <Col span={24}>
-            <Form.Item
-              label="Tech stack"
-              name="stacks"
-              rules={[{ required: true, message: 'Required' }]}
-            >
+            <Form.Item label="Tech stack" name="stacks">
               <AsyncSelect
                 mode="multiple"
                 optionGetter={async () => {

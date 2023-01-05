@@ -1,7 +1,6 @@
 import { Col, Form, Input, Modal, notification, Row } from 'antd'
 import { AsyncSelect } from 'components/common/Select'
 import { renderEmployeeOption } from 'components/common/Select/renderers/employeeOption'
-import { EmployeeStatus } from 'constants/status'
 import { GET_PATHS, client } from 'libs/apis'
 import { useState } from 'react'
 import { fullListPagination } from 'types/filters/Pagination'
@@ -157,7 +156,6 @@ export const EditGeneralInfoModal = (props: Props) => {
                 optionGetter={async () => {
                   const { data } = await client.getEmployees({
                     ...fullListPagination,
-                    workingStatuses: [EmployeeStatus.FULLTIME],
                   })
                   return (data || []).map(transformEmployeeDataToSelectOption)
                 }}

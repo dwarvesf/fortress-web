@@ -69,10 +69,7 @@ export const WorkUnitForm = (props: Props) => {
               optionGetter={async () => {
                 const { data } = await client.getProjectMemberList(
                   projectID as string,
-                  {
-                    ...fullListPagination,
-                    status: 'active',
-                  },
+                  { ...fullListPagination },
                 )
 
                 return (data || [])
