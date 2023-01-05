@@ -74,7 +74,7 @@ export const EditProjectContactInfoModal = (props: Props) => {
           <FormInputList
             form={form}
             name="clientEmail"
-            label="Client email"
+            label="Client Email"
             rules={[
               { type: 'email', message: 'Wrong email format' },
               { required: true, message: 'Required' },

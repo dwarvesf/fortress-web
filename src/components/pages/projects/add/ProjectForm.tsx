@@ -134,7 +134,7 @@ export const ProjectForm = (props: Props) => {
           </Form.Item>
         </Col>
 
-        <Col span={24} md={{ span: 12 }}>
+        <Col span={24} md={{ span: 24 }}>
           <Form.Item
             label="Project Email"
             name="projectEmail"
@@ -151,11 +151,11 @@ export const ProjectForm = (props: Props) => {
           </Form.Item>
         </Col>
 
-        <Col span={24} md={{ span: 12 }}>
+        <Col span={24} md={{ span: 24 }}>
           <FormInputList
             form={form}
             name="clientEmail"
-            label="Client email"
+            label="Client Email"
             rules={[
               { type: 'email', message: 'Wrong email format' },
               { required: true, message: 'Required' },

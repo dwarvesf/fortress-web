@@ -32,6 +32,7 @@ export const FormInputList = (props: Props) => {
   const {
     onClick: onAdd,
     children: addButtonChildren = 'Add',
+    style: addButtonStyle,
     ...addButtonProps
   } = _addButtonProps
   const { getFieldValue, setFieldValue } = form
@@ -81,6 +82,7 @@ export const FormInputList = (props: Props) => {
             type="ghost"
             onClick={() => add()}
             icon={<Plus size={20} />}
+            style={{ marginBottom: 24, ...addButtonStyle }}
             {...addButtonProps}
           >
             {addButtonChildren}
