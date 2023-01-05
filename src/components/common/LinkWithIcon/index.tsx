@@ -18,7 +18,7 @@ export const LinkWithIcon = (props: Props) => {
       </a>
     </Link>
   ) : (
-    <span {...rest}>{children}</span>
+    <span>{children}</span>
   )
 
   return icon ? (
