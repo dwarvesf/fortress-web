@@ -11,22 +11,22 @@ interface Props extends Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'href'> {
 export const LinkWithIcon = (props: Props) => {
   const { href, children, icon, ...rest } = props
 
-  const childrenRender = children ? (
+  const linkRender = href ? (
     <Link href={href}>
       <a className="styled" {...rest}>
         {children}
       </a>
     </Link>
   ) : (
-    <span>-</span>
+    <span {...rest}>{children}</span>
   )
 
   return icon ? (
     <Space>
       {icon}
-      {childrenRender}
+      {linkRender}
     </Space>
   ) : (
-    childrenRender
+    linkRender
   )
 }

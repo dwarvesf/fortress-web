@@ -235,7 +235,7 @@ const Default = () => {
         render: (value) =>
           value ? (
             <LinkWithIcon
-              href={`https://github.com/${value}`}
+              href={value ? `https://github.com/${value}` : ''}
               target="_blank"
               rel="noreferrer"
             >

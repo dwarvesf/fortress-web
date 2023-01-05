@@ -243,12 +243,16 @@ export const General = (props: Props) => {
                         label: 'Github',
                         value: (
                           <LinkWithIcon
-                            href={`https://github.com/${data?.githubID}`}
+                            href={
+                              data?.githubID
+                                ? `https://github.com/${data?.githubID}`
+                                : ''
+                            }
                             target="_blank"
                             rel="noreferrer"
                             icon={<SVGIcon name="github" />}
                           >
-                            {data.githubID || ''}
+                            {data?.githubID || '-'}
                           </LinkWithIcon>
                         ),
                       },

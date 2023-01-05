@@ -106,12 +106,16 @@ const Default = () => {
                         label: 'Github',
                         value: (
                           <LinkWithIcon
-                            href={`https://github.com/${user?.githubID}`}
+                            href={
+                              user?.githubID
+                                ? `https://github.com/${user?.githubID}`
+                                : ''
+                            }
                             target="_blank"
                             rel="noreferrer"
                             icon={<SVGIcon name="github" />}
                           >
-                            {user?.githubID || ''}
+                            {user?.githubID || '-'}
                           </LinkWithIcon>
                         ),
                       },
