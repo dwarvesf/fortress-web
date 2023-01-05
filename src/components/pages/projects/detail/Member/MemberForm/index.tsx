@@ -80,13 +80,6 @@ export const MemberForm = (props: Props) => {
     }
   }, [employeeID]) // eslint-disable-line
 
-  // Left date is only input-able if status === inactive
-  useEffect(() => {
-    if (status === ProjectMemberStatus.INACTIVE) {
-      form.setFieldValue('leftDate', '')
-    }
-  }, [status]) // eslint-disable-line
-
   const isPending = status === ProjectMemberStatus.PENDING
   const isInactive = status === ProjectMemberStatus.INACTIVE
 
@@ -229,6 +222,7 @@ export const MemberForm = (props: Props) => {
             rules={[{ required: isInactive, message: 'Required' }]}
           >
             <Input
+              disabled={!isInactive}
               type="date"
               placeholder="Select left date"
               className="bordered"
