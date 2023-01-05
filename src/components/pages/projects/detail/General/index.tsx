@@ -140,11 +140,11 @@ export const General = (props: Props) => {
                   {
                     label: 'Client Email',
                     value: (
-                      <div style={{ display: 'flex', flexDirection: 'column' }}>
+                      <Space direction="vertical">
                         {data.clientEmail?.map((mail) => (
                           <a href={`mailto:${mail}`}>{mail}</a>
                         ))}
-                      </div>
+                      </Space>
                     ),
                   },
                   {
