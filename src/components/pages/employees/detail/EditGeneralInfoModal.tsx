@@ -133,7 +133,7 @@ export const EditGeneralInfoModal = (props: Props) => {
 
           <Col span={24} md={{ span: 12 }}>
             <Form.Item
-              label="Team email"
+              label="Team Email"
               name="email"
               rules={[
                 { required: true, message: 'Required' },
@@ -150,7 +150,7 @@ export const EditGeneralInfoModal = (props: Props) => {
 
           <Col span={24} md={{ span: 12 }}>
             <Form.Item
-              label="Phone number"
+              label="Phone Number"
               name="phone"
               rules={[{ required: true, message: 'Required' }]}
             >
@@ -171,7 +171,7 @@ export const EditGeneralInfoModal = (props: Props) => {
           </Col>
 
           <Col span={24} md={{ span: 12 }}>
-            <Form.Item label="Line manager" name="lineManagerID">
+            <Form.Item label="Line Manager" name="lineManagerID">
               <AsyncSelect
                 optionGetter={async () => {
                   const { data } = await client.getEmployees({

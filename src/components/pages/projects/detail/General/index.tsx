@@ -118,7 +118,7 @@ export const General = (props: Props) => {
                       { label: 'Industry', value: data.industry },
                       { label: 'Country', value: data.country?.name || '-' },
                       {
-                        label: 'Stack',
+                        label: 'Stacks',
                         value: (data.stacks || [])
                           .map((stack) => stack.name)
                           .join(', '),

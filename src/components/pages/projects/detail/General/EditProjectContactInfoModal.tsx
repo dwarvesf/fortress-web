@@ -71,7 +71,7 @@ export const EditProjectContactInfoModal = (props: Props) => {
       <Form form={form} onFinish={onSubmit} initialValues={initialValues}>
         <Space direction="vertical" style={{ width: '100%' }}>
           <Form.Item
-            label="Client email"
+            label="Client Email"
             name="clientEmail"
             rules={[{ type: 'email', message: 'Wrong email format' }]}
           >
@@ -88,7 +88,7 @@ export const EditProjectContactInfoModal = (props: Props) => {
             <Input placeholder="Enter project email" className="bordered" />
           </Form.Item>
           <Form.Item
-            label="Account manager"
+            label="Account Manager"
             name="accountManagerID"
             required
             rules={[{ required: true, message: 'Wrong email format' }]}
@@ -100,7 +100,7 @@ export const EditProjectContactInfoModal = (props: Props) => {
               customOptionRenderer={renderEmployeeOption}
             />
           </Form.Item>
-          <Form.Item label="Delivery manager" name="deliveryManagerID">
+          <Form.Item label="Delivery Manager" name="deliveryManagerID">
             <AsyncSelect
               placeholder="Select project's delivery manager"
               swrKeys={GET_PATHS.getEmployees}

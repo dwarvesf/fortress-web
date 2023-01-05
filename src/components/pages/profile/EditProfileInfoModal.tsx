@@ -100,7 +100,7 @@ export const EditProfileInfoModal = (props: Props) => {
         <Row gutter={24}>
           <Col span={24}>
             <Form.Item
-              label="Phone number"
+              label="Phone Number"
               name="phoneNumber"
               rules={[{ required: true, message: 'Required' }]}
             >

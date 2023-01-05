@@ -114,7 +114,7 @@ export const EmployeeForm = (props: Props) => {
         <Row gutter={24}>
           <Col span={24} md={{ span: 12 }}>
             <Form.Item
-              label="Full name"
+              label="Full Name"
               name="fullName"
               rules={[
                 { required: true, message: 'Required' },
@@ -134,7 +134,7 @@ export const EmployeeForm = (props: Props) => {
 
           <Col span={24} md={{ span: 12 }}>
             <Form.Item
-              label="Display name"
+              label="Display Name"
               name="displayName"
               rules={[
                 { required: true, message: 'Required' },
@@ -179,7 +179,7 @@ export const EmployeeForm = (props: Props) => {
 
           <Col span={24} md={{ span: 12 }}>
             <Form.Item
-              label="Team email"
+              label="Team Email"
               name="teamEmail"
               rules={[
                 { required: true, message: 'Required' },
@@ -196,7 +196,7 @@ export const EmployeeForm = (props: Props) => {
 
           <Col span={24} md={{ span: 12 }}>
             <Form.Item
-              label="Personal email"
+              label="Personal Email"
               name="personalEmail"
               rules={[
                 { required: true, message: 'Required' },
@@ -263,7 +263,7 @@ export const EmployeeForm = (props: Props) => {
 
           <Col span={24} md={{ span: 12 }}>
             <Form.Item
-              label="Account role"
+              label="Account Role"
               name="roleID"
               rules={[{ required: true, message: 'Required' }]}
             >

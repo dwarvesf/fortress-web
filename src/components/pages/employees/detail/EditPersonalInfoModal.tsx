@@ -75,13 +75,13 @@ export const EditPersonalInfoModal = (props: Props) => {
       onOk={form.submit}
       okButtonProps={{ loading: isSubmitting }}
       destroyOnClose
-      title="Edit personal info"
+      title="Edit Personal Info"
     >
       <Form form={form} onFinish={onSubmit} initialValues={initialValues}>
         <Row gutter={24}>
           <Col span={24} md={{ span: 12 }}>
             <Form.Item
-              label="Date of birth"
+              label="Date of Birth"
               name="dob"
               rules={[{ required: true, message: 'Required' }]}
             >
@@ -117,7 +117,7 @@ export const EditPersonalInfoModal = (props: Props) => {
 
           <Col span={24}>
             <Form.Item
-              label="Personal email"
+              label="Personal Email"
               name="personalEmail"
               rules={[
                 { required: true, message: 'Required' },

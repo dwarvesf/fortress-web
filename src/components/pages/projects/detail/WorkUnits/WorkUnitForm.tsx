@@ -86,7 +86,7 @@ export const WorkUnitForm = (props: Props) => {
 
         <Col span={24}>
           <Form.Item
-            label="Tech stack"
+            label="Tech Stack"
             name="stacks"
             rules={[{ required: true, message: 'Required' }]}
           >

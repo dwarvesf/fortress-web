@@ -81,7 +81,7 @@ export const CreateWorkSurveyModal = (props: Props) => {
       okText="Create"
       okButtonProps={{ loading: isSubmitting }}
       destroyOnClose
-      title="New event"
+      title="New Event"
     >
       <Form
         form={form}
@@ -92,7 +92,7 @@ export const CreateWorkSurveyModal = (props: Props) => {
         }}
       >
         <Form.Item
-          label="From date"
+          label="From Date"
           name="fromDate"
           required
           rules={[{ required: true, message: 'Required' }]}
@@ -126,7 +126,7 @@ export const CreateWorkSurveyModal = (props: Props) => {
           />
         </Form.Item>
         <Form.Item
-          label="To date"
+          label="To Date"
           name="toDate"
           required
           rules={[{ required: true, message: 'Required' }]}

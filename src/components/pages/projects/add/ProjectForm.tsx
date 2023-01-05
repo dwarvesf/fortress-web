@@ -42,7 +42,7 @@ export const ProjectForm = (props: Props) => {
       <Row gutter={24}>
         <Col span={24} md={{ span: 12 }}>
           <Form.Item
-            label="Project name"
+            label="Project Name"
             name="name"
             rules={[
               { required: true, message: 'Required' },
@@ -80,7 +80,7 @@ export const ProjectForm = (props: Props) => {
 
         <Col span={24} md={{ span: 12 }}>
           <Form.Item
-            label="Account manager"
+            label="Account Manager"
             name="accountManagerID"
             rules={[{ required: true, message: 'Required' }]}
           >
@@ -110,7 +110,7 @@ export const ProjectForm = (props: Props) => {
           </Form.Item>
         </Col>
         <Col span={24} md={{ span: 12 }}>
-          <Form.Item label="Delivery manager" name="deliveryManagerID">
+          <Form.Item label="Delivery Manager" name="deliveryManagerID">
             <AsyncSelect
               optionGetter={employeeOptionGetter}
               swrKeys={GET_PATHS.getEmployees}
@@ -122,7 +122,7 @@ export const ProjectForm = (props: Props) => {
         </Col>
 
         <Col span={24} md={{ span: 12 }}>
-          <Form.Item label="Start date" name="startDate">
+          <Form.Item label="Start Date" name="startDate">
             <DatePicker
               bordered
               className="bg-white bordered"
@@ -152,7 +152,7 @@ export const ProjectForm = (props: Props) => {
 
         <Col span={24} md={{ span: 12 }}>
           <Form.Item
-            label="Client email"
+            label="Client Email"
             name="clientEmail"
             rules={[
               { required: true, message: 'Required' },
