@@ -428,6 +428,7 @@ export const General = (props: Props) => {
         initialValues={{
           email: data.teamEmail || '',
           fullName: data.fullName || '',
+          displayName: data.displayName || '',
           lineManagerID: data.lineManager?.id || '',
           phone: data.phoneNumber || '',
           discordName: data.discordName || '',

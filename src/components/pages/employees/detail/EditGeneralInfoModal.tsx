@@ -93,7 +93,7 @@ export const EditGeneralInfoModal = (props: Props) => {
         <Row gutter={24}>
           <Col span={24} md={{ span: 12 }}>
             <Form.Item
-              label="Full name"
+              label="Full Name"
               name="fullName"
               rules={[
                 { required: true, message: 'Required' },
@@ -107,6 +107,26 @@ export const EditGeneralInfoModal = (props: Props) => {
                 className="bordered"
                 type="text"
                 placeholder="Enter full name"
+              />
+            </Form.Item>
+          </Col>
+
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item
+              label="Display Name"
+              name="displayName"
+              rules={[
+                { required: true, message: 'Required' },
+                {
+                  max: 99,
+                  message: 'Display name must be less than 100 characters',
+                },
+              ]}
+            >
+              <Input
+                className="bordered"
+                type="text"
+                placeholder="Enter display name"
               />
             </Form.Item>
           </Col>
