@@ -8,6 +8,7 @@ import { renderEmployeeOption } from 'components/common/Select/renderers/employe
 import { transformEmployeeDataToSelectOption } from 'utils/select'
 import { getErrorMessage } from 'utils/string'
 import { fullListPagination } from 'types/filters/Pagination'
+import { FormInputList } from 'components/common/FormInputList'
 
 type ProjectContactInfoFormValues = Partial<RequestUpdateContactInfoInput>
 
@@ -70,13 +71,18 @@ export const EditProjectContactInfoModal = (props: Props) => {
     >
       <Form form={form} onFinish={onSubmit} initialValues={initialValues}>
         <Space direction="vertical" style={{ width: '100%' }}>
-          <Form.Item
-            label="Client Email"
+          <FormInputList
+            form={form}
             name="clientEmail"
-            rules={[{ type: 'email', message: 'Wrong email format' }]}
+            label="Client email"
+            rules={[
+              { type: 'email', message: 'Wrong email format' },
+              { required: true, message: 'Required' },
+            ]}
+            addButtonProps={{ children: 'Add email' }}
           >
-            <Input placeholder="Enter client email" className="bordered" />
-          </Form.Item>
+            <Input className="bordered" placeholder="Enter client email" />
+          </FormInputList>
           <Form.Item
             label="Project Email"
             name="projectEmail"
