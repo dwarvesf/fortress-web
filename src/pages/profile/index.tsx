@@ -98,7 +98,7 @@ const Default = () => {
                         value: (
                           <Space>
                             <SVGIcon name="discord" />
-                            {user?.discordName || ''}
+                            {user?.discordName || '-'}
                           </Space>
                         ),
                       },
@@ -111,7 +111,7 @@ const Default = () => {
                             rel="noreferrer"
                             icon={<SVGIcon name="github" />}
                           >
-                            {user?.githubID || '-'}
+                            {user?.githubID || ''}
                           </LinkWithIcon>
                         ),
                       },
@@ -120,7 +120,7 @@ const Default = () => {
                         value: (
                           <Space>
                             <SVGIcon name="notion" />
-                            {user?.notionName || ''}
+                            {user?.notionName || '-'}
                           </Space>
                         ),
                       },
@@ -129,7 +129,7 @@ const Default = () => {
                         value: (
                           <Space>
                             <SVGIcon name="linkedin" />
-                            {user?.linkedInName || ''}
+                            {user?.linkedInName || '-'}
                           </Space>
                         ),
                       },
