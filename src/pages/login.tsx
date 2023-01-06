@@ -172,7 +172,7 @@ const LoginPage = () => {
 
             <SocialLinks gutter={12}>
               {socialLinks.map((s) => (
-                <Col>
+                <Col key={s.name}>
                   <Link href={s.url} passHref>
                     <a target="_blank">
                       <span>
