@@ -1,4 +1,4 @@
-import { Avatar, Menu, Space, Image, Dropdown } from 'antd'
+import { Avatar, Menu, Space, Image, Dropdown, Typography } from 'antd'
 import { ROUTES } from 'constants/routes'
 import { useAuthContext } from 'context/auth'
 import Link from 'next/link'
@@ -20,9 +20,13 @@ export const ProfileDropdown = () => {
         {
           key: 'logout',
           label: (
-            <Space role="button" onClick={logout} style={{ width: '100%' }}>
+            <Typography.Link
+              role="button"
+              onClick={logout}
+              style={{ width: '100%' }}
+            >
               Logout
-            </Space>
+            </Typography.Link>
           ),
         },
       ]}
@@ -30,7 +34,7 @@ export const ProfileDropdown = () => {
   )
 
   return (
-    <Dropdown overlay={menuRender}>
+    <Dropdown overlay={menuRender} trigger={['click']}>
       <Space align="center" style={{ cursor: 'pointer' }}>
         <span>{user?.displayName}</span>
         <Avatar
