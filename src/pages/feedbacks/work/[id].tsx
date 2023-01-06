@@ -47,11 +47,12 @@ const renderDomainAverageResult = (
     >
       <WorkAverageIcon
         backgroundColor={`${
-          likertScalesColors[mapScoreToLikertScale(record[index] || {})]
+          likertScalesColors[mapScoreToLikertScale(record[index]?.average || 0)]
             .background
         }`}
         textColor={`${
-          likertScalesColors[mapScoreToLikertScale(record[index] || {})].text
+          likertScalesColors[mapScoreToLikertScale(record[index]?.average || 0)]
+            .text
         }`}
         label={record[index]?.average || 0}
       />

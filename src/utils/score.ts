@@ -1,20 +1,19 @@
 import { AgreementLevel } from 'constants/agreementLevel'
-import { ViewDomain } from 'types/schema'
 
-export const mapScoreToLikertScale = (record: ViewDomain): AgreementLevel => {
-  if (!record || !record.average) {
+export const mapScoreToLikertScale = (score: number): AgreementLevel => {
+  if (!score) {
     return AgreementLevel.STRONGLY_DISAGREE
   }
-  if (record?.average <= 1.5) {
+  if (score <= 1.5) {
     return AgreementLevel.STRONGLY_DISAGREE
   }
-  if (record?.average <= 2.5) {
+  if (score <= 2.5) {
     return AgreementLevel.DISAGREE
   }
-  if (record?.average <= 3.5) {
+  if (score <= 3.5) {
     return AgreementLevel.MIXED
   }
-  if (record?.average <= 4.5) {
+  if (score <= 4.5) {
     return AgreementLevel.AGREE
   }
   return AgreementLevel.STRONGLY_AGREE
