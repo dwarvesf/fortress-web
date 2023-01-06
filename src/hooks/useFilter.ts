@@ -56,7 +56,7 @@ export const useFilter = <T extends {}>(
       replace(
         {
           pathname,
-          query: { ...query, filter: JSON.stringify(filterToUpdate) },
+          query: { ...query, filter: newFilter },
         },
         undefined,
         { shallow: true },
