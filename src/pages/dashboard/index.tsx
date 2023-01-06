@@ -192,7 +192,7 @@ const DashboardPage = () => {
         ]}
       />
 
-      <PageHeader title="Feedbacks" />
+      <PageHeader title="Dashboard" />
 
       <Space direction="vertical" size={24} style={{ width: '100%' }}>
         <Tabs

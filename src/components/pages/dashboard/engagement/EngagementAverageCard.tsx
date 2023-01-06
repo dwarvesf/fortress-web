@@ -1,6 +1,6 @@
 import { Card, Col, Divider, Row, Space } from 'antd'
 import { EngagementAverageProps } from 'pages/dashboard'
-import { Dispatch, SetStateAction, useMemo } from 'react'
+import { CSSProperties, Dispatch, SetStateAction, useMemo } from 'react'
 import {
   LineChart,
   Line,
@@ -12,8 +12,9 @@ import {
   TooltipProps,
   CartesianAxisProps,
 } from 'recharts'
-import { CSSProperties } from 'styled-components'
+import styled from 'styled-components'
 import { theme } from 'styles'
+import { capitalizeFirstLetter } from 'utils/string'
 import { StatisticBlock } from '../StatisticBlock'
 
 interface Props {
@@ -23,6 +24,10 @@ interface Props {
   filterCategory: string
   style?: CSSProperties
 }
+
+const CardLabel = styled.div`
+  margin-bottom: 8px;
+`
 
 const CustomizedAxisTick = ({
   x,
@@ -42,12 +47,13 @@ const CustomizedAxisTick = ({
         cursor: 'pointer',
         userSelect: 'none',
         fontWeight: currentQuarter === payload.value ? 600 : 400,
+        fontSize: 14,
       }}
     >
       <text
         x={0}
         y={0}
-        dy={12}
+        dy={14}
         textAnchor="middle"
         fill={theme.colors.gray700}
         onClick={() => setCurrentQuarter(payload.value)}
@@ -95,14 +101,16 @@ const EngagementFeedbacksRow = ({
     <Space
       direction="vertical"
       split={<Divider style={{ margin: 0 }} />}
-      style={{ width: '100%' }}
+      style={{ width: '100%', fontSize: 14 }}
     >
       {data.map((d) => (
         <Row style={{ width: '100%' }} justify="space-between">
           <Col>
             <span style={{ color: theme.colors.gray500 }}>{d.label}</span>
           </Col>
-          <Col>{d.value}</Col>
+          <Col>
+            <span>{d.value}</span>
+          </Col>
         </Row>
       ))}
     </Space>
@@ -131,6 +139,7 @@ export const EngagementAverageCard = (props: Props) => {
       {...rest}
       bodyStyle={{
         height: '100%',
+        fontSize: 16,
       }}
     >
       <div
@@ -139,18 +148,18 @@ export const EngagementAverageCard = (props: Props) => {
           flexDirection: 'column',
           justifyContent: 'space-between',
           height: '100%',
-          gap: 8,
+          gap: 12,
         }}
       >
         <strong>{data?.question || 'a'}</strong>
 
-        <Space direction="vertical" size={8}>
+        <Space direction="vertical" size={12}>
           <StatisticBlock
             stat={currentQuarterData?.average || 0}
             postfix="/5"
           />
 
-          <div>Avg. score of the whole company</div>
+          <CardLabel>Avg. score of the whole company</CardLabel>
 
           <div
             style={{
@@ -158,11 +167,8 @@ export const EngagementAverageCard = (props: Props) => {
               overflowY: 'hidden',
             }}
           >
-            <ResponsiveContainer width="100%" height={230} minWidth={350}>
-              <LineChart
-                data={(data?.dataset || []).slice(-4)}
-                style={{ marginLeft: -35 }}
-              >
+            <ResponsiveContainer width="100%" height={230} minWidth={320}>
+              <LineChart data={(data?.dataset || []).slice(-4)}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis
                   dataKey="name"
@@ -172,8 +178,18 @@ export const EngagementAverageCard = (props: Props) => {
                       setCurrentQuarter={setCurrentQuarter}
                     />
                   }
+                  tickLine={false}
+                  padding={{ left: 12 }}
+                  height={30}
                 />
-                <YAxis type="number" ticks={[1, 3, 5]} domain={[0, 5]} />
+                <YAxis
+                  type="number"
+                  ticks={[1, 3, 5]}
+                  domain={[0, 5]}
+                  tickLine={false}
+                  fontSize={14}
+                  width={14}
+                />
                 <Tooltip content={<CustomTooltip />} />
 
                 <Line
@@ -186,9 +202,10 @@ export const EngagementAverageCard = (props: Props) => {
             </ResponsiveContainer>
           </div>
 
-          <div>
-            Avg. score by <strong>{filterCategory}</strong>
-          </div>
+          <CardLabel>
+            Avg. score by{' '}
+            <strong>{capitalizeFirstLetter(filterCategory)}</strong>
+          </CardLabel>
           <EngagementFeedbacksRow
             data={[
               {
