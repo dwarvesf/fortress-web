@@ -1,7 +1,7 @@
 import { DeleteOne, Plus } from '@icon-park/react'
-import { Form, FormInstance, Input } from 'antd'
+import { Form, FormInstance, Input, InputProps } from 'antd'
 import { Rule } from 'antd/lib/form'
-import { HTMLAttributes, InputHTMLAttributes, useEffect } from 'react'
+import { HTMLAttributes, useEffect } from 'react'
 import { Button } from '../Button'
 
 interface Props {
@@ -11,7 +11,7 @@ interface Props {
   rules?: Rule[]
   removeButtonProps?: HTMLAttributes<HTMLButtonElement>
   addButtonProps?: HTMLAttributes<HTMLButtonElement>
-  inputProps?: InputHTMLAttributes<HTMLInputElement>
+  inputProps?: InputProps
 }
 
 export const FormInputList = (props: Props) => {
