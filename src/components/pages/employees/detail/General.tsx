@@ -24,8 +24,12 @@ import {
   ViewPosition,
 } from 'types/schema'
 import { client, GET_PATHS } from 'libs/apis'
-import { ReactElement, useState } from 'react'
-import { EmployeeStatus, employeeStatuses } from 'constants/status'
+import { ReactElement, useMemo, useState } from 'react'
+import {
+  EmployeeStatus,
+  employeeStatuses,
+  ProjectMemberStatus,
+} from 'constants/status'
 import { SVGIcon } from 'components/common/SVGIcon'
 import { Star } from '@icon-park/react'
 import moment from 'moment'
@@ -124,8 +128,21 @@ export const General = (props: Props) => {
 
   const [isLoading, setIsLoading] = useState(false)
   const { permissions } = useAuthContext()
-
   const isEditable = permissions.includes(Permission.EMPLOYEES_EDIT)
+
+  // We'll be showing projects of the status users pick
+  // By default, we show projects that the employee is active in
+  const [viewProjectStatus, setViewProjectStatus] = useState(
+    ProjectMemberStatus.ACTIVE,
+  )
+  const projects = useMemo(() => {
+    // Active = every statuses except INACTIVE
+    return data.projects?.filter((project) =>
+      viewProjectStatus === ProjectMemberStatus.INACTIVE
+        ? project.status === ProjectMemberStatus.INACTIVE
+        : project.status !== ProjectMemberStatus.INACTIVE,
+    )
+  }, [data, viewProjectStatus])
 
   const mutateEmployee = () => {
     mutate([GET_PATHS.getEmployees, data.username])
@@ -395,9 +412,22 @@ export const General = (props: Props) => {
             </EditableDetailSectionCard>
           </Col>
           <Col span={24} lg={{ span: 16 }}>
-            <Card title="Projects" bodyStyle={{ padding: '1px 0 0 0' }}>
+            <Card
+              title="Projects"
+              bodyStyle={{ padding: '1px 0 0 0' }}
+              extra={
+                <Select
+                  options={[
+                    { label: 'Active', value: ProjectMemberStatus.ACTIVE },
+                    { label: 'Inactive', value: ProjectMemberStatus.INACTIVE },
+                  ]}
+                  value={viewProjectStatus}
+                  onChange={setViewProjectStatus}
+                />
+              }
+            >
               <Table
-                dataSource={data.projects}
+                dataSource={projects}
                 columns={projectColumns}
                 rowKey={(row) => row.id as string}
                 pagination={false}
