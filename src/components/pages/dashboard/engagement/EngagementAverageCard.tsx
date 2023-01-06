@@ -163,7 +163,7 @@ export const EngagementAverageCard = (props: Props) => {
 
           <div
             style={{
-              overflowX: 'visible',
+              overflowX: 'auto',
               overflowY: 'hidden',
             }}
           >
