@@ -1,5 +1,6 @@
 import { Form, Row, Col, Input, DatePicker, Select } from 'antd'
 import { FormInstance } from 'antd/es/form/Form'
+import { FormInputList } from 'components/common/FormInputList'
 import { AsyncSelect } from 'components/common/Select'
 import { renderEmployeeOption } from 'components/common/Select/renderers/employeeOption'
 import { renderStatusOption } from 'components/common/Select/renderers/statusOption'
@@ -133,7 +134,7 @@ export const ProjectForm = (props: Props) => {
           </Form.Item>
         </Col>
 
-        <Col span={24} md={{ span: 12 }}>
+        <Col span={24} md={{ span: 24 }}>
           <Form.Item
             label="Project Email"
             name="projectEmail"
@@ -150,21 +151,18 @@ export const ProjectForm = (props: Props) => {
           </Form.Item>
         </Col>
 
-        <Col span={24} md={{ span: 12 }}>
-          <Form.Item
-            label="Client Email"
+        <Col span={24} md={{ span: 24 }}>
+          <FormInputList
+            form={form}
             name="clientEmail"
+            label="Client Email"
             rules={[
-              { required: true, message: 'Required' },
               { type: 'email', message: 'Wrong email format' },
+              { required: true, message: 'Required' },
             ]}
-          >
-            <Input
-              className="bordered"
-              type="email"
-              placeholder="Enter client email"
-            />
-          </Form.Item>
+            addButtonProps={{ children: 'Add email' }}
+            inputProps={{ type: 'email', placeholder: 'Enter client email' }}
+          />
         </Col>
 
         <Col span={24} md={{ span: 12 }}>

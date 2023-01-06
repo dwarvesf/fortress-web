@@ -123,7 +123,7 @@ export interface RequestCreatePositionInput {
 
 export interface RequestCreateProjectInput {
   accountManagerID: string
-  clientEmail?: string
+  clientEmail?: string[]
   code?: string
   countryID: string
   deliveryManagerID?: string
@@ -190,7 +190,7 @@ export interface RequestSubmitBody {
 
 export interface RequestUpdateContactInfoInput {
   accountManagerID: string
-  clientEmail?: string
+  clientEmail?: string[]
   deliveryManagerID?: string
   projectEmail?: string
 }
@@ -398,7 +398,7 @@ export interface ViewCreateMemberDataResponse {
 
 export interface ViewCreateProjectData {
   accountManager?: ViewProjectHead
-  clientEmail?: string
+  clientEmail?: string[]
   code?: string
   country?: ViewBasicCountryInfo
   createdAt?: string
@@ -647,7 +647,7 @@ export interface ViewProjectData {
   accountManager?: ViewProjectHead
   allowsSendingSurvey?: boolean
   avatar?: string
-  clientEmail?: string
+  clientEmail?: string[]
   code?: string
   country?: ViewBasicCountryInfo
   createdAt?: string
@@ -887,7 +887,7 @@ export interface ViewUpdateProfileInfoResponse {
 }
 
 export interface ViewUpdateProjectContactInfo {
-  clientEmail?: string
+  clientEmail?: string[]
   projectEmail?: string
   projectHead?: ViewBasicProjectHeadInfo[]
 }

@@ -139,12 +139,12 @@ export const General = (props: Props) => {
                 data={[
                   {
                     label: 'Client Email',
-                    value: data.clientEmail ? (
-                      <a href={`mailto:${data.clientEmail}`}>
-                        {data.clientEmail}
-                      </a>
-                    ) : (
-                      ''
+                    value: (
+                      <Space direction="vertical">
+                        {data.clientEmail?.map((mail) => (
+                          <a href={`mailto:${mail}`}>{mail}</a>
+                        ))}
+                      </Space>
                     ),
                   },
                   {
