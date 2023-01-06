@@ -1,9 +1,10 @@
+import { Nullable } from 'types/common'
 import { RequestGetListEmployeeInput } from 'types/schema'
 import { Pagination } from './Pagination'
 
 export class EmployeeListFilter
   extends Pagination
-  implements RequestGetListEmployeeInput
+  implements Nullable<RequestGetListEmployeeInput>
 {
   keyword?
   chapters?
@@ -15,13 +16,13 @@ export class EmployeeListFilter
 
   constructor({
     keyword = '',
-    chapters = [],
-    positions = [],
-    projects = [],
-    seniorities = [],
-    stacks = [],
-    workingStatuses = [],
-  }: RequestGetListEmployeeInput = {}) {
+    chapters = null,
+    positions = null,
+    projects = null,
+    seniorities = null,
+    stacks = null,
+    workingStatuses = null,
+  }: Nullable<RequestGetListEmployeeInput> = {}) {
     super()
     this.keyword = keyword
     this.chapters = chapters

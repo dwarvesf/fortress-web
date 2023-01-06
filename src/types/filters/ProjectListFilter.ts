@@ -1,22 +1,28 @@
+import { Nullable } from 'types/common'
 import { Pagination } from './Pagination'
 
-export class ProjectListFilter extends Pagination {
+interface RequestGetListProjectInput {
   status?: string
   name?: string
   type?: string
   sort?: string
+}
+
+export class ProjectListFilter
+  extends Pagination
+  implements Nullable<RequestGetListProjectInput>
+{
+  status
+  name
+  type
+  sort
 
   constructor({
-    status,
-    name,
-    type,
-    sort,
-  }: {
-    status?: string
-    name?: string
-    type?: string
-    sort?: string
-  } = {}) {
+    status = null,
+    name = null,
+    type = null,
+    sort = null,
+  }: Nullable<RequestGetListProjectInput> = {}) {
     super()
     this.status = status
     this.name = name
