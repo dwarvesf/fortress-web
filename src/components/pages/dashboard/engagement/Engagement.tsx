@@ -14,6 +14,7 @@ const Engagement = ({ filterCategory }: { filterCategory: string }) => {
     >
       {mockData.map((d) => (
         <EngagementAverageCard
+          key={d.question}
           data={d}
           currentQuarter={currentQuarter}
           setCurrentQuarter={setCurrentQuarter}

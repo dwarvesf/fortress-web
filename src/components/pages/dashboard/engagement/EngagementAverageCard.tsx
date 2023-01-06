@@ -105,7 +105,7 @@ const EngagementFeedbacksRow = ({
       style={{ width: '100%', fontSize: 14 }}
     >
       {data.map((d) => (
-        <Row style={{ width: '100%' }} justify="space-between">
+        <Row style={{ width: '100%' }} justify="space-between" key={d.label}>
           <Col>
             <span style={{ color: theme.colors.gray500 }}>{d.label}</span>
           </Col>
@@ -169,7 +169,12 @@ export const EngagementAverageCard = (props: Props) => {
             }}
           >
             <ResponsiveContainer width="100%" height={230} minWidth={320}>
-              <LineChart data={(data?.dataset || []).slice(-4)}>
+              <LineChart
+                data={(data?.dataset || []).slice(-4)}
+                style={{
+                  marginLeft: -10,
+                }}
+              >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis
                   dataKey="name"
@@ -180,7 +185,6 @@ export const EngagementAverageCard = (props: Props) => {
                     />
                   }
                   tickLine={false}
-                  padding={{ left: 12 }}
                   height={30}
                 />
                 <YAxis
@@ -189,7 +193,7 @@ export const EngagementAverageCard = (props: Props) => {
                   domain={[0, 5]}
                   tickLine={false}
                   fontSize={14}
-                  width={14}
+                  width={26}
                 />
                 <Tooltip content={<CustomTooltip />} />
 
