@@ -1,4 +1,4 @@
-import { LeftSmall } from '@icon-park/react'
+import { Left } from '@icon-park/react'
 import { Col, Row, Typography } from 'antd'
 import Link from 'next/link'
 import styled from 'styled-components'
@@ -17,12 +17,12 @@ export const PageHeader = (props: Props) => {
   const { title, rightRender, backHref } = props
 
   return (
-    <Row gutter={[16, 16]}>
+    <Row gutter={[8, 8]}>
       {backHref && (
-        <Col style={{ paddingTop: 4 }}>
+        <Col>
           <Link href={backHref}>
             <BackLink>
-              <LeftSmall size={24} />
+              <Left size={32} />
             </BackLink>
           </Link>
         </Col>

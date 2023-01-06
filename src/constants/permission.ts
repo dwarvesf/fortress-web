@@ -3,7 +3,7 @@ import { ROUTES } from './routes'
 export enum Permission {
   AUTH_READ = 'auth.read',
   EMPLOYEES_READ = 'employees.read',
-  EMPLOYEES_READ_FILTERBYALLSTATUSES = 'employees.read.filterByAllStatuses',
+  EMPLOYEES_FILTERBYSTATUS = 'employees.filterByStatus',
   EMPLOYEES_CREATE = 'employees.create',
   EMPLOYEES_EDIT = 'employees.edit',
   EMPLOYEES_DELETE = 'employees.delete',

@@ -1,4 +1,4 @@
-import { Row, Col, Button, notification, Space, Typography, Card } from 'antd'
+import { Row, Col, Button, notification, Space, Card } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
 import { PageHeader } from 'components/common/PageHeader'
 import { SERVER_DATE_FORMAT } from 'constants/date'
@@ -114,6 +114,8 @@ const CreateNewProjectPage = () => {
         : '',
       status: values.status,
       type: values.type,
+      // TODO: fix this
+      function: 'development',
     }
   }
 
@@ -202,16 +204,9 @@ const CreateNewProjectPage = () => {
             </Col>
 
             <Col span={24}>
-              <Card>
-                <Space
-                  align="center"
-                  style={{
-                    justifyContent: 'space-between',
-                    width: '100%',
-                    marginBottom: 24,
-                  }}
-                >
-                  <Typography.Title level={4}>Members</Typography.Title>
+              <Card
+                title="Members"
+                extra={
                   <Button
                     type="primary"
                     icon={<Plus size={20} />}
@@ -219,8 +214,9 @@ const CreateNewProjectPage = () => {
                   >
                     Add New
                   </Button>
-                </Space>
-
+                }
+                bodyStyle={{ padding: '1px 0 0' }}
+              >
                 <ProjectMemberTable
                   data={memberTableData}
                   memberData={memberData}

@@ -123,10 +123,11 @@ export interface RequestCreatePositionInput {
 
 export interface RequestCreateProjectInput {
   accountManagerID: string
-  clientEmail?: string
+  clientEmail?: string[]
   code?: string
   countryID: string
   deliveryManagerID?: string
+  function: string
   members?: RequestAssignMemberInput[]
   name: string
   projectEmail?: string
@@ -189,7 +190,7 @@ export interface RequestSubmitBody {
 
 export interface RequestUpdateContactInfoInput {
   accountManagerID: string
-  clientEmail?: string
+  clientEmail?: string[]
   deliveryManagerID?: string
   projectEmail?: string
 }
@@ -197,6 +198,7 @@ export interface RequestUpdateContactInfoInput {
 export interface RequestUpdateEmployeeGeneralInfoInput {
   discordID?: string
   discordName?: string
+  displayName?: string
   email: string
   fullName: string
   githubID?: string
@@ -212,10 +214,15 @@ export interface RequestUpdateInfoInput {
   address?: string
   city?: string
   country?: string
+  discordName?: string
+  githubID?: string
+  linkedInName?: string
+  notionEmail?: string
+  notionID?: string
+  notionName?: string
   personalEmail: string
   phoneNumber: string
   placeOfResidence: string
-  teamEmail: string
 }
 
 export interface RequestUpdateMemberInput {
@@ -249,6 +256,7 @@ export interface RequestUpdatePositionBody {
 
 export interface RequestUpdateProjectGeneralInfoInput {
   countryID: string
+  function: string
   name: string
   stacks?: string[]
   startDate?: string
@@ -390,12 +398,13 @@ export interface ViewCreateMemberDataResponse {
 
 export interface ViewCreateProjectData {
   accountManager?: ViewProjectHead
-  clientEmail?: string
+  clientEmail?: string[]
   code?: string
   country?: ViewBasicCountryInfo
   createdAt?: string
   deletedAt?: GormDeletedAt
   deliveryManager?: ViewProjectHead
+  function?: string
   id?: string
   members?: ViewCreateMemberData[]
   name?: string
@@ -466,11 +475,13 @@ export interface ViewEmployeeListDataResponse {
 }
 
 export interface ViewEmployeeProjectData {
+  avatar?: string
   code?: string
   deploymentType?: string
   id?: string
   name?: string
   positions?: ViewPosition[]
+  status?: string
 }
 
 export interface ViewErrorResponse {
@@ -636,13 +647,14 @@ export interface ViewProjectData {
   accountManager?: ViewProjectHead
   allowsSendingSurvey?: boolean
   avatar?: string
-  clientEmail?: string
+  clientEmail?: string[]
   code?: string
   country?: ViewBasicCountryInfo
   createdAt?: string
   deletedAt?: GormDeletedAt
   deliveryManager?: ViewProjectHead
   endDate?: string
+  function?: string
   id?: string
   industry?: string
   members?: ViewProjectMember[]
@@ -815,6 +827,7 @@ export interface ViewUpdateGeneralInfoEmployeeData {
   deletedAt?: GormDeletedAt
   discordID?: string
   discordName?: string
+  displayName?: string
   /** basic info */
   fullName?: string
   githubID?: string
@@ -874,7 +887,7 @@ export interface ViewUpdateProfileInfoResponse {
 }
 
 export interface ViewUpdateProjectContactInfo {
-  clientEmail?: string
+  clientEmail?: string[]
   projectEmail?: string
   projectHead?: ViewBasicProjectHeadInfo[]
 }
@@ -885,6 +898,7 @@ export interface ViewUpdateProjectContactInfoResponse {
 
 export interface ViewUpdateProjectGeneralInfo {
   country?: ViewBasicCountryInfo
+  function?: string
   name?: string
   stacks?: ModelStack[]
   startDate?: string

@@ -21,6 +21,7 @@ import { ProjectStatus, projectStatuses } from 'constants/status'
 import { useRouter } from 'next/router'
 import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
 import { Permission } from 'constants/permission'
+import { TotalResultCount } from 'components/common/Table/TotalResultCount'
 
 interface ColumnProps {
   filter: ProjectListFilter
@@ -183,20 +184,23 @@ const Default = () => {
             </>
           }
         />
-        <Table
-          loading={loading}
-          dataSource={projects}
-          columns={columns({ filter, projectStatusData })}
-          rowKey={(row) => row.id || ''}
-          pagination={false}
-          scroll={{ x: 'max-content' }}
-          onChange={(_, filters) => {
-            setFilter({
-              status: (filters.status?.[0] as string) || '',
-            })
-          }}
-          className="shadowed"
-        />
+        <div>
+          <TotalResultCount count={data?.total} />
+          <Table
+            loading={loading}
+            dataSource={projects}
+            columns={columns({ filter, projectStatusData })}
+            rowKey={(row) => row.id || ''}
+            pagination={false}
+            scroll={{ x: 'max-content' }}
+            onChange={(_, filters) => {
+              setFilter({
+                status: (filters.status?.[0] as string) || '',
+              })
+            }}
+            className="shadowed"
+          />
+        </div>
         <Row justify="end">
           <Pagination
             current={filter.page}

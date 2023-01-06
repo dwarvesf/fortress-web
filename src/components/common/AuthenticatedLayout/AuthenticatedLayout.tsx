@@ -1,10 +1,4 @@
-import {
-  AllApplication,
-  ChartLine,
-  EveryUser,
-  Mail,
-  Setting,
-} from '@icon-park/react'
+import { AllApplication, ChartLine, EveryUser, Mail } from '@icon-park/react'
 import { Layout, Menu } from 'antd'
 import { ItemType } from 'antd/lib/menu/hooks/useItems'
 import { pagePermissions, Permission } from 'constants/permission'
@@ -75,9 +69,6 @@ const items: MenuItem[] = [
         permission: Permission.SURVEYS_READ,
       },
     ]),
-  },
-  {
-    content: getItem('Config', ROUTES.CONFIG, <Setting size={24} />),
   },
 ]
 

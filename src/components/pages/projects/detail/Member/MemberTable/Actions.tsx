@@ -5,7 +5,6 @@ import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
 import { Button } from 'components/common/Button'
 import { SERVER_DATE_FORMAT } from 'constants/date'
 import { Permission } from 'constants/permission'
-import { ProjectMemberStatus } from 'constants/status'
 import { format } from 'date-fns'
 import { client } from 'libs/apis'
 import { useState } from 'react'
@@ -55,10 +54,6 @@ export const Actions = ({
       okButtonProps: { loading: isLoading },
       onOk: onDelete,
     })
-  }
-
-  if (record.status === ProjectMemberStatus.INACTIVE) {
-    return null
   }
 
   return (

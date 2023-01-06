@@ -55,6 +55,9 @@ const AuthContextProvider = ({ children }: WithChildren) => {
             domain: window.location.hostname,
           })
 
+          const auth = await client.getAuth()
+          setPermissions(auth.data?.permissions || [])
+
           if (employee) {
             setIsAuthenticating(false)
             setUser(employee)

@@ -75,7 +75,7 @@ export const EditSkillsModal = (props: Props) => {
       onOk={form.submit}
       okButtonProps={{ loading: isSubmitting }}
       destroyOnClose
-      title="Edit skills"
+      title="Edit Skills"
     >
       <Form form={form} onFinish={onSubmit} initialValues={initialValues}>
         <Row gutter={24}>
@@ -168,11 +168,7 @@ export const EditSkillsModal = (props: Props) => {
           </Col>
 
           <Col span={24}>
-            <Form.Item
-              label="Tech stack"
-              name="stacks"
-              rules={[{ required: true, message: 'Required' }]}
-            >
+            <Form.Item label="Stacks" name="stacks">
               <AsyncSelect
                 mode="multiple"
                 optionGetter={async () => {
@@ -180,7 +176,7 @@ export const EditSkillsModal = (props: Props) => {
                   return data?.map(transformMetadataToSelectOption) || []
                 }}
                 swrKeys={GET_PATHS.getStackMetadata}
-                placeholder="Select tech stack"
+                placeholder="Select stacks"
               />
             </Form.Item>
           </Col>

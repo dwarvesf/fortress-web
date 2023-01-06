@@ -1,11 +1,11 @@
 import { Form, Row, Col, Input, DatePicker, Select } from 'antd'
 import { FormInstance } from 'antd/es/form/Form'
+import { FormInputList } from 'components/common/FormInputList'
 import { AsyncSelect } from 'components/common/Select'
 import { renderEmployeeOption } from 'components/common/Select/renderers/employeeOption'
 import { renderStatusOption } from 'components/common/Select/renderers/statusOption'
 import { SELECT_BOX_DATE_FORMAT } from 'constants/date'
 import { projectTypes } from 'constants/projectTypes'
-import { EmployeeStatus } from 'constants/status'
 import { GET_PATHS, client } from 'libs/apis'
 import { theme } from 'styles'
 import { fullListPagination } from 'types/filters/Pagination'
@@ -28,7 +28,6 @@ export const ProjectForm = (props: Props) => {
   const employeeOptionGetter = async () => {
     const { data } = await client.getEmployees({
       ...fullListPagination,
-      workingStatuses: [EmployeeStatus.FULLTIME],
     })
     return (data || []).map(transformEmployeeDataToSelectOption)
   }
@@ -44,7 +43,7 @@ export const ProjectForm = (props: Props) => {
       <Row gutter={24}>
         <Col span={24} md={{ span: 12 }}>
           <Form.Item
-            label="Project name"
+            label="Project Name"
             name="name"
             rules={[
               { required: true, message: 'Required' },
@@ -82,7 +81,7 @@ export const ProjectForm = (props: Props) => {
 
         <Col span={24} md={{ span: 12 }}>
           <Form.Item
-            label="Account manager"
+            label="Account Manager"
             name="accountManagerID"
             rules={[{ required: true, message: 'Required' }]}
           >
@@ -112,7 +111,7 @@ export const ProjectForm = (props: Props) => {
           </Form.Item>
         </Col>
         <Col span={24} md={{ span: 12 }}>
-          <Form.Item label="Delivery manager" name="deliveryManagerID">
+          <Form.Item label="Delivery Manager" name="deliveryManagerID">
             <AsyncSelect
               optionGetter={employeeOptionGetter}
               swrKeys={GET_PATHS.getEmployees}
@@ -124,7 +123,7 @@ export const ProjectForm = (props: Props) => {
         </Col>
 
         <Col span={24} md={{ span: 12 }}>
-          <Form.Item label="Start date" name="startDate">
+          <Form.Item label="Start Date" name="startDate">
             <DatePicker
               bordered
               className="bg-white bordered"
@@ -135,7 +134,7 @@ export const ProjectForm = (props: Props) => {
           </Form.Item>
         </Col>
 
-        <Col span={24} md={{ span: 12 }}>
+        <Col span={24} md={{ span: 24 }}>
           <Form.Item
             label="Project Email"
             name="projectEmail"
@@ -152,21 +151,18 @@ export const ProjectForm = (props: Props) => {
           </Form.Item>
         </Col>
 
-        <Col span={24} md={{ span: 12 }}>
-          <Form.Item
-            label="Client email"
+        <Col span={24} md={{ span: 24 }}>
+          <FormInputList
+            form={form}
             name="clientEmail"
+            label="Client Email"
             rules={[
-              { required: true, message: 'Required' },
               { type: 'email', message: 'Wrong email format' },
+              { required: true, message: 'Required' },
             ]}
-          >
-            <Input
-              className="bordered"
-              type="email"
-              placeholder="Enter client email"
-            />
-          </Form.Item>
+            addButtonProps={{ children: 'Add email' }}
+            inputProps={{ type: 'email', placeholder: 'Enter client email' }}
+          />
         </Col>
 
         <Col span={24} md={{ span: 12 }}>

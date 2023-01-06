@@ -1,7 +1,6 @@
 import { Col, Form, Input, Modal, notification, Row } from 'antd'
 import { AsyncSelect } from 'components/common/Select'
 import { renderEmployeeOption } from 'components/common/Select/renderers/employeeOption'
-import { EmployeeStatus } from 'constants/status'
 import { GET_PATHS, client } from 'libs/apis'
 import { useState } from 'react'
 import { fullListPagination } from 'types/filters/Pagination'
@@ -94,7 +93,7 @@ export const EditGeneralInfoModal = (props: Props) => {
         <Row gutter={24}>
           <Col span={24} md={{ span: 12 }}>
             <Form.Item
-              label="Full name"
+              label="Full Name"
               name="fullName"
               rules={[
                 { required: true, message: 'Required' },
@@ -114,7 +113,27 @@ export const EditGeneralInfoModal = (props: Props) => {
 
           <Col span={24} md={{ span: 12 }}>
             <Form.Item
-              label="Team email"
+              label="Display Name"
+              name="displayName"
+              rules={[
+                { required: true, message: 'Required' },
+                {
+                  max: 99,
+                  message: 'Display name must be less than 100 characters',
+                },
+              ]}
+            >
+              <Input
+                className="bordered"
+                type="text"
+                placeholder="Enter display name"
+              />
+            </Form.Item>
+          </Col>
+
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item
+              label="Team Email"
               name="email"
               rules={[
                 { required: true, message: 'Required' },
@@ -131,7 +150,7 @@ export const EditGeneralInfoModal = (props: Props) => {
 
           <Col span={24} md={{ span: 12 }}>
             <Form.Item
-              label="Phone number"
+              label="Phone Number"
               name="phone"
               rules={[{ required: true, message: 'Required' }]}
             >
@@ -152,12 +171,11 @@ export const EditGeneralInfoModal = (props: Props) => {
           </Col>
 
           <Col span={24} md={{ span: 12 }}>
-            <Form.Item label="Line manager" name="lineManagerID">
+            <Form.Item label="Line Manager" name="lineManagerID">
               <AsyncSelect
                 optionGetter={async () => {
                   const { data } = await client.getEmployees({
                     ...fullListPagination,
-                    workingStatuses: [EmployeeStatus.FULLTIME],
                   })
                   return (data || []).map(transformEmployeeDataToSelectOption)
                 }}

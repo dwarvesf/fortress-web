@@ -1,4 +1,4 @@
-import { Pagination, Row, Tabs } from 'antd'
+import { Pagination, Row, Space, Tabs } from 'antd'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 import { PageHeader } from 'components/common/PageHeader'
 import { SEO } from 'components/common/SEO'
@@ -118,46 +118,48 @@ const Default = () => {
       />
 
       <PageHeader title="Feedbacks" />
-      <Tabs
-        defaultActiveKey={tabKey}
-        onTabClick={onTabChange}
-        items={[
-          {
-            key: 'all',
-            label: `All (${allFeedbacks.length})`,
-            children: (
-              <FeedbackInputTable
-                data={allFeedbacks}
-                isLoading={isAllLoading}
-                // onAfterAction={mutate}
-              />
-            ),
-          },
-          {
-            key: 'draft',
-            label: `Draft (${draftFeedbacks.length})`,
-            children: (
-              <FeedbackInputTable
-                data={draftFeedbacks}
-                isLoading={isDraftLoading}
-                // onAfterAction={mutate}
-              />
-            ),
-          },
-          {
-            key: 'done',
-            label: `Done (${doneFeedbacks.length})`,
-            children: (
-              <FeedbackInputTable
-                data={doneFeedbacks}
-                isLoading={isDoneLoading}
-                // onAfterAction={mutate}
-              />
-            ),
-          },
-        ]}
-      />
-      {paginationRender}
+      <Space direction="vertical" size={24} style={{ width: '100%' }}>
+        <Tabs
+          defaultActiveKey={tabKey}
+          onTabClick={onTabChange}
+          items={[
+            {
+              key: 'all',
+              label: `All (${allData?.total || 0})`,
+              children: (
+                <FeedbackInputTable
+                  data={allFeedbacks}
+                  isLoading={isAllLoading}
+                  // onAfterAction={mutate}
+                />
+              ),
+            },
+            {
+              key: 'draft',
+              label: `Draft (${draftData?.total || 0})`,
+              children: (
+                <FeedbackInputTable
+                  data={draftFeedbacks}
+                  isLoading={isDraftLoading}
+                  // onAfterAction={mutate}
+                />
+              ),
+            },
+            {
+              key: 'done',
+              label: `Done (${doneData?.total || 0})`,
+              children: (
+                <FeedbackInputTable
+                  data={doneFeedbacks}
+                  isLoading={isDoneLoading}
+                  // onAfterAction={mutate}
+                />
+              ),
+            },
+          ]}
+        />
+        {paginationRender}
+      </Space>
     </>
   )
 }

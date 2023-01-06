@@ -34,6 +34,7 @@ import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
 import { employeeStatuses, EmployeeStatus } from 'constants/status'
 import { statusColors } from 'constants/colors'
 import { useAuthContext } from 'context/auth'
+import { TotalResultCount } from 'components/common/Table/TotalResultCount'
 
 const Default = () => {
   const { query } = useRouter()
@@ -41,7 +42,7 @@ const Default = () => {
 
   const { permissions } = useAuthContext()
   const canFilterStatus = permissions.includes(
-    Permission.EMPLOYEES_READ_FILTERBYALLSTATUSES,
+    Permission.EMPLOYEES_FILTERBYSTATUS,
   )
 
   const [value, setValue] = useState((query.keyword || '') as string)
@@ -234,7 +235,7 @@ const Default = () => {
         render: (value) =>
           value ? (
             <LinkWithIcon
-              href={`https://github.com/${value}`}
+              href={value ? `https://github.com/${value}` : ''}
               target="_blank"
               rel="noreferrer"
             >
@@ -334,17 +335,20 @@ const Default = () => {
             </>
           }
         />
-        <Table
-          loading={loading}
-          dataSource={employees}
-          columns={columns}
-          rowKey={(row) => row.id as string}
-          pagination={false}
-          scroll={{ x: 'max-content' }}
-          onChange={(_, filters) => {
-            setFilter(filters)
-          }}
-        />
+        <div>
+          <TotalResultCount count={data?.total} />
+          <Table
+            loading={loading}
+            dataSource={employees}
+            columns={columns}
+            rowKey={(row) => row.id as string}
+            pagination={false}
+            scroll={{ x: 'max-content' }}
+            onChange={(_, filters) => {
+              setFilter(filters)
+            }}
+          />
+        </div>
         <Row justify="end">
           <Pagination
             current={filter.page}

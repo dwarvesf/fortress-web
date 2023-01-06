@@ -12,11 +12,7 @@ import {
   transformMetadataToSelectOption,
 } from 'utils/select'
 import { DeploymentType, deploymentTypes } from 'constants/deploymentTypes'
-import {
-  EmployeeStatus,
-  ProjectMemberStatus,
-  projectMemberStatuses,
-} from 'constants/status'
+import { ProjectMemberStatus, projectMemberStatuses } from 'constants/status'
 import { renderEmployeeOption } from 'components/common/Select/renderers/employeeOption'
 import { FormInstance } from 'antd/es/form/Form'
 import { useEffect } from 'react'
@@ -58,7 +54,6 @@ export const MemberForm = (props: Props) => {
       () =>
         client.getEmployees({
           ...fullListPagination,
-          workingStatuses: [EmployeeStatus.PROBATION, EmployeeStatus.FULLTIME],
         }),
     )
 
@@ -79,13 +74,6 @@ export const MemberForm = (props: Props) => {
       form.setFieldValue('status', ProjectMemberStatus.ACTIVE)
     }
   }, [employeeID]) // eslint-disable-line
-
-  // Left date is only input-able if status === inactive
-  useEffect(() => {
-    if (status === ProjectMemberStatus.INACTIVE) {
-      form.setFieldValue('leftDate', '')
-    }
-  }, [status]) // eslint-disable-line
 
   const isPending = status === ProjectMemberStatus.PENDING
   const isInactive = status === ProjectMemberStatus.INACTIVE
@@ -229,6 +217,7 @@ export const MemberForm = (props: Props) => {
             rules={[{ required: isInactive, message: 'Required' }]}
           >
             <Input
+              disabled={!isInactive}
               type="date"
               placeholder="Select left date"
               className="bordered"

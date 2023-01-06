@@ -16,23 +16,28 @@ import { EditableDetailSectionCard } from 'components/common/EditableDetailSecti
 import { DATE_FORMAT } from 'constants/date'
 import { format } from 'date-fns'
 import {
+  ModelSeniority,
   RequestGetListEmployeeInput,
   ViewEmployeeData,
   ViewEmployeeProjectData,
+  ViewMenteeInfo,
   ViewPosition,
 } from 'types/schema'
 import { client, GET_PATHS } from 'libs/apis'
-import { ReactElement, useState } from 'react'
-import { EmployeeStatus, employeeStatuses } from 'constants/status'
+import { ReactElement, useMemo, useState } from 'react'
+import {
+  EmployeeStatus,
+  employeeStatuses,
+  ProjectMemberStatus,
+} from 'constants/status'
 import { SVGIcon } from 'components/common/SVGIcon'
-import { PreviewOpen, Star } from '@icon-park/react'
+import { Star } from '@icon-park/react'
 import moment from 'moment'
 import { mutate } from 'swr'
 import { theme } from 'styles'
 import Link from 'next/link'
 import { ROUTES } from 'constants/routes'
 import { ColumnsType } from 'antd/lib/table'
-import { Button } from 'components/common/Button'
 import { DeploymentType, deploymentTypes } from 'constants/deploymentTypes'
 import { LinkWithIcon } from 'components/common/LinkWithIcon'
 import { EditableAvatar } from 'components/common/EditableAvatar'
@@ -62,21 +67,25 @@ const projectColumns: ColumnsType<ViewEmployeeProjectData> = [
     dataIndex: 'deploymentType',
     render: (value: DeploymentType) => deploymentTypes[value] || '-',
   },
+]
+
+const menteeColumns: ColumnsType<ViewMenteeInfo> = [
   {
-    title: 'Action',
-    render: (value) => (
-      <Link href={ROUTES.PROJECT_DETAIL(value.code)}>
-        <a>
-          <Tooltip title="View Detail">
-            <Button
-              type="text-primary"
-              size="small"
-              icon={<PreviewOpen size={20} />}
-            />
-          </Tooltip>
-        </a>
-      </Link>
-    ),
+    title: 'Name',
+    render: (value) => <UserAvatar user={value} />,
+  },
+  {
+    title: 'Position',
+    key: 'positions',
+    dataIndex: 'positions',
+    render: (value?: ViewPosition[]) =>
+      value?.map((each) => each.name).join(', ') || '-',
+  },
+  {
+    title: 'Seniority',
+    key: 'seniority',
+    dataIndex: 'seniority',
+    render: (value?: ModelSeniority) => value?.name || '-',
   },
 ]
 
@@ -119,8 +128,21 @@ export const General = (props: Props) => {
 
   const [isLoading, setIsLoading] = useState(false)
   const { permissions } = useAuthContext()
-
   const isEditable = permissions.includes(Permission.EMPLOYEES_EDIT)
+
+  // We'll be showing projects of the status users pick
+  // By default, we show projects that the employee is active in
+  const [viewProjectStatus, setViewProjectStatus] = useState(
+    ProjectMemberStatus.ACTIVE,
+  )
+  const projects = useMemo(() => {
+    // Active = every statuses except INACTIVE
+    return data.projects?.filter((project) =>
+      viewProjectStatus === ProjectMemberStatus.INACTIVE
+        ? project.status === ProjectMemberStatus.INACTIVE
+        : project.status !== ProjectMemberStatus.INACTIVE,
+    )
+  }, [data, viewProjectStatus])
 
   const mutateEmployee = () => {
     mutate([GET_PATHS.getEmployees, data.username])
@@ -238,12 +260,16 @@ export const General = (props: Props) => {
                         label: 'Github',
                         value: (
                           <LinkWithIcon
-                            href={`https://github.com/${data?.githubID}`}
+                            href={
+                              data?.githubID
+                                ? `https://github.com/${data?.githubID}`
+                                : ''
+                            }
                             target="_blank"
                             rel="noreferrer"
                             icon={<SVGIcon name="github" />}
                           >
-                            {data.githubID || '-'}
+                            {data?.githubID || '-'}
                           </LinkWithIcon>
                         ),
                       },
@@ -386,15 +412,42 @@ export const General = (props: Props) => {
             </EditableDetailSectionCard>
           </Col>
           <Col span={24} lg={{ span: 16 }}>
-            <Card title="Projects">
+            <Card
+              title="Projects"
+              bodyStyle={{ padding: '1px 0 0 0' }}
+              extra={
+                <Select
+                  options={[
+                    { label: 'Active', value: ProjectMemberStatus.ACTIVE },
+                    { label: 'Inactive', value: ProjectMemberStatus.INACTIVE },
+                  ]}
+                  value={viewProjectStatus}
+                  onChange={setViewProjectStatus}
+                />
+              }
+            >
               <Table
-                dataSource={data.projects}
+                dataSource={projects}
                 columns={projectColumns}
                 rowKey={(row) => row.id as string}
                 pagination={false}
+                style={{ borderRadius: '0.5rem' }}
               />
             </Card>
           </Col>
+          {!!data.mentees?.length && (
+            <Col span={24} lg={{ span: 16 }}>
+              <Card title="Mentees" bodyStyle={{ padding: '1px 0 0 0' }}>
+                <Table
+                  dataSource={data.mentees}
+                  columns={menteeColumns}
+                  rowKey={(row) => row.id as string}
+                  pagination={false}
+                  style={{ borderRadius: '0.5rem' }}
+                />
+              </Card>
+            </Col>
+          )}
         </Row>
       </Space>
 
@@ -405,6 +458,7 @@ export const General = (props: Props) => {
         initialValues={{
           email: data.teamEmail || '',
           fullName: data.fullName || '',
+          displayName: data.displayName || '',
           lineManagerID: data.lineManager?.id || '',
           phone: data.phoneNumber || '',
           discordName: data.discordName || '',

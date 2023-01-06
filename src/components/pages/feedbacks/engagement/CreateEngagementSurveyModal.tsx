@@ -51,7 +51,7 @@ export const CreateEngagementSurveyModal = (props: Props) => {
       okText="Create"
       okButtonProps={{ loading: isSubmitting }}
       destroyOnClose
-      title="New event"
+      title="New Event"
     >
       <Form form={form} onFinish={onSubmit} initialValues={initialValues}>
         <Form.Item
