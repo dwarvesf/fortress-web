@@ -98,6 +98,7 @@ const EmployeePeerReviewsPage = () => {
       title: 'Project',
       key: 'project',
       dataIndex: 'project',
+      filterSearch: true,
       filters: (projectsData?.data || []).map((p) => ({
         value: p.id!,
         text: p.name,
@@ -138,6 +139,7 @@ const EmployeePeerReviewsPage = () => {
       title: 'Status',
       key: 'status',
       dataIndex: 'status',
+      filterSearch: true,
       filterMultiple: false,
       filters: Object.values(SurveyParticipantStatus).map((s) => ({
         value: s,

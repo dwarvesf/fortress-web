@@ -41,6 +41,7 @@ const columns = ({
     title: 'Status',
     key: 'status',
     dataIndex: 'status',
+    filterSearch: true,
     filterMultiple: false,
     filteredValue: filter.status ? [filter.status] : [],
     filters: projectStatusData
