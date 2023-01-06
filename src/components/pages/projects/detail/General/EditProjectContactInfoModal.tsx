@@ -80,9 +80,8 @@ export const EditProjectContactInfoModal = (props: Props) => {
               { required: true, message: 'Required' },
             ]}
             addButtonProps={{ children: 'Add email' }}
-          >
-            <Input className="bordered" placeholder="Enter client email" />
-          </FormInputList>
+            inputProps={{ type: 'email', placeholder: 'Enter client email' }}
+          />
           <Form.Item
             label="Project Email"
             name="projectEmail"

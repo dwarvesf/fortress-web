@@ -1,17 +1,17 @@
 import { DeleteOne, Plus } from '@icon-park/react'
-import { Form, FormInstance } from 'antd'
+import { Form, FormInstance, Input } from 'antd'
 import { Rule } from 'antd/lib/form'
-import { HTMLAttributes, useEffect } from 'react'
-import { WithChildren } from 'types/common'
+import { HTMLAttributes, InputHTMLAttributes, useEffect } from 'react'
 import { Button } from '../Button'
 
-interface Props extends WithChildren {
+interface Props {
   form: FormInstance
   name: string | number | (string | number)[]
   label?: string
   rules?: Rule[]
   removeButtonProps?: HTMLAttributes<HTMLButtonElement>
   addButtonProps?: HTMLAttributes<HTMLButtonElement>
+  inputProps?: InputHTMLAttributes<HTMLInputElement>
 }
 
 export const FormInputList = (props: Props) => {
@@ -20,9 +20,9 @@ export const FormInputList = (props: Props) => {
     name,
     label,
     rules,
-    children,
     removeButtonProps: _removeButtonProps = {},
     addButtonProps: _addButtonProps = {},
+    inputProps,
   } = props
   const {
     onClick: onRemove,
@@ -58,7 +58,7 @@ export const FormInputList = (props: Props) => {
                 rules={rules}
                 style={{ marginBottom: 0 }}
               >
-                {children}
+                <Input className="bordered" {...inputProps} />
               </Form.Item>
               {index > 0 && (
                 <Button

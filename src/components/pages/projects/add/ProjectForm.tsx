@@ -161,13 +161,8 @@ export const ProjectForm = (props: Props) => {
               { required: true, message: 'Required' },
             ]}
             addButtonProps={{ children: 'Add email' }}
-          >
-            <Input
-              className="bordered"
-              type="email"
-              placeholder="Enter client email"
-            />
-          </FormInputList>
+            inputProps={{ type: 'email', placeholder: 'Enter client email' }}
+          />
         </Col>
 
         <Col span={24} md={{ span: 12 }}>
