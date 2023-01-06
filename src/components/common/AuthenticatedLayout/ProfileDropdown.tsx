@@ -34,7 +34,7 @@ export const ProfileDropdown = () => {
   )
 
   return (
-    <Dropdown overlay={menuRender} trigger={['click']}>
+    <Dropdown overlay={menuRender}>
       <Space align="center" style={{ cursor: 'pointer' }}>
         <span>{user?.displayName}</span>
         <Avatar
