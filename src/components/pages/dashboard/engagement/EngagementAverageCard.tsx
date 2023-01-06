@@ -29,7 +29,7 @@ const CardLabel = styled.div`
   margin-bottom: 8px;
 `
 
-const CustomizedAxisTick = ({
+const CustomAxisTick = ({
   x,
   y,
   payload,
@@ -173,7 +173,7 @@ export const EngagementAverageCard = (props: Props) => {
                 <XAxis
                   dataKey="name"
                   tick={
-                    <CustomizedAxisTick
+                    <CustomAxisTick
                       currentQuarter={currentQuarter}
                       setCurrentQuarter={setCurrentQuarter}
                     />
