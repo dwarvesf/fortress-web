@@ -111,6 +111,7 @@ const Default = () => {
             {employeeStatuses[value as EmployeeStatus]}
           </Tag>
         ),
+        filterSearch: true,
         filteredValue: filter.workingStatuses,
         filters: Object.keys(employeeStatuses)
           .filter(
@@ -130,6 +131,7 @@ const Default = () => {
         render: (value?: ViewPosition[]) => (
           <TagArray value={value} maxTag={2} color="blue" />
         ),
+        filterSearch: true,
         filteredValue: filter.positions,
         filters: positions.map((each) => ({
           text: each.name,
@@ -157,6 +159,7 @@ const Default = () => {
             maxTag={2}
           />
         ),
+        filterSearch: true,
         filteredValue: filter.projects,
         filters: projects.map((each) => ({
           text: each.name,
@@ -170,6 +173,7 @@ const Default = () => {
         render: (value: ViewStack[]) => (
           <TagArray value={value} maxTag={2} color="green" />
         ),
+        filterSearch: true,
         filteredValue: filter.stacks,
         filters: stacks.map((each) => ({
           text: each.name,
@@ -198,6 +202,7 @@ const Default = () => {
             color="purple"
           />
         ),
+        filterSearch: true,
         filteredValue: filter.chapters,
         filters: chapters.map((each) => ({
           text: each.name,
@@ -216,6 +221,7 @@ const Default = () => {
         key: 'seniorities',
         dataIndex: 'seniority',
         render: (value?: ModelSeniority) => value?.name || '-',
+        filterSearch: true,
         filteredValue: filter.seniorities,
         filters: seniorities.map((each) => ({
           text: each.name,
