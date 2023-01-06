@@ -47,6 +47,12 @@ export const useFilter = <T extends {}>(
         {} as Partial<T>,
       )
 
+      const oldFilter = query.filter as string
+      const newFilter = JSON.stringify(filterToUpdate)
+
+      // only do replace if filter is updated
+      if (oldFilter === newFilter) return
+
       replace(
         {
           pathname,
@@ -56,7 +62,7 @@ export const useFilter = <T extends {}>(
         { shallow: true },
       )
     }
-  }, [filter]) // eslint-disable-line
+  }, [filter, pathname, query, replace, shouldUpdateToQuery])
 
   return { filter, setFilter }
 }
