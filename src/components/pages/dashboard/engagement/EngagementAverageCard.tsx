@@ -182,12 +182,6 @@ const EngagementAverageCard = (props: Props) => {
                   stroke={theme.colors.primary}
                   strokeWidth={2}
                 />
-
-                {/* <Brush
-                  dataKey="name"
-                  height={15}
-                  startIndex={data?.dataset ? data.dataset.length! - 4 : 0}
-                /> */}
               </LineChart>
             </ResponsiveContainer>
           </div>
