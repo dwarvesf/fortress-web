@@ -21,7 +21,6 @@
     "@dwarvesf/react-hooks": "^0.7.0",
     "@dwarvesf/react-utils": "^0.4.1",
     "@icon-park/react": "^1.4.2",
-    "@reach/auto-id": "^0.18.0",
     "@react-oauth/google": "^0.4.0",
     "@types/lodash.debounce": "^4.0.7",
     "@types/uuid": "^8.3.4",

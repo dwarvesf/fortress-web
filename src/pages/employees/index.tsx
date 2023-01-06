@@ -42,7 +42,7 @@ const Default = () => {
 
   const { permissions } = useAuthContext()
   const canFilterStatus = permissions.includes(
-    Permission.EMPLOYEES_READ_FILTERBYALLSTATUSES,
+    Permission.EMPLOYEES_FILTERBYSTATUS,
   )
 
   const [value, setValue] = useState((query.keyword || '') as string)
