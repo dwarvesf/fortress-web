@@ -109,7 +109,7 @@ const EngagementFeedbacksRow = ({
   )
 }
 
-const EngagementAverageCard = (props: Props) => {
+export const EngagementAverageCard = (props: Props) => {
   const {
     data,
     style,
@@ -210,5 +210,3 @@ const EngagementAverageCard = (props: Props) => {
     </Card>
   )
 }
-
-export default EngagementAverageCard

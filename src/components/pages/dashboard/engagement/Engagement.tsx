@@ -1,6 +1,6 @@
 import { mockData } from 'pages/dashboard'
 import { useState } from 'react'
-import EngagementAverageCard from './EngagementAverageCard'
+import { EngagementAverageCard } from './EngagementAverageCard'
 
 const Engagement = ({ filterCategory }: { filterCategory: string }) => {
   const [currentQuarter, setCurrentQuarter] = useState<string>('Q1/2023')
