@@ -50,3 +50,12 @@ tr.inbox-row.not-read td {
 .likert-scale .ant-radio-button-wrapper.ant-radio-button-wrapper-checked {
   opacity: 1;
 }
+
+.recharts-surface
+  > g:nth-of-type(2)
+  .recharts-cartesian-axis-ticks
+  .recharts-cartesian-axis-tick:first-child
+  text {
+  text-anchor: start;
+  transform: translateX(-6px);
+}
