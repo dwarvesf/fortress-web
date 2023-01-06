@@ -26,6 +26,7 @@ interface Props {
 }
 
 const CardLabel = styled.div`
+  font-size: 15px;
   margin-bottom: 8px;
 `
 
@@ -47,7 +48,7 @@ const CustomAxisTick = ({
         cursor: 'pointer',
         userSelect: 'none',
         fontWeight: currentQuarter === payload.value ? 600 : 400,
-        fontSize: 14,
+        fontSize: 13,
       }}
     >
       <text
@@ -102,7 +103,7 @@ const EngagementFeedbacksRow = ({
     <Space
       direction="vertical"
       split={<Divider style={{ margin: 0 }} />}
-      style={{ width: '100%', fontSize: 14 }}
+      style={{ width: '100%', fontSize: 13 }}
     >
       {data.map((d) => (
         <Row style={{ width: '100%' }} justify="space-between" key={d.label}>
@@ -192,7 +193,7 @@ export const EngagementAverageCard = (props: Props) => {
                   ticks={[1, 3, 5]}
                   domain={[0, 5]}
                   tickLine={false}
-                  fontSize={14}
+                  fontSize={13}
                   width={26}
                 />
                 <Tooltip content={<CustomTooltip />} />
