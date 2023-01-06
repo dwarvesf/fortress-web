@@ -51,6 +51,7 @@ const CustomAxisTick = ({
       }}
     >
       <text
+        role="button"
         x={0}
         y={0}
         dy={14}
