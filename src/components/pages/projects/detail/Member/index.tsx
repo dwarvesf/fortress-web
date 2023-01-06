@@ -4,6 +4,7 @@ import { Card, Pagination, Row, Space, Tabs } from 'antd'
 import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
 import { Button } from 'components/common/Button'
 import { SERVER_DATE_FORMAT } from 'constants/date'
+import { mutate } from 'swr'
 import { DeploymentType } from 'constants/deploymentTypes'
 import { Permission } from 'constants/permission'
 import { ProjectMemberStatus } from 'constants/status'
@@ -112,12 +113,13 @@ export const Member = (props: Props) => {
     setInactiveFilter({ page: 1 })
   }
 
-  const mutate = () => {
+  const reload = () => {
     mutateAll()
     mutatePending()
     mutateOnboarding()
     mutateActive()
     mutateInactive()
+    mutate([GET_PATHS.getProjects, project.code])
   }
 
   const paginationRender = useMemo(() => {
@@ -224,7 +226,7 @@ export const Member = (props: Props) => {
                     projectID={project.id || ''}
                     data={allMembers}
                     isLoading={isAllLoading}
-                    onAfterAction={mutate}
+                    onAfterAction={reload}
                   />
                 ),
               },
@@ -236,7 +238,7 @@ export const Member = (props: Props) => {
                     projectID={project.id || ''}
                     data={pendingMembers}
                     isLoading={isPendingLoading}
-                    onAfterAction={mutate}
+                    onAfterAction={reload}
                   />
                 ),
               },
@@ -248,7 +250,7 @@ export const Member = (props: Props) => {
                     projectID={project.id || ''}
                     data={onboardingMembers}
                     isLoading={isOnboardingLoading}
-                    onAfterAction={mutate}
+                    onAfterAction={reload}
                   />
                 ),
               },
@@ -260,7 +262,7 @@ export const Member = (props: Props) => {
                     projectID={project.id || ''}
                     data={activeMembers}
                     isLoading={isActiveLoading}
-                    onAfterAction={mutate}
+                    onAfterAction={reload}
                   />
                 ),
               },
@@ -272,7 +274,7 @@ export const Member = (props: Props) => {
                     projectID={project.id || ''}
                     data={inactiveMembers}
                     isLoading={isInactiveLoading}
-                    onAfterAction={mutate}
+                    onAfterAction={reload}
                   />
                 ),
               },
@@ -287,7 +289,7 @@ export const Member = (props: Props) => {
           projectID={project.id || ''}
           isOpen={isAddNewMemberDialogOpen}
           onClose={closeAddNewMemberDialog}
-          onAfterSubmit={mutate}
+          onAfterSubmit={reload}
           initialValues={{
             employeeID: '',
             positions: [],

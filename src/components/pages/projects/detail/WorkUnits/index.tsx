@@ -9,6 +9,7 @@ import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { useFilter } from 'hooks/useFilter'
 import { useTabWithQuery } from 'hooks/useTabWithQuery'
 import { client, GET_PATHS } from 'libs/apis'
+import { mutate } from 'swr'
 import { ProjectWorkUnitListFilter } from 'types/filters/ProjectWorkUnitListFilter'
 import { ViewProjectData } from 'types/schema'
 import { WorkUnitModal } from './WorkUnitModal'
@@ -62,9 +63,10 @@ export const WorkUnits = (props: Props) => {
     setTabKey(tabKey)
   }
 
-  const mutate = () => {
+  const reload = () => {
     mutateActive()
     mutateArchived()
+    mutate([GET_PATHS.getProjects, project.code])
   }
 
   return (
@@ -96,7 +98,7 @@ export const WorkUnits = (props: Props) => {
                   <WorkUnitTable
                     data={activeWorkUnits}
                     isLoading={isActiveLoading}
-                    onAfterAction={mutate}
+                    onAfterAction={reload}
                   />
                 ),
               },
@@ -107,7 +109,7 @@ export const WorkUnits = (props: Props) => {
                   <WorkUnitTable
                     data={archivedWorkUnits}
                     isLoading={isArchivedLoading}
-                    onAfterAction={mutate}
+                    onAfterAction={reload}
                   />
                 ),
               },
@@ -121,7 +123,7 @@ export const WorkUnits = (props: Props) => {
           key={tabKey}
           isOpen={isAddNewWorkUnitDialogOpen}
           onClose={closeAddNewWorkUnitDialog}
-          onAfterSubmit={mutate}
+          onAfterSubmit={reload}
         />
       )}
     </>
