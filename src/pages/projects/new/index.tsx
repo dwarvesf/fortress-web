@@ -114,8 +114,7 @@ const CreateNewProjectPage = () => {
         : '',
       status: values.status,
       type: values.type,
-      // TODO: fix this
-      function: 'development',
+      function: values.function,
     }
   }
 

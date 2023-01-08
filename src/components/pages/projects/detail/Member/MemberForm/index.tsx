@@ -127,7 +127,6 @@ export const MemberForm = (props: Props) => {
           <Form.Item
             label="Seniority"
             name="seniorityID"
-            required
             rules={[{ required: true, message: 'Required' }]}
           >
             <Select
@@ -153,7 +152,6 @@ export const MemberForm = (props: Props) => {
           <Form.Item
             label="Positions"
             name="positions"
-            required
             rules={[{ required: true, message: 'Required' }]}
           >
             <Select
@@ -181,7 +179,6 @@ export const MemberForm = (props: Props) => {
           <Form.Item
             label="Deployment Type"
             name="deploymentType"
-            required
             rules={[{ required: true, message: 'Required' }]}
           >
             <Select
@@ -228,7 +225,6 @@ export const MemberForm = (props: Props) => {
           <Form.Item
             label="Rate"
             name="rate"
-            required
             rules={[{ required: true, message: 'Required' }]}
           >
             <Input

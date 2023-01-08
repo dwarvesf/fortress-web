@@ -1,4 +1,4 @@
-import { Form, Input, Modal, notification, Space } from 'antd'
+import { Form, Input, Modal, notification, Select, Space } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
 import { client, GET_PATHS } from 'libs/apis'
 import { useState } from 'react'
@@ -6,6 +6,7 @@ import { RequestUpdateProjectGeneralInfoInput } from 'types/schema'
 import { AsyncSelect } from 'components/common/Select'
 import { transformMetadataToSelectOption } from 'utils/select'
 import { getErrorMessage } from 'utils/string'
+import { ProjectFunction, projectFunctions } from 'constants/projectTypes'
 
 type ProjectGeneralInfoFormValues =
   Partial<RequestUpdateProjectGeneralInfoInput>
@@ -65,7 +66,6 @@ export const EditProjectGeneralInfoModal = (props: Props) => {
           <Form.Item
             label="Name"
             name="name"
-            required
             rules={[{ required: true, message: 'Required' }]}
           >
             <Input placeholder="Enter project's name" className="bordered" />
@@ -80,7 +80,6 @@ export const EditProjectGeneralInfoModal = (props: Props) => {
           <Form.Item
             label="Country"
             name="countryID"
-            required
             rules={[{ required: true, message: 'Required' }]}
           >
             <AsyncSelect
@@ -104,6 +103,21 @@ export const EditProjectGeneralInfoModal = (props: Props) => {
                 )
               }
               allowClear
+            />
+          </Form.Item>
+          <Form.Item
+            label="Function"
+            name="function"
+            rules={[{ required: true, message: 'Required' }]}
+          >
+            <Select
+              placeholder="Select project's function"
+              options={Object.keys(projectFunctions).map((key) => {
+                return {
+                  label: projectFunctions[key as ProjectFunction],
+                  value: key,
+                }
+              })}
             />
           </Form.Item>
         </Space>
