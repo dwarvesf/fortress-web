@@ -123,7 +123,6 @@ export const EditProfileInfoModal = (props: Props) => {
             <Form.Item
               label="Team Email"
               name="teamEmail"
-              required
               rules={[
                 { required: true, message: 'Required' },
                 { type: 'email', message: 'Wrong email format' },
@@ -136,7 +135,6 @@ export const EditProfileInfoModal = (props: Props) => {
             <Form.Item
               label="Personal Email"
               name="personalEmail"
-              required
               rules={[
                 { required: true, message: 'Required' },
                 { type: 'email', message: 'Wrong email format' },
@@ -149,7 +147,6 @@ export const EditProfileInfoModal = (props: Props) => {
             <Form.Item
               label="Address"
               name="address"
-              required
               rules={[{ required: true, message: 'Required' }]}
             >
               <Input placeholder="Enter Address" className="bordered" />

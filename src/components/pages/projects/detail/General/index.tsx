@@ -15,6 +15,7 @@ import { EditableAvatar } from 'components/common/EditableAvatar'
 import { getErrorMessage } from 'utils/string'
 import { Permission } from 'constants/permission'
 import { useAuthContext } from 'context/auth'
+import { ProjectFunction, projectFunctions } from 'constants/projectTypes'
 import { EditProjectContactInfoModal } from './EditProjectContactInfoModal'
 import { EditProjectGeneralInfoModal } from './EditProjectGeneralInfoModal'
 import { MemberTable } from './MemberTable'
@@ -123,6 +124,12 @@ export const General = (props: Props) => {
                           .map((stack) => stack.name)
                           .join(', '),
                       },
+                      {
+                        label: 'Function',
+                        value:
+                          data.function &&
+                          projectFunctions[data.function as ProjectFunction],
+                      },
                     ]}
                   />
                 </Col>
@@ -142,7 +149,9 @@ export const General = (props: Props) => {
                     value: (
                       <Space direction="vertical">
                         {data.clientEmail?.map((mail) => (
-                          <a href={`mailto:${mail}`}>{mail}</a>
+                          <a href={`mailto:${mail}`} key={mail}>
+                            {mail}
+                          </a>
                         ))}
                       </Space>
                     ),

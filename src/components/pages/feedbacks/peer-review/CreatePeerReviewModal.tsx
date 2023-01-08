@@ -60,7 +60,6 @@ export const CreatePeerReviewModal = (props: Props) => {
         <Form.Item
           label="Quarters"
           name="quarter"
-          required
           rules={[{ required: true, message: 'Required' }]}
         >
           <Select
@@ -74,7 +73,6 @@ export const CreatePeerReviewModal = (props: Props) => {
         <Form.Item
           label="Year"
           name="year"
-          required
           rules={[{ required: true, message: 'Required' }]}
         >
           <Select

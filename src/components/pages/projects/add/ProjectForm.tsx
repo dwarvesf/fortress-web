@@ -5,7 +5,11 @@ import { AsyncSelect } from 'components/common/Select'
 import { renderEmployeeOption } from 'components/common/Select/renderers/employeeOption'
 import { renderStatusOption } from 'components/common/Select/renderers/statusOption'
 import { SELECT_BOX_DATE_FORMAT } from 'constants/date'
-import { projectTypes } from 'constants/projectTypes'
+import {
+  ProjectFunction,
+  projectFunctions,
+  projectTypes,
+} from 'constants/projectTypes'
 import { GET_PATHS, client } from 'libs/apis'
 import { theme } from 'styles'
 import { fullListPagination } from 'types/filters/Pagination'
@@ -182,6 +186,24 @@ export const ProjectForm = (props: Props) => {
               }))}
               filterOption={searchFilterOption}
               maxTagCount="responsive"
+            />
+          </Form.Item>
+        </Col>
+
+        <Col span={24} md={{ span: 12 }}>
+          <Form.Item
+            label="Function"
+            name="function"
+            rules={[{ required: true, message: 'Required' }]}
+          >
+            <Select
+              placeholder="Select project's function"
+              options={Object.keys(projectFunctions).map((key) => {
+                return {
+                  label: projectFunctions[key as ProjectFunction],
+                  value: key,
+                }
+              })}
             />
           </Form.Item>
         </Col>
