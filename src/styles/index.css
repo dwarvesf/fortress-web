@@ -59,3 +59,7 @@ tr.inbox-row.not-read td {
   text-anchor: start;
   transform: translateX(-6px);
 }
+
+.recharts-pie {
+  outline: none;
+}

@@ -3,6 +3,7 @@ import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 import { PageHeader } from 'components/common/PageHeader'
 import { SEO } from 'components/common/SEO'
 import Engagement from 'components/pages/dashboard/engagement/Engagement'
+import Projects from 'components/pages/dashboard/projects/Projects'
 import { useState } from 'react'
 
 // mock interface, this should be base on the filter (department, seniority,...) and provided by BE
@@ -179,6 +180,7 @@ export const mockData: EngagementAverageProps[] = [
 
 const DashboardPage = () => {
   const [filterCategory, setFilterCategory] = useState<string>('department')
+  const [currentTab, setCurrentTab] = useState<string>('projects')
 
   return (
     <>
@@ -196,27 +198,29 @@ const DashboardPage = () => {
 
       <Space direction="vertical" size={24} style={{ width: '100%' }}>
         <Tabs
-          defaultActiveKey="engagement"
-          onTabClick={() => {}}
+          defaultActiveKey={currentTab}
+          onTabClick={(t) => setCurrentTab(t)}
           tabBarExtraContent={
-            <Select
-              style={{ width: 135 }}
-              value={filterCategory}
-              onChange={setFilterCategory}
-              options={[
-                { label: 'Department', value: 'department' },
-                { label: 'Chapter', value: 'chapter' },
-                { label: 'Seniority', value: 'seniority' },
-                { label: 'Project', value: 'project' },
-              ]}
-            />
+            currentTab === 'engagement' ? (
+              <Select
+                style={{ width: 135 }}
+                value={filterCategory}
+                onChange={setFilterCategory}
+                options={[
+                  { label: 'Department', value: 'department' },
+                  { label: 'Chapter', value: 'chapter' },
+                  { label: 'Seniority', value: 'seniority' },
+                  { label: 'Project', value: 'project' },
+                ]}
+              />
+            ) : null
           }
           items={[
-            // {
-            //   key: 'projects',
-            //   label: `Projects`,
-            //   children: <>Projects</>,
-            // },
+            {
+              key: 'projects',
+              label: `Projects`,
+              children: <Projects />,
+            },
             // {
             //   key: 'resources',
             //   label: `Resources`,
