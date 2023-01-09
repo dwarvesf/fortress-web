@@ -46,6 +46,8 @@ import {
   ViewFeedbackReviewDetailResponse,
   ViewProjectContentDataResponse,
   ViewAuthUserResponse,
+  RequestCreateStackInput,
+  RequestUpdateStackBody,
 } from 'types/schema'
 import { EmployeeListFilter } from 'types/filters/EmployeeListFilter'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
@@ -252,6 +254,29 @@ class Client {
 
   public getStackMetadata = () => {
     return fetcher<ViewStackResponse>(`${BASE_URL}/metadata/stacks`, {
+      headers: { ...this.privateHeaders },
+    })
+  }
+
+  public createStackMetadata = (data: RequestCreateStackInput) => {
+    return fetcher<ViewStackResponse>(`${BASE_URL}/metadata/stacks`, {
+      method: 'POST',
+      headers: { ...this.privateHeaders },
+      body: JSON.stringify(data),
+    })
+  }
+
+  public updateStackMetadata = (id: string, data: RequestUpdateStackBody) => {
+    return fetcher<ViewStackResponse>(`${BASE_URL}/metadata/stacks/${id}`, {
+      method: 'PUT',
+      headers: { ...this.privateHeaders },
+      body: JSON.stringify(data),
+    })
+  }
+
+  public deleteStackMetadata = (id: string) => {
+    return fetcher<ViewStackResponse>(`${BASE_URL}/metadata/stacks/${id}`, {
+      method: 'DELETE',
       headers: { ...this.privateHeaders },
     })
   }
