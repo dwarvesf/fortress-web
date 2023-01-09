@@ -1,4 +1,5 @@
 import { Card } from 'antd'
+import { ProjectSizeProps } from 'pages/dashboard'
 import { Dispatch, SetStateAction, useState } from 'react'
 import {
   ResponsiveContainer,
@@ -13,7 +14,7 @@ import {
 import { theme } from 'styles'
 
 interface Props {
-  data: any // TODO: add type
+  data: ProjectSizeProps[]
   selectedProjectId: string
   setSelectedProjectId: Dispatch<SetStateAction<string>>
 }
