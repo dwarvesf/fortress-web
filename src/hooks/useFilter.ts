@@ -47,16 +47,23 @@ export const useFilter = <T extends {}>(
         {} as Partial<T>,
       )
 
+      const currentFilter = query.filter as string
+      const newFilter = JSON.stringify(filterToUpdate)
+
+      // when the query changes but the filter does not
+      // don't update the query since it may lead to infinite loop
+      if (currentFilter === newFilter) return
+
       replace(
         {
           pathname,
-          query: { ...query, filter: JSON.stringify(filterToUpdate) },
+          query: { ...query, filter: newFilter },
         },
         undefined,
         { shallow: true },
       )
     }
-  }, [filter]) // eslint-disable-line
+  }, [filter, pathname, query, replace, shouldUpdateToQuery])
 
   return { filter, setFilter }
 }
