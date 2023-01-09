@@ -11,7 +11,11 @@ import { PageHeader } from 'components/common/PageHeader'
 import { PageSpinner } from 'components/common/PageSpinner'
 import { SEO } from 'components/common/SEO'
 import { statusColors } from 'constants/colors'
-import { DomainTypes, FeedbackQuestionType } from 'constants/feedbackTypes'
+import {
+  DomainTypes,
+  FeedbackQuestionType,
+  FeedbackSubtype,
+} from 'constants/feedbackTypes'
 import { Permission } from 'constants/permission'
 import { ROUTES } from 'constants/routes'
 import { feedbackStatuses, ModelEventReviewerStatus } from 'constants/status'
@@ -26,7 +30,7 @@ import { SurveyReviewModal } from './SurveyReviewModal'
 
 export const SurveyForm = () => {
   const {
-    query: { id: topicID, eventID },
+    query: { id: topicID, eventID, subtype },
     push,
   } = useRouter()
   const { permissions } = useAuthContext()
@@ -169,16 +173,26 @@ export const SurveyForm = () => {
                   <AuthenticatedContent
                     permission={Permission.FEEDBACKS_CREATE}
                   >
-                    <Row gutter={8} justify="space-between" align="middle">
-                      <Col>
-                        <Space>
-                          <Switch
-                            checked={showNote}
-                            onChange={(checked) => setShowNote(checked)}
-                          />
-                          <span>Show note</span>
-                        </Space>
-                      </Col>
+                    <Row
+                      gutter={8}
+                      justify={
+                        subtype === FeedbackSubtype.PEER_REVIEW
+                          ? 'end'
+                          : 'space-between'
+                      }
+                      align="middle"
+                    >
+                      {subtype === FeedbackSubtype.PEER_REVIEW ? null : (
+                        <Col>
+                          <Space>
+                            <Switch
+                              checked={showNote}
+                              onChange={(checked) => setShowNote(checked)}
+                            />
+                            <span>Show note</span>
+                          </Space>
+                        </Col>
+                      )}
                       <Col>
                         <Row gutter={8}>
                           <Col>
