@@ -36,7 +36,7 @@ const DashboardPage = () => {
 
   return (
     <>
-      <SEO title="Dashboard - Inbox" />
+      <SEO title="Dashboard" />
 
       <Breadcrumb
         items={[
