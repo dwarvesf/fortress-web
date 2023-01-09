@@ -48,9 +48,18 @@ export const MemberFormModal = (props: Props) => {
   // hide it from the employee options (e.g. what if the user switches around and then
   // settle back for the initial option)
   const initialEmployeeID = initialValues?.employeeID || ''
+
+  // Now get the list of employeeIds that are already active in the project
+  // We don't want the users to add another record for them
   const excludedEmployeeIds = useMemo(() => {
     return allMembers
-      .map((member) => member.employeeID || '')
+      .map(
+        (member) =>
+          // Only exclude active members
+          (member.status !== ProjectMemberStatus.INACTIVE &&
+            member.employeeID) ||
+          '',
+      )
       .filter((id) => id !== initialEmployeeID)
   }, [allMembers, initialEmployeeID])
 
