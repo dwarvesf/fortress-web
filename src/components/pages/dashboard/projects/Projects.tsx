@@ -3,14 +3,16 @@ import { ProjectSizeProps } from 'pages/dashboard'
 import { useState } from 'react'
 import { ProjectSizePieChart } from './ProjectSizePieChart'
 
-const mockData: ProjectSizeProps[] = [
-  { id: '1', name: 'Fortress', value: 400 },
-  { id: '2', name: 'Setel', value: 350 },
-  { id: '3', name: 'SP Digital', value: 275 },
-  { id: '4', name: 'Konvoy', value: 225 },
-  { id: '5', name: 'iCrosschain', value: 200 },
-  { id: '6', name: 'Droppii', value: 150 },
-]
+const mockData: ProjectSizeProps = {
+  dataset: [
+    { id: '1', name: 'Fortress', value: 400 },
+    { id: '2', name: 'Setel', value: 350 },
+    { id: '3', name: 'SP Digital', value: 275 },
+    { id: '4', name: 'Konvoy', value: 225 },
+    { id: '5', name: 'iCrosschain', value: 200 },
+    { id: '6', name: 'Droppii', value: 150 },
+  ],
+}
 
 const Projects = () => {
   const [selectedProjectId, setSelectedProjectId] = useState<string>('')

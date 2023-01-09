@@ -14,7 +14,7 @@ import {
 import { theme } from 'styles'
 
 interface Props {
-  data: ProjectSizeProps[]
+  data: ProjectSizeProps
   selectedProjectId: string
   setSelectedProjectId: Dispatch<SetStateAction<string>>
 }
@@ -97,11 +97,13 @@ export const ProjectSizePieChart = (props: Props) => {
   const { data, selectedProjectId, setSelectedProjectId } = props
   const [isFirstRendering, setIsFirstRendering] = useState<boolean>(true)
 
+  const dataset = data.dataset || []
+
   return (
     <ResponsiveContainer width="100%" height={350} minWidth={370}>
       <PieChart height={400} style={{ cursor: 'default' }}>
         <Pie
-          data={data}
+          data={dataset}
           cx="50%"
           cy="50%"
           label={renderCustomizedLabel}
@@ -122,7 +124,7 @@ export const ProjectSizePieChart = (props: Props) => {
           // when a pie is selected, the chart runs animation again and cause labels to fade and appear again
           isAnimationActive={isFirstRendering}
         >
-          {data.map((payload: { id: string }) => (
+          {dataset.map((payload: { id: string }) => (
             <Cell
               key={payload.id}
               fill={getPieSectorFillColor(payload.id, selectedProjectId)}

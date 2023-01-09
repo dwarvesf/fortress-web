@@ -13,21 +13,21 @@ interface Feedbacks {
   engineering?: number
 }
 
-interface Dataset {
-  name?: string
-  average?: number
-  feedbacks?: Feedbacks
-}
-
 export interface EngagementAverageProps {
   question?: string
-  dataset?: Dataset[]
+  dataset?: {
+    name?: string
+    average?: number
+    feedbacks?: Feedbacks
+  }[]
 }
 
 export interface ProjectSizeProps {
-  id: string
-  name?: string
-  value?: number
+  dataset?: {
+    id: string
+    name?: string
+    value?: number
+  }[]
 }
 
 const DashboardPage = () => {
