@@ -17,20 +17,16 @@ import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 import { SEO } from 'components/common/SEO'
 import { ViewSurvey } from 'types/schema'
 import { ROUTES } from 'constants/routes'
-import Link from 'next/link'
 import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
 import { Permission } from 'constants/permission'
+import { useRouter } from 'next/router'
 
 const columns: ColumnsType<ViewSurvey> = [
   {
     title: 'Time',
     key: 'title',
     dataIndex: 'title',
-    render: (value, record) => (
-      <Link href={ROUTES.EMPLOYEE_ENGAGEMENT_DETAIL(record.id || '')}>
-        <a className="styled">{value || '-'}</a>
-      </Link>
-    ),
+    render: (value) => value || '-',
     fixed: 'left',
   },
   {
@@ -56,6 +52,8 @@ const columns: ColumnsType<ViewSurvey> = [
 ]
 
 const EmployeeEngagementPage = () => {
+  const { push } = useRouter()
+
   const {
     isOpen: isCreateEngagementSurveyModalOpen,
     onOpen: openCreateEngagementSurveyModal,
@@ -106,6 +104,12 @@ const EmployeeEngagementPage = () => {
           rowKey={(row) => row.id as string}
           pagination={false}
           scroll={{ x: 'max-content' }}
+          onRow={(record) => ({
+            onClick: (e) => {
+              if (e.defaultPrevented) return
+              push(ROUTES.EMPLOYEE_ENGAGEMENT_DETAIL(record.id!))
+            },
+          })}
         />
         <Row justify="end">
           <Pagination
