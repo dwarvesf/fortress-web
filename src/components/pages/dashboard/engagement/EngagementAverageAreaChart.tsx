@@ -1,17 +1,8 @@
 import { Card } from 'antd'
+import { AreaChart } from 'components/common/AreaChart'
 import { EngagementAverageProps } from 'pages/dashboard'
 import { Dispatch, SetStateAction } from 'react'
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  CartesianAxisProps,
-  TooltipProps,
-} from 'recharts'
+import { CartesianAxisProps, TooltipProps } from 'recharts'
 import { theme } from 'styles'
 
 interface Props {
@@ -27,7 +18,7 @@ const CustomAxisTick = ({
   currentQuarter,
   setCurrentQuarter,
 }: CartesianAxisProps & {
-  payload?: any
+  payload?: any // TODO: update type
   currentQuarter: string
   setCurrentQuarter: Dispatch<SetStateAction<string>>
 }) => {
@@ -36,7 +27,6 @@ const CustomAxisTick = ({
       transform={`translate(${x},${y})`}
       style={{
         cursor: 'pointer',
-        userSelect: 'none',
         fontWeight: currentQuarter === payload.value ? 600 : 400,
         fontSize: 13,
       }}
@@ -71,7 +61,7 @@ const CustomTooltip = ({ active, payload, label }: TooltipProps<any, any>) => {
         <div>
           {payload.map((item) => (
             <div key={item.dataKey}>
-              <span> Average: </span>
+              <span>Average: </span>
               <strong style={{ color: theme.colors.primary }}>
                 {item.value}
               </strong>
@@ -85,46 +75,26 @@ const CustomTooltip = ({ active, payload, label }: TooltipProps<any, any>) => {
   return null
 }
 
-export const EngagementAverageLineChart = (props: Props) => {
+export const EngagementAverageAreaChart = (props: Props) => {
   const { data, currentQuarter, setCurrentQuarter } = props
 
   return (
-    <ResponsiveContainer width="100%" height={230} minWidth={320}>
-      <LineChart
-        data={(data?.dataset || []).slice(-4)}
-        style={{
-          marginLeft: -10,
-        }}
-      >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis
-          dataKey="name"
-          tick={
-            <CustomAxisTick
-              currentQuarter={currentQuarter}
-              setCurrentQuarter={setCurrentQuarter}
-            />
-          }
-          tickLine={false}
-          height={30}
+    <AreaChart
+      width="100%"
+      height={230}
+      minWidth={320}
+      dataset={(data.dataset || []).slice(-4)}
+      lineDataKey="average"
+      xAxisDataKey="name"
+      xAxisTick={
+        <CustomAxisTick
+          currentQuarter={currentQuarter}
+          setCurrentQuarter={setCurrentQuarter}
         />
-        <YAxis
-          type="number"
-          ticks={[1, 3, 5]}
-          domain={[0, 5]}
-          tickLine={false}
-          fontSize={13}
-          width={26}
-        />
-        <Tooltip content={<CustomTooltip />} />
-
-        <Line
-          type="monotone"
-          dataKey="average"
-          stroke={theme.colors.primary}
-          strokeWidth={2}
-        />
-      </LineChart>
-    </ResponsiveContainer>
+      }
+      yAxisTicks={[1, 3, 5]}
+      yAxisDomain={[0, 5]}
+      customToolTip={<CustomTooltip />}
+    />
   )
 }

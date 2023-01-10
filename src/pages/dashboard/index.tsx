@@ -9,6 +9,7 @@ import { ROUTES } from 'constants/routes'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import { useTabWithQuery } from 'hooks/useTabWithQuery'
 
 // mock interface, this should be base on the filter (department, seniority,...) and provided by BE
 interface Feedbacks {
@@ -39,7 +40,7 @@ const DashboardPage = () => {
   const flags = useFlags()
 
   const [filterCategory, setFilterCategory] = useState<string>('department')
-  const [currentTab, setCurrentTab] = useState<string>('projects')
+  const { tabKey = 'projects', setTabKey } = useTabWithQuery()
 
   useEffect(() => {
     if (flags && !flags[FEATURES.DASHBOARD]) {
@@ -63,10 +64,10 @@ const DashboardPage = () => {
 
       <Space direction="vertical" size={24} style={{ width: '100%' }}>
         <Tabs
-          defaultActiveKey={currentTab}
-          onTabClick={(t) => setCurrentTab(t)}
+          defaultActiveKey={tabKey}
+          onTabClick={(t) => setTabKey(t)}
           tabBarExtraContent={
-            currentTab === 'engagement' ? (
+            tabKey === 'engagement' ? (
               <Select
                 style={{ width: 135 }}
                 value={filterCategory}

@@ -35,7 +35,7 @@ export const StatisticBlock = (props: Props) => {
           style={{
             marginLeft: 4,
             color: postfixColor,
-            fontSize: 20,
+            fontSize: 18,
           }}
         >
           {postfix}
