@@ -1,4 +1,4 @@
-import { ReactElement, useState } from 'react'
+import { ReactElement } from 'react'
 import {
   ResponsiveContainer,
   PieChart as Chart,
@@ -90,8 +90,6 @@ export const PieChart = (props: Props) => {
     ...rest
   } = props
 
-  const [isFirstRendering, setIsFirstRendering] = useState<boolean>(true)
-
   return (
     <ResponsiveContainer
       width={width}
@@ -111,10 +109,7 @@ export const PieChart = (props: Props) => {
           endAngle={-270}
           onClick={onPieClick}
           style={{ cursor: 'pointer' }}
-          onAnimationEnd={() => setIsFirstRendering(false)}
-          // only runs animation first time,
-          // when a pie is selected, the chart runs animation again and cause labels to fade and appear again
-          isAnimationActive={isFirstRendering}
+          isAnimationActive={false}
         >
           {dataset.map((payload: { id: string }) => (
             <Cell
