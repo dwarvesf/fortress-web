@@ -88,6 +88,7 @@ const columns = ({
 
 const Default = () => {
   const {
+    push,
     query: { id },
   } = useRouter()
   const peerReviewId = id as string
@@ -342,6 +343,12 @@ const Default = () => {
           loading={loading}
           pagination={false}
           scroll={{ x: 'max-content' }}
+          onRow={(record) => ({
+            onClick: (e) => {
+              if (e.defaultPrevented) return
+              push(ROUTES.EMPLOYEE_PEER_REVIEWS(record.eventID!, record.id!))
+            },
+          })}
         />
         <Row justify="end">
           <Pagination

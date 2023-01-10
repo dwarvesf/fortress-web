@@ -119,7 +119,7 @@ const columns = ({
 ]
 
 const Default = () => {
-  const { query } = useRouter()
+  const { query, push } = useRouter()
   const queryFilter = query.filter ? JSON.parse(query.filter as string) : {}
 
   const { filter, setFilter } = useFilter(
@@ -199,6 +199,12 @@ const Default = () => {
                 status: (filters.status?.[0] as string) || '',
               })
             }}
+            onRow={(record) => ({
+              onClick: (e) => {
+                if (e.defaultPrevented) return
+                push(ROUTES.PROJECT_DETAIL(record.code!))
+              },
+            })}
             className="shadowed"
           />
         </div>

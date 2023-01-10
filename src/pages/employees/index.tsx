@@ -37,7 +37,7 @@ import { useAuthContext } from 'context/auth'
 import { TotalResultCount } from 'components/common/Table/TotalResultCount'
 
 const Default = () => {
-  const { query } = useRouter()
+  const { query, push } = useRouter()
   const queryFilter = query.filter ? JSON.parse(query.filter as string) : {}
 
   const { permissions } = useAuthContext()
@@ -353,6 +353,12 @@ const Default = () => {
             onChange={(_, filters) => {
               setFilter(filters)
             }}
+            onRow={(record) => ({
+              onClick: (e) => {
+                if (e.defaultPrevented) return
+                push(ROUTES.EMPLOYEE_DETAIL(record.username!))
+              },
+            })}
           />
         </div>
         <Row justify="end">
