@@ -67,6 +67,7 @@ export interface ModelSeniority {
   createdAt?: string
   deletedAt?: GormDeletedAt
   id?: string
+  level?: number
   name?: string
   updatedAt?: string
 }
@@ -166,6 +167,8 @@ export interface RequestDeleteTopicReviewersBody {
 export interface RequestGetListEmployeeInput {
   chapters?: string[]
   keyword?: string
+  lineManagers?: string[]
+  organizations?: string[]
   /** page index */
   page?: number
   positions?: string[]
@@ -207,6 +210,7 @@ export interface RequestUpdateEmployeeGeneralInfoInput {
   notionEmail?: string
   notionID?: string
   notionName?: string
+  organization?: string
   phone: string
 }
 
@@ -455,6 +459,7 @@ export interface ViewEmployeeData {
   mentees?: ViewMenteeInfo[]
   notionID?: string
   notionName?: string
+  organization?: string
   personalEmail?: string
   phoneNumber?: string
   placeOfResidence?: string
@@ -837,6 +842,7 @@ export interface ViewUpdateGeneralInfoEmployeeData {
   notionEmail?: string
   notionID?: string
   notionName?: string
+  organization?: string
   phoneNumber?: string
   teamEmail?: string
   updatedAt?: string
