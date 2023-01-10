@@ -161,10 +161,16 @@ const Default = () => {
         ),
         filterSearch: true,
         filteredValue: filter.projects,
-        filters: projects.map((each) => ({
-          text: each.name,
-          value: each.code!,
-        })),
+        filters: [
+          {
+            text: '-',
+            value: '-',
+          },
+          ...projects.map((each) => ({
+            text: each.name,
+            value: each.code!,
+          })),
+        ],
       },
       {
         title: 'Stacks',
@@ -211,10 +217,18 @@ const Default = () => {
       },
       {
         title: 'Line manager',
-        key: 'lineManager',
+        key: 'lineManagers',
         dataIndex: 'lineManager',
         render: (value?: ViewBasicEmployeeInfo) =>
           value ? <UserAvatar user={value} /> : '-',
+        filterSearch: true,
+        filteredValue: filter.lineManagers,
+        filters: [
+          {
+            text: '-',
+            value: '-',
+          },
+        ],
       },
       {
         title: 'Seniority',
