@@ -14,7 +14,7 @@ import { useState } from 'react'
 import { EmployeeListFilter } from 'types/filters/EmployeeListFilter'
 import { ViewTopic } from 'types/schema'
 import debounce from 'lodash.debounce'
-import { Close } from '@icon-park/react'
+import { Icon } from '@iconify/react'
 import { getErrorMessage } from 'utils/string'
 import { fullListPagination } from 'types/filters/Pagination'
 
@@ -163,7 +163,7 @@ export const AddParticipantsModal = (props: Props) => {
                     <Button
                       type="text-primary"
                       size="small"
-                      icon={<Close size={20} />}
+                      icon={<Icon icon="icon-park-outline:close" width={20} />}
                       onClick={() => {
                         setParticipants((participants) =>
                           participants.filter((_, i) => i !== index),

@@ -1,6 +1,6 @@
 import { noop } from '@dwarvesf/react-utils'
-import { Edit } from '@icon-park/react'
 import { Card, CardProps, Tooltip } from 'antd'
+import { Icon } from '@iconify/react'
 import { AuthenticatedContent } from '../AuthenticatedContent'
 import { Button } from '../Button'
 
@@ -16,13 +16,7 @@ const SectionEditButton = ({ onClick }: { onClick: () => void }) => {
         type="text-primary"
         size="small"
         onClick={onClick}
-        icon={
-          <Edit
-            style={{
-              fontSize: 16,
-            }}
-          />
-        }
+        icon={<Icon icon="icon-park-outline:edit" width={20} />}
       />
     </Tooltip>
   )

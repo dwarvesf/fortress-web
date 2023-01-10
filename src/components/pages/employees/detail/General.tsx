@@ -31,7 +31,7 @@ import {
   ProjectMemberStatus,
 } from 'constants/status'
 import { SVGIcon } from 'components/common/SVGIcon'
-import { Star } from '@icon-park/react'
+import { Icon } from '@iconify/react'
 import moment from 'moment'
 import { mutate } from 'swr'
 import { theme } from 'styles'
@@ -334,7 +334,9 @@ export const General = (props: Props) => {
                                   chapter.leadID === data?.id ? (
                                     <Tooltip title={`${chapter.name} lead`}>
                                       {chapter.name || '-'}{' '}
-                                      <Star
+                                      <Icon
+                                        icon="icon-park-outline:star"
+                                        width={10}
                                         style={{
                                           color: theme.colors.primary,
                                         }}

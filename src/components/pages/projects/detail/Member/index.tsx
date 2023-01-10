@@ -1,5 +1,4 @@
 import { useDisclosure } from '@dwarvesf/react-hooks'
-import { Plus } from '@icon-park/react'
 import { Card, Pagination, Row, Space, Tabs } from 'antd'
 import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
 import { Button } from 'components/common/Button'
@@ -208,11 +207,7 @@ export const Member = (props: Props) => {
               <AuthenticatedContent
                 permission={Permission.PROJECTMEMBERS_CREATE}
               >
-                <Button
-                  type="primary"
-                  icon={<Plus size={20} />}
-                  onClick={openAddNewMemberDialog}
-                >
+                <Button type="primary" onClick={openAddNewMemberDialog}>
                   Add New
                 </Button>
               </AuthenticatedContent>

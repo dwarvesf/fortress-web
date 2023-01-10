@@ -1,4 +1,4 @@
-import { Left } from '@icon-park/react'
+import { Icon } from '@iconify/react'
 import { Col, Row, Typography } from 'antd'
 import Link from 'next/link'
 import styled from 'styled-components'
@@ -22,7 +22,7 @@ export const PageHeader = (props: Props) => {
         <Col>
           <Link href={backHref}>
             <BackLink>
-              <Left size={32} />
+              <Icon icon="icon-park-outline:left" width={32} />
             </BackLink>
           </Link>
         </Col>

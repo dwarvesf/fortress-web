@@ -1,4 +1,4 @@
-import { PreviewOpen } from '@icon-park/react'
+import { Icon } from '@iconify/react'
 import { Col, Row, Tooltip } from 'antd'
 import { Button } from 'components/common/Button'
 import { ROUTES } from 'constants/routes'
@@ -27,7 +27,7 @@ export const Actions = (props: Props) => {
               <Button
                 type="text-primary"
                 size="small"
-                icon={<PreviewOpen size={20} />}
+                icon={<Icon icon="icon-park-outline:preview-open" width={20} />}
               />
             </Tooltip>
           </a>

@@ -7,7 +7,7 @@ import { EditProfileInfoModal } from 'components/pages/profile/EditProfileInfoMo
 import { useAuthContext } from 'context/auth'
 import { Button } from 'components/common/Button'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
-import { Edit } from '@icon-park/react'
+import { Icon } from '@iconify/react'
 import { SEO } from 'components/common/SEO'
 import { LinkWithIcon } from 'components/common/LinkWithIcon'
 import {
@@ -67,7 +67,7 @@ const Default = () => {
                     />
                     <Button
                       type="primary"
-                      icon={<Edit size={20} />}
+                      icon={<Icon icon="icon-park-outline:edit" width={20} />}
                       onClick={openEditAvatarDialog}
                     >
                       Edit

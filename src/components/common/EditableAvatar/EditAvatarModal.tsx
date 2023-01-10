@@ -1,4 +1,3 @@
-import { UploadPicture } from '@icon-park/react'
 import {
   Avatar,
   Modal,
@@ -15,6 +14,7 @@ import { useState } from 'react'
 import { theme } from 'styles'
 import { getErrorMessage, getFirstLetterCapitalized } from 'utils/string'
 import { v4 as uuid4 } from 'uuid'
+import { Icon } from '@iconify/react'
 
 const title = {
   profile: 'Edit Profile Avatar',
@@ -143,7 +143,10 @@ export const EditAvatarModal = (props: Props) => {
             onSubmit(options.file as File)
           }}
         >
-          <Button type="primary" icon={<UploadPicture size={20} />}>
+          <Button
+            type="primary"
+            icon={<Icon icon="icon-park-outline:upload-picture" width={20} />}
+          >
             Upload image
           </Button>
         </Upload>

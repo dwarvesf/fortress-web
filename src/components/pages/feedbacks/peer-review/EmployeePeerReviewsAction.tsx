@@ -1,5 +1,5 @@
 import { useDisclosure } from '@dwarvesf/react-hooks'
-import { Delete, PreviewOpen } from '@icon-park/react'
+import { Icon } from '@iconify/react'
 import { Col, Modal, notification, Row, Tooltip } from 'antd'
 import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
 import { Button } from 'components/common/Button'
@@ -79,7 +79,7 @@ export const EmployeePeerReviewsAction = (props: Props) => {
           <Button
             type="text-primary"
             size="small"
-            icon={<PreviewOpen size={20} />}
+            icon={<Icon icon="icon-park-outline:preview-open" width={20} />}
             onClick={openPreviewDialog}
             disabled={
               employeePeerReviewDetail.status !== SurveyParticipantStatus.DONE
@@ -92,7 +92,7 @@ export const EmployeePeerReviewsAction = (props: Props) => {
           <Button
             type="text-primary"
             size="small"
-            icon={<Delete size={20} />}
+            icon={<Icon icon="icon-park-outline:delete" width={20} />}
             onClick={confirmDelete}
             disabled={
               employeePeerReviewDetail.status !== SurveyParticipantStatus.DRAFT
