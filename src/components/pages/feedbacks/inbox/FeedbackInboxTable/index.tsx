@@ -88,7 +88,7 @@ export const FeedbackInputTable = ({
         onClick: (e) => {
           if (e.defaultPrevented) return
           push(
-            `${ROUTES.FEEDBACK_INBOX_DETAIL(record.topicID || '')}?type=${
+            `${ROUTES.FEEDBACK_INBOX_DETAIL(record.topicID!)}?type=${
               record.type
             }&subtype=${record.subtype}&eventID=${record.eventID}`,
           )
