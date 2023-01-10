@@ -1,6 +1,6 @@
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { Delete, Edit } from '@icon-park/react'
-import { Modal, notification, Row, Tooltip } from 'antd'
+import { Col, Modal, notification, Row, Tooltip } from 'antd'
 import { Button } from 'components/common/Button'
 import { client } from 'libs/apis'
 import { useState } from 'react'
@@ -53,22 +53,26 @@ export const Actions = ({
   return (
     <>
       <Row justify="end" gutter={[8, 8]}>
-        <Tooltip title="Edit">
-          <Button
-            type="text-primary"
-            size="small"
-            icon={<Edit size={20} />}
-            onClick={openEditDialog}
-          />
-        </Tooltip>
-        <Tooltip title="Delete">
-          <Button
-            type="text-primary"
-            size="small"
-            icon={<Delete size={20} />}
-            onClick={confirmDelete}
-          />
-        </Tooltip>
+        <Col>
+          <Tooltip title="Edit">
+            <Button
+              type="text-primary"
+              size="small"
+              icon={<Edit size={20} />}
+              onClick={openEditDialog}
+            />
+          </Tooltip>
+        </Col>
+        <Col>
+          <Tooltip title="Delete">
+            <Button
+              type="text-primary"
+              size="small"
+              icon={<Delete size={20} />}
+              onClick={confirmDelete}
+            />
+          </Tooltip>
+        </Col>
       </Row>
       {isEditDialogOpen && (
         <StackFormModal
