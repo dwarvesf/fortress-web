@@ -64,8 +64,10 @@ const CustomAxisTick = ({
   x,
   y,
   payload,
+  currentEvent,
 }: CartesianAxisProps & {
   payload?: any // TODO: update type
+  currentEvent: string
 }) => {
   return (
     <g
@@ -82,6 +84,7 @@ const CustomAxisTick = ({
         dy={14}
         textAnchor="middle"
         fill={theme.colors.gray700}
+        style={{ fontWeight: payload.value === currentEvent ? 600 : 400 }}
       >
         {payload.value}
       </text>
@@ -99,7 +102,9 @@ export const WorkSurveyDomainAreaChart = (props: Props) => {
       dataset={dataset}
       lineDataKey={dataKey}
       xAxisDataKey="endDate"
-      xAxisTick={<CustomAxisTick />}
+      xAxisTick={
+        <CustomAxisTick currentEvent={dataset[dataset.length - 1].endDate} />
+      }
       yAxisTicks={[1, 3, 5]}
       yAxisDomain={[0, 5]}
       customToolTip={<CustomTooltip dataKey={dataKey} />}
