@@ -231,7 +231,7 @@ export const SurveyForm = () => {
                       <Row key={index} gutter={24} wrap={false}>
                         <Col
                           style={{
-                            height: 40,
+                            height: 24,
                             alignItems: 'center',
                             display: 'flex',
                           }}

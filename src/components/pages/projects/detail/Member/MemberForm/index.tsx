@@ -19,6 +19,9 @@ import { useEffect } from 'react'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { theme } from 'styles'
 import { fullListPagination } from 'types/filters/Pagination'
+import { format } from 'date-fns'
+
+const today = new Date()
 
 export type MemberFormValues = Partial<RequestAssignMemberInput>
 
@@ -214,10 +217,12 @@ export const MemberForm = (props: Props) => {
             rules={[{ required: isInactive, message: 'Required' }]}
           >
             <Input
-              disabled={!isInactive}
               type="date"
               placeholder="Select left date"
               className="bordered"
+              // If status is not inactive, if we need to provide a leftDate,
+              // it must be some date into the future
+              min={isInactive ? undefined : format(today, 'yyyy-MM-dd')}
             />
           </Form.Item>
         </Col>
