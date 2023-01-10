@@ -17,9 +17,9 @@ import { ViewSurvey } from 'types/schema'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 import { SEO } from 'components/common/SEO'
 import { ROUTES } from 'constants/routes'
-import Link from 'next/link'
 import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
 import { Permission } from 'constants/permission'
+import { useRouter } from 'next/router'
 
 interface ColumnProps {
   onAfterDelete: () => void
@@ -30,11 +30,7 @@ const columns = ({ onAfterDelete }: ColumnProps): ColumnsType<ViewSurvey> => [
     title: 'Time',
     key: 'title',
     dataIndex: 'title',
-    render: (value, record) => (
-      <Link href={ROUTES.PEER_REVIEW_EVENT_DETAIL(record.id || '')}>
-        <a className="styled">{value || '-'}</a>
-      </Link>
-    ),
+    render: (value) => value || '-',
     fixed: 'left',
   },
   {
@@ -62,6 +58,8 @@ const columns = ({ onAfterDelete }: ColumnProps): ColumnsType<ViewSurvey> => [
 ]
 
 const PeerReviewPage = () => {
+  const { push } = useRouter()
+
   const {
     isOpen: isCreatePeerReviewModalOpen,
     onOpen: openCreatePeerReviewModal,
@@ -112,6 +110,12 @@ const PeerReviewPage = () => {
           rowKey={(row) => row.id as string}
           pagination={false}
           scroll={{ x: 'max-content' }}
+          onRow={(record) => ({
+            onClick: (e) => {
+              if (e.defaultPrevented) return
+              push(ROUTES.PEER_REVIEW_EVENT_DETAIL(record.id!))
+            },
+          })}
         />
         <Row justify="end">
           <Pagination

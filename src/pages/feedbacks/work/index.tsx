@@ -16,22 +16,18 @@ import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { useFilter } from 'hooks/useFilter'
 import { GET_PATHS, client } from 'libs/apis'
 import { SurveyListFilter } from 'types/filters/SurveyListFilter'
-import Link from 'next/link'
 import { ROUTES } from 'constants/routes'
 import { ViewSurvey } from 'types/schema'
 import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
 import { Permission } from 'constants/permission'
+import { useRouter } from 'next/router'
 
 const columns: ColumnsType<ViewSurvey> = [
   {
     title: 'Time',
     key: 'title',
     dataIndex: 'title',
-    render: (value, record) => (
-      <Link href={ROUTES.WORK_DETAIL(record.id || '')}>
-        <a className="styled">{value || '-'}</a>
-      </Link>
-    ),
+    render: (value) => value || '-',
     fixed: 'left',
   },
   {
@@ -73,6 +69,8 @@ const columns: ColumnsType<ViewSurvey> = [
 ]
 
 const WorkPage = () => {
+  const { push } = useRouter()
+
   const {
     isOpen: isToggleSendSurveyDialogOpen,
     onOpen: openToggleSendSurveyDialog,
@@ -144,6 +142,12 @@ const WorkPage = () => {
           scroll={{ x: 'max-content' }}
           loading={loading}
           pagination={false}
+          onRow={(record) => ({
+            onClick: (e) => {
+              if (e.defaultPrevented) return
+              push(ROUTES.WORK_DETAIL(record.id!))
+            },
+          })}
         />
 
         <Row justify="end">
