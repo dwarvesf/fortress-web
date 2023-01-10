@@ -1,5 +1,5 @@
 import { useDisclosure } from '@dwarvesf/react-hooks'
-import { Delete, Edit, PreviewOpen } from '@icon-park/react'
+import { Icon } from '@iconify/react'
 import { Col, Modal, notification, Row, Tooltip } from 'antd'
 import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
 import { Button } from 'components/common/Button'
@@ -85,7 +85,7 @@ export const PeerReviewEventDetailActions = (props: Props) => {
               <Button
                 type="text-primary"
                 size="small"
-                icon={<PreviewOpen size={20} />}
+                icon={<Icon icon="icon-park-outline:preview-open" width={20} />}
               />
             </Tooltip>
           </a>
@@ -96,7 +96,7 @@ export const PeerReviewEventDetailActions = (props: Props) => {
           <Button
             type="text-primary"
             size="small"
-            icon={<Edit size={20} />}
+            icon={<Icon icon="icon-park-outline:edit" width={20} />}
             onClick={openAddParticipantsModal}
             disabled={eventStatus === SurveyEventStatus.DONE}
           />
@@ -107,7 +107,7 @@ export const PeerReviewEventDetailActions = (props: Props) => {
           <Button
             type="text-primary"
             size="small"
-            icon={<Delete size={20} />}
+            icon={<Icon icon="icon-park-outline:delete" width={20} />}
             onClick={confirmDelete}
             disabled={
               !!topic.count?.sent || eventStatus === SurveyEventStatus.DONE

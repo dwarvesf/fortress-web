@@ -1,4 +1,4 @@
-import { Delete, PreviewOpen } from '@icon-park/react'
+import { Icon } from '@iconify/react'
 import { Col, Modal, notification, Row, Tooltip } from 'antd'
 import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
 import { Button } from 'components/common/Button'
@@ -67,7 +67,7 @@ export const Actions = (props: Props) => {
               <Button
                 type="text-primary"
                 size="small"
-                icon={<PreviewOpen size={20} />}
+                icon={<Icon icon="icon-park-outline:preview-open" width={20} />}
               />
             </Tooltip>
           </a>
@@ -78,7 +78,7 @@ export const Actions = (props: Props) => {
           <Button
             type="text-primary"
             size="small"
-            icon={<Delete size={20} />}
+            icon={<Icon icon="icon-park-outline:delete" width={20} />}
             onClick={confirmDelete}
             disabled={record.status !== SurveyEventStatus.DRAFT}
           />

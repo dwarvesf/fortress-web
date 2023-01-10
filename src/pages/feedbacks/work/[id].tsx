@@ -12,6 +12,7 @@ import React from 'react'
 import { WorkDetailActions } from 'components/pages/feedbacks/work/WorkDetailActions'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 import { SEO } from 'components/common/SEO'
+import { Icon } from '@iconify/react'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { useFilter } from 'hooks/useFilter'
 import { GET_PATHS, client } from 'libs/apis'
@@ -19,7 +20,6 @@ import { SurveyDetailFilter } from 'types/filters/SurveyDetailFilter'
 import { useRouter } from 'next/router'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
 import { ViewDomain, ViewTopic } from 'types/schema'
-import { Link as IconLink } from '@icon-park/react'
 import { AgreementLevel } from 'constants/agreementLevel'
 import { getWorkSurveyDetailReview, renderDomainLevels } from 'utils/level'
 import { DomainTypes } from 'constants/feedbackTypes'
@@ -111,7 +111,7 @@ const EmployeePeerReviewsPage = () => {
             <a>
               <Space size={4}>
                 {value.name}
-                <IconLink />
+                <Icon icon="icon-park-outline:link" />
               </Space>
             </a>
           </Link>

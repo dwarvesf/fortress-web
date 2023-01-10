@@ -1,5 +1,5 @@
 import { useDisclosure } from '@dwarvesf/react-hooks'
-import { PreviewOpen } from '@icon-park/react'
+import { Icon } from '@iconify/react'
 import { Row, Tooltip } from 'antd'
 import { Button } from 'components/common/Button'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
@@ -34,7 +34,7 @@ export const WorkDetailActions = (props: Props) => {
           <Button
             type="text-primary"
             size="small"
-            icon={<PreviewOpen size={20} />}
+            icon={<Icon icon="icon-park-outline:preview-open" width={20} />}
             onClick={openWorkResultDialog}
           />
         </Tooltip>

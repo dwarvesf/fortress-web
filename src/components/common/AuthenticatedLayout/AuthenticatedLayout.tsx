@@ -1,15 +1,11 @@
-import {
-  AllApplication,
-  ChartLine,
-  EveryUser,
-  Mail,
-  Setting,
-} from '@icon-park/react'
+import { Icon } from '@iconify/react'
 import { Layout, Menu } from 'antd'
 import { ItemType } from 'antd/lib/menu/hooks/useItems'
+import { FEATURES } from 'constants/features'
 import { pagePermissions, Permission } from 'constants/permission'
 import { ROUTES } from 'constants/routes'
 import { LOGIN_REDIRECTION_KEY, useAuthContext } from 'context/auth'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useRouter } from 'next/router'
 import React, { useEffect, useMemo } from 'react'
 import { WithChildren } from 'types/common'
@@ -28,6 +24,7 @@ const {
 interface MenuItem {
   content: ItemType & { children?: MenuItem[] }
   permission?: string
+  feature?: string
 }
 
 function getItem(
@@ -46,51 +43,82 @@ function getItem(
 
 const items: MenuItem[] = [
   {
-    content: getItem('Dashboard', ROUTES.DASHBOARD, <ChartLine size={24} />),
+    content: getItem(
+      'Dashboard',
+      ROUTES.DASHBOARD,
+      <Icon icon="icon-park-outline:chart-line" width={20} />,
+    ),
+    feature: FEATURES.DASHBOARD,
   },
   {
-    content: getItem('Projects', ROUTES.PROJECTS, <AllApplication size={24} />),
+    content: getItem(
+      'Projects',
+      ROUTES.PROJECTS,
+      <Icon icon="icon-park-outline:all-application" width={20} />,
+    ),
     permission: Permission.PROJECTS_READ,
   },
   {
-    content: getItem('Employees', ROUTES.EMPLOYEES, <EveryUser size={24} />),
+    content: getItem(
+      'Employees',
+      ROUTES.EMPLOYEES,
+      <Icon icon="icon-park-outline:every-user" width={20} />,
+    ),
     permission: Permission.EMPLOYEES_READ,
   },
   {
-    content: getItem('Feedbacks', ROUTES.FEEDBACKS, <Mail size={24} />, [
-      {
-        content: getItem('Inbox', ROUTES.INBOX),
-        permission: Permission.FEEDBACKS_READ,
-      },
-      {
-        content: getItem('Peer review', ROUTES.PEER_REVIEW),
-        permission: Permission.SURVEYS_READ,
-      },
-      {
-        content: getItem('Engagement', ROUTES.ENGAGEMENT),
-        permission: Permission.SURVEYS_READ,
-      },
-      {
-        content: getItem('Work', ROUTES.WORK),
-        permission: Permission.SURVEYS_READ,
-      },
-    ]),
+    content: getItem(
+      'Feedbacks',
+      ROUTES.FEEDBACKS,
+      <Icon icon="icon-park-outline:mail" width={20} />,
+      [
+        {
+          content: getItem('Inbox', ROUTES.INBOX),
+          permission: Permission.FEEDBACKS_READ,
+        },
+        {
+          content: getItem('Peer review', ROUTES.PEER_REVIEW),
+          permission: Permission.SURVEYS_READ,
+        },
+        {
+          content: getItem('Engagement', ROUTES.ENGAGEMENT),
+          permission: Permission.SURVEYS_READ,
+        },
+        {
+          content: getItem('Work', ROUTES.WORK),
+          permission: Permission.SURVEYS_READ,
+        },
+      ],
+    ),
   },
   {
-    content: getItem('Config', ROUTES.CONFIG, <Setting size={24} />),
+    content: getItem(
+      'Config',
+      ROUTES.CONFIG,
+      <Icon icon="icon-park-outline:setting" width={20} />,
+    ),
+    feature: FEATURES.CONFIG,
   },
 ]
 
-const filterItems = (items: MenuItem[], permissions: string[]): ItemType[] => {
-  return items.flatMap(({ permission, content: { children, ...item } }) =>
-    permission && !permissions.includes(permission)
-      ? []
-      : [
-          {
-            ...item,
-            children: children ? filterItems(children, permissions) : undefined,
-          },
-        ],
+const filterItems = (
+  items: MenuItem[],
+  permissions: string[],
+  flags?: Record<string, boolean>,
+): ItemType[] => {
+  return items.flatMap(
+    ({ permission, feature = '', content: { children, ...item } }) =>
+      (permission && !permissions.includes(permission)) ||
+      (flags && flags[feature] === false)
+        ? []
+        : [
+            {
+              ...item,
+              children: children
+                ? filterItems(children, permissions)
+                : undefined,
+            },
+          ],
   )
 }
 
@@ -100,8 +128,8 @@ export const AuthenticatedLayout = (props: Props) => {
   const { children } = props
 
   const { isAuthenticated, isAuthenticating, permissions } = useAuthContext()
-
   const { replace, push, pathname } = useRouter()
+  const flags = useFlags()
 
   useEffect(() => {
     if (!isAuthenticated && !isAuthenticating) {
@@ -120,6 +148,7 @@ export const AuthenticatedLayout = (props: Props) => {
 
     items.forEach(({ content: item }) => {
       if (!item) return
+
       if (isActivePath(item.key as string, pathname)) {
         activeKeys.push(item.key as string)
       }
@@ -149,7 +178,7 @@ export const AuthenticatedLayout = (props: Props) => {
         <SidebarLogo />
         <Menu
           mode="inline"
-          items={filterItems(items, permissions)}
+          items={filterItems(items, permissions, flags)}
           onClick={({ key }) => push(key)}
           selectedKeys={activeMenuKeys}
           defaultOpenKeys={activeMenuKeys}
@@ -163,7 +192,6 @@ export const AuthenticatedLayout = (props: Props) => {
               {children}
             </AuthenticatedPage>
           </div>
-          {/* <Footer>Dwarves, LLC © 2015 - 2022 All rights reserved.</Footer> */}
         </Content>
       </Layout>
     </Layout>

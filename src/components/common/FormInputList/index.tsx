@@ -1,4 +1,4 @@
-import { DeleteOne, Plus } from '@icon-park/react'
+import { Icon } from '@iconify/react'
 import { Form, FormInstance, Input, InputProps } from 'antd'
 import { Rule } from 'antd/lib/form'
 import { HTMLAttributes, useEffect } from 'react'
@@ -64,7 +64,7 @@ export const FormInputList = (props: Props) => {
                 <Button
                   type="text-primary"
                   size="small"
-                  icon={<DeleteOne size={20} />}
+                  icon={<Icon icon="icon-park-outline:delete-one" width={20} />}
                   onClick={() => remove(index)}
                   {...removeButtonProps}
                   style={{
@@ -81,7 +81,7 @@ export const FormInputList = (props: Props) => {
             block
             type="ghost"
             onClick={() => add()}
-            icon={<Plus size={20} />}
+            icon={<Icon icon="icon-park-outline:plus" width={20} />}
             style={{ marginBottom: 24, ...addButtonStyle }}
             {...addButtonProps}
           >

@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { client } from 'libs/apis'
 import { ProjectWorkUnitStatus } from 'constants/status'
 import { useDisclosure } from '@dwarvesf/react-hooks'
-import { Edit, FolderDownload, FolderUpload } from '@icon-park/react'
+import { Icon } from '@iconify/react'
 import { getErrorMessage } from 'utils/string'
 import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
 import { Permission } from 'constants/permission'
@@ -68,7 +68,7 @@ export const Actions = ({
             <Button
               type="text-primary"
               size="small"
-              icon={<Edit size={20} />}
+              icon={<Icon icon="icon-park-outline:edit" width={20} />}
               onClick={openEditWorkUnitDialog}
             />
           </Tooltip>
@@ -83,9 +83,9 @@ export const Actions = ({
               size="small"
               icon={
                 isActive ? (
-                  <FolderDownload size={20} />
+                  <Icon icon="icon-park-outline:folder-download" width={20} />
                 ) : (
-                  <FolderUpload size={20} />
+                  <Icon icon="icon-park-outline:folder-upload" width={20} />
                 )
               }
               onClick={onArchiveUnarchive}

@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { Breadcrumb as AntdBreadcrumb } from 'antd'
 import { ROUTES } from 'constants/routes'
-import { Home } from '@icon-park/react'
+import { Icon } from '@iconify/react'
 import { Portal } from '../Portal'
 
 interface Props {
@@ -20,7 +20,7 @@ export const Breadcrumb = (props: Props) => {
         <AntdBreadcrumb.Item>
           <Link href={ROUTES.HOME}>
             <a>
-              <Home size={16} />
+              <Icon icon="icon-park-outline:home" width={16} />
             </a>
           </Link>
         </AntdBreadcrumb.Item>

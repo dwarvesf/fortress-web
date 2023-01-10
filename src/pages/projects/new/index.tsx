@@ -25,7 +25,6 @@ import { ProjectMemberModal } from 'components/pages/projects/add/ProjectMemberM
 import { ProjectMemberTable } from 'components/pages/projects/add/ProjectMemberTable'
 import { FormWrapper } from 'components/common/FormWrapper'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
-import { Plus } from '@icon-park/react'
 import { SEO } from 'components/common/SEO'
 import { getErrorMessage } from 'utils/string'
 
@@ -206,11 +205,7 @@ const CreateNewProjectPage = () => {
               <Card
                 title="Members"
                 extra={
-                  <Button
-                    type="primary"
-                    icon={<Plus size={20} />}
-                    onClick={openAddNewMemberDialog}
-                  >
+                  <Button type="primary" onClick={openAddNewMemberDialog}>
                     Add New
                   </Button>
                 }

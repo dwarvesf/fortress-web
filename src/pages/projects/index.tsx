@@ -15,7 +15,7 @@ import debounce from 'lodash.debounce'
 import { transformMetadataToFilterOption } from 'utils/select'
 import { statusColors } from 'constants/colors'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
-import { PreviewOpen } from '@icon-park/react'
+import { Icon } from '@iconify/react'
 import { SEO } from 'components/common/SEO'
 import { ProjectStatus, projectStatuses } from 'constants/status'
 import { useRouter } from 'next/router'
@@ -106,7 +106,9 @@ const columns = ({
                 <Button
                   type="text-primary"
                   size="small"
-                  icon={<PreviewOpen size={20} />}
+                  icon={
+                    <Icon icon="icon-park-outline:preview-open" width={20} />
+                  }
                 />
               </Tooltip>
             </a>

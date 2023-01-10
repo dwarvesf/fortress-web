@@ -8,7 +8,7 @@ import { WorkAverage } from 'components/pages/feedbacks/work/WorkAverage'
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { ToggleAllowSendSurveyModal } from 'components/pages/feedbacks/work/ToggleAllowSendSurveyModal'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
-import { Setting } from '@icon-park/react'
+import { Icon } from '@iconify/react'
 import { SEO } from 'components/common/SEO'
 import { CreateWorkSurveyModal } from 'components/pages/feedbacks/work/CreateWorkSurveyModal'
 import { FeedbackSubtype } from 'constants/feedbackTypes'
@@ -128,7 +128,7 @@ const WorkPage = () => {
                 as={Col}
               >
                 <Button type="default" onClick={openToggleSendSurveyDialog}>
-                  <Setting size={24} />
+                  <Icon icon="icon-park-outline:setting" width={24} />
                 </Button>
               </AuthenticatedContent>
             </>

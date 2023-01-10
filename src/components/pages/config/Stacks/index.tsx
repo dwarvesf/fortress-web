@@ -1,5 +1,4 @@
 import { useDisclosure } from '@dwarvesf/react-hooks'
-import { Plus } from '@icon-park/react'
 import { Avatar, Space } from 'antd'
 import Table, { ColumnsType } from 'antd/lib/table'
 import { Button } from 'components/common/Button'
@@ -63,9 +62,8 @@ export const Stacks = () => {
       <Space direction="vertical" size={24} style={{ width: '100%' }}>
         <Button
           type="primary"
-          icon={<Plus size={20} />}
           onClick={openAddNewStackDialog}
-          style={{ marginLeft: 'auto' }}
+          style={{ marginLeft: 'auto', display: 'block' }}
         >
           Add New
         </Button>

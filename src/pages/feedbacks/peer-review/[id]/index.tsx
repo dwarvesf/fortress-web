@@ -31,8 +31,8 @@ import { SurveyDetailFilter } from 'types/filters/SurveyDetailFilter'
 import { ViewTopic } from 'types/schema'
 import debounce from 'lodash.debounce'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
-import { More } from '@icon-park/react'
 import { SEO } from 'components/common/SEO'
+import { Icon } from '@iconify/react'
 import { getErrorMessage } from 'utils/string'
 import { FeedbackSubtype } from 'constants/feedbackTypes'
 import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
@@ -321,7 +321,7 @@ const Default = () => {
                     </Menu>
                   }
                 >
-                  <More size={24} />
+                  <Icon icon="icon-park-outline:more" width={20} />
                 </Dropdown>
               </Col>
             </>

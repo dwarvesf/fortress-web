@@ -25,8 +25,8 @@ import { useRouter } from 'next/router'
 import { useCallback, useMemo, useState } from 'react'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
-import { PreviewOpen, Star, Link as IconLink } from '@icon-park/react'
 import { SEO } from 'components/common/SEO'
+import { Icon } from '@iconify/react'
 import { LinkWithIcon } from 'components/common/LinkWithIcon'
 import { fullListPagination } from 'types/filters/Pagination'
 import { Permission } from 'constants/permission'
@@ -151,7 +151,7 @@ const Default = () => {
                 <a>
                   <Space size={4}>
                     {project.name}
-                    <IconLink />
+                    <Icon icon="icon-park-outline:link" />
                   </Space>
                 </a>
               </Link>
@@ -198,7 +198,11 @@ const Default = () => {
               chapter.leadID === record.id ? (
                 <Tooltip title={`${chapter.name} lead`}>
                   {chapter.name}{' '}
-                  <Star style={{ color: theme.colors.primary }} />
+                  <Icon
+                    icon="icon-park-outline:star"
+                    style={{ color: theme.colors.primary }}
+                    width={10}
+                  />
                 </Tooltip>
               ) : (
                 chapter.name
@@ -283,7 +287,12 @@ const Default = () => {
                     <Button
                       type="text-primary"
                       size="small"
-                      icon={<PreviewOpen size={20} />}
+                      icon={
+                        <Icon
+                          icon="icon-park-outline:preview-open"
+                          width={20}
+                        />
+                      }
                     />
                   </Tooltip>
                 </a>

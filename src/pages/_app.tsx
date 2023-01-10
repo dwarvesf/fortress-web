@@ -1,5 +1,6 @@
 import 'antd/dist/antd.css'
 import '../styles/index.css'
+
 import React from 'react'
 import NProgressHandler from 'components/common/NProgressHandler'
 import { AuthContextProvider } from 'context/auth'
@@ -9,6 +10,9 @@ import { NextComponentType, NextPageContext } from 'next'
 import { AuthenticatedLayout } from 'components/common/AuthenticatedLayout'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import { SEO } from 'components/common/SEO'
+import { withLDProvider } from 'launchdarkly-react-client-sdk'
+
+require('../styles/ant-custom.less')
 
 const MyApp = ({
   Component,
@@ -33,4 +37,8 @@ const MyApp = ({
     </>
   )
 }
-export default MyApp
+
+export default withLDProvider({
+  clientSideID: process.env.LD_CLIENT_ID || '',
+  // @ts-ignore
+})(MyApp)

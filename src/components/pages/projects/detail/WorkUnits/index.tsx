@@ -1,5 +1,4 @@
 import { useDisclosure } from '@dwarvesf/react-hooks'
-import { Plus } from '@icon-park/react'
 import { Card, Space, Tabs } from 'antd'
 import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
 import { Button } from 'components/common/Button'
@@ -81,11 +80,7 @@ export const WorkUnits = (props: Props) => {
               <AuthenticatedContent
                 permission={Permission.PROJECTWORKUNITS_CREATE}
               >
-                <Button
-                  type="primary"
-                  icon={<Plus size={20} />}
-                  onClick={openAddNewWorkUnitDialog}
-                >
+                <Button type="primary" onClick={openAddNewWorkUnitDialog}>
                   Add New
                 </Button>
               </AuthenticatedContent>
