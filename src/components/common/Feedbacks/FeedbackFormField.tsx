@@ -1,6 +1,5 @@
 import { Form, Radio, FormItemProps } from 'antd'
 import TextArea from 'antd/lib/input/TextArea'
-import { likertScalesColors } from 'constants/colors'
 import { DomainTypes, FeedbackQuestionType } from 'constants/feedbackTypes'
 import { renderDomainLevels } from 'utils/level'
 
@@ -66,26 +65,7 @@ export const FeedbackFormField = (props: Props) => {
             >
               {(Object.keys(levels) as Array<keyof typeof levels>).map(
                 (item) => (
-                  <Radio.Button
-                    value={item}
-                    key={item}
-                    disabled={done}
-                    style={{
-                      display: 'flex',
-                      height: '100%',
-                      lineHeight: 1,
-                      padding: '10px',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      backgroundColor: likertScalesColors[item].background,
-                      color: likertScalesColors[item].text,
-                      borderRadius: '5px',
-                      borderWidth: 0,
-                      fontSize: 12,
-                      fontWeight: 700,
-                      overflow: 'hidden',
-                    }}
-                  >
+                  <Radio.Button value={item} key={item} disabled={done}>
                     {levels[item]}
                   </Radio.Button>
                 ),

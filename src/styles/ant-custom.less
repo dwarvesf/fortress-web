@@ -117,15 +117,23 @@
 
 .ant-form-item-label {
   font-weight: 600;
+  text-align: left;
+  padding-bottom: 16px;
+  
+  > label {
+    display: inline;
+    white-space: pre-wrap;
+    text-align: left;
+  }
 
   > label::after {
     display: none;
   }
 
   > .ant-form-item-required::after {
-    display: block;
-    content: '*';
-    color: @primary-color;
+    display: inline !important;
+    content: '*' !important;
+    color: @primary-color !important;
   }
 
   > .ant-form-item-required::before {
