@@ -1,8 +1,8 @@
-import { Card, Col, Row } from 'antd'
+import { Col, Row } from 'antd'
 import { DomainTypes } from 'constants/feedbackTypes'
 import { ProjectSizeProps } from 'pages/dashboard'
 import { useState } from 'react'
-import { ProjectSizePieChart } from './ProjectSizePieChart'
+import { ProjectSizeCard } from './ProjectSizeCard'
 import { WorkSurveyDomainCard } from './WorkSurveyDomainCard'
 
 const mockProjectSizeData: ProjectSizeProps = {
@@ -98,20 +98,11 @@ const Projects = () => {
     <>
       <Row gutter={[16, 16]}>
         <Col span={24} xl={{ span: 8 }}>
-          <Card title="Project Size" bodyStyle={{ padding: 8 }}>
-            <div
-              style={{
-                overflowX: 'auto',
-                overflowY: 'hidden',
-              }}
-            >
-              <ProjectSizePieChart
-                data={mockProjectSizeData}
-                selectedProjectId={selectedProjectId}
-                setSelectedProjectId={setSelectedProjectId}
-              />
-            </div>
-          </Card>
+          <ProjectSizeCard
+            data={mockProjectSizeData}
+            selectedProjectId={selectedProjectId}
+            setSelectedProjectId={setSelectedProjectId}
+          />
         </Col>
       </Row>
 
@@ -124,7 +115,7 @@ const Projects = () => {
       >
         {['workload', 'deadline', 'learning'].map((k) => (
           <WorkSurveyDomainCard
-            dataset={mockWorkSurveyData.workSurveys}
+            data={mockWorkSurveyData}
             domain={k as Exclude<DomainTypes, 'engagement'>}
           />
         ))}

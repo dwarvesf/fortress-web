@@ -7,15 +7,17 @@ import {
 } from 'utils/score'
 import { capitalizeFirstLetter } from 'utils/string'
 import { StatisticBlock } from '../StatisticBlock'
-import { WorkSurveyDomainAreaChart } from './WorkSurveyDomainAreaChart'
+import { WorkSurveyDomainChart } from './WorkSurveyDomainChart'
 
 interface Props {
-  dataset: any[] // TODO: update type
+  data: { project: any; workSurveys: any[] } // TODO: update type
   domain: Exclude<DomainTypes, 'engagement'>
 }
 
 export const WorkSurveyDomainCard = (props: Props) => {
-  const { dataset, domain } = props
+  const { data, domain } = props
+
+  const dataset = data.workSurveys || []
 
   return (
     <Card
@@ -70,7 +72,7 @@ export const WorkSurveyDomainCard = (props: Props) => {
               overflowY: 'hidden',
             }}
           >
-            <WorkSurveyDomainAreaChart dataset={dataset} dataKey={domain} />
+            <WorkSurveyDomainChart dataset={dataset} dataKey={domain} />
           </div>
         </Space>
       </div>

@@ -75,7 +75,7 @@ const CustomTooltip = ({ active, payload, label }: TooltipProps<any, any>) => {
   return null
 }
 
-export const EngagementAverageAreaChart = (props: Props) => {
+export const EngagementAverageChart = (props: Props) => {
   const { data, currentQuarter, setCurrentQuarter } = props
 
   return (
