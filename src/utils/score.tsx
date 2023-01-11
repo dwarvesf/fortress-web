@@ -54,23 +54,23 @@ export const getTrendScoreColor = (
   // Workload domain
   if (domain === 'workload') {
     if (curScore > prevScore) {
-      if (curScore <= 3.6 && prevScore >= 0) {
-        // Up from range 0 to 3.6
+      if (prevScore >= 0 && curScore <= 3.6) {
+        // Up from 0 to 3.6
         return likertScalesColors['strongly-agree'].background
       }
       // Up from 3.6 to 5
       return likertScalesColors['strongly-disagree'].background
     }
 
-    if (prevScore >= 3.6 && curScore <= 5) {
+    if (prevScore <= 5 && curScore >= 3.6) {
       // Down from 5 to 3.6
       return likertScalesColors['strongly-agree'].background
     }
-    if (prevScore >= 0 && curScore <= 2.1) {
+    if (prevScore <= 2.1 && curScore >= 0) {
       // Down from 2.1 to 0
       return likertScalesColors['strongly-disagree'].background
     }
-    // Down from 3.6 to 2.1
+    // The rest
     return likertScalesColors.mixed.background
   }
 
@@ -80,11 +80,11 @@ export const getTrendScoreColor = (
     return likertScalesColors['strongly-agree'].background
   }
 
-  if (prevScore - curScore <= 3) {
+  if (prevScore <= 3 && curScore >= 0) {
     // Down from 3 to 0
     return likertScalesColors['strongly-disagree'].background
   }
-  // Down from 5 to 3
+  // The rest
   return likertScalesColors.mixed.background
 }
 
