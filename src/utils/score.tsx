@@ -1,6 +1,6 @@
 import { AgreementLevel } from 'constants/agreementLevel'
 import { ReactElement } from 'react'
-import { ArrowRightUp, ArrowRightDown, Pause } from '@icon-park/react'
+import { Icon } from '@iconify/react'
 import { likertScalesColors } from 'constants/colors'
 import { DomainTypes } from 'constants/feedbackTypes'
 
@@ -30,16 +30,19 @@ export const getTrendByPercentage = (
   if (statDiff === 0) {
     if (curScore !== 0) {
       // Which means trend equals 0 because score is unchanged, not because no data collected (auto returns 0)
-      return <Pause strokeWidth={5} style={{ rotate: '90deg' }} />
+      return <Icon icon="heroicons:bars-2" />
     }
     return ''
   }
   return (
     <>
       {statDiff > 0 ? (
-        <ArrowRightUp strokeWidth={5} />
+        <Icon icon="material-symbols:arrow-outward" />
       ) : (
-        <ArrowRightDown strokeWidth={5} />
+        <Icon
+          icon="material-symbols:arrow-outward"
+          style={{ rotate: '90deg' }}
+        />
       )}
       {Math.abs(statDiff).toFixed(2)}%
     </>
