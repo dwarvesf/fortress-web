@@ -91,8 +91,8 @@ const trendColorThresholds: Record<
 // score and the latest one is inside another larger interval orderly
 const checkIsSubInterval = (range: number[], prev: number, cur: number) => {
   return (
-    (range[0] >= prev && prev >= cur && cur >= range[1]) || // left bound -> prev -> cur -> right bound
-    (range[0] <= prev && prev <= cur && cur <= range[1]) // left bound <- prev <- cur <- right bound
+    (range[0] >= prev && prev > cur && cur >= range[1]) || // left bound -> prev -> cur -> right bound
+    (range[0] <= prev && prev < cur && cur <= range[1]) // left bound <- prev <- cur <- right bound
   )
 }
 
