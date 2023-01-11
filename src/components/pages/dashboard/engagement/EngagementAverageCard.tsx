@@ -79,7 +79,7 @@ export const EngagementAverageCard = (props: Props) => {
           gap: 12,
         }}
       >
-        <strong>{data?.question || 'a'}</strong>
+        <strong>{data?.question || '-'}</strong>
 
         <Space direction="vertical" size={12}>
           <StatisticBlock

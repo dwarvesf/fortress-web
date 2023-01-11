@@ -54,7 +54,17 @@ const CustomTooltip = (
                       item.payload.trend[dataKey],
                     ) && (
                       <Tag
-                        color={getTrendStatusColor(item.payload.trend[dataKey])}
+                        style={{
+                          color: getTrendStatusColor(
+                            item.payload.trend[dataKey],
+                          ),
+                          borderColor: getTrendStatusColor(
+                            item.payload.trend[dataKey],
+                          ),
+                          backgroundColor: `${getTrendStatusColor(
+                            item.payload.trend[dataKey],
+                          )}08`,
+                        }}
                       >
                         {getTrendByPercentage(
                           dataset[currentWorkDataId - 1][dataKey],
