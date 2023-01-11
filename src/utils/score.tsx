@@ -1,7 +1,6 @@
 import { AgreementLevel } from 'constants/agreementLevel'
 import { ReactElement } from 'react'
 import { Icon } from '@iconify/react'
-import { likertScalesColors } from 'constants/colors'
 import { DomainTypes } from 'constants/feedbackTypes'
 
 export const mapScoreToLikertScale = (score: number): AgreementLevel => {
@@ -25,9 +24,9 @@ export const mapScoreToLikertScale = (score: number): AgreementLevel => {
 
 export const getTrendByPercentage = (
   curScore: number,
-  statDiff: number,
+  diffPercentage: number,
 ): ReactElement | string => {
-  if (statDiff === 0) {
+  if (diffPercentage === 0) {
     if (curScore !== 0) {
       // Which means trend equals 0 because score is unchanged, not because no data collected (auto returns 0)
       return <Icon icon="heroicons:bars-2" />
@@ -36,7 +35,7 @@ export const getTrendByPercentage = (
   }
   return (
     <>
-      {statDiff > 0 ? (
+      {diffPercentage > 0 ? (
         <Icon icon="material-symbols:arrow-outward" />
       ) : (
         <Icon
@@ -44,59 +43,63 @@ export const getTrendByPercentage = (
           style={{ rotate: '90deg' }}
         />
       )}
-      {Math.abs(statDiff).toFixed(2)}%
+      {Math.abs(diffPercentage).toFixed(2)}%
     </>
   )
 }
 
+export const getTrendStatusColor = (trend: number) => {
+  if (trend > 0) {
+    return '#1aae9f'
+  }
+  if (trend < 0) {
+    return '#ff4d4f'
+  }
+  return '#788896'
+}
+
+// threshold to select color based on the interval ranging from the
+// last score and the latest one
+const trendColorThresholds: Record<
+  Exclude<DomainTypes, 'engagement'>,
+  { color: string; from: number; to: number }[]
+> = {
+  workload: [
+    { color: '#1aae9f', from: 0, to: 3.6 }, // Up from 0 to 3.6
+    { color: '#1aae9f', from: 5, to: 3.6 }, // Down from 5 to 3.6
+    { color: '#ff4d4f', from: 3.6, to: 5 }, // Up from 3.6 to 5
+    { color: '#ff4d4f', from: 2.1, to: 0 }, // Down from 2.1 to 0
+    { color: '#788896', from: 3.6, to: 2.1 }, // Down from 3.6 to 2.1
+  ],
+  deadline: [
+    { color: '#1aae9f', from: 0, to: 5 }, // Up from 0 to 5
+    { color: '#ff4d4f', from: 3, to: 0 }, // Down from 3 to 0
+    { color: '#788896', from: 5, to: 3 }, // Down from 5 to 3
+  ],
+  learning: [
+    { color: '#1aae9f', from: 0, to: 5 },
+    { color: '#ff4d4f', from: 3, to: 0 },
+    { color: '#788896', from: 5, to: 3 },
+  ],
+}
+
+// this util is used for checking if an interval ranging from the last
+// score and the latest one is inside another larger interval orderly
+const checkIsSubInterval = (range: number[], prev: number, cur: number) => {
+  return (
+    (range[0] >= prev && prev >= cur && cur >= range[1]) || // left bound -> prev -> cur -> right bound
+    (range[0] <= prev && prev <= cur && cur <= range[1]) // left bound <- prev <- cur <- right bound
+  )
+}
+
 export const getTrendScoreColor = (
-  domain: DomainTypes,
+  domain: Exclude<DomainTypes, 'engagement'>,
   prevScore: number,
   curScore: number,
 ) => {
-  // Workload domain
-  if (domain === 'workload') {
-    if (curScore > prevScore) {
-      if (prevScore >= 0 && curScore <= 3.6) {
-        // Up from 0 to 3.6
-        return likertScalesColors['strongly-agree'].background
-      }
-      // Up from 3.6 to 5
-      return likertScalesColors['strongly-disagree'].background
-    }
-
-    if (prevScore <= 5 && curScore >= 3.6) {
-      // Down from 5 to 3.6
-      return likertScalesColors['strongly-agree'].background
-    }
-    if (prevScore <= 2.1 && curScore >= 0) {
-      // Down from 2.1 to 0
-      return likertScalesColors['strongly-disagree'].background
-    }
-    // The rest
-    return likertScalesColors.mixed.background
-  }
-
-  // Other domains
-  if (curScore > prevScore) {
-    // Up from 0 to 5
-    return likertScalesColors['strongly-agree'].background
-  }
-
-  if (prevScore <= 3 && curScore >= 0) {
-    // Down from 3 to 0
-    return likertScalesColors['strongly-disagree'].background
-  }
-  // The rest
-  return likertScalesColors.mixed.background
-}
-
-export const getTrendStatusColor = (trend: number) => {
-  if (trend > 0) {
-    return likertScalesColors['strongly-agree'].background
-  }
-  if (trend < 0) {
-    return likertScalesColors['strongly-disagree'].background
-  }
-  return likertScalesColors.mixed.background
+  return (
+    trendColorThresholds[domain].find((t) =>
+      checkIsSubInterval([t.from, t.to], prevScore, curScore),
+    )?.color || '#788896'
+  )
 }

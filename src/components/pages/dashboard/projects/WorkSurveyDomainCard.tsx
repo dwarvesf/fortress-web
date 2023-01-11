@@ -11,7 +11,7 @@ import { WorkSurveyDomainAreaChart } from './WorkSurveyDomainAreaChart'
 
 interface Props {
   dataset: any[] // TODO: update type
-  domain: DomainTypes
+  domain: Exclude<DomainTypes, 'engagement'>
 }
 
 export const WorkSurveyDomainCard = (props: Props) => {

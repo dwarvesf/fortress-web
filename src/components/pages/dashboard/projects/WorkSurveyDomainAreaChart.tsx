@@ -1,16 +1,19 @@
 import { Card, Tag } from 'antd'
 import { AreaChart } from 'components/common/AreaChart'
+import { DomainTypes } from 'constants/feedbackTypes'
 import { CartesianAxisProps, TooltipProps } from 'recharts'
 import { theme } from 'styles'
 import { getTrendByPercentage, getTrendStatusColor } from 'utils/score'
 
 interface Props {
   dataset: any[] // TODO: update type
-  dataKey: string
+  dataKey: Exclude<DomainTypes, 'engagement'>
 }
 
 const CustomTooltip = (
-  record: TooltipProps<any, any> & { dataKey: string },
+  record: TooltipProps<any, any> & {
+    dataKey: Exclude<DomainTypes, 'engagement'>
+  },
 ) => {
   const { dataKey } = record
 
