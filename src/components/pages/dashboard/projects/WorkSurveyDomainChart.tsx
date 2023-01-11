@@ -108,7 +108,7 @@ const CustomAxisTick = ({
   )
 }
 
-export const WorkSurveyDomainAreaChart = (props: Props) => {
+export const WorkSurveyDomainChart = (props: Props) => {
   const { dataset, dataKey } = props
   return (
     <AreaChart

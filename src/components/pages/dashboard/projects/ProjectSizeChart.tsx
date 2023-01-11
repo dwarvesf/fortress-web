@@ -41,7 +41,7 @@ const CustomTooltip = ({ active, payload }: TooltipProps<any, any>) => {
   return null
 }
 
-export const ProjectSizePieChart = (props: Props) => {
+export const ProjectSizeChart = (props: Props) => {
   const { data, selectedProjectId, setSelectedProjectId } = props
 
   const dataset = data.dataset || []

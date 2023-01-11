@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { theme } from 'styles'
 import { capitalizeFirstLetter } from 'utils/string'
 import { StatisticBlock } from '../StatisticBlock'
-import { EngagementAverageAreaChart } from './EngagementAverageAreaChart'
+import { EngagementAverageChart } from './EngagementAverageChart'
 
 interface Props {
   data: EngagementAverageProps
@@ -95,7 +95,7 @@ export const EngagementAverageCard = (props: Props) => {
               overflowY: 'hidden',
             }}
           >
-            <EngagementAverageAreaChart
+            <EngagementAverageChart
               data={data}
               currentQuarter={currentQuarter}
               setCurrentQuarter={setCurrentQuarter}
