@@ -23,11 +23,12 @@ export const mapScoreToLikertScale = (score: number): AgreementLevel => {
 }
 
 export const getTrendByPercentage = (
+  prevScore: number,
   curScore: number,
   diffPercentage: number,
 ): ReactElement | string => {
   if (diffPercentage === 0) {
-    if (curScore !== 0) {
+    if (curScore !== 0 && prevScore !== 0) {
       // Which means trend equals 0 because score is unchanged, not because no data collected (auto returns 0)
       return <Icon icon="heroicons:bars-2" />
     }

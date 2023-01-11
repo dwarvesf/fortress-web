@@ -47,6 +47,7 @@ export const WorkSurveyDomainCard = (props: Props) => {
             <StatisticBlock
               stat={dataset[dataset.length - 1][domain]}
               postfix={getTrendByPercentage(
+                dataset[dataset.length - 2][domain],
                 dataset[dataset.length - 1][domain],
                 dataset[dataset.length - 1].trend[domain],
               )}

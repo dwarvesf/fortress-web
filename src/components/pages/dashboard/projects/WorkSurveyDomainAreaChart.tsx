@@ -12,10 +12,11 @@ interface Props {
 
 const CustomTooltip = (
   record: TooltipProps<any, any> & {
+    dataset: any[]
     dataKey: Exclude<DomainTypes, 'engagement'>
   },
 ) => {
-  const { dataKey } = record
+  const { dataset, dataKey } = record
 
   if (record.active && record.payload?.length) {
     return (
@@ -30,26 +31,38 @@ const CustomTooltip = (
         <strong>{record.label}</strong>
         <div>
           {record.payload.map((item) => {
+            const currentWorkData = dataset.find(
+              (d: any) => d.endDate === item.payload.endDate,
+            )
+            const currentWorkDataId = dataset.indexOf(currentWorkData)
+
             return (
               <span style={{ color: theme.colors.gray700 }} key={item.dataKey}>
                 <span>Average: </span>
                 {item.payload.trend === null ? (
                   <strong style={{ color: theme.colors.primary }}>
-                    {item?.value || 0}
+                    {item?.value === 0 ? 'No data' : item?.value}
                   </strong>
                 ) : (
                   <>
                     <strong style={{ color: theme.colors.primary }}>
-                      {item?.value || 0}
+                      {item?.value === 0 ? 'No data' : item?.value}
                     </strong>{' '}
-                    <Tag
-                      color={getTrendStatusColor(item.payload.trend[dataKey])}
-                    >
-                      {getTrendByPercentage(
-                        item.payload[dataKey],
-                        item.payload.trend[dataKey],
-                      )}
-                    </Tag>
+                    {getTrendByPercentage(
+                      dataset[currentWorkDataId - 1][dataKey],
+                      item.payload[dataKey],
+                      item.payload.trend[dataKey],
+                    ) && (
+                      <Tag
+                        color={getTrendStatusColor(item.payload.trend[dataKey])}
+                      >
+                        {getTrendByPercentage(
+                          dataset[currentWorkDataId - 1][dataKey],
+                          item.payload[dataKey],
+                          item.payload.trend[dataKey],
+                        )}
+                      </Tag>
+                    )}
                   </>
                 )}
               </span>
@@ -110,7 +123,7 @@ export const WorkSurveyDomainAreaChart = (props: Props) => {
       }
       yAxisTicks={[1, 3, 5]}
       yAxisDomain={[0, 5]}
-      customToolTip={<CustomTooltip dataKey={dataKey} />}
+      customToolTip={<CustomTooltip dataset={dataset} dataKey={dataKey} />}
     />
   )
 }

@@ -58,11 +58,11 @@ const mockWorkSurveyData: { project: any; workSurveys: any[] } = {
     {
       endDate: '23/01',
       workload: 5,
-      deadline: 2,
+      deadline: 0,
       learning: 3.5,
       trend: {
         workload: 56.25,
-        deadline: -28.57,
+        deadline: 0,
         learning: 25,
       },
     },
@@ -73,7 +73,7 @@ const mockWorkSurveyData: { project: any; workSurveys: any[] } = {
       learning: 5,
       trend: {
         workload: -30,
-        deadline: -50,
+        deadline: 0,
         learning: 42.86,
       },
     },
@@ -125,7 +125,7 @@ const Projects = () => {
         {['workload', 'deadline', 'learning'].map((k) => (
           <WorkSurveyDomainCard
             dataset={mockWorkSurveyData.workSurveys}
-            domain={k as DomainTypes}
+            domain={k as Exclude<DomainTypes, 'engagement'>}
           />
         ))}
       </div>
