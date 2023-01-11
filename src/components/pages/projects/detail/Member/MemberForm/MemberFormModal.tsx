@@ -67,17 +67,11 @@ export const MemberFormModal = (props: Props) => {
     try {
       setIsLoading(true)
 
-      const formValues: MemberFormValues = {
-        ...values,
-        leftDate:
-          values.status !== ProjectMemberStatus.INACTIVE ? '' : values.leftDate,
-      }
-
       if (!isEditing) {
-        await client.createProjectMember(projectID, formValues)
+        await client.createProjectMember(projectID, values)
       } else {
         await client.updateProjectMember(projectID, {
-          ...formValues,
+          ...values,
           projectSlotID,
         })
       }
