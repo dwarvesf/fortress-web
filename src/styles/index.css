@@ -76,3 +76,7 @@ tr.inbox-row.not-read td {
 .recharts-pie {
   outline: none;
 }
+
+.iconify {
+  vertical-align: middle !important;
+}
