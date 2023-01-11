@@ -81,11 +81,11 @@ const mockWorkSurveyData: { project: any; workSurveys: any[] } = {
       endDate: '01/01',
       workload: 2.5,
       deadline: 5,
-      learning: 3,
+      learning: 5,
       trend: {
         workload: -28.57,
         deadline: 400,
-        learning: -40,
+        learning: 0,
       },
     },
   ],

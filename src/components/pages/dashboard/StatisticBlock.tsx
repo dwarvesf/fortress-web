@@ -19,12 +19,13 @@ export const StatisticBlock = (props: Props) => {
   } = props
 
   return (
-    <span style={{ lineHeight: 1 }}>
+    <span style={{ lineHeight: 1, display: 'flex', alignItems: 'end' }}>
       <span
         style={{
           color: statColor,
           fontSize: 36,
           fontWeight: 600,
+          lineHeight: 0.85,
         }}
       >
         {stat}

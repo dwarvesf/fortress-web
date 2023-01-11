@@ -30,22 +30,25 @@ export const getTrendByPercentage = (
   if (diffPercentage === 0) {
     if (curScore !== 0 && prevScore !== 0) {
       // Which means trend equals 0 because score is unchanged, not because no data collected (auto returns 0)
-      return <Icon icon="heroicons:bars-2" />
+      return <Icon icon="ic:baseline-minus" />
     }
     return ''
   }
   return (
-    <>
+    <span style={{ display: 'flex', alignItems: 'center' }}>
       {diffPercentage > 0 ? (
-        <Icon icon="material-symbols:arrow-outward" />
+        <Icon
+          icon="material-symbols:arrow-right-alt"
+          style={{ rotate: '-45deg' }}
+        />
       ) : (
         <Icon
-          icon="material-symbols:arrow-outward"
-          style={{ rotate: '90deg' }}
+          icon="material-symbols:arrow-right-alt"
+          style={{ rotate: '45deg' }}
         />
       )}
       {Math.abs(diffPercentage).toFixed(2)}%
-    </>
+    </span>
   )
 }
 

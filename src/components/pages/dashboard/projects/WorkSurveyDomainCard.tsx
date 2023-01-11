@@ -40,6 +40,7 @@ export const WorkSurveyDomainCard = (props: Props) => {
           justifyContent: 'space-between',
           height: '100%',
           gap: 12,
+          overflow: 'auto',
         }}
       >
         <Space direction="vertical" size={12}>
