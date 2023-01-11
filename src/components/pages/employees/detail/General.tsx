@@ -67,6 +67,18 @@ const projectColumns: ColumnsType<ViewEmployeeProjectData> = [
     dataIndex: 'deploymentType',
     render: (value: DeploymentType) => deploymentTypes[value] || '-',
   },
+  {
+    title: 'Joined Date',
+    key: 'joinedDate',
+    dataIndex: 'joinedDate',
+    render: (value) => (value ? format(new Date(value), DATE_FORMAT) : '-'),
+  },
+  {
+    title: 'Left Date',
+    key: 'leftDate',
+    dataIndex: 'leftDate',
+    render: (value) => (value ? format(new Date(value), DATE_FORMAT) : '-'),
+  },
 ]
 
 const menteeColumns: ColumnsType<ViewMenteeInfo> = [
