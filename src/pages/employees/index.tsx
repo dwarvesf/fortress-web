@@ -279,7 +279,13 @@ const Default = () => {
         title: '',
         key: 'actions',
         render: (value) => (
-          <Row justify="end" gutter={[8, 8]}>
+          <Row
+            justify="end"
+            gutter={[8, 8]}
+            onClick={(event) => {
+              event.stopPropagation()
+            }}
+          >
             <Col>
               <Link href={ROUTES.EMPLOYEE_DETAIL(value.username)}>
                 <a>

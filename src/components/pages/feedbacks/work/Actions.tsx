@@ -13,7 +13,13 @@ export const Actions = (props: Props) => {
   const { push } = useRouter()
 
   return (
-    <Row justify="end" gutter={[8, 8]}>
+    <Row
+      justify="end"
+      gutter={[8, 8]}
+      onClick={(event) => {
+        event.stopPropagation()
+      }}
+    >
       <Tooltip title="View">
         <Button
           type="text-primary"

@@ -15,7 +15,13 @@ export const Actions = (props: Props) => {
   const { record, onAfterAction } = props
 
   return (
-    <Row justify="end" gutter={[8, 8]}>
+    <Row
+      justify="end"
+      gutter={[8, 8]}
+      onClick={(event) => {
+        event.stopPropagation()
+      }}
+    >
       <Col>
         <Link
           href={`${ROUTES.FEEDBACK_INBOX_DETAIL(record.topicID || '')}?type=${
