@@ -747,6 +747,19 @@ class Client {
       },
     )
   }
+
+  public updateEmployeeRole(id: string, roleID: string) {
+    return fetcher<Response<ViewEmployeeData>>(
+      `${BASE_URL}/employees/${id}/role`,
+      {
+        method: 'PUT',
+        headers: { ...this.privateHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          roleID,
+        }),
+      },
+    )
+  }
 }
 
 const client = new Client()

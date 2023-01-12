@@ -45,6 +45,8 @@ import { getErrorMessage } from 'utils/string'
 import { EmployeeListFilter } from 'types/filters/EmployeeListFilter'
 import { Permission } from 'constants/permission'
 import { useAuthContext } from 'context/auth'
+import { AsyncSelect } from 'components/common/Select'
+import { transformMetadataToSelectOption } from 'utils/select'
 import { EditPersonalInfoModal } from './EditPersonalInfoModal'
 import { EditSkillsModal } from './EditSkillsModal'
 import { EditGeneralInfoModal } from './EditGeneralInfoModal'
@@ -178,6 +180,24 @@ export const General = (props: Props) => {
     }
   }
 
+  const onChangeRole = async (value: string) => {
+    try {
+      setIsLoading(true)
+
+      await client.updateEmployeeRole(data.id || '', value)
+
+      // Refetch user data
+      notification.success({ message: 'Employee role updated successfully!' })
+      mutateEmployee()
+    } catch (error: any) {
+      notification.error({
+        message: getErrorMessage(error, 'Could not update employee role'),
+      })
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   const {
     isOpen: isEditGeneralInfoDialogOpen,
     onOpen: openEditGeneralInfoDialog,
@@ -210,17 +230,22 @@ export const General = (props: Props) => {
                 <Col span={24} lg={{ span: 8 }}>
                   <Space
                     direction="vertical"
-                    size={24}
-                    style={{ justifyContent: 'center' }}
+                    size={12}
+                    style={{
+                      justifyContent: 'center',
+                      display: 'flex',
+                    }}
                   >
-                    <EditableAvatar
-                      onAfterSubmit={mutateEmployee}
-                      type="employee"
-                      id={data.id}
-                      avatar={data.avatar}
-                      name={data.displayName || data.fullName}
-                      editable={isEditable}
-                    />
+                    <Row justify="center">
+                      <EditableAvatar
+                        onAfterSubmit={mutateEmployee}
+                        type="employee"
+                        id={data.id}
+                        avatar={data.avatar}
+                        name={data.displayName || data.fullName}
+                        editable={isEditable}
+                      />
+                    </Row>
                     <Select
                       loading={isLoading}
                       disabled={!isEditable}
@@ -233,6 +258,21 @@ export const General = (props: Props) => {
                           value: key,
                         }
                       })}
+                    />
+                    <AsyncSelect
+                      optionGetter={async () => {
+                        const { data } = await client.getAccountRolesMetadata()
+                        return data?.map(transformMetadataToSelectOption) || []
+                      }}
+                      swrKeys={GET_PATHS.getAccountRoleMetadata}
+                      placeholder="Select account role"
+                      style={{
+                        width: '100%',
+                        maxWidth: '100%',
+                        overflow: 'hidden',
+                      }}
+                      value={data.roles?.[0]?.id}
+                      onChange={onChangeRole}
                     />
                   </Space>
                 </Col>
