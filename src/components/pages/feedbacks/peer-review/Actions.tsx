@@ -59,7 +59,13 @@ export const Actions = (props: Props) => {
   }
 
   return (
-    <Row justify="end" gutter={[8, 8]}>
+    <Row
+      justify="end"
+      gutter={[8, 8]}
+      onClick={(event) => {
+        event.stopPropagation()
+      }}
+    >
       <Col>
         <Link href={ROUTES.PEER_REVIEW_EVENT_DETAIL(record.id || '')}>
           <a>

@@ -98,7 +98,13 @@ const columns = ({
     title: '',
     key: 'actions',
     render: (value) => (
-      <Row justify="end" gutter={[8, 8]}>
+      <Row
+        justify="end"
+        gutter={[8, 8]}
+        onClick={(event) => {
+          event.stopPropagation()
+        }}
+      >
         <Col>
           <Link href={ROUTES.PROJECT_DETAIL(value.code)}>
             <a>
