@@ -750,7 +750,7 @@ class Client {
 
   public updateEmployeeRole(id: string, roleID: string) {
     return fetcher<Response<ViewEmployeeData>>(
-      `${BASE_URL}/employees/${id}/role`,
+      `${BASE_URL}/employees/${id}/roles`,
       {
         method: 'PUT',
         headers: { ...this.privateHeaders, 'Content-Type': 'application/json' },
