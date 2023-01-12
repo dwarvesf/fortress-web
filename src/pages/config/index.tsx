@@ -3,23 +3,10 @@ import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 import { PageHeader } from 'components/common/PageHeader'
 import { SEO } from 'components/common/SEO'
 import { Stacks } from 'components/pages/config/Stacks'
-import { FEATURES } from 'constants/features'
-import { ROUTES } from 'constants/routes'
-import { useFlags } from 'launchdarkly-react-client-sdk'
-import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 const DashboardPage = () => {
-  const { push } = useRouter()
-  const flags = useFlags()
-
   const [currentTab, setCurrentTab] = useState<string>('stacks')
-
-  useEffect(() => {
-    if (flags && !flags[FEATURES.DASHBOARD]) {
-      push(ROUTES.PROJECTS)
-    }
-  }, [flags]) // eslint-disable-line
 
   return (
     <>

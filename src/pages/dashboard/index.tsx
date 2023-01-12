@@ -4,11 +4,7 @@ import { PageHeader } from 'components/common/PageHeader'
 import { SEO } from 'components/common/SEO'
 import Engagement from 'components/pages/dashboard/engagement/Engagement'
 import Projects from 'components/pages/dashboard/projects/Projects'
-import { FEATURES } from 'constants/features'
-import { ROUTES } from 'constants/routes'
-import { useFlags } from 'launchdarkly-react-client-sdk'
-import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useTabWithQuery } from 'hooks/useTabWithQuery'
 
 // mock interface, this should be base on the filter (department, seniority,...) and provided by BE
@@ -36,17 +32,8 @@ export interface ProjectSizeProps {
 }
 
 const DashboardPage = () => {
-  const { push } = useRouter()
-  const flags = useFlags()
-
   const [filterCategory, setFilterCategory] = useState<string>('department')
   const { tabKey = 'projects', setTabKey } = useTabWithQuery()
-
-  useEffect(() => {
-    if (flags && !flags[FEATURES.DASHBOARD]) {
-      push(ROUTES.PROJECTS)
-    }
-  }, [flags]) // eslint-disable-line
 
   return (
     <>
