@@ -3,6 +3,7 @@ import { Layout, Menu } from 'antd'
 import { ItemType } from 'antd/lib/menu/hooks/useItems'
 import { FEATURES } from 'constants/features'
 import { pagePermissions, Permission } from 'constants/permission'
+import { pageRoles, Role } from 'constants/roles'
 import { ROUTES } from 'constants/routes'
 import { LOGIN_REDIRECTION_KEY, useAuthContext } from 'context/auth'
 import { useFlags } from 'launchdarkly-react-client-sdk'
@@ -24,6 +25,7 @@ const {
 interface MenuItem {
   content: ItemType & { children?: MenuItem[] }
   permission?: string
+  role?: string
   feature?: string
 }
 
@@ -49,6 +51,7 @@ const items: MenuItem[] = [
       <Icon icon="icon-park-outline:chart-line" width={20} />,
     ),
     feature: FEATURES.DASHBOARD,
+    role: Role.ADMIN,
   },
   {
     content: getItem(
@@ -103,19 +106,21 @@ const items: MenuItem[] = [
 
 const filterItems = (
   items: MenuItem[],
-  permissions: string[],
+  userPermissions: string[],
+  userRole: string,
   flags?: Record<string, boolean>,
 ): ItemType[] => {
   return items.flatMap(
-    ({ permission, feature = '', content: { children, ...item } }) =>
-      (permission && !permissions.includes(permission)) ||
+    ({ permission, role, feature = '', content: { children, ...item } }) =>
+      (permission && !userPermissions.includes(permission)) ||
+      (role && userRole !== role) ||
       (flags && flags[feature] === false)
         ? []
         : [
             {
               ...item,
               children: children
-                ? filterItems(children, permissions)
+                ? filterItems(children, userPermissions, userRole)
                 : undefined,
             },
           ],
@@ -127,7 +132,12 @@ interface Props extends WithChildren {}
 export const AuthenticatedLayout = (props: Props) => {
   const { children } = props
 
-  const { isAuthenticated, isAuthenticating, permissions } = useAuthContext()
+  const {
+    isAuthenticated,
+    isAuthenticating,
+    permissions: userPermissions,
+    role: userRole,
+  } = useAuthContext()
   const { replace, push, pathname } = useRouter()
   const flags = useFlags()
 
@@ -178,7 +188,7 @@ export const AuthenticatedLayout = (props: Props) => {
         <SidebarLogo />
         <Menu
           mode="inline"
-          items={filterItems(items, permissions, flags)}
+          items={filterItems(items, userPermissions, userRole, flags)}
           onClick={({ key }) => push(key)}
           selectedKeys={activeMenuKeys}
           defaultOpenKeys={activeMenuKeys}
@@ -188,7 +198,10 @@ export const AuthenticatedLayout = (props: Props) => {
         <Header />
         <Content style={{ overflow: 'auto' }}>
           <div style={{ padding: 24 }}>
-            <AuthenticatedPage permission={pagePermissions[pathname]}>
+            <AuthenticatedPage
+              permission={pagePermissions[pathname]}
+              role={pageRoles[pathname]}
+            >
               {children}
             </AuthenticatedPage>
           </div>

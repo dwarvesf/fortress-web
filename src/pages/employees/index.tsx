@@ -42,7 +42,10 @@ const Default = () => {
 
   const { permissions } = useAuthContext()
   const canFilterStatus = permissions.includes(
-    Permission.EMPLOYEES_FILTERBYSTATUS,
+    Permission.EMPLOYEES_READ_FILTERBYALLSTATUSES,
+  )
+  const canFilterProject = permissions.includes(
+    Permission.EMPLOYEES_READ_FILTERBYPROJECT,
   )
 
   const [value, setValue] = useState((query.keyword || '') as string)
@@ -161,16 +164,18 @@ const Default = () => {
         ),
         filterSearch: true,
         filteredValue: filter.projects,
-        filters: [
-          {
-            text: '-',
-            value: '-',
-          },
-          ...projects.map((each) => ({
-            text: each.name,
-            value: each.code!,
-          })),
-        ],
+        filters: !canFilterProject
+          ? undefined
+          : [
+              {
+                text: '-',
+                value: '-',
+              },
+              ...projects.map((each) => ({
+                text: each.name,
+                value: each.code!,
+              })),
+            ],
       },
       {
         title: 'Stacks',
@@ -307,6 +312,7 @@ const Default = () => {
     return finalColumns
   }, [
     canFilterStatus,
+    canFilterProject,
     filter,
     positions,
     projects,

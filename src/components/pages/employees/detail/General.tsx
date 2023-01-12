@@ -37,7 +37,7 @@ import { mutate } from 'swr'
 import { theme } from 'styles'
 import Link from 'next/link'
 import { ROUTES } from 'constants/routes'
-import { ColumnsType } from 'antd/lib/table'
+import { ColumnsType, ColumnType } from 'antd/lib/table'
 import { DeploymentType, deploymentTypes } from 'constants/deploymentTypes'
 import { LinkWithIcon } from 'components/common/LinkWithIcon'
 import { EditableAvatar } from 'components/common/EditableAvatar'
@@ -47,11 +47,14 @@ import { Permission } from 'constants/permission'
 import { useAuthContext } from 'context/auth'
 import { AsyncSelect } from 'components/common/Select'
 import { transformMetadataToSelectOption } from 'utils/select'
+import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
 import { EditPersonalInfoModal } from './EditPersonalInfoModal'
 import { EditSkillsModal } from './EditSkillsModal'
 import { EditGeneralInfoModal } from './EditGeneralInfoModal'
 
-const projectColumns: ColumnsType<ViewEmployeeProjectData> = [
+const projectColumns: (ColumnType<ViewEmployeeProjectData> & {
+  permission?: string
+})[] = [
   {
     title: 'Name',
     render: (value) => <ProjectAvatar project={value} />,
@@ -68,18 +71,21 @@ const projectColumns: ColumnsType<ViewEmployeeProjectData> = [
     key: 'deploymentType',
     dataIndex: 'deploymentType',
     render: (value: DeploymentType) => deploymentTypes[value] || '-',
+    permission: Permission.EMPLOYEES_READ_PROJECTS_FULLACCESS,
   },
   {
     title: 'Joined Date',
     key: 'joinedDate',
     dataIndex: 'joinedDate',
     render: (value) => (value ? format(new Date(value), DATE_FORMAT) : '-'),
+    permission: Permission.EMPLOYEES_READ_PROJECTS_FULLACCESS,
   },
   {
     title: 'Left Date',
     key: 'leftDate',
     dataIndex: 'leftDate',
     render: (value) => (value ? format(new Date(value), DATE_FORMAT) : '-'),
+    permission: Permission.EMPLOYEES_READ_PROJECTS_FULLACCESS,
   },
 ]
 
@@ -290,6 +296,8 @@ export const General = (props: Props) => {
                       {
                         label: 'Phone',
                         value: String(data.phoneNumber) || '-',
+                        permission:
+                          Permission.EMPLOYEES_READ_GENERALINFO_FULLACCESS,
                       },
                       {
                         label: 'Line Manager',
@@ -324,6 +332,8 @@ export const General = (props: Props) => {
                             {data?.githubID || '-'}
                           </LinkWithIcon>
                         ),
+                        permission:
+                          Permission.EMPLOYEES_READ_GENERALINFO_FULLACCESS,
                       },
                       {
                         label: 'Notion',
@@ -333,6 +343,8 @@ export const General = (props: Props) => {
                             {data?.notionName || '-'}
                           </Space>
                         ),
+                        permission:
+                          Permission.EMPLOYEES_READ_GENERALINFO_FULLACCESS,
                       },
                       {
                         label: 'LinkedIn',
@@ -342,8 +354,14 @@ export const General = (props: Props) => {
                             {data?.linkedInName || '-'}
                           </Space>
                         ),
+                        permission:
+                          Permission.EMPLOYEES_READ_GENERALINFO_FULLACCESS,
                       },
-                    ]}
+                    ].flatMap(({ permission, ...item }) =>
+                      permission && !permissions.includes(permission)
+                        ? []
+                        : [item],
+                    )}
                   />
                 </Col>
               </Row>
@@ -453,15 +471,36 @@ export const General = (props: Props) => {
                   {
                     label: 'Personal Email',
                     value: data.personalEmail || '-',
+                    permission:
+                      Permission.EMPLOYEES_READ_GENERALINFO_FULLACCESS,
                   },
-                  { label: 'Address', value: data.address },
-                  { label: 'City', value: data.city },
-                  { label: 'Country', value: data.country },
+                  {
+                    label: 'Address',
+                    value: data.address,
+                    permission:
+                      Permission.EMPLOYEES_READ_GENERALINFO_FULLACCESS,
+                  },
+                  {
+                    label: 'City',
+                    value: data.city,
+                    permission:
+                      Permission.EMPLOYEES_READ_GENERALINFO_FULLACCESS,
+                  },
+                  {
+                    label: 'Country',
+                    value: data.country,
+                    permission:
+                      Permission.EMPLOYEES_READ_GENERALINFO_FULLACCESS,
+                  },
                   {
                     label: 'Place of Residence',
                     value: data.placeOfResidence,
+                    permission:
+                      Permission.EMPLOYEES_READ_GENERALINFO_FULLACCESS,
                   },
-                ]}
+                ].flatMap(({ permission, ...item }) =>
+                  permission && !permissions.includes(permission) ? [] : [item],
+                )}
               />
             </EditableDetailSectionCard>
           </Col>
@@ -470,19 +509,28 @@ export const General = (props: Props) => {
               title="Projects"
               bodyStyle={{ padding: '1px 0 0 0' }}
               extra={
-                <Select
-                  options={[
-                    { label: 'Active', value: ProjectMemberStatus.ACTIVE },
-                    { label: 'Inactive', value: ProjectMemberStatus.INACTIVE },
-                  ]}
-                  value={viewProjectStatus}
-                  onChange={setViewProjectStatus}
-                />
+                <AuthenticatedContent
+                  permission={Permission.EMPLOYEES_READ_PROJECTS_FULLACCESS}
+                >
+                  <Select
+                    options={[
+                      { label: 'Active', value: ProjectMemberStatus.ACTIVE },
+                      {
+                        label: 'Inactive',
+                        value: ProjectMemberStatus.INACTIVE,
+                      },
+                    ]}
+                    value={viewProjectStatus}
+                    onChange={setViewProjectStatus}
+                  />
+                </AuthenticatedContent>
               }
             >
               <Table
                 dataSource={projects}
-                columns={projectColumns}
+                columns={projectColumns.flatMap(({ permission, ...col }) =>
+                  permission && !permissions.includes(permission) ? [] : [col],
+                )}
                 rowKey={(row) => row.id as string}
                 pagination={false}
                 style={{ borderRadius: '0.5rem' }}

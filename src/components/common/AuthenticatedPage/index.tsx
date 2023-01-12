@@ -32,15 +32,19 @@ const getBreadcrumbItems = (pathname: string) => {
 
 interface Props extends WithChildren {
   permission?: string
+  role?: string
   as?: React.ElementType
 }
 
 export const AuthenticatedPage = (props: Props) => {
-  const { children, permission, as: Wrapper = Fragment } = props
-  const { permissions } = useAuthContext()
+  const { children, permission, role, as: Wrapper = Fragment } = props
+  const { permissions: userPermissions, role: userRole } = useAuthContext()
   const { pathname } = useRouter()
 
-  if (permission && !permissions.includes(permission)) {
+  if (
+    (role && userRole !== role) ||
+    (permission && !userPermissions.includes(permission))
+  ) {
     return (
       <>
         <Breadcrumb items={getBreadcrumbItems(pathname)} />
