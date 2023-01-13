@@ -256,13 +256,17 @@ export const General = (props: Props) => {
                       name={data.displayName || data.fullName}
                       editable={false}
                     />
-                    <Button
-                      type="primary"
-                      icon={<Icon icon="icon-park-outline:edit" width={16} />}
-                      onClick={openEditAvatarDialog}
+                    <AuthenticatedContent
+                      permission={Permission.EMPLOYEES_EDIT}
                     >
-                      Edit
-                    </Button>
+                      <Button
+                        type="primary"
+                        icon={<Icon icon="icon-park-outline:edit" width={16} />}
+                        onClick={openEditAvatarDialog}
+                      >
+                        Edit
+                      </Button>
+                    </AuthenticatedContent>
                   </Space>
                 </Col>
                 <Col span={24} lg={{ span: 16 }}>

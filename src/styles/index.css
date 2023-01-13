@@ -44,7 +44,7 @@ tr.inbox-row.not-read td {
 
 .likert-scale .ant-radio-button-wrapper {
   background-color: transparent;
-  border: 2px solid #8e97a8 !important;
+  border: 2px solid #d2d7e3 !important;
   display: flex;
   height: 100%;
   line-height: 1;
@@ -61,7 +61,8 @@ tr.inbox-row.not-read td {
 .likert-scale .ant-radio-button-wrapper:hover,
 .likert-scale .ant-radio-button-wrapper.ant-radio-button-wrapper-checked {
   color: white !important;
-  background-color: #8e97a8;
+  background-color: #2c323c;
+  border-color: #2c323c !important;
 }
 
 .recharts-surface
