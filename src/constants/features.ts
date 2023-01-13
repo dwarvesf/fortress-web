@@ -1,4 +1,4 @@
 export enum FEATURES {
-  DASHBOARD = 'dashboard',
+  DASHBOARD = '',
   CONFIG = 'config',
 }

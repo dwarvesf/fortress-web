@@ -2,8 +2,14 @@ import { Col, Row } from 'antd'
 import { DomainTypes } from 'constants/feedbackTypes'
 import { ProjectSizeProps } from 'pages/dashboard'
 import { useState } from 'react'
-import { AuditScoreCard } from './AuditScoreCard'
-import { EngineeringHealthCard } from './EngineeringHealthCard'
+import {
+  getTrendByPercentage,
+  getTrendScoreColor,
+  getTrendStatusColor,
+} from 'utils/score'
+import { StatisticBlock } from '../StatisticBlock'
+import { CardWithTabs } from './CardWithTabs'
+import { AverageDatasetChart } from './AverageDatasetChart'
 import { ProjectSizeCard } from './ProjectSizeCard'
 import { WorkSurveyDomainCard } from './WorkSurveyDomainCard'
 
@@ -93,8 +99,118 @@ const mockWorkSurveyData: { project: any; workSurveys: any[] } = {
   ],
 }
 
+const mockEngineeringHealthAvgData: {
+  project: any
+  engineeringHealth: any[]
+} = {
+  // TODO: update type
+  project: {
+    id: '8dc3be2e-19a4-4942-8a79-56db391a0b15',
+    name: 'Fortress',
+    type: 'dwarves',
+    status: 'active',
+    code: 'fortress',
+  },
+  engineeringHealth: [
+    {
+      quarter: 'Q3/2022',
+      value: 2.8,
+      trend: null,
+    },
+    {
+      quarter: 'Q4/2022',
+      value: 1,
+      trend: -64.29,
+    },
+    {
+      quarter: 'Q1/2023',
+      value: 2.5,
+      trend: 150,
+    },
+    {
+      quarter: 'Q2/2023',
+      value: 4,
+      trend: 60,
+    },
+  ],
+}
+
+const mockAuditScoreAvgData: {
+  project: any
+  auditScore: any[]
+} = {
+  // TODO: update type
+  project: {
+    id: '8dc3be2e-19a4-4942-8a79-56db391a0b15',
+    name: 'Fortress',
+    type: 'dwarves',
+    status: 'active',
+    code: 'fortress',
+  },
+  auditScore: [
+    {
+      quarter: 'Q3/2022',
+      value: 1,
+      trend: null,
+    },
+    {
+      quarter: 'Q4/2022',
+      value: 3,
+      trend: 200,
+    },
+    {
+      quarter: 'Q1/2023',
+      value: 2,
+      trend: -33.33,
+    },
+    {
+      quarter: 'Q2/2023',
+      value: 1.5,
+      trend: -25,
+    },
+  ],
+}
+
 const Projects = () => {
   const [selectedProjectId, setSelectedProjectId] = useState<string>('')
+
+  const averageDatasetRenderer = (dataset: any[]) => {
+    // TODO: update type
+    return (
+      <>
+        {dataset.length > 2 ? (
+          <StatisticBlock
+            stat={dataset[dataset.length - 1].value}
+            postfix={getTrendByPercentage(
+              dataset[dataset.length - 2].value,
+              dataset[dataset.length - 1].value,
+              dataset[dataset.length - 1].trend,
+            )}
+            statColor={getTrendScoreColor(
+              'workload',
+              dataset[dataset.length - 2].value,
+              dataset[dataset.length - 1].value,
+            )}
+            postfixColor={getTrendStatusColor(
+              dataset[dataset.length - 1].trend,
+            )}
+          />
+        ) : null}
+
+        <div
+          style={{
+            width: '100%',
+            overflowX: 'auto',
+            overflowY: 'hidden',
+          }}
+        >
+          <AverageDatasetChart dataset={dataset} />
+        </div>
+      </>
+    )
+  }
+
+  const groupDatasetRenderer = () => null
 
   return (
     <>
@@ -119,14 +235,28 @@ const Projects = () => {
         ))}
       </Row>
 
-      <Row
-        gutter={[16, 16]}
-        style={{
-          marginTop: 16,
-        }}
-      >
-        <EngineeringHealthCard />
-        <AuditScoreCard />
+      <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
+        <CardWithTabs
+          title="Engineering Health"
+          tabKeys={['average', 'group']}
+          fetchers={[
+            async () => mockEngineeringHealthAvgData.engineeringHealth,
+            async () => [],
+          ]}
+          swrKeys={['engineering-health-average', 'engineering-health-group']}
+          childrenRenderers={[averageDatasetRenderer, groupDatasetRenderer]}
+        />
+
+        <CardWithTabs
+          title="Audit Score"
+          tabKeys={['average', 'group']}
+          fetchers={[
+            async () => mockAuditScoreAvgData.auditScore,
+            async () => [],
+          ]}
+          swrKeys={['audit-score-average', 'audit-score-group']}
+          childrenRenderers={[averageDatasetRenderer, groupDatasetRenderer]}
+        />
       </Row>
     </>
   )

@@ -8,7 +8,6 @@ interface Props {
   dataset: any[] // TODO: update type
 }
 
-// TODO: generic CustomTooltip if all datasets have the same interface
 const CustomTooltip = (
   record: TooltipProps<any, any> & {
     dataset: any[]
@@ -112,8 +111,9 @@ const CustomAxisTick = ({
   )
 }
 
-export const AuditScoreAverageChart = (props: Props) => {
+export const AverageDatasetChart = (props: Props) => {
   const { dataset } = props
+
   return (
     <AreaChart
       width="100%"
@@ -123,7 +123,9 @@ export const AuditScoreAverageChart = (props: Props) => {
       lineDataKey="value"
       xAxisDataKey="quarter"
       xAxisTick={
-        <CustomAxisTick currentEvent={dataset[dataset.length - 1].quarter} />
+        <CustomAxisTick
+          currentEvent={dataset[dataset.length - 1]?.quarter || ''}
+        />
       }
       yAxisTicks={[1, 3, 5]}
       yAxisDomain={[0, 5]}
