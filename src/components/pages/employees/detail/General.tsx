@@ -644,6 +644,7 @@ export const General = (props: Props) => {
         onClose={closeEditAvatarDialog}
         onAfterSubmit={mutateEmployee}
         type="employee"
+        id={data.id}
         avatar={data.avatar}
         name={data.displayName || data.fullName}
       />
