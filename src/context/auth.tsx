@@ -16,7 +16,6 @@ interface AuthContextValues {
   isAuthenticating: boolean
   user?: ViewProfileData
   permissions: string[]
-  role: string
   login: () => void
   logout: () => void
   revalidate: () => void
@@ -35,7 +34,6 @@ const AuthContextProvider = ({ children }: WithChildren) => {
   const [user, setUser] = useState<ViewProfileData>()
   const [fetchTrigger, setFetchTrigger] = useState(Date.now())
   const [permissions, setPermissions] = useState<string[]>([])
-  const [role, setRole] = useState('')
 
   const login = useGoogleLogin({
     flow: 'auth-code',
@@ -59,7 +57,6 @@ const AuthContextProvider = ({ children }: WithChildren) => {
 
           const auth = await client.getAuth()
           setPermissions(auth.data?.permissions || [])
-          setRole(auth.data?.role || '')
 
           if (employee) {
             setIsAuthenticating(false)
@@ -102,7 +99,6 @@ const AuthContextProvider = ({ children }: WithChildren) => {
         setUser(profile.data)
         const auth = await client.getAuth()
         setPermissions(auth.data?.permissions || [])
-        setRole(auth.data?.role || '')
       } catch (error) {
         console.error(error)
       } finally {
@@ -122,7 +118,6 @@ const AuthContextProvider = ({ children }: WithChildren) => {
         isAuthenticating,
         user,
         permissions,
-        role,
         login,
         logout,
         revalidate,
