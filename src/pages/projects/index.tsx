@@ -1,7 +1,7 @@
 import { Col, Input, Pagination, Row, Space, Tag, Tooltip } from 'antd'
 import { ROUTES } from 'constants/routes'
 import { PageHeader } from 'components/common/PageHeader'
-import Table, { ColumnsType } from 'antd/lib/table'
+import Table, { ColumnType } from 'antd/lib/table'
 import Link from 'next/link'
 import { AvatarArray } from 'components/common/AvatarArray'
 import { ProjectAvatar, UserAvatar } from 'components/common/AvatarWithName'
@@ -22,6 +22,7 @@ import { useRouter } from 'next/router'
 import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
 import { Permission } from 'constants/permission'
 import { TotalResultCount } from 'components/common/Table/TotalResultCount'
+import { useAuthContext } from 'context/auth'
 
 interface ColumnProps {
   filter: ProjectListFilter
@@ -31,7 +32,9 @@ interface ColumnProps {
 const columns = ({
   filter,
   projectStatusData,
-}: ColumnProps): ColumnsType<ViewProjectData> => [
+}: ColumnProps): (ColumnType<ViewProjectData> & {
+  permission?: string
+})[] => [
   {
     title: 'Name',
     render: (value) => <ProjectAvatar project={value} />,
@@ -56,6 +59,7 @@ const columns = ({
       ) : (
         '-'
       ),
+    permission: Permission.PROJECTS_READ_FULLACCESS,
   },
   {
     title: 'Lead',
@@ -127,6 +131,7 @@ const columns = ({
 ]
 
 const Default = () => {
+  const { permissions } = useAuthContext()
   const { query, push } = useRouter()
   const queryFilter = query.filter ? JSON.parse(query.filter as string) : {}
 
@@ -198,7 +203,10 @@ const Default = () => {
           <Table
             loading={loading}
             dataSource={projects}
-            columns={columns({ filter, projectStatusData })}
+            columns={columns({ filter, projectStatusData }).flatMap(
+              ({ permission, ...col }) =>
+                permission && !permissions.includes(permission) ? [] : [col],
+            )}
             rowKey={(row) => row.id || ''}
             pagination={false}
             scroll={{ x: 'max-content' }}

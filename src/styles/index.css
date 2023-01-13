@@ -80,3 +80,12 @@ tr.inbox-row.not-read td {
 .iconify {
   vertical-align: middle !important;
 }
+
+button:has(.iconify) {
+  display: flex;
+  align-items: center;
+}
+
+button:has(.iconify) .iconify {
+  margin-right: 5px;
+}

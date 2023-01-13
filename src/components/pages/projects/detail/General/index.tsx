@@ -159,6 +159,7 @@ export const General = (props: Props) => {
                         ))}
                       </Space>
                     ),
+                    permission: Permission.PROJECTS_READ_FULLACCESS,
                   },
                   {
                     label: 'Project Email',
@@ -189,7 +190,9 @@ export const General = (props: Props) => {
                       ''
                     ),
                   },
-                ]}
+                ].flatMap(({ permission, ...item }) =>
+                  permission && !permissions.includes(permission) ? [] : [item],
+                )}
               />
             </EditableDetailSectionCard>
           </Col>
