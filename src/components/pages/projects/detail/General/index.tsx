@@ -70,7 +70,7 @@ export const General = (props: Props) => {
               onEdit={openEditProjectGeneralInfoDialog}
               permission={Permission.PROJECTS_EDIT}
             >
-              <Row gutter={24}>
+              <Row gutter={[24, 24]}>
                 <Col span={24} lg={{ span: 8 }}>
                   <Space
                     direction="vertical"

@@ -1,6 +1,5 @@
 import {
   Col,
-  Divider,
   Empty,
   Input,
   Modal,
@@ -69,7 +68,6 @@ export const ToggleAllowSendSurveyModal = (props: Props) => {
               })
             }
           }}
-          style={{ margin: 8 }}
         />
       )
     },
@@ -146,8 +144,8 @@ export const ToggleAllowSendSurveyModal = (props: Props) => {
       </Row>
       <Space
         direction="vertical"
-        split={<Divider style={{ marginTop: 12, marginBottom: 12 }} />}
         style={{ width: '100%', height: 400, overflowY: 'auto', gap: 0 }}
+        size={16}
       >
         {renderProjects}
       </Space>
