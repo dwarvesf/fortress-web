@@ -9,7 +9,7 @@ import { Button } from 'components/common/Button'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { client, GET_PATHS } from 'libs/apis'
-import { ViewMetaData, ViewProjectData } from 'types/schema'
+import { ViewMetaData, ViewProjectData, ViewProjectMember } from 'types/schema'
 import { useFilter } from 'hooks/useFilter'
 import debounce from 'lodash.debounce'
 import { transformMetadataToFilterOption } from 'utils/select'
@@ -72,8 +72,17 @@ const columns = ({
     title: 'Members',
     key: 'members',
     dataIndex: 'members',
-    render: (value) =>
-      value && value.length ? <AvatarArray data={value} /> : '-',
+    render: (value) => {
+      // only shows members data that has employeeID to hide empty
+      // project member slots when displaying in projects list
+      const assignedMembers = (value || []).filter(
+        (e: ViewProjectMember) => e.employeeID,
+      )
+      if (assignedMembers.length) {
+        return <AvatarArray data={assignedMembers} />
+      }
+      return '-'
+    },
   },
   {
     title: 'Delivery Manager',
