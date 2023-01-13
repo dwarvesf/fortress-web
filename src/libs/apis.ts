@@ -48,6 +48,7 @@ import {
   ViewAuthUserResponse,
   RequestCreateStackInput,
   RequestUpdateStackBody,
+  ViewProjectSizeResponse,
 } from 'types/schema'
 import { EmployeeListFilter } from 'types/filters/EmployeeListFilter'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
@@ -88,6 +89,7 @@ export const GET_PATHS = {
     `/surveys/${id}/topics/${topicId}`,
   getSurveyReviewDetail: (id: string, topicID: string, reviewerID: string) =>
     `/surveys/${id}/topics/${topicID}/reviews/${reviewerID}`,
+  getProjectsSizes: '/dashboards/projects/sizes',
 }
 export interface Meta {
   page?: number
@@ -757,6 +759,15 @@ class Client {
         body: JSON.stringify({
           roleID,
         }),
+      },
+    )
+  }
+
+  public getProjectsSizes() {
+    return fetcher<ViewProjectSizeResponse>(
+      `${BASE_URL}/dashboards/projects/sizes`,
+      {
+        headers: { ...this.privateHeaders },
       },
     )
   }
