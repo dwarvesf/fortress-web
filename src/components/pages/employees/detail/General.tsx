@@ -350,7 +350,7 @@ export const General = (props: Props) => {
               </Row>
             </EditableDetailSectionCard>
           </Col>
-          <AuthenticatedContent permission={Permission.EMPLOYEES_FULLACCESS}>
+          <AuthenticatedContent permission={Permission.EMPLOYEES_EDIT}>
             <Col span={24} lg={{ span: 16 }}>
               <Card title="Permissions">
                 <DataRows
