@@ -260,7 +260,6 @@ export const General = (props: Props) => {
                       type="primary"
                       icon={<Icon icon="icon-park-outline:edit" width={16} />}
                       onClick={openEditAvatarDialog}
-                      style={{ display: 'flex', alignItems: 'center', gap: 5 }}
                     >
                       Edit
                     </Button>
