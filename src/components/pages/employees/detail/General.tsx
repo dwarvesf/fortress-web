@@ -40,7 +40,10 @@ import { ROUTES } from 'constants/routes'
 import { ColumnsType, ColumnType } from 'antd/lib/table'
 import { DeploymentType, deploymentTypes } from 'constants/deploymentTypes'
 import { LinkWithIcon } from 'components/common/LinkWithIcon'
-import { EditableAvatar } from 'components/common/EditableAvatar'
+import {
+  EditableAvatar,
+  EditAvatarModal,
+} from 'components/common/EditableAvatar'
 import { getErrorMessage } from 'utils/string'
 import { EmployeeListFilter } from 'types/filters/EmployeeListFilter'
 import { Permission } from 'constants/permission'
@@ -48,6 +51,7 @@ import { useAuthContext } from 'context/auth'
 import { AsyncSelect } from 'components/common/Select'
 import { transformMetadataToSelectOption } from 'utils/select'
 import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
+import { Button } from 'components/common/Button'
 import { EditPersonalInfoModal } from './EditPersonalInfoModal'
 import { EditSkillsModal } from './EditSkillsModal'
 import { EditGeneralInfoModal } from './EditGeneralInfoModal'
@@ -148,7 +152,6 @@ export const General = (props: Props) => {
 
   const [isLoading, setIsLoading] = useState(false)
   const { permissions } = useAuthContext()
-  const isEditable = permissions.includes(Permission.EMPLOYEES_EDIT)
 
   // We'll be showing projects of the status users pick
   // By default, we show projects that the employee is active in
@@ -222,6 +225,12 @@ export const General = (props: Props) => {
     onClose: closeEditPersonalInfoDialog,
   } = useDisclosure()
 
+  const {
+    isOpen: isEditAvatarDialogOpen,
+    onOpen: openEditAvatarDialog,
+    onClose: closeEditAvatarDialog,
+  } = useDisclosure()
+
   return (
     <>
       <Space direction="vertical" size={24} style={{ width: '100%' }}>
@@ -236,50 +245,24 @@ export const General = (props: Props) => {
                 <Col span={24} lg={{ span: 8 }}>
                   <Space
                     direction="vertical"
-                    size={12}
-                    style={{
-                      justifyContent: 'center',
-                      display: 'flex',
-                    }}
+                    size={24}
+                    style={{ justifyContent: 'center', alignItems: 'center' }}
                   >
-                    <Row justify="center">
-                      <EditableAvatar
-                        onAfterSubmit={mutateEmployee}
-                        type="employee"
-                        id={data.id}
-                        avatar={data.avatar}
-                        name={data.displayName || data.fullName}
-                        editable={isEditable}
-                      />
-                    </Row>
-                    <Select
-                      loading={isLoading}
-                      disabled={!isEditable}
-                      style={{ width: '100%' }}
-                      value={data.status}
-                      onChange={onChangeStatus}
-                      options={Object.keys(employeeStatuses).map((key) => {
-                        return {
-                          label: employeeStatuses[key as EmployeeStatus],
-                          value: key,
-                        }
-                      })}
+                    <EditableAvatar
+                      onAfterSubmit={mutateEmployee}
+                      type="employee"
+                      id={data.id}
+                      avatar={data.avatar}
+                      name={data.displayName || data.fullName}
+                      editable={false}
                     />
-                    <AsyncSelect
-                      optionGetter={async () => {
-                        const { data } = await client.getAccountRolesMetadata()
-                        return data?.map(transformMetadataToSelectOption) || []
-                      }}
-                      swrKeys={GET_PATHS.getAccountRoleMetadata}
-                      placeholder="Select account role"
-                      style={{
-                        width: '100%',
-                        maxWidth: '100%',
-                        overflow: 'hidden',
-                      }}
-                      value={data.roles?.[0]?.id}
-                      onChange={onChangeRole}
-                    />
+                    <Button
+                      type="primary"
+                      icon={<Icon icon="icon-park-outline:edit" width={20} />}
+                      onClick={openEditAvatarDialog}
+                    >
+                      Edit
+                    </Button>
                   </Space>
                 </Col>
                 <Col span={24} lg={{ span: 16 }}>
@@ -367,6 +350,55 @@ export const General = (props: Props) => {
               </Row>
             </EditableDetailSectionCard>
           </Col>
+          <AuthenticatedContent permission={Permission.EMPLOYEES_FULLACCESS}>
+            <Col span={24} lg={{ span: 16 }}>
+              <Card title="Permissions">
+                <DataRows
+                  data={[
+                    {
+                      label: 'Status',
+                      value: (
+                        <Select
+                          loading={isLoading}
+                          style={{ width: '100%', maxWidth: 300 }}
+                          value={data.status}
+                          onChange={onChangeStatus}
+                          options={Object.keys(employeeStatuses).map((key) => {
+                            return {
+                              label: employeeStatuses[key as EmployeeStatus],
+                              value: key,
+                            }
+                          })}
+                        />
+                      ),
+                    },
+                    {
+                      label: 'Role',
+                      value: (
+                        <AsyncSelect
+                          optionGetter={async () => {
+                            const { data } =
+                              await client.getAccountRolesMetadata()
+                            return (
+                              data?.map(transformMetadataToSelectOption) || []
+                            )
+                          }}
+                          swrKeys={GET_PATHS.getAccountRoleMetadata}
+                          placeholder="Select account role"
+                          style={{
+                            width: '100%',
+                            maxWidth: 300,
+                          }}
+                          value={data.roles?.[0]?.id}
+                          onChange={onChangeRole}
+                        />
+                      ),
+                    },
+                  ]}
+                />
+              </Card>
+            </Col>
+          </AuthenticatedContent>
           <Col span={24} lg={{ span: 16 }}>
             <EditableDetailSectionCard
               title="Skills"
@@ -601,6 +633,15 @@ export const General = (props: Props) => {
           placeOfResidence: data.placeOfResidence || '',
         }}
         onAfterSubmit={mutateEmployee}
+      />
+
+      <EditAvatarModal
+        isOpen={isEditAvatarDialogOpen}
+        onClose={closeEditAvatarDialog}
+        onAfterSubmit={mutateEmployee}
+        type="employee"
+        avatar={data.avatar}
+        name={data.displayName || data.fullName}
       />
     </>
   )
