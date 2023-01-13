@@ -37,19 +37,28 @@ import { mutate } from 'swr'
 import { theme } from 'styles'
 import Link from 'next/link'
 import { ROUTES } from 'constants/routes'
-import { ColumnsType } from 'antd/lib/table'
+import { ColumnsType, ColumnType } from 'antd/lib/table'
 import { DeploymentType, deploymentTypes } from 'constants/deploymentTypes'
 import { LinkWithIcon } from 'components/common/LinkWithIcon'
-import { EditableAvatar } from 'components/common/EditableAvatar'
+import {
+  EditableAvatar,
+  EditAvatarModal,
+} from 'components/common/EditableAvatar'
 import { getErrorMessage } from 'utils/string'
 import { EmployeeListFilter } from 'types/filters/EmployeeListFilter'
 import { Permission } from 'constants/permission'
 import { useAuthContext } from 'context/auth'
+import { AsyncSelect } from 'components/common/Select'
+import { transformMetadataToSelectOption } from 'utils/select'
+import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
+import { Button } from 'components/common/Button'
 import { EditPersonalInfoModal } from './EditPersonalInfoModal'
 import { EditSkillsModal } from './EditSkillsModal'
 import { EditGeneralInfoModal } from './EditGeneralInfoModal'
 
-const projectColumns: ColumnsType<ViewEmployeeProjectData> = [
+const projectColumns: (ColumnType<ViewEmployeeProjectData> & {
+  permission?: string
+})[] = [
   {
     title: 'Name',
     render: (value) => <ProjectAvatar project={value} />,
@@ -66,18 +75,21 @@ const projectColumns: ColumnsType<ViewEmployeeProjectData> = [
     key: 'deploymentType',
     dataIndex: 'deploymentType',
     render: (value: DeploymentType) => deploymentTypes[value] || '-',
+    permission: Permission.EMPLOYEES_READ_PROJECTS_FULLACCESS,
   },
   {
     title: 'Joined Date',
     key: 'joinedDate',
     dataIndex: 'joinedDate',
     render: (value) => (value ? format(new Date(value), DATE_FORMAT) : '-'),
+    permission: Permission.EMPLOYEES_READ_PROJECTS_FULLACCESS,
   },
   {
     title: 'Left Date',
     key: 'leftDate',
     dataIndex: 'leftDate',
     render: (value) => (value ? format(new Date(value), DATE_FORMAT) : '-'),
+    permission: Permission.EMPLOYEES_READ_PROJECTS_FULLACCESS,
   },
 ]
 
@@ -140,7 +152,6 @@ export const General = (props: Props) => {
 
   const [isLoading, setIsLoading] = useState(false)
   const { permissions } = useAuthContext()
-  const isEditable = permissions.includes(Permission.EMPLOYEES_EDIT)
 
   // We'll be showing projects of the status users pick
   // By default, we show projects that the employee is active in
@@ -178,6 +189,24 @@ export const General = (props: Props) => {
     }
   }
 
+  const onChangeRole = async (value: string) => {
+    try {
+      setIsLoading(true)
+
+      await client.updateEmployeeRole(data.id || '', value)
+
+      // Refetch user data
+      notification.success({ message: 'Employee role updated successfully!' })
+      mutateEmployee()
+    } catch (error: any) {
+      notification.error({
+        message: getErrorMessage(error, 'Could not update employee role'),
+      })
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   const {
     isOpen: isEditGeneralInfoDialogOpen,
     onOpen: openEditGeneralInfoDialog,
@@ -196,6 +225,12 @@ export const General = (props: Props) => {
     onClose: closeEditPersonalInfoDialog,
   } = useDisclosure()
 
+  const {
+    isOpen: isEditAvatarDialogOpen,
+    onOpen: openEditAvatarDialog,
+    onClose: closeEditAvatarDialog,
+  } = useDisclosure()
+
   return (
     <>
       <Space direction="vertical" size={24} style={{ width: '100%' }}>
@@ -211,7 +246,7 @@ export const General = (props: Props) => {
                   <Space
                     direction="vertical"
                     size={24}
-                    style={{ justifyContent: 'center' }}
+                    style={{ justifyContent: 'center', alignItems: 'center' }}
                   >
                     <EditableAvatar
                       onAfterSubmit={mutateEmployee}
@@ -219,21 +254,15 @@ export const General = (props: Props) => {
                       id={data.id}
                       avatar={data.avatar}
                       name={data.displayName || data.fullName}
-                      editable={isEditable}
+                      editable={false}
                     />
-                    <Select
-                      loading={isLoading}
-                      disabled={!isEditable}
-                      style={{ width: '100%' }}
-                      value={data.status}
-                      onChange={onChangeStatus}
-                      options={Object.keys(employeeStatuses).map((key) => {
-                        return {
-                          label: employeeStatuses[key as EmployeeStatus],
-                          value: key,
-                        }
-                      })}
-                    />
+                    <Button
+                      type="primary"
+                      icon={<Icon icon="icon-park-outline:edit" width={16} />}
+                      onClick={openEditAvatarDialog}
+                    >
+                      Edit
+                    </Button>
                   </Space>
                 </Col>
                 <Col span={24} lg={{ span: 16 }}>
@@ -250,6 +279,8 @@ export const General = (props: Props) => {
                       {
                         label: 'Phone',
                         value: String(data.phoneNumber) || '-',
+                        permission:
+                          Permission.EMPLOYEES_READ_GENERALINFO_FULLACCESS,
                       },
                       {
                         label: 'Line Manager',
@@ -284,6 +315,8 @@ export const General = (props: Props) => {
                             {data?.githubID || '-'}
                           </LinkWithIcon>
                         ),
+                        permission:
+                          Permission.EMPLOYEES_READ_GENERALINFO_FULLACCESS,
                       },
                       {
                         label: 'Notion',
@@ -293,6 +326,8 @@ export const General = (props: Props) => {
                             {data?.notionName || '-'}
                           </Space>
                         ),
+                        permission:
+                          Permission.EMPLOYEES_READ_GENERALINFO_FULLACCESS,
                       },
                       {
                         label: 'LinkedIn',
@@ -302,13 +337,68 @@ export const General = (props: Props) => {
                             {data?.linkedInName || '-'}
                           </Space>
                         ),
+                        permission:
+                          Permission.EMPLOYEES_READ_GENERALINFO_FULLACCESS,
                       },
-                    ]}
+                    ].flatMap(({ permission, ...item }) =>
+                      permission && !permissions.includes(permission)
+                        ? []
+                        : [item],
+                    )}
                   />
                 </Col>
               </Row>
             </EditableDetailSectionCard>
           </Col>
+          <AuthenticatedContent permission={Permission.EMPLOYEES_FULLACCESS}>
+            <Col span={24} lg={{ span: 16 }}>
+              <Card title="Permissions">
+                <DataRows
+                  data={[
+                    {
+                      label: 'Status',
+                      value: (
+                        <Select
+                          loading={isLoading}
+                          style={{ width: '100%', maxWidth: 300 }}
+                          value={data.status}
+                          onChange={onChangeStatus}
+                          options={Object.keys(employeeStatuses).map((key) => {
+                            return {
+                              label: employeeStatuses[key as EmployeeStatus],
+                              value: key,
+                            }
+                          })}
+                        />
+                      ),
+                    },
+                    {
+                      label: 'Role',
+                      value: (
+                        <AsyncSelect
+                          optionGetter={async () => {
+                            const { data } =
+                              await client.getAccountRolesMetadata()
+                            return (
+                              data?.map(transformMetadataToSelectOption) || []
+                            )
+                          }}
+                          swrKeys={GET_PATHS.getAccountRoleMetadata}
+                          placeholder="Select account role"
+                          style={{
+                            width: '100%',
+                            maxWidth: 300,
+                          }}
+                          value={data.roles?.[0]?.id}
+                          onChange={onChangeRole}
+                        />
+                      ),
+                    },
+                  ]}
+                />
+              </Card>
+            </Col>
+          </AuthenticatedContent>
           <Col span={24} lg={{ span: 16 }}>
             <EditableDetailSectionCard
               title="Skills"
@@ -413,15 +503,36 @@ export const General = (props: Props) => {
                   {
                     label: 'Personal Email',
                     value: data.personalEmail || '-',
+                    permission:
+                      Permission.EMPLOYEES_READ_GENERALINFO_FULLACCESS,
                   },
-                  { label: 'Address', value: data.address },
-                  { label: 'City', value: data.city },
-                  { label: 'Country', value: data.country },
+                  {
+                    label: 'Address',
+                    value: data.address,
+                    permission:
+                      Permission.EMPLOYEES_READ_GENERALINFO_FULLACCESS,
+                  },
+                  {
+                    label: 'City',
+                    value: data.city,
+                    permission:
+                      Permission.EMPLOYEES_READ_GENERALINFO_FULLACCESS,
+                  },
+                  {
+                    label: 'Country',
+                    value: data.country,
+                    permission:
+                      Permission.EMPLOYEES_READ_GENERALINFO_FULLACCESS,
+                  },
                   {
                     label: 'Place of Residence',
                     value: data.placeOfResidence,
+                    permission:
+                      Permission.EMPLOYEES_READ_GENERALINFO_FULLACCESS,
                   },
-                ]}
+                ].flatMap(({ permission, ...item }) =>
+                  permission && !permissions.includes(permission) ? [] : [item],
+                )}
               />
             </EditableDetailSectionCard>
           </Col>
@@ -430,19 +541,28 @@ export const General = (props: Props) => {
               title="Projects"
               bodyStyle={{ padding: '1px 0 0 0' }}
               extra={
-                <Select
-                  options={[
-                    { label: 'Active', value: ProjectMemberStatus.ACTIVE },
-                    { label: 'Inactive', value: ProjectMemberStatus.INACTIVE },
-                  ]}
-                  value={viewProjectStatus}
-                  onChange={setViewProjectStatus}
-                />
+                <AuthenticatedContent
+                  permission={Permission.EMPLOYEES_READ_PROJECTS_FULLACCESS}
+                >
+                  <Select
+                    options={[
+                      { label: 'Active', value: ProjectMemberStatus.ACTIVE },
+                      {
+                        label: 'Inactive',
+                        value: ProjectMemberStatus.INACTIVE,
+                      },
+                    ]}
+                    value={viewProjectStatus}
+                    onChange={setViewProjectStatus}
+                  />
+                </AuthenticatedContent>
               }
             >
               <Table
                 dataSource={projects}
-                columns={projectColumns}
+                columns={projectColumns.flatMap(({ permission, ...col }) =>
+                  permission && !permissions.includes(permission) ? [] : [col],
+                )}
                 rowKey={(row) => row.id as string}
                 pagination={false}
                 style={{ borderRadius: '0.5rem' }}
@@ -513,6 +633,15 @@ export const General = (props: Props) => {
           placeOfResidence: data.placeOfResidence || '',
         }}
         onAfterSubmit={mutateEmployee}
+      />
+
+      <EditAvatarModal
+        isOpen={isEditAvatarDialogOpen}
+        onClose={closeEditAvatarDialog}
+        onAfterSubmit={mutateEmployee}
+        type="employee"
+        avatar={data.avatar}
+        name={data.displayName || data.fullName}
       />
     </>
   )

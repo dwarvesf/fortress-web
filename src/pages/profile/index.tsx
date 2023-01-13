@@ -67,7 +67,7 @@ const Default = () => {
                     />
                     <Button
                       type="primary"
-                      icon={<Icon icon="icon-park-outline:edit" width={20} />}
+                      icon={<Icon icon="icon-park-outline:edit" width={16} />}
                       onClick={openEditAvatarDialog}
                     >
                       Edit
