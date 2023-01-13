@@ -6,7 +6,7 @@ import { theme } from 'styles'
 import { ModelProjectSize } from 'types/schema'
 
 interface Props {
-  data: ModelProjectSize[]
+  dataset: ModelProjectSize[]
   selectedProjectId: string
   setSelectedProjectId: Dispatch<SetStateAction<string>>
 }
@@ -42,14 +42,14 @@ const CustomTooltip = ({ active, payload }: TooltipProps<any, any>) => {
 }
 
 export const ProjectSizeChart = (props: Props) => {
-  const { data, selectedProjectId, setSelectedProjectId } = props
+  const { dataset, selectedProjectId, setSelectedProjectId } = props
 
   return (
     <PieChart
       width="100%"
       minWidth={370}
       height={350}
-      dataset={data}
+      dataset={dataset}
       pieDataKey="size"
       customToolTip={<CustomTooltip />}
       onPieClick={(a) => {

@@ -212,7 +212,7 @@ const Projects = () => {
       <Row gutter={[16, 16]}>
         <Col span={24} lg={{ span: 12 }} xl={{ span: 8 }}>
           <ProjectSizeCard
-            data={projectsSizesData?.data || []}
+            data={projectsSizesData || {}}
             selectedProjectId={selectedProjectId}
             setSelectedProjectId={setSelectedProjectId}
             isLoading={isProjectsSizesLoading}

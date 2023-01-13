@@ -1,10 +1,10 @@
 import { Card, Empty, Spin } from 'antd'
 import { Dispatch, SetStateAction } from 'react'
-import { ModelProjectSize } from 'types/schema'
+import { ViewProjectSizeResponse } from 'types/schema'
 import { ProjectSizeChart } from './ProjectSizeChart'
 
 interface Props {
-  data: ModelProjectSize[]
+  data: ViewProjectSizeResponse
   selectedProjectId: string
   setSelectedProjectId: Dispatch<SetStateAction<string>>
   isLoading: boolean
@@ -12,6 +12,7 @@ interface Props {
 
 export const ProjectSizeCard = (props: Props) => {
   const { data, selectedProjectId, setSelectedProjectId, isLoading } = props
+  const dataset = data?.data || []
 
   const renderProjectsSizes = () => {
     if (isLoading) {
@@ -28,7 +29,7 @@ export const ProjectSizeCard = (props: Props) => {
         />
       )
     }
-    if (!isLoading && data.length === 0) {
+    if (!isLoading && dataset.length === 0) {
       return (
         <Empty
           style={{
@@ -44,7 +45,7 @@ export const ProjectSizeCard = (props: Props) => {
     }
     return (
       <ProjectSizeChart
-        data={data}
+        dataset={dataset}
         selectedProjectId={selectedProjectId}
         setSelectedProjectId={setSelectedProjectId}
       />
