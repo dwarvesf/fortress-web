@@ -9,7 +9,7 @@ import { Button } from 'components/common/Button'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { client, GET_PATHS } from 'libs/apis'
-import { ViewMetaData, ViewProjectData, ViewProjectMember } from 'types/schema'
+import { ViewMetaData, ViewProjectData } from 'types/schema'
 import { useFilter } from 'hooks/useFilter'
 import debounce from 'lodash.debounce'
 import { transformMetadataToFilterOption } from 'utils/select'
@@ -73,18 +73,7 @@ const columns = ({
     key: 'members',
     dataIndex: 'members',
     render: (value) =>
-      value &&
-      value.filter(
-        (e: ViewProjectMember) => e.avatar && e.displayName && e.employeeID,
-      ).length ? (
-        <AvatarArray
-          data={value.filter(
-            (e: ViewProjectMember) => e.avatar && e.displayName && e.employeeID,
-          )}
-        />
-      ) : (
-        '-'
-      ),
+      value && value.length ? <AvatarArray data={value} /> : '-',
   },
   {
     title: 'Delivery Manager',
