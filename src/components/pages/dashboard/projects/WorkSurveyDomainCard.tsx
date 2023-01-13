@@ -21,14 +21,6 @@ export const WorkSurveyDomainCard = (props: Props) => {
 
   return (
     <Card
-      style={{
-        width: '30%',
-        flexGrow: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        height: '100%',
-      }}
       bodyStyle={{
         height: '100%',
         fontSize: 16,

@@ -2,6 +2,8 @@ import { Col, Row } from 'antd'
 import { DomainTypes } from 'constants/feedbackTypes'
 import { ProjectSizeProps } from 'pages/dashboard'
 import { useState } from 'react'
+import { AuditScoreCard } from './AuditScoreCard'
+import { EngineeringHealthCard } from './EngineeringHealthCard'
 import { ProjectSizeCard } from './ProjectSizeCard'
 import { WorkSurveyDomainCard } from './WorkSurveyDomainCard'
 
@@ -97,7 +99,7 @@ const Projects = () => {
   return (
     <>
       <Row gutter={[16, 16]}>
-        <Col span={24} xl={{ span: 8 }}>
+        <Col span={24} lg={{ span: 12 }} xl={{ span: 8 }}>
           <ProjectSizeCard
             data={mockProjectSizeData}
             selectedProjectId={selectedProjectId}
@@ -106,20 +108,26 @@ const Projects = () => {
         </Col>
       </Row>
 
-      <div
+      <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
+        {['workload', 'deadline', 'learning'].map((k) => (
+          <Col span={8} key={k}>
+            <WorkSurveyDomainCard
+              data={mockWorkSurveyData}
+              domain={k as Exclude<DomainTypes, 'engagement'>}
+            />
+          </Col>
+        ))}
+      </Row>
+
+      <Row
+        gutter={[16, 16]}
         style={{
-          display: 'flex',
-          gap: 16,
           marginTop: 16,
         }}
       >
-        {['workload', 'deadline', 'learning'].map((k) => (
-          <WorkSurveyDomainCard
-            data={mockWorkSurveyData}
-            domain={k as Exclude<DomainTypes, 'engagement'>}
-          />
-        ))}
-      </div>
+        <EngineeringHealthCard />
+        <AuditScoreCard />
+      </Row>
     </>
   )
 }
