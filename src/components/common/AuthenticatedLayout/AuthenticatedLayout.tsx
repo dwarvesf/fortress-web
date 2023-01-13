@@ -49,6 +49,7 @@ const items: MenuItem[] = [
       <Icon icon="icon-park-outline:chart-line" width={20} />,
     ),
     feature: FEATURES.DASHBOARD,
+    permission: Permission.DASHBOARDS_READ,
   },
   {
     content: getItem(

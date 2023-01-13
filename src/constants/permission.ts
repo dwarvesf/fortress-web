@@ -53,6 +53,7 @@ export enum Permission {
   SURVEYS_DELETE = 'surveys.delete',
   SURVEYS_EDIT = 'surveys.edit',
   SURVEYS_READ = 'surveys.read',
+  DASHBOARDS_READ = 'dashboards.read',
 }
 
 // the permission that needs to access to a certain page
@@ -72,4 +73,5 @@ export const pagePermissions = {
   [ROUTES.EMPLOYEE_ENGAGEMENT_DETAIL('[id]')]: Permission.SURVEYS_READ,
   [ROUTES.WORK]: Permission.SURVEYS_READ,
   [ROUTES.WORK_DETAIL('[id]')]: Permission.SURVEYS_READ,
+  [ROUTES.DASHBOARD]: Permission.DASHBOARDS_READ,
 }
