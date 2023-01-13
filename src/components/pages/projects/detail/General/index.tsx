@@ -149,7 +149,11 @@ export const General = (props: Props) => {
                     value: (
                       <Space direction="vertical">
                         {data.clientEmail?.map((mail) => (
-                          <a href={`mailto:${mail}`} key={mail}>
+                          <a
+                            href={`mailto:${mail}`}
+                            key={mail}
+                            className="styled"
+                          >
                             {mail}
                           </a>
                         ))}
@@ -159,7 +163,10 @@ export const General = (props: Props) => {
                   {
                     label: 'Project Email',
                     value: data.projectEmail ? (
-                      <a href={`mailto:${'data.projectEmail'}`}>
+                      <a
+                        href={`mailto:${'data.projectEmail'}`}
+                        className="styled"
+                      >
                         {data.projectEmail}
                       </a>
                     ) : (

@@ -57,7 +57,7 @@ export const WorkUnitTable = ({
         dataIndex: 'url',
         render: (value) =>
           value ? (
-            <a href={value} target="_blank" rel="noreferrer">
+            <a href={value} target="_blank" rel="noreferrer" className="styled">
               {value}
             </a>
           ) : (
