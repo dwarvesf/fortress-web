@@ -21,6 +21,7 @@ import { ViewSurvey } from 'types/schema'
 import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
 import { Permission } from 'constants/permission'
 import { useRouter } from 'next/router'
+import { TotalResultCount } from 'components/common/Table/TotalResultCount'
 
 const columns: ColumnsType<ViewSurvey> = [
   {
@@ -128,27 +129,35 @@ const WorkPage = () => {
                 as={Col}
               >
                 <Button type="default" onClick={openToggleSendSurveyDialog}>
-                  <Icon icon="icon-park-outline:setting" width={24} />
+                  <Icon
+                    icon="icon-park-outline:setting"
+                    width={24}
+                    style={{ margin: 0 }}
+                  />
                 </Button>
               </AuthenticatedContent>
             </>
           }
         />
 
-        <Table
-          dataSource={surveysData?.data || []}
-          columns={columns}
-          rowKey={(row) => row.id as string}
-          scroll={{ x: 'max-content' }}
-          loading={loading}
-          pagination={false}
-          onRow={(record) => ({
-            onClick: (e) => {
-              if (e.defaultPrevented) return
-              push(ROUTES.WORK_DETAIL(record.id!))
-            },
-          })}
-        />
+        <div>
+          <TotalResultCount count={(surveysData?.data || []).length} />
+
+          <Table
+            dataSource={surveysData?.data || []}
+            columns={columns}
+            rowKey={(row) => row.id as string}
+            scroll={{ x: 'max-content' }}
+            loading={loading}
+            pagination={false}
+            onRow={(record) => ({
+              onClick: (e) => {
+                if (e.defaultPrevented) return
+                push(ROUTES.WORK_DETAIL(record.id!))
+              },
+            })}
+          />
+        </div>
 
         <Row justify="end">
           <Pagination

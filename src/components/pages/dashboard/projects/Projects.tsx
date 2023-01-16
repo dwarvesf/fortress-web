@@ -1,13 +1,11 @@
 import { Col, Row } from 'antd'
 import { DomainTypes } from 'constants/feedbackTypes'
 import { useState } from 'react'
-import {
-  getTrendByPercentage,
-  getTrendScoreColor,
-  getTrendStatusColor,
-} from 'utils/score'
-import { client, GET_PATHS } from 'libs/apis'
+import { getTrendByPercentage, getTrendStatusColor } from 'utils/score'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
+import { GET_PATHS, client } from 'libs/apis'
+import { theme } from 'styles'
+
 import { StatisticBlock } from '../StatisticBlock'
 import { CardWithTabs } from './CardWithTabs'
 import { AverageDatasetChart } from './AverageDatasetChart'
@@ -94,7 +92,10 @@ const Projects = () => {
       client.getProjectsSizes(),
     )
 
-  const { data, loading } = useFetchWithCache(
+  const {
+    data: projectsWorkSurveysData,
+    loading: isProjectsWorkSurveysLoading,
+  } = useFetchWithCache(
     [GET_PATHS.getProjectsWorkSurveysAverage, selectedProjectId],
     () => client.getProjectsWorkSurveysAverage(selectedProjectId),
   )
@@ -106,16 +107,8 @@ const Projects = () => {
         {dataset.length > 2 ? (
           <StatisticBlock
             stat={dataset[dataset.length - 1].value}
-            postfix={getTrendByPercentage(
-              dataset[dataset.length - 2].value,
-              dataset[dataset.length - 1].value,
-              dataset[dataset.length - 1].trend,
-            )}
-            statColor={getTrendScoreColor(
-              'workload',
-              dataset[dataset.length - 2].value,
-              dataset[dataset.length - 1].value,
-            )}
+            postfix={getTrendByPercentage(dataset[dataset.length - 1].trend)}
+            statColor={theme.colors.gray700}
             postfixColor={getTrendStatusColor(
               dataset[dataset.length - 1].trend,
             )}
@@ -154,9 +147,9 @@ const Projects = () => {
         {['workload', 'deadline', 'learning'].map((k) => (
           <Col span={8} key={k}>
             <WorkSurveyDomainCard
-              data={data?.data || {}}
+              data={projectsWorkSurveysData?.data || {}}
               domain={k as Exclude<DomainTypes, 'engagement'>}
-              isLoading={loading}
+              isLoading={isProjectsWorkSurveysLoading}
             />
           </Col>
         ))}

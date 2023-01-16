@@ -776,9 +776,12 @@ class Client {
   public getProjectsWorkSurveysAverage(projectID?: string) {
     const queryString = qs.stringify({ projectID })
 
-    return fetcher<any>(`${BASE_URL}/dashboards/work-surveys?${queryString}`, {
-      headers: { ...this.privateHeaders },
-    })
+    return fetcher<any>(
+      `${BASE_URL}/dashboards/projects/work-surveys?${queryString}`,
+      {
+        headers: { ...this.privateHeaders },
+      },
+    )
   }
 }
 

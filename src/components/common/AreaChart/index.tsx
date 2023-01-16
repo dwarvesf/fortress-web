@@ -94,7 +94,6 @@ export const AreaChart = (props: Props) => {
         {customToolTip ? <Tooltip content={customToolTip} /> : <Tooltip />}
 
         <Area
-          type="monotone"
           dataKey={lineDataKey!}
           stroke={theme.colors.primary}
           strokeWidth={2}

@@ -8,13 +8,7 @@ interface Props {
   dataset: any[] // TODO: update type
 }
 
-const CustomTooltip = (
-  record: TooltipProps<any, any> & {
-    dataset: any[]
-  },
-) => {
-  const { dataset } = record
-
+const CustomTooltip = (record: TooltipProps<any, any>) => {
   if (record.active && record.payload?.length) {
     return (
       <Card
@@ -28,11 +22,6 @@ const CustomTooltip = (
         <strong>{record.label}</strong>
         <div>
           {record.payload.map((item) => {
-            const currentWorkData = dataset.find(
-              (d: any) => d.quarter === item.payload.quarter,
-            )
-            const currentWorkDataId = dataset.indexOf(currentWorkData)
-
             return (
               <span style={{ color: theme.colors.gray700 }} key={item.dataKey}>
                 <span>Average: </span>
@@ -45,11 +34,7 @@ const CustomTooltip = (
                     <strong style={{ color: theme.colors.primary }}>
                       {item?.value === 0 ? 'No data' : item?.value}
                     </strong>{' '}
-                    {getTrendByPercentage(
-                      dataset[currentWorkDataId - 1].value,
-                      item.payload.value,
-                      item.payload.trend,
-                    ) && (
+                    {getTrendByPercentage(item.payload.trend) && (
                       <Tag
                         style={{
                           color: getTrendStatusColor(item.payload.trend),
@@ -59,11 +44,7 @@ const CustomTooltip = (
                           )}08`,
                         }}
                       >
-                        {getTrendByPercentage(
-                          dataset[currentWorkDataId - 1].value,
-                          item.payload.value,
-                          item.payload.trend,
-                        )}
+                        {getTrendByPercentage(item.payload.trend)}
                       </Tag>
                     )}
                   </>
@@ -129,7 +110,7 @@ export const AverageDatasetChart = (props: Props) => {
       }
       yAxisTicks={[1, 3, 5]}
       yAxisDomain={[0, 5]}
-      customToolTip={<CustomTooltip dataset={dataset} />}
+      customToolTip={<CustomTooltip />}
     />
   )
 }

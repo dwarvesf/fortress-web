@@ -27,6 +27,7 @@ import { FormWrapper } from 'components/common/FormWrapper'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 import { SEO } from 'components/common/SEO'
 import { getErrorMessage } from 'utils/string'
+import { TotalResultCount } from 'components/common/Table/TotalResultCount'
 
 const getPositionsFromIDs = (data: ModelPosition[], positionStrs: string[]) => {
   const result: ViewPosition[] = []
@@ -202,6 +203,8 @@ const CreateNewProjectPage = () => {
             </Col>
 
             <Col span={24}>
+              <TotalResultCount count={(memberData || []).length} />
+
               <Card
                 title="Members"
                 extra={
