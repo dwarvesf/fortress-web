@@ -1,5 +1,5 @@
 import { Card, Empty, Spin } from 'antd'
-import { Dispatch, SetStateAction } from 'react'
+import { Dispatch, SetStateAction, useMemo } from 'react'
 import { ViewProjectSizeResponse } from 'types/schema'
 import { ProjectSizeChart } from './ProjectSizeChart'
 
@@ -12,9 +12,9 @@ interface Props {
 
 export const ProjectSizeCard = (props: Props) => {
   const { data, selectedProjectId, setSelectedProjectId, isLoading } = props
-  const dataset = data?.data || []
+  const dataset = useMemo(() => data?.data || [], [data])
 
-  const renderProjectsSizes = () => {
+  const renderProjectsSizes = useMemo(() => {
     if (isLoading) {
       return (
         <Spin
@@ -50,7 +50,7 @@ export const ProjectSizeCard = (props: Props) => {
         setSelectedProjectId={setSelectedProjectId}
       />
     )
-  }
+  }, [dataset, isLoading, selectedProjectId, setSelectedProjectId])
 
   return (
     <Card title="Project Size" bodyStyle={{ padding: 8 }}>
@@ -60,7 +60,7 @@ export const ProjectSizeCard = (props: Props) => {
           overflowY: 'hidden',
         }}
       >
-        {renderProjectsSizes()}
+        {renderProjectsSizes}
       </div>
     </Card>
   )
