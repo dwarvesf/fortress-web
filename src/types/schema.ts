@@ -15,6 +15,11 @@ export interface GormDeletedAt {
   valid?: boolean
 }
 
+export interface ModelAccountingItem {
+  amount?: number
+  name?: string
+}
+
 export interface ModelChapter {
   code?: string
   createdAt?: string
@@ -52,6 +57,13 @@ export interface ModelPosition {
   updatedAt?: string
 }
 
+export interface ModelProjectSize {
+  code?: string
+  id?: string
+  name?: string
+  size?: number
+}
+
 export interface ModelRole {
   code?: string
   createdAt?: string
@@ -80,6 +92,43 @@ export interface ModelStack {
   id?: string
   name?: string
   updatedAt?: string
+}
+
+export interface ModelValuation {
+  /** money that company will receive in the future */
+  accountReceivable?: {
+    items?: ModelAccountingItem[]
+    total?: number
+  }
+  /** valuation info */
+  assets?: number
+  currency?: string
+  /** Total paid invoice, investment & bank interest */
+  income?: {
+    detail?: {
+      consultantService?: number
+      interest?: number
+      investment?: number
+    }
+    total?: number
+  }
+  /** money that company will pay in the future */
+  liabilities?: {
+    items?: ModelAccountingItem[]
+    total?: number
+  }
+  /** Sum of Expenses and payroll */
+  outcome?: {
+    detail?: {
+      expense?: number
+      investment?: number
+      payroll?: number
+    }
+    total?: number
+  }
+  rate?: number
+  /** basic info */
+  year?: string
 }
 
 export interface RequestAddMenteeInput {
@@ -484,6 +533,8 @@ export interface ViewEmployeeProjectData {
   code?: string
   deploymentType?: string
   id?: string
+  joinedDate?: string
+  leftDate?: string
   name?: string
   positions?: ViewPosition[]
   status?: string
@@ -713,6 +764,10 @@ export interface ViewProjectMemberListResponse {
   data?: ViewProjectMember[]
 }
 
+export interface ViewProjectSizeResponse {
+  data?: ModelProjectSize[]
+}
+
 export interface ViewQuestion {
   category?: string
   content?: string
@@ -817,6 +872,12 @@ export interface ViewTopic {
   subtype?: string
   title?: string
   type?: string
+}
+
+export interface ViewTrend {
+  deadline?: number
+  learning?: number
+  workload?: number
 }
 
 export interface ViewUpdateEmployeeStatusResponse {
@@ -943,6 +1004,23 @@ export interface ViewUpdatedProject {
   status?: string
   type?: string
   updatedAt?: string
+}
+
+export interface ViewWorkSurvey {
+  deadline?: number
+  endDate?: string
+  learning?: number
+  trend?: ViewTrend
+  workload?: number
+}
+
+export interface ViewWorkSurveyResponse {
+  data?: ViewWorkSurveysData
+}
+
+export interface ViewWorkSurveysData {
+  project?: ViewBasicProjectInfo
+  workSurveys?: ViewWorkSurvey[]
 }
 
 export interface ViewWorkUnit {

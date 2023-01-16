@@ -1,12 +1,12 @@
 import { Card } from 'antd'
 import { PieChart } from 'components/common/PieChart'
-import { ProjectSizeProps } from 'pages/dashboard'
 import { Dispatch, SetStateAction } from 'react'
 import { TooltipProps } from 'recharts'
 import { theme } from 'styles'
+import { ModelProjectSize } from 'types/schema'
 
 interface Props {
-  data: ProjectSizeProps
+  dataset: ModelProjectSize[]
   selectedProjectId: string
   setSelectedProjectId: Dispatch<SetStateAction<string>>
 }
@@ -42,9 +42,7 @@ const CustomTooltip = ({ active, payload }: TooltipProps<any, any>) => {
 }
 
 export const ProjectSizeChart = (props: Props) => {
-  const { data, selectedProjectId, setSelectedProjectId } = props
-
-  const dataset = data.dataset || []
+  const { dataset, selectedProjectId, setSelectedProjectId } = props
 
   return (
     <PieChart
@@ -52,7 +50,7 @@ export const ProjectSizeChart = (props: Props) => {
       minWidth={370}
       height={350}
       dataset={dataset}
-      pieDataKey="value"
+      pieDataKey="size"
       customToolTip={<CustomTooltip />}
       onPieClick={(a) => {
         if (selectedProjectId === a.id) {
