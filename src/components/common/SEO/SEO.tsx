@@ -19,10 +19,10 @@ export const SEO = (props: Props) => {
       <meta property="og:title" content={metaTitle} />
       <meta name="twitter:site" content="@dwarvesf" />
       <meta name="twitter:card" content="summary_large_image" />
-      <meta name="description" content="DF Fortress Web V2." />
-      <meta property="og:description" content="DF Fortress Web V2." />
-      <meta property="og:image" content="/thumbnail.jpeg" />
-      <meta name="twitter:image" content="/thumbnail.jpeg" />
+      <meta name="description" content="Monitor. Improve. Succeed." />
+      <meta property="og:description" content="Monitor. Improve. Succeed." />
+      <meta property="og:image" content="/thumbnail.png" />
+      <meta name="twitter:image" content="/thumbnail.png" />
     </Head>
   )
 }

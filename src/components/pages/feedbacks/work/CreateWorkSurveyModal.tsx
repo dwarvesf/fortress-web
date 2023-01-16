@@ -56,18 +56,17 @@ export const CreateWorkSurveyModal = (props: Props) => {
     }
   }
 
-  // Default initial values = next monday -> friday 2 weeks after
+  // Default initial values = monday 2 weeks ago -> next friday
   let fromDate: moment.Moment
   let toDate: moment.Moment
   const today = moment().isoWeekday()
-  // If today is not Monday, set for monday next week
-  if (today !== 1) {
-    fromDate = moment().add(1, 'week').isoWeekday(1)
-    toDate = moment().add(2, 'week').isoWeekday(5)
-  } else {
-    // Else set for this week
+  // If today is not Friday
+  if (today !== 5) {
     fromDate = moment().isoWeekday(1)
     toDate = moment().add(1, 'week').isoWeekday(5)
+  } else {
+    fromDate = moment().subtract(1, 'week').isoWeekday(1)
+    toDate = moment().isoWeekday(5)
   }
 
   return (
@@ -92,31 +91,26 @@ export const CreateWorkSurveyModal = (props: Props) => {
         }}
       >
         <Form.Item
-          label="From Date"
-          name="fromDate"
+          name="toDate"
           rules={[{ required: true, message: 'Required' }]}
+          label="End of 2 weeks"
         >
           <DatePicker
             format={SELECT_BOX_DATE_FORMAT}
             style={{ width: '100%' }}
-            placeholder="Select start date"
+            placeholder="Select date"
             className="bordered"
             onChange={(value) => {
-              form.setFieldValue('fromDate', value)
-              // Also set the end date to the Friday of next week
+              form.setFieldValue('toDate', value)
+              // Also set the fromDate to the Monday 2 weeks ago
               form.setFieldValue(
-                'toDate',
-                moment(value).add(1, 'week').isoWeekday(5),
+                'fromDate',
+                moment(value).subtract(1, 'week').isoWeekday(1),
               )
             }}
             disabledDate={(date) => {
-              // Disable date if it's before today
-              if (date.isBefore(new Date())) {
-                return true
-              }
-
-              // Disable date if it's not Monday
-              if (date.isoWeekday() !== 1) {
+              // Disable date if it's not Friday
+              if (date.isoWeekday() !== 5) {
                 return true
               }
 
@@ -125,17 +119,11 @@ export const CreateWorkSurveyModal = (props: Props) => {
           />
         </Form.Item>
         <Form.Item
-          label="To Date"
-          name="toDate"
+          name="fromDate"
           rules={[{ required: true, message: 'Required' }]}
+          style={{ display: 'none' }}
         >
-          <DatePicker
-            format={SELECT_BOX_DATE_FORMAT}
-            style={{ width: '100%' }}
-            placeholder="Select end date"
-            className="bordered"
-            disabled
-          />
+          <DatePicker format={SELECT_BOX_DATE_FORMAT} disabled />
         </Form.Item>
       </Form>
     </Modal>
