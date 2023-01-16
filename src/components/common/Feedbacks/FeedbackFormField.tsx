@@ -78,7 +78,7 @@ export const FeedbackFormField = (props: Props) => {
               <TextArea
                 rows={4}
                 bordered
-                placeholder="Enter your message"
+                placeholder="Tell us more about this"
                 readOnly={done}
                 {...rest}
               />
