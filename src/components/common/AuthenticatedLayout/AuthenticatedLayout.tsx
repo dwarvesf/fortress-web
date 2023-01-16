@@ -80,15 +80,15 @@ const items: MenuItem[] = [
         },
         {
           content: getItem('Peer review', ROUTES.PEER_REVIEW),
-          permission: 'lala',
+          permission: Permission.SURVEYS_READ,
         },
         {
           content: getItem('Engagement', ROUTES.ENGAGEMENT),
-          permission: 'lala',
+          permission: Permission.SURVEYS_READ,
         },
         {
           content: getItem('Work', ROUTES.WORK),
-          permission: 'lala',
+          permission: Permission.SURVEYS_READ,
         },
       ],
     ),
