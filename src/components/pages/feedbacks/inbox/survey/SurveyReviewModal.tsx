@@ -71,7 +71,12 @@ export const SurveyReviewModal = (props: Props) => {
         itemLayout="horizontal"
         dataSource={answers}
         renderItem={(item, index) => (
-          <FeedbackPreviewField answer={item} key={index} index={index} />
+          <FeedbackPreviewField
+            answer={item}
+            key={index}
+            index={index}
+            isPreviewing={isPreviewing}
+          />
         )}
       />
     </Modal>

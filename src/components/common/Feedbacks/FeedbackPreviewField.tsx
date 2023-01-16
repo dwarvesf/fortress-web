@@ -5,6 +5,7 @@ import { DomainTypes, FeedbackQuestionType } from 'constants/feedbackTypes'
 import styled from 'styled-components'
 import { ViewQuestionAnswer } from 'types/schema'
 import { renderDomainLevels } from 'utils/level'
+import { theme } from 'styles'
 import { ItemIndex } from '../ItemIndex'
 
 const StyledListItem = styled(List.Item)`
@@ -16,9 +17,11 @@ const StyledListItem = styled(List.Item)`
 export const FeedbackPreviewField = ({
   index,
   answer,
+  isPreviewing = false,
 }: {
   index: number
   answer: ViewQuestionAnswer
+  isPreviewing?: boolean
 }) => {
   const levels = renderDomainLevels(
     (answer?.domain || 'engagement') as DomainTypes,
@@ -45,7 +48,11 @@ export const FeedbackPreviewField = ({
             description={answer.note}
           />
           <Tag
-            color={statusColors[answer.answer || '']}
+            color={
+              isPreviewing
+                ? theme.colors.gray700
+                : statusColors[answer.answer || '']
+            }
             style={{ minWidth: 135, textAlign: 'center' }}
           >
             {levels[answer.answer as AgreementLevel] || 'Not answered yet'}
