@@ -47,7 +47,7 @@ export const AreaChart = (props: Props) => {
     xAxisDataKey,
     xAxisTicks,
     xAxisTick,
-    xAxisDomain,
+    xAxisDomain = [''],
     xAxisStyle,
     yAxisDataKey,
     yAxisTicks,
@@ -96,8 +96,8 @@ export const AreaChart = (props: Props) => {
         <Area
           dataKey={lineDataKey!}
           stroke={theme.colors.primary}
-          strokeWidth={2}
           fill={theme.colors.pink200}
+          animationDuration={800}
         />
       </Chart>
     </ResponsiveContainer>

@@ -4,7 +4,7 @@ import { ReactElement } from 'react'
 import { mapScoreToLikertScale } from 'utils/score'
 
 interface Props {
-  stat: number
+  stat?: number
   statColor?: string
   postfix?: ReactElement | string
   postfixColor?: string
@@ -41,7 +41,7 @@ export const StatisticBlock = (props: Props) => {
               lineHeight: 0.85,
             }}
           >
-            {stat}
+            {stat || '-'}
           </span>
 
           {postfix && (

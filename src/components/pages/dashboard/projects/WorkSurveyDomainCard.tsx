@@ -34,6 +34,10 @@ export const WorkSurveyDomainCard = (props: Props) => {
       )
     }
 
+    if (dataset.length === 0) {
+      return <StatisticBlock statColor={theme.colors.gray700} />
+    }
+
     if (dataset.length === 1) {
       return (
         <StatisticBlock
@@ -61,7 +65,6 @@ export const WorkSurveyDomainCard = (props: Props) => {
             dataset[dataset.length - 1][domain],
             dataset[dataset.length - 2][domain],
           )}
-          isLoading={isLoading}
         />
       )
     }

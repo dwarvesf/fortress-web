@@ -3,7 +3,7 @@ import { AreaChart } from 'components/common/AreaChart'
 import { DomainTypes } from 'constants/feedbackTypes'
 import { CartesianAxisProps, TooltipProps } from 'recharts'
 import { theme } from 'styles'
-import { getTrendByPercentage, getTrendStatusColor } from 'utils/score'
+import { getTrendByPercentage, getTrendScoreColor } from 'utils/score'
 
 interface Props {
   dataset: any[] // TODO: update type
@@ -13,10 +13,11 @@ interface Props {
 
 const CustomTooltip = (
   record: TooltipProps<any, any> & {
+    dataset: any[]
     dataKey: Exclude<DomainTypes, 'engagement'>
   },
 ) => {
-  const { dataKey } = record
+  const { dataset, dataKey } = record
 
   if (record.active && record.payload?.length) {
     return (
@@ -31,6 +32,13 @@ const CustomTooltip = (
         <strong>{record.label}</strong>
         <div>
           {record.payload.map((item) => {
+            const currentWorkSurveyData = dataset.find(
+              (d: any) => d.endDate === item.payload.endDate,
+            )
+            const currentWorkSurveyDataId = dataset.indexOf(
+              currentWorkSurveyData,
+            )
+
             return (
               <span style={{ color: theme.colors.gray700 }} key={item.dataKey}>
                 <span>Average: </span>
@@ -46,14 +54,20 @@ const CustomTooltip = (
                     {getTrendByPercentage(item.payload.trend[dataKey]) && (
                       <Tag
                         style={{
-                          color: getTrendStatusColor(
-                            item.payload.trend[dataKey],
+                          color: getTrendScoreColor(
+                            dataKey,
+                            item.payload[dataKey],
+                            dataset[currentWorkSurveyDataId - 1][dataKey],
                           ),
-                          borderColor: getTrendStatusColor(
-                            item.payload.trend[dataKey],
+                          borderColor: getTrendScoreColor(
+                            dataKey,
+                            item.payload[dataKey],
+                            dataset[currentWorkSurveyDataId - 1][dataKey],
                           ),
-                          backgroundColor: `${getTrendStatusColor(
-                            item.payload.trend[dataKey],
+                          backgroundColor: `${getTrendScoreColor(
+                            dataKey,
+                            item.payload[dataKey],
+                            dataset[currentWorkSurveyDataId - 1][dataKey],
                           )}08`,
                         }}
                       >
@@ -132,7 +146,7 @@ export const WorkSurveyDomainChart = (props: Props) => {
       }
       yAxisTicks={[1, 3, 5]}
       yAxisDomain={[0, 5]}
-      customToolTip={<CustomTooltip dataKey={dataKey} />}
+      customToolTip={<CustomTooltip dataset={dataset} dataKey={dataKey} />}
     />
   )
 }
