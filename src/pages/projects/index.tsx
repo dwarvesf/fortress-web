@@ -188,7 +188,10 @@ const Default = () => {
           }
         />
         <div>
-          <TotalResultCount count={data?.total} />
+          <TotalResultCount
+            count={data?.total}
+            permission={Permission.PROJECTS_CREATE}
+          />
           <Table
             loading={loading}
             dataSource={projects}

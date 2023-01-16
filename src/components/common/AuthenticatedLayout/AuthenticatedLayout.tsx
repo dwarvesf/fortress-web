@@ -23,7 +23,7 @@ const {
 } = Layout
 
 interface MenuItem {
-  content: ItemType & { children?: MenuItem[] }
+  content: ItemType & { children?: MenuItem[]; icon?: React.ReactNode }
   permission?: string
   feature?: string
 }
@@ -80,15 +80,15 @@ const items: MenuItem[] = [
         },
         {
           content: getItem('Peer review', ROUTES.PEER_REVIEW),
-          permission: Permission.SURVEYS_READ,
+          permission: 'lala',
         },
         {
           content: getItem('Engagement', ROUTES.ENGAGEMENT),
-          permission: Permission.SURVEYS_READ,
+          permission: 'lala',
         },
         {
           content: getItem('Work', ROUTES.WORK),
-          permission: Permission.SURVEYS_READ,
+          permission: 'lala',
         },
       ],
     ),
@@ -108,8 +108,8 @@ const filterItems = (
   permissions: string[],
   flags?: Record<string, boolean>,
 ): ItemType[] => {
-  return items.flatMap(
-    ({ permission, feature = '', content: { children, ...item } }) =>
+  return items
+    .flatMap(({ permission, feature = '', content: { children, ...item } }) =>
       (permission && !permissions.includes(permission)) ||
       (flags && flags[feature] === false)
         ? []
@@ -121,7 +121,24 @@ const filterItems = (
                 : undefined,
             },
           ],
-  )
+    )
+    .map((item) => {
+      // If the item has sub-items, check if it only has one sub-item.
+      // If that's the case, we need to move this sub-item up 1 level.
+      // No sense for a sub-menu that only has 1 item
+      if (item.children && item.children.length === 1) {
+        return {
+          ...item,
+          ...item.children[0],
+          content: {
+            ...item.children[0],
+          },
+          icon: item.icon,
+        }
+      }
+
+      return item
+    })
 }
 
 interface Props extends WithChildren {}
