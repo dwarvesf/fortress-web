@@ -21,7 +21,7 @@ const ErrorBoundary = ({ children }: WithChildren) => {
               key.startsWith(parseKey(path)),
             )
           ) {
-            replace('/404', undefined, { shallow: true })
+            replace('/404')
           }
         },
       }}
