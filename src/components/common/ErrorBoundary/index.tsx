@@ -9,7 +9,7 @@ const parseKey = (value: string) => {
 }
 
 const ErrorBoundary = ({ children }: WithChildren) => {
-  const { push } = useRouter()
+  const { replace } = useRouter()
 
   return (
     <SWRConfig
@@ -21,7 +21,7 @@ const ErrorBoundary = ({ children }: WithChildren) => {
               key.startsWith(parseKey(path)),
             )
           ) {
-            push('/404')
+            replace('/404', undefined, { shallow: true })
           }
         },
       }}
