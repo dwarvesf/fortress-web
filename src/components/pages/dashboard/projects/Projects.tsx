@@ -1,28 +1,18 @@
 import { Col, Row } from 'antd'
 import { DomainTypes } from 'constants/feedbackTypes'
-import { ProjectSizeProps } from 'pages/dashboard'
 import { useState } from 'react'
 import {
   getTrendByPercentage,
   getTrendScoreColor,
   getTrendStatusColor,
 } from 'utils/score'
+import { client, GET_PATHS } from 'libs/apis'
+import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { StatisticBlock } from '../StatisticBlock'
 import { CardWithTabs } from './CardWithTabs'
 import { AverageDatasetChart } from './AverageDatasetChart'
 import { ProjectSizeCard } from './ProjectSizeCard'
 import { WorkSurveyDomainCard } from './WorkSurveyDomainCard'
-
-const mockProjectSizeData: ProjectSizeProps = {
-  dataset: [
-    { id: '1', name: 'Fortress', value: 400 },
-    { id: '2', name: 'Setel', value: 350 },
-    { id: '3', name: 'SP Digital', value: 275 },
-    { id: '4', name: 'Konvoy', value: 225 },
-    { id: '5', name: 'iCrosschain', value: 200 },
-    { id: '6', name: 'Droppii', value: 150 },
-  ],
-}
 
 const mockWorkSurveyData: { project: any; workSurveys: any[] } = {
   // TODO: update type
@@ -174,6 +164,11 @@ const mockAuditScoreAvgData: {
 const Projects = () => {
   const [selectedProjectId, setSelectedProjectId] = useState<string>('')
 
+  const { data: projectsSizesData, loading: isProjectsSizesLoading } =
+    useFetchWithCache(GET_PATHS.getProjectsSizes, () =>
+      client.getProjectsSizes(),
+    )
+
   const averageDatasetRenderer = (dataset: any[]) => {
     // TODO: update type
     return (
@@ -217,9 +212,10 @@ const Projects = () => {
       <Row gutter={[16, 16]}>
         <Col span={24} lg={{ span: 12 }} xl={{ span: 8 }}>
           <ProjectSizeCard
-            data={mockProjectSizeData}
+            data={projectsSizesData || {}}
             selectedProjectId={selectedProjectId}
             setSelectedProjectId={setSelectedProjectId}
+            isLoading={isProjectsSizesLoading}
           />
         </Col>
       </Row>

@@ -35,7 +35,7 @@ const renderDomainAverageResult = (
   const levels = renderDomainLevels(domain)
   const domainAverageResult = getWorkSurveyDetailReview(record[index].count!)
 
-  const renderWorkAverage = (
+  const workAverageRender = (
     <Button
       style={{
         padding: 0,
@@ -61,10 +61,10 @@ const renderDomainAverageResult = (
 
   return domainAverageResult ? (
     <Tooltip title={levels[domainAverageResult as AgreementLevel]}>
-      {renderWorkAverage}
+      {workAverageRender}
     </Tooltip>
   ) : (
-    renderWorkAverage
+    workAverageRender
   )
 }
 

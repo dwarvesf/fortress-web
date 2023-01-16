@@ -23,14 +23,6 @@ export interface EngagementAverageProps {
   }[]
 }
 
-export interface ProjectSizeProps {
-  dataset?: {
-    id: string
-    name?: string
-    value?: number
-  }[]
-}
-
 const DashboardPage = () => {
   const [filterCategory, setFilterCategory] = useState<string>('department')
   const { tabKey = 'projects', setTabKey } = useTabWithQuery()
