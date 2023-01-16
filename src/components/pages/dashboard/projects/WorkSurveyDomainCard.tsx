@@ -1,5 +1,7 @@
-import { Card, Space } from 'antd'
+import { Icon } from '@iconify/react'
+import { Card, Space, Spin } from 'antd'
 import { DomainTypes } from 'constants/feedbackTypes'
+import { useMemo } from 'react'
 import {
   getTrendByPercentage,
   getTrendScoreColor,
@@ -12,12 +14,66 @@ import { WorkSurveyDomainChart } from './WorkSurveyDomainChart'
 interface Props {
   data: { project: any; workSurveys: any[] } // TODO: update type
   domain: Exclude<DomainTypes, 'engagement'>
+  isLoading: boolean
 }
 
 export const WorkSurveyDomainCard = (props: Props) => {
-  const { data, domain } = props
+  const { data, domain, isLoading } = props
 
-  const dataset = data.workSurveys || []
+  const dataset = useMemo(() => data?.workSurveys || [], [data?.workSurveys])
+
+  const renderWorkSurveyStatistic = useMemo(() => {
+    if (isLoading) {
+      return (
+        <span style={{ lineHeight: 1, display: 'flex', alignItems: 'end' }}>
+          <Spin
+            style={{
+              height: 30,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          />
+        </span>
+      )
+    }
+
+    if (dataset.length === 1) {
+      return (
+        <StatisticBlock
+          stat={dataset[dataset.length - 1][domain]}
+          postfix={<Icon icon="ic:baseline-minus" />}
+          statColor={getTrendScoreColor(
+            domain,
+            0,
+            dataset[dataset.length - 1][domain],
+          )}
+        />
+      )
+    }
+
+    if (dataset.length > 1) {
+      return (
+        <StatisticBlock
+          stat={dataset[dataset.length - 1][domain]}
+          postfix={getTrendByPercentage(
+            dataset[dataset.length - 2][domain],
+            dataset[dataset.length - 1][domain],
+            dataset[dataset.length - 1].trend[domain],
+          )}
+          statColor={getTrendScoreColor(
+            domain,
+            dataset[dataset.length - 2][domain],
+            dataset[dataset.length - 1][domain],
+          )}
+          postfixColor={getTrendStatusColor(
+            dataset[dataset.length - 1].trend[domain],
+          )}
+          isLoading={isLoading}
+        />
+      )
+    }
+  }, [dataset, domain, isLoading])
 
   return (
     <Card
@@ -38,24 +94,7 @@ export const WorkSurveyDomainCard = (props: Props) => {
         }}
       >
         <Space direction="vertical" size={12}>
-          {dataset.length > 2 ? (
-            <StatisticBlock
-              stat={dataset[dataset.length - 1][domain]}
-              postfix={getTrendByPercentage(
-                dataset[dataset.length - 2][domain],
-                dataset[dataset.length - 1][domain],
-                dataset[dataset.length - 1].trend[domain],
-              )}
-              statColor={getTrendScoreColor(
-                domain,
-                dataset[dataset.length - 2][domain],
-                dataset[dataset.length - 1][domain],
-              )}
-              postfixColor={getTrendStatusColor(
-                dataset[dataset.length - 1].trend[domain],
-              )}
-            />
-          ) : null}
+          {renderWorkSurveyStatistic}
 
           <div
             style={{
@@ -64,7 +103,11 @@ export const WorkSurveyDomainCard = (props: Props) => {
               overflowY: 'hidden',
             }}
           >
-            <WorkSurveyDomainChart dataset={dataset} dataKey={domain} />
+            <WorkSurveyDomainChart
+              dataset={dataset}
+              dataKey={domain}
+              isLoading={isLoading}
+            />
           </div>
         </Space>
       </div>
