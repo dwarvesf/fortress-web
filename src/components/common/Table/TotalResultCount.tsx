@@ -1,3 +1,5 @@
+import { Permission } from 'constants/permission'
+import { useAuthContext } from 'context/auth'
 import styled from 'styled-components'
 
 const Container = styled.div`
@@ -9,9 +11,20 @@ const Container = styled.div`
 interface Props {
   count?: number
   suffix?: string
+  permission?: Permission
 }
 
-export const TotalResultCount = ({ count = 0, suffix = 'item(s)' }: Props) => {
+export const TotalResultCount = ({
+  count = 0,
+  suffix = 'item(s)',
+  permission,
+}: Props) => {
+  const { permissions } = useAuthContext()
+
+  if (permission && !permissions.includes(permission)) {
+    return null
+  }
+
   return (
     <Container>
       {count} {suffix}

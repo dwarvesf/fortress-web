@@ -3,6 +3,7 @@ import { Avatar, Space } from 'antd'
 import Table, { ColumnsType } from 'antd/lib/table'
 import { Button } from 'components/common/Button'
 import { TotalResultCount } from 'components/common/Table/TotalResultCount'
+import { Permission } from 'constants/permission'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { client, GET_PATHS } from 'libs/apis'
 import { useMemo } from 'react'
@@ -68,7 +69,10 @@ export const Stacks = () => {
           Add New
         </Button>
         <div>
-          <TotalResultCount count={stacks.length} />
+          <TotalResultCount
+            count={stacks.length}
+            permission={Permission.PROJECTS_READ_FULLACCESS}
+          />
           <Table
             loading={loading}
             dataSource={stacks}
