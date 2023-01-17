@@ -26,6 +26,8 @@ import { DomainTypes } from 'constants/feedbackTypes'
 import { WorkAverageIcon } from 'components/pages/feedbacks/work'
 import { mapScoreToLikertScale } from 'utils/score'
 import Link from 'next/link'
+import { TotalResultCount } from 'components/common/Table/TotalResultCount'
+import { Permission } from 'constants/permission'
 
 const renderDomainAverageResult = (
   record: ViewDomain[],
@@ -200,14 +202,22 @@ const EmployeePeerReviewsPage = () => {
 
       <Space direction="vertical" size={24} style={{ width: '100%' }}>
         <PageHeader backHref={ROUTES.WORK} title={data?.data?.title || '-'} />
-        <Table
-          dataSource={data?.data?.topics || []}
-          columns={columns}
-          rowKey={(row) => row.id as string}
-          pagination={false}
-          scroll={{ x: 'max-content' }}
-          loading={loading}
-        />
+
+        <div>
+          <TotalResultCount
+            count={(data?.data?.topics || []).length}
+            permission={Permission.PROJECTS_CREATE}
+          />
+
+          <Table
+            dataSource={data?.data?.topics || []}
+            columns={columns}
+            rowKey={(row) => row.id as string}
+            pagination={false}
+            scroll={{ x: 'max-content' }}
+            loading={loading}
+          />
+        </div>
 
         <Row justify="end">
           <Pagination

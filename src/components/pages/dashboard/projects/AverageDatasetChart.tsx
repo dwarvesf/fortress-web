@@ -27,12 +27,12 @@ const CustomTooltip = (record: TooltipProps<any, any>) => {
                 <span>Average: </span>
                 {item.payload.trend === null ? (
                   <strong style={{ color: theme.colors.primary }}>
-                    {item?.value === 0 ? 'No data' : item?.value}
+                    {item?.value === 0 ? 'No data' : item?.value.toFixed(1)}
                   </strong>
                 ) : (
                   <>
                     <strong style={{ color: theme.colors.primary }}>
-                      {item?.value === 0 ? 'No data' : item?.value}
+                      {item?.value === 0 ? 'No data' : item?.value.toFixed(1)}
                     </strong>{' '}
                     {getTrendByPercentage(item.payload.trend) && (
                       <Tag
