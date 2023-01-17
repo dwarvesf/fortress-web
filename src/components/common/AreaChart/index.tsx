@@ -97,7 +97,7 @@ export const AreaChart = (props: Props) => {
           dataKey={lineDataKey!}
           stroke={theme.colors.primary}
           fill={theme.colors.pink200}
-          animationDuration={800}
+          animationDuration={600}
         />
       </Chart>
     </ResponsiveContainer>

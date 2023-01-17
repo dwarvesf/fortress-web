@@ -1,4 +1,5 @@
 import { TagProps } from 'antd'
+import { theme } from 'styles'
 
 // Unfortunately we cannot use a stricter type for the key here (yet)
 // because it's a collection of employee/project/project member statuses,
@@ -34,3 +35,16 @@ export const likertScalesColors = {
   agree: { background: '#597ef7', text: 'white' },
   'strongly-agree': { background: '#1aae9f', text: 'white' },
 }
+
+export const chartColors = [
+  theme.colors.primary, // primary
+  '#60A5FA', // blue
+  '#4ADE80', // green
+  '#FACC15', // yellow
+  '#FB923C', // orange
+  '#22D3EE', // cyan
+  '#F472B6', // pink
+  '#C084FC', // purple
+  '#A3E635', // lime
+  '#F87171', // red
+]
