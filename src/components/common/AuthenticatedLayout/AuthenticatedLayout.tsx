@@ -6,15 +6,29 @@ import { pagePermissions, Permission } from 'constants/permission'
 import { ROUTES } from 'constants/routes'
 import { LOGIN_REDIRECTION_KEY, useAuthContext } from 'context/auth'
 import { useShouldRedirect } from 'hooks/useShouldRedirect'
+import { useUnreadFeedbackCount } from 'hooks/useUnreadFeedbackCount'
 import { useFlags, useLDClient } from 'launchdarkly-react-client-sdk'
 import { useRouter } from 'next/router'
 import React, { useEffect, useMemo } from 'react'
+import styled from 'styled-components'
 import { WithChildren } from 'types/common'
 import { isActivePath } from 'utils/link'
 import { AuthenticatedPage } from '../AuthenticatedPage'
 import { Header } from '../Header'
 import { PageSpinner } from '../PageSpinner'
 import { SidebarLogo } from './SidebarLogo'
+
+const UnreadDot = styled.span`
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background: ${(props) => props.theme.colors.primary};
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-right: -15px;
+  margin-top: 5px;
+`
 
 const {
   Content,
@@ -41,67 +55,6 @@ function getItem(
     label,
   }
 }
-
-const items: MenuItem[] = [
-  {
-    content: getItem(
-      'Dashboard',
-      ROUTES.DASHBOARD,
-      <Icon icon="icon-park-outline:chart-line" width={20} />,
-    ),
-    feature: FEATURES.DASHBOARD,
-    permission: Permission.DASHBOARDS_READ,
-  },
-  {
-    content: getItem(
-      'Projects',
-      ROUTES.PROJECTS,
-      <Icon icon="icon-park-outline:all-application" width={20} />,
-    ),
-    permission: Permission.PROJECTS_READ,
-  },
-  {
-    content: getItem(
-      'Employees',
-      ROUTES.EMPLOYEES,
-      <Icon icon="icon-park-outline:every-user" width={20} />,
-    ),
-    permission: Permission.EMPLOYEES_READ,
-  },
-  {
-    content: getItem(
-      'Feedbacks',
-      ROUTES.FEEDBACKS,
-      <Icon icon="icon-park-outline:mail" width={20} />,
-      [
-        {
-          content: getItem('Inbox', ROUTES.INBOX),
-          permission: Permission.FEEDBACKS_READ,
-        },
-        {
-          content: getItem('Peer review', ROUTES.PEER_REVIEW),
-          permission: Permission.SURVEYS_READ,
-        },
-        {
-          content: getItem('Engagement', ROUTES.ENGAGEMENT),
-          permission: Permission.SURVEYS_READ,
-        },
-        {
-          content: getItem('Work', ROUTES.WORK),
-          permission: Permission.SURVEYS_READ,
-        },
-      ],
-    ),
-  },
-  {
-    content: getItem(
-      'Config',
-      ROUTES.CONFIG,
-      <Icon icon="icon-park-outline:setting" width={20} />,
-    ),
-    feature: FEATURES.CONFIG,
-  },
-]
 
 const filterItems = (
   items: MenuItem[],
@@ -151,9 +104,83 @@ export const AuthenticatedLayout = (props: Props) => {
 
   const ldClient = useLDClient()
   const flags = useFlags()
+  const { unreadCount } = useUnreadFeedbackCount()
 
   // Redirection control
   const shouldRedirect = useShouldRedirect()
+
+  // Get menu items
+  const items: MenuItem[] = useMemo(() => {
+    return [
+      {
+        content: getItem(
+          'Dashboard',
+          ROUTES.DASHBOARD,
+          <Icon icon="icon-park-outline:chart-line" width={20} />,
+        ),
+        feature: FEATURES.DASHBOARD,
+        permission: Permission.DASHBOARDS_READ,
+      },
+      {
+        content: getItem(
+          'Projects',
+          ROUTES.PROJECTS,
+          <Icon icon="icon-park-outline:all-application" width={20} />,
+        ),
+        permission: Permission.PROJECTS_READ,
+      },
+      {
+        content: getItem(
+          'Employees',
+          ROUTES.EMPLOYEES,
+          <Icon icon="icon-park-outline:every-user" width={20} />,
+        ),
+        permission: Permission.EMPLOYEES_READ,
+      },
+      {
+        content: getItem(
+          <span>
+            <span style={{ position: 'relative' }}>
+              Feedbacks{unreadCount > 0 && <UnreadDot className="unread-dot" />}
+            </span>
+          </span>,
+          ROUTES.FEEDBACKS,
+          <Icon icon="icon-park-outline:mail" width={20} />,
+          [
+            {
+              content: getItem(
+                <span style={{ position: 'relative' }}>
+                  Inbox{unreadCount > 0 && <UnreadDot />}
+                </span>,
+                ROUTES.INBOX,
+              ),
+              permission: Permission.FEEDBACKS_READ,
+            },
+            {
+              content: getItem('Peer review', ROUTES.PEER_REVIEW),
+              permission: Permission.SURVEYS_READ,
+            },
+            {
+              content: getItem('Engagement', ROUTES.ENGAGEMENT),
+              permission: Permission.SURVEYS_READ,
+            },
+            {
+              content: getItem('Work', ROUTES.WORK),
+              permission: Permission.SURVEYS_READ,
+            },
+          ],
+        ),
+      },
+      {
+        content: getItem(
+          'Config',
+          ROUTES.CONFIG,
+          <Icon icon="icon-park-outline:setting" width={20} />,
+        ),
+        feature: FEATURES.CONFIG,
+      },
+    ]
+  }, [unreadCount])
 
   useEffect(() => {
     if (!isAuthenticated && !isAuthenticating) {
@@ -186,7 +213,7 @@ export const AuthenticatedLayout = (props: Props) => {
     })
 
     return activeKeys
-  }, [pathname])
+  }, [pathname, items])
 
   // Show loading page if
   if (

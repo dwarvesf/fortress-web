@@ -101,7 +101,7 @@ export const Actions = ({
           isOpen={isEditDialogOpen}
           onClose={closeEditDialog}
           projectSlotID={record.projectSlotID}
-          projectMemberID={record.employeeID}
+          projectMemberID={record.projectMemberID}
           initialValues={{
             ...record,
             positions:
