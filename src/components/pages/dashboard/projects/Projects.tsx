@@ -1,93 +1,16 @@
 import { Col, Row } from 'antd'
 import { DomainTypes } from 'constants/feedbackTypes'
 import { useState } from 'react'
-import {
-  getTrendByPercentage,
-  getTrendScoreColor,
-  getTrendStatusColor,
-} from 'utils/score'
-import { client, GET_PATHS } from 'libs/apis'
+import { getTrendByPercentage, getTrendStatusColor } from 'utils/score'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
+import { GET_PATHS, client } from 'libs/apis'
+import { theme } from 'styles'
+
 import { StatisticBlock } from '../StatisticBlock'
 import { CardWithTabs } from './CardWithTabs'
 import { AverageDatasetChart } from './AverageDatasetChart'
 import { ProjectSizeCard } from './ProjectSizeCard'
 import { WorkSurveyDomainCard } from './WorkSurveyDomainCard'
-
-const mockWorkSurveyData: { project: any; workSurveys: any[] } = {
-  // TODO: update type
-  project: {
-    id: '8dc3be2e-19a4-4942-8a79-56db391a0b15',
-    name: 'Fortress',
-    type: 'dwarves',
-    status: 'active',
-    code: 'fortress',
-  },
-  workSurveys: [
-    {
-      endDate: '28/02',
-      workload: 4.5,
-      deadline: 2.5,
-      learning: 1,
-      trend: null,
-    },
-    {
-      endDate: '21/02',
-      workload: 3.2,
-      deadline: 3.2,
-      learning: 3.2,
-      trend: {
-        workload: -40.63,
-        deadline: 21.88,
-        learning: 220,
-      },
-    },
-    {
-      endDate: '07/02',
-      workload: 3.2,
-      deadline: 2.8,
-      learning: 2.8,
-      trend: {
-        workload: 0,
-        deadline: -14.29,
-        learning: -14.29,
-      },
-    },
-    {
-      endDate: '23/01',
-      workload: 5,
-      deadline: 0,
-      learning: 3.5,
-      trend: {
-        workload: 56.25,
-        deadline: 0,
-        learning: 25,
-      },
-    },
-    {
-      endDate: '09/01',
-      workload: 3.5,
-      deadline: 1,
-      learning: 5,
-      trend: {
-        workload: -30,
-        deadline: 0,
-        learning: 42.86,
-      },
-    },
-    {
-      endDate: '01/01',
-      workload: 2.5,
-      deadline: 5,
-      learning: 5,
-      trend: {
-        workload: -28.57,
-        deadline: 400,
-        learning: 0,
-      },
-    },
-  ],
-}
 
 const mockEngineeringHealthAvgData: {
   project: any
@@ -169,6 +92,14 @@ const Projects = () => {
       client.getProjectsSizes(),
     )
 
+  const {
+    data: projectsWorkSurveysData,
+    loading: isProjectsWorkSurveysLoading,
+  } = useFetchWithCache(
+    [GET_PATHS.getProjectsWorkSurveysAverage, selectedProjectId],
+    () => client.getProjectsWorkSurveysAverage(selectedProjectId),
+  )
+
   const averageDatasetRenderer = (dataset: any[]) => {
     // TODO: update type
     return (
@@ -176,16 +107,8 @@ const Projects = () => {
         {dataset.length > 2 ? (
           <StatisticBlock
             stat={dataset[dataset.length - 1].value}
-            postfix={getTrendByPercentage(
-              dataset[dataset.length - 2].value,
-              dataset[dataset.length - 1].value,
-              dataset[dataset.length - 1].trend,
-            )}
-            statColor={getTrendScoreColor(
-              'workload',
-              dataset[dataset.length - 2].value,
-              dataset[dataset.length - 1].value,
-            )}
+            postfix={getTrendByPercentage(dataset[dataset.length - 1].trend)}
+            statColor={theme.colors.gray700}
             postfixColor={getTrendStatusColor(
               dataset[dataset.length - 1].trend,
             )}
@@ -224,8 +147,9 @@ const Projects = () => {
         {['workload', 'deadline', 'learning'].map((k) => (
           <Col span={8} key={k}>
             <WorkSurveyDomainCard
-              data={mockWorkSurveyData}
+              data={projectsWorkSurveysData?.data || {}}
               domain={k as Exclude<DomainTypes, 'engagement'>}
+              isLoading={isProjectsWorkSurveysLoading}
             />
           </Col>
         ))}

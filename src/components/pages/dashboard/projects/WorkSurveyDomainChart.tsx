@@ -1,13 +1,14 @@
-import { Card, Tag } from 'antd'
+import { Card, Spin, Tag } from 'antd'
 import { AreaChart } from 'components/common/AreaChart'
 import { DomainTypes } from 'constants/feedbackTypes'
 import { CartesianAxisProps, TooltipProps } from 'recharts'
 import { theme } from 'styles'
-import { getTrendByPercentage, getTrendStatusColor } from 'utils/score'
+import { getTrendByPercentage, getTrendScoreColor } from 'utils/score'
 
 interface Props {
   dataset: any[] // TODO: update type
   dataKey: Exclude<DomainTypes, 'engagement'>
+  isLoading: boolean
 }
 
 const CustomTooltip = (
@@ -31,10 +32,12 @@ const CustomTooltip = (
         <strong>{record.label}</strong>
         <div>
           {record.payload.map((item) => {
-            const currentWorkData = dataset.find(
+            const currentWorkSurveyData = dataset.find(
               (d: any) => d.endDate === item.payload.endDate,
             )
-            const currentWorkDataId = dataset.indexOf(currentWorkData)
+            const currentWorkSurveyDataId = dataset.indexOf(
+              currentWorkSurveyData,
+            )
 
             return (
               <span style={{ color: theme.colors.gray700 }} key={item.dataKey}>
@@ -48,29 +51,27 @@ const CustomTooltip = (
                     <strong style={{ color: theme.colors.primary }}>
                       {item?.value === 0 ? 'No data' : item?.value}
                     </strong>{' '}
-                    {getTrendByPercentage(
-                      dataset[currentWorkDataId - 1][dataKey],
-                      item.payload[dataKey],
-                      item.payload.trend[dataKey],
-                    ) && (
+                    {getTrendByPercentage(item.payload.trend[dataKey]) && (
                       <Tag
                         style={{
-                          color: getTrendStatusColor(
-                            item.payload.trend[dataKey],
+                          color: getTrendScoreColor(
+                            dataKey,
+                            item.payload[dataKey],
+                            dataset[currentWorkSurveyDataId - 1][dataKey],
                           ),
-                          borderColor: getTrendStatusColor(
-                            item.payload.trend[dataKey],
+                          borderColor: getTrendScoreColor(
+                            dataKey,
+                            item.payload[dataKey],
+                            dataset[currentWorkSurveyDataId - 1][dataKey],
                           ),
-                          backgroundColor: `${getTrendStatusColor(
-                            item.payload.trend[dataKey],
+                          backgroundColor: `${getTrendScoreColor(
+                            dataKey,
+                            item.payload[dataKey],
+                            dataset[currentWorkSurveyDataId - 1][dataKey],
                           )}08`,
                         }}
                       >
-                        {getTrendByPercentage(
-                          dataset[currentWorkDataId - 1][dataKey],
-                          item.payload[dataKey],
-                          item.payload.trend[dataKey],
-                        )}
+                        {getTrendByPercentage(item.payload.trend[dataKey])}
                       </Tag>
                     )}
                   </>
@@ -119,8 +120,18 @@ const CustomAxisTick = ({
 }
 
 export const WorkSurveyDomainChart = (props: Props) => {
-  const { dataset, dataKey } = props
-  return (
+  const { dataset, dataKey, isLoading } = props
+  return isLoading ? (
+    <Spin
+      size="large"
+      style={{
+        height: 230,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    />
+  ) : (
     <AreaChart
       width="100%"
       height={230}
@@ -129,7 +140,9 @@ export const WorkSurveyDomainChart = (props: Props) => {
       lineDataKey={dataKey}
       xAxisDataKey="endDate"
       xAxisTick={
-        <CustomAxisTick currentEvent={dataset[dataset.length - 1].endDate} />
+        <CustomAxisTick
+          currentEvent={dataset[dataset.length - 1]?.endDate || ''}
+        />
       }
       yAxisTicks={[1, 3, 5]}
       yAxisDomain={[0, 5]}

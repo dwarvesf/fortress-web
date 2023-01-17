@@ -17,6 +17,7 @@ import { ProjectListFilter } from 'types/filters/ProjectListFilter'
 import { useFilter } from 'hooks/useFilter'
 import { ViewProjectData } from 'types/schema'
 import { getErrorMessage } from 'utils/string'
+import { theme } from 'styles'
 
 interface Props {
   isOpen: boolean
@@ -129,8 +130,18 @@ export const ToggleAllowSendSurveyModal = (props: Props) => {
       footer={null}
       title="Setting"
       style={{ maxWidth: 450 }}
+      bodyStyle={{ padding: 0 }}
     >
-      <Row style={{ marginBottom: 24 }}>
+      <Row
+        style={{
+          marginBottom: 24,
+          position: 'sticky',
+          top: 0,
+          background: theme.colors.white,
+          zIndex: 30,
+          padding: '28px 28px 0',
+        }}
+      >
         <Col span={24}>
           <Input
             className="bordered"
@@ -144,7 +155,13 @@ export const ToggleAllowSendSurveyModal = (props: Props) => {
       </Row>
       <Space
         direction="vertical"
-        style={{ width: '100%', height: 400, overflowY: 'auto', gap: 0 }}
+        style={{
+          width: '100%',
+          height: 400,
+          overflowY: 'auto',
+          gap: 0,
+          padding: '0 28px 28px',
+        }}
         size={16}
       >
         {renderProjects}
