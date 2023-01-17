@@ -90,6 +90,7 @@ export const GET_PATHS = {
   getSurveyReviewDetail: (id: string, topicID: string, reviewerID: string) =>
     `/surveys/${id}/topics/${topicID}/reviews/${reviewerID}`,
   getProjectsSizes: '/dashboards/projects/sizes',
+  getProjectsWorkSurveysAverage: '/dashboards/work-surveys',
 }
 export interface Meta {
   page?: number
@@ -766,6 +767,17 @@ class Client {
   public getProjectsSizes() {
     return fetcher<ViewProjectSizeResponse>(
       `${BASE_URL}/dashboards/projects/sizes`,
+      {
+        headers: { ...this.privateHeaders },
+      },
+    )
+  }
+
+  public getProjectsWorkSurveysAverage(projectID?: string) {
+    const queryString = qs.stringify({ projectID })
+
+    return fetcher<any>(
+      `${BASE_URL}/dashboards/projects/work-surveys?${queryString}`,
       {
         headers: { ...this.privateHeaders },
       },

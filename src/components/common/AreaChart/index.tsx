@@ -47,7 +47,7 @@ export const AreaChart = (props: Props) => {
     xAxisDataKey,
     xAxisTicks,
     xAxisTick,
-    xAxisDomain,
+    xAxisDomain = [''],
     xAxisStyle,
     yAxisDataKey,
     yAxisTicks,
@@ -94,11 +94,10 @@ export const AreaChart = (props: Props) => {
         {customToolTip ? <Tooltip content={customToolTip} /> : <Tooltip />}
 
         <Area
-          type="monotone"
           dataKey={lineDataKey!}
           stroke={theme.colors.primary}
-          strokeWidth={2}
           fill={theme.colors.pink200}
+          animationDuration={600}
         />
       </Chart>
     </ResponsiveContainer>

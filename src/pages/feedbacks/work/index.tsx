@@ -128,7 +128,11 @@ const WorkPage = () => {
                 as={Col}
               >
                 <Button type="default" onClick={openToggleSendSurveyDialog}>
-                  <Icon icon="icon-park-outline:setting" width={24} />
+                  <Icon
+                    icon="icon-park-outline:setting"
+                    width={24}
+                    style={{ margin: 0 }}
+                  />
                 </Button>
               </AuthenticatedContent>
             </>

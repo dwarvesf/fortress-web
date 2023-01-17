@@ -1,3 +1,4 @@
+import { chartPieColors } from 'constants/colors'
 import { ReactElement } from 'react'
 import {
   ResponsiveContainer,
@@ -65,14 +66,15 @@ const renderCustomizedLabel = ({
 const getPieSectorFillColor = (
   payloadId: string,
   selectedProjectId: string,
+  colorIndex: number,
 ) => {
   if (selectedProjectId === '') {
-    return theme.colors.primary
+    return chartPieColors[colorIndex % chartPieColors.length]
   }
   if (selectedProjectId === payloadId) {
-    return theme.colors.primary
+    return chartPieColors[colorIndex % chartPieColors.length]
   }
-  return theme.colors.pink200
+  return `${chartPieColors[colorIndex % chartPieColors.length]}55`
 }
 
 export const PieChart = (props: Props) => {
@@ -111,10 +113,10 @@ export const PieChart = (props: Props) => {
           style={{ cursor: 'pointer' }}
           isAnimationActive={false}
         >
-          {dataset.map((payload: { id: string }) => (
+          {dataset.map((payload: { id: string }, index) => (
             <Cell
               key={payload.id}
-              fill={getPieSectorFillColor(payload.id, selectedPieId)}
+              fill={getPieSectorFillColor(payload.id, selectedPieId, index)}
               style={{ cursor: 'pointer' }}
             />
           ))}
