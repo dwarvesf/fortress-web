@@ -327,7 +327,6 @@ const Default = () => {
             </>
           }
         />
-
         <Table
           dataSource={peerReviews}
           columns={columns({
@@ -351,7 +350,6 @@ const Default = () => {
             },
           })}
         />
-
         <Row justify="end">
           <Pagination
             current={filter.page}

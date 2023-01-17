@@ -200,7 +200,6 @@ const EmployeePeerReviewsPage = () => {
 
       <Space direction="vertical" size={24} style={{ width: '100%' }}>
         <PageHeader backHref={ROUTES.WORK} title={data?.data?.title || '-'} />
-
         <Table
           dataSource={data?.data?.topics || []}
           columns={columns}

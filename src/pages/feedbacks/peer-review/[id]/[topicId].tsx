@@ -102,7 +102,6 @@ const EmployeePeerReviewsPage = () => {
           backHref={ROUTES.PEER_REVIEW_EVENT_DETAIL(query.id as string)}
           title={topicDetail?.title}
         />
-
         <Table
           dataSource={topicDetail?.participants || []}
           columns={columns({

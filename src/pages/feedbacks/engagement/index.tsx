@@ -97,7 +97,6 @@ const EmployeeEngagementPage = () => {
             </AuthenticatedContent>
           }
         />
-
         <Table
           dataSource={data?.data || []}
           columns={columns}
@@ -112,7 +111,6 @@ const EmployeeEngagementPage = () => {
             },
           })}
         />
-
         <Row justify="end">
           <Pagination
             current={filter.page}

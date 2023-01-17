@@ -103,7 +103,6 @@ const PeerReviewPage = () => {
             </AuthenticatedContent>
           }
         />
-
         <Table
           dataSource={data?.data || []}
           columns={columns({ onAfterDelete: mutateSurveys })}

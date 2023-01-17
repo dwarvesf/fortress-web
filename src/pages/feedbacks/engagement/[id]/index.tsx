@@ -212,7 +212,6 @@ const Default = () => {
             </>
           }
         />
-
         <Table
           dataSource={engagements}
           columns={columns}
@@ -221,7 +220,6 @@ const Default = () => {
           pagination={false}
           scroll={{ x: 'max-content' }}
         />
-
         <Row justify="end">
           <Pagination
             current={filter.page}
