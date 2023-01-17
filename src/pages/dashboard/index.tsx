@@ -2,7 +2,6 @@ import { Select, Space, Tabs } from 'antd'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 import { PageHeader } from 'components/common/PageHeader'
 import { SEO } from 'components/common/SEO'
-import Engagement from 'components/pages/dashboard/engagement/Engagement'
 import Projects from 'components/pages/dashboard/projects/Projects'
 import { useState } from 'react'
 import { useTabWithQuery } from 'hooks/useTabWithQuery'
@@ -71,11 +70,11 @@ const DashboardPage = () => {
             //   label: `Resources`,
             //   children: <>Resources</>,
             // },
-            {
-              key: 'engagement',
-              label: `Engagement`,
-              children: <Engagement filterCategory={filterCategory} />,
-            },
+            // {
+            //   key: 'engagement',
+            //   label: `Engagement`,
+            //   children: <Engagement filterCategory={filterCategory} />,
+            // },
           ]}
         />
       </Space>

@@ -36,6 +36,7 @@ import { getErrorMessage } from 'utils/string'
 import { FeedbackSubtype } from 'constants/feedbackTypes'
 import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
 import { Permission } from 'constants/permission'
+import { TotalResultCount } from 'components/common/Table/TotalResultCount'
 
 const columns: ColumnsType<ViewTopic> = [
   {
@@ -212,14 +213,23 @@ const Default = () => {
             </>
           }
         />
-        <Table
-          dataSource={engagements}
-          columns={columns}
-          rowKey={(row) => row.id as string}
-          loading={loading}
-          pagination={false}
-          scroll={{ x: 'max-content' }}
-        />
+
+        <div>
+          <TotalResultCount
+            count={(engagements || []).length}
+            permission={Permission.PROJECTS_CREATE}
+          />
+
+          <Table
+            dataSource={engagements}
+            columns={columns}
+            rowKey={(row) => row.id as string}
+            loading={loading}
+            pagination={false}
+            scroll={{ x: 'max-content' }}
+          />
+        </div>
+
         <Row justify="end">
           <Pagination
             current={filter.page}

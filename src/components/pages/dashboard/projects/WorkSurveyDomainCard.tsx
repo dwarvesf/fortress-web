@@ -42,7 +42,7 @@ export const WorkSurveyDomainCard = (props: Props) => {
       return (
         <StatisticBlock
           stat={dataset[dataset.length - 1][domain]}
-          statColor={theme.colors.gray600}
+          statColor={theme.colors.gray700}
           postfixColor={getTrendScoreColor(
             domain,
             dataset[dataset.length - 1][domain],
