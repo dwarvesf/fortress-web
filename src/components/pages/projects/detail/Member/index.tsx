@@ -40,7 +40,10 @@ export const Member = (props: Props) => {
     new ProjectMemberListFilter(ProjectMemberStatus.INACTIVE),
   )
 
-  const { tabKey, setTabKey } = useTabWithQuery({ queryKey: 'memberTab' })
+  const { tabKey, setTabKey } = useTabWithQuery({
+    queryKey: 'memberTab',
+    defaultValue: ProjectMemberStatus.ACTIVE,
+  })
 
   const {
     data: allData,
@@ -214,13 +217,13 @@ export const Member = (props: Props) => {
             }
             items={[
               {
-                key: '',
-                label: `All (${allData?.total || 0})`,
+                key: ProjectMemberStatus.ACTIVE,
+                label: `Active (${activeData?.total || 0})`,
                 children: (
                   <MemberTable
                     projectID={project.id || ''}
-                    data={allMembers}
-                    isLoading={isAllLoading}
+                    data={activeMembers}
+                    isLoading={isActiveLoading}
                     onAfterAction={reload}
                   />
                 ),
@@ -250,18 +253,6 @@ export const Member = (props: Props) => {
                 ),
               },
               {
-                key: ProjectMemberStatus.ACTIVE,
-                label: `Active (${activeData?.total || 0})`,
-                children: (
-                  <MemberTable
-                    projectID={project.id || ''}
-                    data={activeMembers}
-                    isLoading={isActiveLoading}
-                    onAfterAction={reload}
-                  />
-                ),
-              },
-              {
                 key: ProjectMemberStatus.INACTIVE,
                 label: `Inactive (${inactiveData?.total || 0})`,
                 children: (
@@ -269,6 +260,18 @@ export const Member = (props: Props) => {
                     projectID={project.id || ''}
                     data={inactiveMembers}
                     isLoading={isInactiveLoading}
+                    onAfterAction={reload}
+                  />
+                ),
+              },
+              {
+                key: '',
+                label: `All (${allData?.total || 0})`,
+                children: (
+                  <MemberTable
+                    projectID={project.id || ''}
+                    data={allMembers}
+                    isLoading={isAllLoading}
                     onAfterAction={reload}
                   />
                 ),

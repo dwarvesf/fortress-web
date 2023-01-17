@@ -286,6 +286,7 @@ export interface RequestUpdateMemberInput {
   joinedDate?: string
   leftDate?: string
   positions: string[]
+  projectMemberID?: string
   projectSlotID: string
   rate: number
   seniorityID: string
@@ -351,6 +352,16 @@ export interface ViewAccountRoleResponse {
   data?: ModelRole[]
 }
 
+export interface ViewActionItemReportResponse {
+  data?: ViewAuditActionItemReport[]
+}
+
+export interface ViewActionItemTrend {
+  high?: number
+  low?: number
+  medium?: number
+}
+
 /**
  * validation error details
  */
@@ -361,6 +372,29 @@ export interface ViewApiError {
   field?: string
   /** error message */
   msg?: string
+}
+
+export interface ViewAudit {
+  avg?: number
+  quarter?: string
+  trend?: number
+}
+
+export interface ViewAuditActionItemReport {
+  high?: number
+  low?: number
+  medium?: number
+  quarter?: string
+  trend?: ViewActionItemTrend
+}
+
+export interface ViewAuditData {
+  average?: ViewAudit[]
+  groups?: ViewGroupAudit
+}
+
+export interface ViewAuditResponse {
+  data?: ViewAuditData
 }
 
 export interface ViewAuthData {
@@ -540,6 +574,21 @@ export interface ViewEmployeeProjectData {
   status?: string
 }
 
+export interface ViewEngineeringHealth {
+  avg?: number
+  quarter?: string
+  trend?: number
+}
+
+export interface ViewEngineeringHealthData {
+  average?: ViewEngineeringHealth[]
+  groups?: ViewGroupEngineeringHealth
+}
+
+export interface ViewEngineringHealthResponse {
+  data?: ViewEngineeringHealthData
+}
+
 export interface ViewErrorResponse {
   error?: string
   errors?: ViewApiError[]
@@ -597,6 +646,22 @@ export interface ViewFeedbackReviewDetailResponse {
 
 export interface ViewGetQuestionResponse {
   data?: ViewQuestion[]
+}
+
+export interface ViewGroupAudit {
+  backend?: ViewAudit[]
+  blockchain?: ViewAudit[]
+  frontend?: ViewAudit[]
+  mobile?: ViewAudit[]
+  process?: ViewAudit[]
+  system?: ViewAudit[]
+}
+
+export interface ViewGroupEngineeringHealth {
+  collaboration?: ViewEngineeringHealth[]
+  delivery?: ViewEngineeringHealth[]
+  feedback?: ViewEngineeringHealth[]
+  quality?: ViewEngineeringHealth[]
 }
 
 export interface ViewListFeedbackResponse {
