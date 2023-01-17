@@ -47,4 +47,9 @@ export const chartColors = [
   '#C084FC', // purple
   '#A3E635', // lime
   '#F87171', // red
+  '#E879F9', // fuchsia
+  '#818CF8', // indigo
+  '#38BDF8', // sky
+  '#34D399', // emerald
+  '#FBBF24', // amber
 ]
