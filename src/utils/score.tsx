@@ -42,7 +42,7 @@ export const getTrendByPercentage = (
           style={{ rotate: '45deg' }}
         />
       )}
-      {Math.abs(diffPercentage).toFixed(2)}%
+      {Math.abs(diffPercentage).toFixed(1)}%
     </span>
   )
 }
