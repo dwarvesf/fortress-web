@@ -11,6 +11,7 @@ import { AuthenticatedLayout } from 'components/common/AuthenticatedLayout'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import { SEO } from 'components/common/SEO'
 import { withLDProvider } from 'launchdarkly-react-client-sdk'
+import ErrorBoundary from 'components/common/ErrorBoundary'
 
 require('../styles/ant-custom.less')
 
@@ -29,7 +30,9 @@ const MyApp = ({
           <AuthContextProvider>
             <AuthenticatedLayout>
               <NProgressHandler />
-              <Component {...pageProps} />
+              <ErrorBoundary>
+                <Component {...pageProps} />
+              </ErrorBoundary>
             </AuthenticatedLayout>
           </AuthContextProvider>
         </ThemeProvider>
