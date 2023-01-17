@@ -41,7 +41,7 @@ export const WorkSurveyDomainCard = (props: Props) => {
     if (dataset.length === 1) {
       return (
         <StatisticBlock
-          stat={dataset[dataset.length - 1][domain]}
+          stat={dataset[dataset.length - 1][domain].toFixed(1)}
           statColor={theme.colors.gray700}
           postfixColor={getTrendScoreColor(
             domain,
