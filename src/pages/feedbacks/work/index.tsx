@@ -21,7 +21,6 @@ import { ViewSurvey } from 'types/schema'
 import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
 import { Permission } from 'constants/permission'
 import { useRouter } from 'next/router'
-import { TotalResultCount } from 'components/common/Table/TotalResultCount'
 
 const columns: ColumnsType<ViewSurvey> = [
   {
@@ -140,24 +139,20 @@ const WorkPage = () => {
           }
         />
 
-        <div>
-          <TotalResultCount count={(surveysData?.data || []).length} />
-
-          <Table
-            dataSource={surveysData?.data || []}
-            columns={columns}
-            rowKey={(row) => row.id as string}
-            scroll={{ x: 'max-content' }}
-            loading={loading}
-            pagination={false}
-            onRow={(record) => ({
-              onClick: (e) => {
-                if (e.defaultPrevented) return
-                push(ROUTES.WORK_DETAIL(record.id!))
-              },
-            })}
-          />
-        </div>
+        <Table
+          dataSource={surveysData?.data || []}
+          columns={columns}
+          rowKey={(row) => row.id as string}
+          scroll={{ x: 'max-content' }}
+          loading={loading}
+          pagination={false}
+          onRow={(record) => ({
+            onClick: (e) => {
+              if (e.defaultPrevented) return
+              push(ROUTES.WORK_DETAIL(record.id!))
+            },
+          })}
+        />
 
         <Row justify="end">
           <Pagination

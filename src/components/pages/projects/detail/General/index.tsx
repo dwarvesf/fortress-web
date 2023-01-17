@@ -16,7 +16,6 @@ import { getErrorMessage } from 'utils/string'
 import { Permission } from 'constants/permission'
 import { useAuthContext } from 'context/auth'
 import { ProjectFunction, projectFunctions } from 'constants/projectTypes'
-import { TotalResultCount } from 'components/common/Table/TotalResultCount'
 import { EditProjectContactInfoModal } from './EditProjectContactInfoModal'
 import { EditProjectGeneralInfoModal } from './EditProjectGeneralInfoModal'
 import { MemberTable } from './MemberTable'
@@ -198,7 +197,6 @@ export const General = (props: Props) => {
             </EditableDetailSectionCard>
           </Col>
           <Col span={24} lg={{ span: 16 }}>
-            <TotalResultCount count={(data.members || []).length} />
             <Card title="Members" bodyStyle={{ padding: '1px 0 0' }}>
               <MemberTable data={data.members || []} />
             </Card>

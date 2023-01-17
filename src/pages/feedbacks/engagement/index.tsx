@@ -20,7 +20,6 @@ import { ROUTES } from 'constants/routes'
 import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
 import { Permission } from 'constants/permission'
 import { useRouter } from 'next/router'
-import { TotalResultCount } from 'components/common/Table/TotalResultCount'
 
 const columns: ColumnsType<ViewSurvey> = [
   {
@@ -98,24 +97,22 @@ const EmployeeEngagementPage = () => {
             </AuthenticatedContent>
           }
         />
-        <div>
-          <TotalResultCount count={(data?.data || []).length} />
 
-          <Table
-            dataSource={data?.data || []}
-            columns={columns}
-            loading={loading}
-            rowKey={(row) => row.id as string}
-            pagination={false}
-            scroll={{ x: 'max-content' }}
-            onRow={(record) => ({
-              onClick: (e) => {
-                if (e.defaultPrevented) return
-                push(ROUTES.EMPLOYEE_ENGAGEMENT_DETAIL(record.id!))
-              },
-            })}
-          />
-        </div>
+        <Table
+          dataSource={data?.data || []}
+          columns={columns}
+          loading={loading}
+          rowKey={(row) => row.id as string}
+          pagination={false}
+          scroll={{ x: 'max-content' }}
+          onRow={(record) => ({
+            onClick: (e) => {
+              if (e.defaultPrevented) return
+              push(ROUTES.EMPLOYEE_ENGAGEMENT_DETAIL(record.id!))
+            },
+          })}
+        />
+
         <Row justify="end">
           <Pagination
             current={filter.page}

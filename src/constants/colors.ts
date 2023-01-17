@@ -36,7 +36,13 @@ export const likertScalesColors = {
   'strongly-agree': { background: '#1aae9f', text: 'white' },
 }
 
-export const chartColors = [
+export const chartTrendColors = {
+  green: '#1aae9f',
+  gray: '#788896',
+  red: '#ff4d4f',
+}
+
+export const chartPieColors = [
   theme.colors.primary, // primary
   '#60A5FA', // blue
   '#4ADE80', // green

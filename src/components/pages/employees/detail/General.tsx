@@ -52,7 +52,6 @@ import { AsyncSelect } from 'components/common/Select'
 import { transformMetadataToSelectOption } from 'utils/select'
 import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
 import { Button } from 'components/common/Button'
-import { TotalResultCount } from 'components/common/Table/TotalResultCount'
 import { EditPersonalInfoModal } from './EditPersonalInfoModal'
 import { EditSkillsModal } from './EditSkillsModal'
 import { EditGeneralInfoModal } from './EditGeneralInfoModal'
@@ -542,8 +541,6 @@ export const General = (props: Props) => {
             </EditableDetailSectionCard>
           </Col>
           <Col span={24} lg={{ span: 16 }}>
-            <TotalResultCount count={(projects || []).length} />
-
             <Card
               title="Projects"
               bodyStyle={{ padding: '1px 0 0 0' }}
@@ -578,8 +575,6 @@ export const General = (props: Props) => {
           </Col>
           {!!data.mentees?.length && (
             <Col span={24} lg={{ span: 16 }}>
-              <TotalResultCount count={(data.mentees || []).length} />
-
               <Card title="Mentees" bodyStyle={{ padding: '1px 0 0 0' }}>
                 <Table
                   dataSource={data.mentees}

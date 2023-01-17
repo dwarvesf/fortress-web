@@ -1,4 +1,4 @@
-import { chartColors } from 'constants/colors'
+import { chartPieColors } from 'constants/colors'
 import { ReactElement } from 'react'
 import {
   ResponsiveContainer,
@@ -69,12 +69,12 @@ const getPieSectorFillColor = (
   colorIndex: number,
 ) => {
   if (selectedProjectId === '') {
-    return chartColors[colorIndex % chartColors.length]
+    return chartPieColors[colorIndex % chartPieColors.length]
   }
   if (selectedProjectId === payloadId) {
-    return chartColors[colorIndex % chartColors.length]
+    return chartPieColors[colorIndex % chartPieColors.length]
   }
-  return `${chartColors[colorIndex % chartColors.length]}55`
+  return `${chartPieColors[colorIndex % chartPieColors.length]}55`
 }
 
 export const PieChart = (props: Props) => {

@@ -37,7 +37,6 @@ import { getErrorMessage } from 'utils/string'
 import { FeedbackSubtype } from 'constants/feedbackTypes'
 import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
 import { Permission } from 'constants/permission'
-import { TotalResultCount } from 'components/common/Table/TotalResultCount'
 
 interface ColumnProps {
   eventStatus?: SurveyEventStatus
@@ -328,33 +327,31 @@ const Default = () => {
             </>
           }
         />
-        <div>
-          <TotalResultCount count={(peerReviews || []).length} />
 
-          <Table
-            dataSource={peerReviews}
-            columns={columns({
-              onAfterDelete: mutateSurveyDetail,
-              onAfterEdit: mutateSurveyDetail,
-              eventStatus: status as SurveyEventStatus,
-            })}
-            rowSelection={{
-              type: 'checkbox',
-              selectedRowKeys,
-              onChange: onSelectChange,
-            }}
-            rowKey={(row) => row.id as string}
-            loading={loading}
-            pagination={false}
-            scroll={{ x: 'max-content' }}
-            onRow={(record) => ({
-              onClick: (e) => {
-                if (e.defaultPrevented) return
-                push(ROUTES.EMPLOYEE_PEER_REVIEWS(record.eventID!, record.id!))
-              },
-            })}
-          />
-        </div>
+        <Table
+          dataSource={peerReviews}
+          columns={columns({
+            onAfterDelete: mutateSurveyDetail,
+            onAfterEdit: mutateSurveyDetail,
+            eventStatus: status as SurveyEventStatus,
+          })}
+          rowSelection={{
+            type: 'checkbox',
+            selectedRowKeys,
+            onChange: onSelectChange,
+          }}
+          rowKey={(row) => row.id as string}
+          loading={loading}
+          pagination={false}
+          scroll={{ x: 'max-content' }}
+          onRow={(record) => ({
+            onClick: (e) => {
+              if (e.defaultPrevented) return
+              push(ROUTES.EMPLOYEE_PEER_REVIEWS(record.eventID!, record.id!))
+            },
+          })}
+        />
+
         <Row justify="end">
           <Pagination
             current={filter.page}

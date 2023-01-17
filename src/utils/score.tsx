@@ -2,6 +2,7 @@ import { AgreementLevel } from 'constants/agreementLevel'
 import { ReactElement } from 'react'
 import { Icon } from '@iconify/react'
 import { DomainTypes } from 'constants/feedbackTypes'
+import { chartTrendColors } from 'constants/colors'
 
 export const mapScoreToLikertScale = (score: number): AgreementLevel => {
   if (!score) {
@@ -63,26 +64,26 @@ const trendColorThresholds: Record<
   { color: string; from: number; to: number }[]
 > = {
   workload: [
-    { color: '#1aae9f', from: 0, to: 3.6 }, // Up from 0 to 3.6
-    { color: '#1aae9f', from: 5, to: 3.6 }, // Down from 5 to 3.6
-    { color: '#ff4d4f', from: 3.6, to: 5 }, // Up from 3.6 to 5
-    { color: '#ff4d4f', from: 2.1, to: 0 }, // Down from 2.1 to 0
-    { color: '#788896', from: 3.6, to: 2.1 }, // Down from 3.6 to 2.1
-    { color: '#ff4d4f', from: 5, to: 0 }, // Since these 2 leads to Down from 2.1 to 0
-    { color: '#ff4d4f', from: 3.6, to: 0 },
-    { color: '#ff4d4f', from: 0, to: 5 }, // Since this lead to Up from 3.6 to 5
+    { color: chartTrendColors.green, from: 0, to: 3.6 }, // Up from 0 to 3.6
+    { color: chartTrendColors.green, from: 5, to: 3.6 }, // Down from 5 to 3.6
+    { color: chartTrendColors.red, from: 3.6, to: 5 }, // Up from 3.6 to 5
+    { color: chartTrendColors.red, from: 2.1, to: 0 }, // Down from 2.1 to 0
+    { color: chartTrendColors.gray, from: 3.6, to: 2.1 }, // Down from 3.6 to 2.1
+    { color: chartTrendColors.red, from: 5, to: 0 }, // Since these 2 leads to Down from 2.1 to 0
+    { color: chartTrendColors.red, from: 3.6, to: 0 },
+    { color: chartTrendColors.red, from: 0, to: 5 }, // Since this lead to Up from 3.6 to 5
   ],
   deadline: [
-    { color: '#1aae9f', from: 0, to: 5 }, // Up from 0 to 5
-    { color: '#ff4d4f', from: 3, to: 0 }, // Down from 3 to 0
-    { color: '#788896', from: 5, to: 3 }, // Down from 5 to 3
-    { color: '#ff4d4f', from: 5, to: 0 }, // Since this lead to Down from 3 to 0
+    { color: chartTrendColors.green, from: 0, to: 5 }, // Up from 0 to 5
+    { color: chartTrendColors.red, from: 3, to: 0 }, // Down from 3 to 0
+    { color: chartTrendColors.gray, from: 5, to: 3 }, // Down from 5 to 3
+    { color: chartTrendColors.red, from: 5, to: 0 }, // Since this lead to Down from 3 to 0
   ],
   learning: [
-    { color: '#1aae9f', from: 0, to: 5 },
-    { color: '#ff4d4f', from: 3, to: 0 },
-    { color: '#788896', from: 5, to: 3 },
-    { color: '#ff4d4f', from: 5, to: 0 },
+    { color: chartTrendColors.green, from: 0, to: 5 },
+    { color: chartTrendColors.red, from: 3, to: 0 },
+    { color: chartTrendColors.gray, from: 5, to: 3 },
+    { color: chartTrendColors.red, from: 5, to: 0 },
   ],
 }
 
@@ -103,6 +104,6 @@ export const getTrendScoreColor = (
   return prevScore
     ? trendColorThresholds[domain].find((t) =>
         checkIsSubInterval([t.from, t.to], prevScore, curScore),
-      )?.color || '#788896'
-    : '#788896'
+      )?.color || chartTrendColors.gray
+    : chartTrendColors.gray
 }

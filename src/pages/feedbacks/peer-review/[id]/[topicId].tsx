@@ -20,7 +20,6 @@ import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { ViewPeerReviewer } from 'types/schema'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 import { SEO } from 'components/common/SEO'
-import { TotalResultCount } from 'components/common/Table/TotalResultCount'
 
 interface ColumnProps {
   onAfterDelete: () => void
@@ -103,20 +102,17 @@ const EmployeePeerReviewsPage = () => {
           backHref={ROUTES.PEER_REVIEW_EVENT_DETAIL(query.id as string)}
           title={topicDetail?.title}
         />
-        <div>
-          <TotalResultCount count={(topicDetail?.participants || []).length} />
 
-          <Table
-            dataSource={topicDetail?.participants || []}
-            columns={columns({
-              onAfterDelete: mutate,
-            })}
-            rowKey={(row) => row.eventReviewerID as string}
-            pagination={false}
-            scroll={{ x: 'max-content' }}
-            loading={loading}
-          />
-        </div>
+        <Table
+          dataSource={topicDetail?.participants || []}
+          columns={columns({
+            onAfterDelete: mutate,
+          })}
+          rowKey={(row) => row.eventReviewerID as string}
+          pagination={false}
+          scroll={{ x: 'max-content' }}
+          loading={loading}
+        />
       </Space>
     </>
   )
