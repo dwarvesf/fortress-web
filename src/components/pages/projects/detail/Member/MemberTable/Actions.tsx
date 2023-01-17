@@ -32,7 +32,15 @@ export const Actions = ({
   const onDelete = async () => {
     try {
       setIsLoading(true)
-      await client.deleteProjectMember(projectID, record.employeeID || '')
+
+      if (record.employeeID) {
+        await client.deleteProjectMember(
+          projectID,
+          record.projectMemberID || '',
+        )
+      } else {
+        await client.deleteProjectSlot(projectID, record.projectSlotID || '')
+      }
 
       notification.success({
         message: 'Project member deleted successfully!',

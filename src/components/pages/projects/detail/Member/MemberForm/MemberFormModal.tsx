@@ -73,6 +73,7 @@ export const MemberFormModal = (props: Props) => {
         await client.updateProjectMember(projectID, {
           ...values,
           projectSlotID,
+          projectMemberID,
         })
       }
 
@@ -94,27 +95,6 @@ export const MemberFormModal = (props: Props) => {
     }
   }
 
-  const onUnassign = async () => {
-    try {
-      setIsLoading(true)
-
-      await client.unassignProjectMember(projectID, projectMemberID)
-
-      notification.success({
-        message: `Member unassigned successfully!`,
-      })
-
-      onClose()
-      onAfterSubmit()
-    } catch (error: any) {
-      notification.error({
-        message: getErrorMessage(error, 'Could not unassign the member'),
-      })
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
   const onCancel = () => {
     onClose()
     form.resetFields()
@@ -127,15 +107,7 @@ export const MemberFormModal = (props: Props) => {
       onCancel={onCancel}
       title={`${isEditing ? 'Edit' : 'Create New'} Member`}
       footer={
-        <Row justify="space-between">
-          <span>
-            {isEditing &&
-              initialValues?.status !== ProjectMemberStatus.PENDING && (
-                <Button onClick={onUnassign} loading={isLoading}>
-                  Unassign
-                </Button>
-              )}
-          </span>
+        <Row justify="end">
           <Row>
             <Button onClick={onCancel}>Cancel</Button>
             <Button onClick={form.submit} loading={isLoading} type="primary">

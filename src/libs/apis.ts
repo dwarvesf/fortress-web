@@ -393,9 +393,9 @@ class Client {
     )
   }
 
-  public deleteProjectMember(projectID: string, memberId: string) {
+  public deleteProjectMember(projectID: string, memberID: string) {
     return fetcher<any>(
-      `${BASE_URL}/projects/${projectID}/members/${memberId}`,
+      `${BASE_URL}/projects/${projectID}/members/${memberID}`,
       {
         method: 'DELETE',
         headers: {
@@ -405,16 +405,13 @@ class Client {
     )
   }
 
-  public unassignProjectMember(projectID: string, memberId: string) {
-    return fetcher<any>(
-      `${BASE_URL}/projects/${projectID}/members/${memberId}`,
-      {
-        method: 'PUT',
-        headers: {
-          ...this.privateHeaders,
-        },
+  public deleteProjectSlot(projectID: string, slotID: string) {
+    return fetcher<any>(`${BASE_URL}/projects/${projectID}/slots/${slotID}`, {
+      method: 'DELETE',
+      headers: {
+        ...this.privateHeaders,
       },
-    )
+    })
   }
 
   public updateProjectGeneralInfo(
