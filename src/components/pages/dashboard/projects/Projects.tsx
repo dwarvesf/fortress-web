@@ -106,7 +106,7 @@ const Projects = () => {
       <>
         {dataset.length > 2 ? (
           <StatisticBlock
-            stat={dataset[dataset.length - 1].value}
+            stat={dataset[dataset.length - 1].value.toFixed(1)}
             postfix={getTrendByPercentage(dataset[dataset.length - 1].trend)}
             statColor={theme.colors.gray700}
             postfixColor={getTrendStatusColor(

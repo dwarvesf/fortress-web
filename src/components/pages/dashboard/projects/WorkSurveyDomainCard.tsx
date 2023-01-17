@@ -55,7 +55,7 @@ export const WorkSurveyDomainCard = (props: Props) => {
     if (dataset.length > 1) {
       return (
         <StatisticBlock
-          stat={dataset[dataset.length - 1][domain]}
+          stat={dataset[dataset.length - 1][domain].toFixed(1)}
           postfix={getTrendByPercentage(
             dataset[dataset.length - 1].trend[domain],
           )}

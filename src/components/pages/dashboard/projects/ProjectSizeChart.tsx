@@ -31,6 +31,7 @@ const CustomTooltip = ({ active, payload }: TooltipProps<any, any>) => {
               <strong style={{ color: theme.colors.primary }}>
                 {item.value}
               </strong>
+              {item.value > 1 ? ' people' : ' person'}
             </div>
           ))}
         </div>
