@@ -154,9 +154,21 @@ const Projects = () => {
     dataset: (ViewAudit | ViewEngineeringHealth)[],
   ) => {
     const datasetArray = dataset || []
-    return (
-      <>
-        {(datasetArray || []).length > 2 ? (
+
+    const statisticBlockRenderer = () => {
+      if (datasetArray.length === 0) {
+        return <StatisticBlock statColor={theme.colors.gray700} />
+      }
+      if (datasetArray.length === 1) {
+        return (
+          <StatisticBlock
+            stat={(datasetArray[datasetArray.length - 1].avg || 0).toFixed(1)}
+            statColor={theme.colors.gray700}
+          />
+        )
+      }
+      if (datasetArray.length > 1) {
+        return (
           <StatisticBlock
             stat={(datasetArray[datasetArray.length - 1].avg || 0).toFixed(1)}
             postfix={getTrendByPercentage(
@@ -167,9 +179,13 @@ const Projects = () => {
               datasetArray[datasetArray.length - 1].trend || 0,
             )}
           />
-        ) : (
-          <StatisticBlock statColor={theme.colors.gray700} />
-        )}
+        )
+      }
+    }
+
+    return (
+      <>
+        {statisticBlockRenderer()}
 
         <div
           style={{
@@ -219,7 +235,10 @@ const Projects = () => {
           fetcher={() =>
             client.getProjectsEngineeringHealthScore(selectedProjectId)
           }
-          swrKeys={[GET_PATHS.getProjectsEngineeringHealthScore]}
+          swrKeys={[
+            GET_PATHS.getProjectsEngineeringHealthScore,
+            selectedProjectId,
+          ]}
           childrenRenderers={[averageDatasetRenderer, groupDatasetRenderer]}
         />
 

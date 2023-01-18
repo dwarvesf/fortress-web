@@ -52,6 +52,8 @@ export const CardWithTabs = (props: Props) => {
     fetcher,
   )
 
+  console.log(data)
+
   return (
     <Col span={12}>
       <Card
