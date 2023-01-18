@@ -5,83 +5,133 @@ import { getTrendByPercentage, getTrendStatusColor } from 'utils/score'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { GET_PATHS, client } from 'libs/apis'
 import { theme } from 'styles'
-
+import { ViewAudit, ViewEngineeringHealth } from 'types/schema'
 import { StatisticBlock } from '../StatisticBlock'
 import { CardWithTabs } from './CardWithTabs'
 import { AverageDatasetChart } from './AverageDatasetChart'
 import { ProjectSizeCard } from './ProjectSizeCard'
 import { WorkSurveyDomainCard } from './WorkSurveyDomainCard'
 
-const mockEngineeringHealthAvgData: {
-  project: any
-  engineeringHealth: any[]
-} = {
-  // TODO: update type
-  project: {
-    id: '8dc3be2e-19a4-4942-8a79-56db391a0b15',
-    name: 'Fortress',
-    type: 'dwarves',
-    status: 'active',
-    code: 'fortress',
-  },
-  engineeringHealth: [
-    {
-      quarter: 'Q3/2022',
-      value: 2.8,
-      trend: null,
-    },
-    {
-      quarter: 'Q4/2022',
-      value: 1,
-      trend: -64.29,
-    },
-    {
-      quarter: 'Q1/2023',
-      value: 2.5,
-      trend: 150,
-    },
-    {
-      quarter: 'Q2/2023',
-      value: 4,
-      trend: 60,
-    },
-  ],
-}
-
 const mockAuditScoreAvgData: {
-  project: any
-  auditScore: any[]
+  data: {
+    average: any[]
+    groups: any
+  }
 } = {
-  // TODO: update type
-  project: {
-    id: '8dc3be2e-19a4-4942-8a79-56db391a0b15',
-    name: 'Fortress',
-    type: 'dwarves',
-    status: 'active',
-    code: 'fortress',
+  data: {
+    average: [
+      {
+        quarter: 'Q3/2022',
+        avg: 1,
+        trend: null,
+      },
+      {
+        quarter: 'Q4/2022',
+        avg: 3,
+        trend: 200,
+      },
+      {
+        quarter: 'Q1/2023',
+        avg: 2,
+        trend: -33.33,
+      },
+      {
+        quarter: 'Q2/2023',
+        avg: 1.5,
+        trend: -25,
+      },
+    ],
+    groups: {
+      collaboration: [
+        {
+          quarter: 'Q3/2022',
+          avg: 1,
+          trend: null,
+        },
+        {
+          quarter: 'Q4/2022',
+          avg: 3,
+          trend: 200,
+        },
+        {
+          quarter: 'Q1/2023',
+          avg: 2,
+          trend: -33.33,
+        },
+        {
+          quarter: 'Q2/2023',
+          avg: 1.5,
+          trend: -25,
+        },
+      ],
+      delivery: [
+        {
+          quarter: 'Q3/2022',
+          avg: 1,
+          trend: null,
+        },
+        {
+          quarter: 'Q4/2022',
+          avg: 3,
+          trend: 200,
+        },
+        {
+          quarter: 'Q1/2023',
+          avg: 2,
+          trend: -33.33,
+        },
+        {
+          quarter: 'Q2/2023',
+          avg: 1.5,
+          trend: -25,
+        },
+      ],
+      feedback: [
+        {
+          quarter: 'Q3/2022',
+          avg: 1,
+          trend: null,
+        },
+        {
+          quarter: 'Q4/2022',
+          avg: 3,
+          trend: 200,
+        },
+        {
+          quarter: 'Q1/2023',
+          avg: 2,
+          trend: -33.33,
+        },
+        {
+          quarter: 'Q2/2023',
+          avg: 1.5,
+          trend: -25,
+        },
+      ],
+      quality: [
+        {
+          quarter: 'Q3/2022',
+          avg: 1,
+          trend: null,
+        },
+        {
+          quarter: 'Q4/2022',
+          avg: 3,
+          trend: 200,
+        },
+        {
+          quarter: 'Q1/2023',
+          avg: 2,
+          trend: -33.33,
+        },
+        {
+          quarter: 'Q2/2023',
+          avg: 1.5,
+          trend: -25,
+        },
+      ],
+    },
   },
-  auditScore: [
-    {
-      quarter: 'Q3/2022',
-      value: 1,
-      trend: null,
-    },
-    {
-      quarter: 'Q4/2022',
-      value: 3,
-      trend: 200,
-    },
-    {
-      quarter: 'Q1/2023',
-      value: 2,
-      trend: -33.33,
-    },
-    {
-      quarter: 'Q2/2023',
-      value: 1.5,
-      trend: -25,
-    },
-  ],
 }
 
 const Projects = () => {
@@ -100,20 +150,26 @@ const Projects = () => {
     () => client.getProjectsWorkSurveysAverage(selectedProjectId),
   )
 
-  const averageDatasetRenderer = (dataset: any[]) => {
-    // TODO: update type
+  const averageDatasetRenderer = (
+    dataset: (ViewAudit | ViewEngineeringHealth)[],
+  ) => {
+    const datasetArray = dataset || []
     return (
       <>
-        {dataset.length > 2 ? (
+        {(datasetArray || []).length > 2 ? (
           <StatisticBlock
-            stat={dataset[dataset.length - 1].value.toFixed(1)}
-            postfix={getTrendByPercentage(dataset[dataset.length - 1].trend)}
+            stat={(datasetArray[datasetArray.length - 1].avg || 0).toFixed(1)}
+            postfix={getTrendByPercentage(
+              datasetArray[datasetArray.length - 1].trend || 0,
+            )}
             statColor={theme.colors.gray700}
             postfixColor={getTrendStatusColor(
-              dataset[dataset.length - 1].trend,
+              datasetArray[datasetArray.length - 1].trend || 0,
             )}
           />
-        ) : null}
+        ) : (
+          <StatisticBlock statColor={theme.colors.gray700} />
+        )}
 
         <div
           style={{
@@ -122,7 +178,7 @@ const Projects = () => {
             overflowY: 'hidden',
           }}
         >
-          <AverageDatasetChart dataset={dataset} />
+          <AverageDatasetChart dataset={datasetArray} />
         </div>
       </>
     )
@@ -158,23 +214,20 @@ const Projects = () => {
       <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
         <CardWithTabs
           title="Engineering Health"
-          tabKeys={['average', 'group']}
-          fetchers={[
-            async () => mockEngineeringHealthAvgData.engineeringHealth,
-            async () => [],
-          ]}
-          swrKeys={['engineering-health-average', 'engineering-health-group']}
+          tabKeys={['average', 'groups']}
+          tabIds={['engineering-health-average', 'engineering-health-group']}
+          fetcher={() =>
+            client.getProjectsEngineeringHealthScore(selectedProjectId)
+          }
+          swrKeys={[GET_PATHS.getProjectsEngineeringHealthScore]}
           childrenRenderers={[averageDatasetRenderer, groupDatasetRenderer]}
         />
 
         <CardWithTabs
           title="Audit Score"
-          tabKeys={['average', 'group']}
-          fetchers={[
-            async () => mockAuditScoreAvgData.auditScore,
-            async () => [],
-          ]}
-          swrKeys={['audit-score-average', 'audit-score-group']}
+          tabKeys={['average', 'groups']}
+          fetcher={async () => mockAuditScoreAvgData}
+          tabIds={['audit-score-average', 'audit-score-group']}
           childrenRenderers={[averageDatasetRenderer, groupDatasetRenderer]}
         />
       </Row>

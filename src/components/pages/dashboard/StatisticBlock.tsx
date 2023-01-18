@@ -4,7 +4,7 @@ import { ReactElement } from 'react'
 import { mapScoreToLikertScale } from 'utils/score'
 
 interface Props {
-  stat?: number
+  stat?: number | string
   statColor?: string
   postfix?: ReactElement | string
   postfixColor?: string
@@ -15,7 +15,9 @@ export const StatisticBlock = (props: Props) => {
   const {
     stat,
     postfix,
-    statColor = likertScalesColors[mapScoreToLikertScale(stat || 0)].background,
+    statColor = likertScalesColors[
+      mapScoreToLikertScale(typeof stat === 'number' ? stat : 0)
+    ].background,
     postfixColor,
     isLoading = false,
   } = props

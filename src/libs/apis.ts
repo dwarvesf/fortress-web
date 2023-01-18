@@ -49,6 +49,8 @@ import {
   RequestCreateStackInput,
   RequestUpdateStackBody,
   ViewProjectSizeResponse,
+  ViewEngineringHealthResponse,
+  ViewWorkSurveyResponse,
 } from 'types/schema'
 import { EmployeeListFilter } from 'types/filters/EmployeeListFilter'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
@@ -91,6 +93,7 @@ export const GET_PATHS = {
     `/surveys/${id}/topics/${topicID}/reviews/${reviewerID}`,
   getProjectsSizes: '/dashboards/projects/sizes',
   getProjectsWorkSurveysAverage: '/dashboards/work-surveys',
+  getProjectsEngineeringHealthScore: '/dashboards/engineering-healths',
 }
 export interface Meta {
   page?: number
@@ -776,8 +779,19 @@ class Client {
   public getProjectsWorkSurveysAverage(projectID?: string) {
     const queryString = qs.stringify({ projectID })
 
-    return fetcher<any>(
+    return fetcher<ViewWorkSurveyResponse>(
       `${BASE_URL}/dashboards/projects/work-surveys?${queryString}`,
+      {
+        headers: { ...this.privateHeaders },
+      },
+    )
+  }
+
+  public getProjectsEngineeringHealthScore(projectID?: string) {
+    const queryString = qs.stringify({ projectID })
+
+    return fetcher<ViewEngineringHealthResponse>(
+      `${BASE_URL}/dashboards/projects/engineering-healths?${queryString}`,
       {
         headers: { ...this.privateHeaders },
       },

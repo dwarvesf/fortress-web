@@ -2,13 +2,14 @@ import { Card, Space, Spin } from 'antd'
 import { DomainTypes } from 'constants/feedbackTypes'
 import { useMemo } from 'react'
 import { theme } from 'styles'
+import { ViewWorkSurveysData } from 'types/schema'
 import { getTrendByPercentage, getTrendScoreColor } from 'utils/score'
 import { capitalizeFirstLetter } from 'utils/string'
 import { StatisticBlock } from '../StatisticBlock'
 import { WorkSurveyDomainChart } from './WorkSurveyDomainChart'
 
 interface Props {
-  data: { project: any; workSurveys: any[] } // TODO: update type
+  data: ViewWorkSurveysData
   domain: Exclude<DomainTypes, 'engagement'>
   isLoading: boolean
 }
@@ -41,11 +42,11 @@ export const WorkSurveyDomainCard = (props: Props) => {
     if (dataset.length === 1) {
       return (
         <StatisticBlock
-          stat={dataset[dataset.length - 1][domain].toFixed(1)}
+          stat={(dataset[dataset.length - 1][domain] || 0).toFixed(1)}
           statColor={theme.colors.gray700}
           postfixColor={getTrendScoreColor(
             domain,
-            dataset[dataset.length - 1][domain],
+            dataset[dataset.length - 1][domain] || 0,
             dataset[dataset.length - 1][domain],
           )}
         />
@@ -55,14 +56,14 @@ export const WorkSurveyDomainCard = (props: Props) => {
     if (dataset.length > 1) {
       return (
         <StatisticBlock
-          stat={dataset[dataset.length - 1][domain].toFixed(1)}
+          stat={(dataset[dataset.length - 1][domain] || 0).toFixed(1)}
           postfix={getTrendByPercentage(
-            dataset[dataset.length - 1].trend[domain],
+            dataset[dataset.length - 1].trend![domain] || 0,
           )}
           statColor={theme.colors.gray700}
           postfixColor={getTrendScoreColor(
             domain,
-            dataset[dataset.length - 1][domain],
+            dataset[dataset.length - 1][domain] || 0,
             dataset[dataset.length - 2][domain],
           )}
         />
