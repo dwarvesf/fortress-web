@@ -11,128 +11,6 @@ import { AverageDatasetChart } from './AverageDatasetChart'
 import { ProjectSizeCard } from './ProjectSizeCard'
 import { WorkSurveyDomainCard } from './WorkSurveyDomainCard'
 
-const mockAuditScoreAvgData: {
-  data: {
-    average: any[]
-    groups: any
-  }
-} = {
-  data: {
-    average: [
-      {
-        quarter: 'Q3/2022',
-        avg: 1,
-        trend: null,
-      },
-      {
-        quarter: 'Q4/2022',
-        avg: 3,
-        trend: 200,
-      },
-      {
-        quarter: 'Q1/2023',
-        avg: 2,
-        trend: -33.33,
-      },
-      {
-        quarter: 'Q2/2023',
-        avg: 1.5,
-        trend: -25,
-      },
-    ],
-    groups: {
-      collaboration: [
-        {
-          quarter: 'Q3/2022',
-          avg: 1,
-          trend: null,
-        },
-        {
-          quarter: 'Q4/2022',
-          avg: 3,
-          trend: 200,
-        },
-        {
-          quarter: 'Q1/2023',
-          avg: 2,
-          trend: -33.33,
-        },
-        {
-          quarter: 'Q2/2023',
-          avg: 1.5,
-          trend: -25,
-        },
-      ],
-      delivery: [
-        {
-          quarter: 'Q3/2022',
-          avg: 1,
-          trend: null,
-        },
-        {
-          quarter: 'Q4/2022',
-          avg: 3,
-          trend: 200,
-        },
-        {
-          quarter: 'Q1/2023',
-          avg: 2,
-          trend: -33.33,
-        },
-        {
-          quarter: 'Q2/2023',
-          avg: 1.5,
-          trend: -25,
-        },
-      ],
-      feedback: [
-        {
-          quarter: 'Q3/2022',
-          avg: 1,
-          trend: null,
-        },
-        {
-          quarter: 'Q4/2022',
-          avg: 3,
-          trend: 200,
-        },
-        {
-          quarter: 'Q1/2023',
-          avg: 2,
-          trend: -33.33,
-        },
-        {
-          quarter: 'Q2/2023',
-          avg: 1.5,
-          trend: -25,
-        },
-      ],
-      quality: [
-        {
-          quarter: 'Q3/2022',
-          avg: 1,
-          trend: null,
-        },
-        {
-          quarter: 'Q4/2022',
-          avg: 3,
-          trend: 200,
-        },
-        {
-          quarter: 'Q1/2023',
-          avg: 2,
-          trend: -33.33,
-        },
-        {
-          quarter: 'Q2/2023',
-          avg: 1.5,
-          trend: -25,
-        },
-      ],
-    },
-  },
-}
-
 const Projects = () => {
   const [selectedProjectId, setSelectedProjectId] = useState<string>('')
 
@@ -241,7 +119,7 @@ const Projects = () => {
           title="Audit Score"
           tabTitles={['average', 'groups']}
           selectedProjectId={selectedProjectId}
-          fetcher={async () => mockAuditScoreAvgData}
+          fetcher={() => client.getProjectsAuditScore(selectedProjectId)}
           childrenRenderers={[averageDatasetRenderer, groupDatasetRenderer]}
         />
       </Row>
