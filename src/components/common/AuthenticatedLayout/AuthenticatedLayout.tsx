@@ -19,15 +19,17 @@ import { PageSpinner } from '../PageSpinner'
 import { SidebarLogo } from './SidebarLogo'
 
 const UnreadDot = styled.span`
-  width: 8px;
-  height: 8px;
-  border-radius: 4px;
+  height: 16px;
+  border-radius: 8px;
   background: ${(props) => props.theme.colors.primary};
-  position: absolute;
-  top: 0;
-  right: 0;
-  margin-right: -15px;
-  margin-top: 5px;
+  margin-top: 2px;
+  margin-left: 5px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 10px;
+  color: #ffffff;
+  padding: 0 4px;
 `
 
 const {
@@ -141,7 +143,10 @@ export const AuthenticatedLayout = (props: Props) => {
         content: getItem(
           <span>
             <span style={{ position: 'relative' }}>
-              Feedbacks{unreadCount > 0 && <UnreadDot className="unread-dot" />}
+              Feedbacks
+              {unreadCount > 0 && (
+                <UnreadDot className="unread-dot">{unreadCount}+</UnreadDot>
+              )}
             </span>
           </span>,
           ROUTES.FEEDBACKS,
@@ -150,7 +155,8 @@ export const AuthenticatedLayout = (props: Props) => {
             {
               content: getItem(
                 <span style={{ position: 'relative' }}>
-                  Inbox{unreadCount > 0 && <UnreadDot />}
+                  Inbox
+                  {unreadCount > 0 && <UnreadDot>{unreadCount}+</UnreadDot>}
                 </span>,
                 ROUTES.INBOX,
               ),

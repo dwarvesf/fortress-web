@@ -34,7 +34,7 @@ export const WorkAverage = (props: Props) => {
         textColor={`${
           likertScalesColors[mapScoreToLikertScale(record?.average || 0)].text
         }`}
-        label={record?.average || 0}
+        point={record?.average || 0}
       />
     </Button>
   )

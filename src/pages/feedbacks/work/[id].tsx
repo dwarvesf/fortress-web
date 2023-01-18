@@ -56,7 +56,7 @@ const renderDomainAverageResult = (
           likertScalesColors[mapScoreToLikertScale(record[index]?.average || 0)]
             .text
         }`}
-        label={record[index]?.average || 0}
+        point={record[index]?.average || 0}
       />
     </Button>
   )
