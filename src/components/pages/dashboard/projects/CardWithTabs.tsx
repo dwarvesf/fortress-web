@@ -12,11 +12,12 @@ import { capitalizeFirstLetter } from 'utils/string'
 import { StatisticBlock } from '../StatisticBlock'
 
 interface Props {
+  groupKey: string
   title: ReactElement | string
-  groupKeys: string[]
   tabTitles: (keyof ViewEngineeringHealthData | keyof ViewAuditData)[]
+  selectedProjectId: string
   fetcher: () => Promise<any>
-  childrenRenderers: ((dataset: any) => JSX.Element | null)[] //
+  childrenRenderers: ((dataset: any) => JSX.Element | null)[]
 }
 
 const Card = styled(AntCard)`
@@ -29,9 +30,10 @@ const Card = styled(AntCard)`
 
 export const CardWithTabs = (props: Props) => {
   const {
+    groupKey, // works as identifiers for a specific card
     title,
-    groupKeys, // works as identifiers for each tabs of a specific card, and also keys for swr, e.g ['engineering-health', 'average', selectedProjectId]
     tabTitles, // used for tab's key and label
+    selectedProjectId,
     fetcher,
     childrenRenderers, // children renderer for each tab
   } = props
@@ -47,7 +49,10 @@ export const CardWithTabs = (props: Props) => {
 
   const { data, loading } = useFetchWithCache<
     ViewEngineringHealthResponse | ViewAuditResponse // TODO: BE fix typo
-  >([...groupKeys, tabTitles[currentTabIndex]], fetcher)
+  >(
+    [groupKey, selectedProjectId], // e.g ['engineering-health', selectedProjectId]
+    fetcher,
+  )
 
   return (
     <Col span={12}>

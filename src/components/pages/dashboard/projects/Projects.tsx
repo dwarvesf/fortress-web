@@ -226,9 +226,10 @@ const Projects = () => {
 
       <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
         <CardWithTabs
+          groupKey="engineering-health"
           title="Engineering Health"
           tabTitles={['average', 'groups']}
-          groupKeys={['engineering-health', selectedProjectId]}
+          selectedProjectId={selectedProjectId}
           fetcher={() =>
             client.getProjectsEngineeringHealthScore(selectedProjectId)
           }
@@ -236,9 +237,10 @@ const Projects = () => {
         />
 
         <CardWithTabs
+          groupKey="audit-score"
           title="Audit Score"
           tabTitles={['average', 'groups']}
-          groupKeys={['audit-score', selectedProjectId]}
+          selectedProjectId={selectedProjectId}
           fetcher={async () => mockAuditScoreAvgData}
           childrenRenderers={[averageDatasetRenderer, groupDatasetRenderer]}
         />
