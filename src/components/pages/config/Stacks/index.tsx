@@ -1,12 +1,15 @@
 import { useDisclosure } from '@dwarvesf/react-hooks'
-import { Avatar, Space } from 'antd'
+import { Avatar, Col, Input, Pagination, Row, Space } from 'antd'
 import Table, { ColumnsType } from 'antd/lib/table'
 import { Button } from 'components/common/Button'
 import { TotalResultCount } from 'components/common/Table/TotalResultCount'
 import { Permission } from 'constants/permission'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
+import { useFilter } from 'hooks/useFilter'
 import { client, GET_PATHS } from 'libs/apis'
+import debounce from 'lodash.debounce'
 import { useMemo } from 'react'
+import { StackFilter } from 'types/filters/StackFilter'
 import { ViewStack } from 'types/schema'
 import { StackFormModal } from './StackForm/StackFormModal'
 import { Actions } from './StackTable/Actions'
@@ -17,13 +20,13 @@ export const Stacks = () => {
     onOpen: openAddNewStackDialog,
     onClose: closeAddNewStackDialog,
   } = useDisclosure()
-
+  const { filter, setFilter } = useFilter(new StackFilter())
   const {
     data: stacksData,
     loading,
     mutate,
-  } = useFetchWithCache([GET_PATHS.getStackMetadata], () => {
-    return client.getStackMetadata()
+  } = useFetchWithCache([GET_PATHS.getStackMetadata, filter], () => {
+    return client.getStackMetadata(filter)
   })
   const stacks = stacksData?.data || []
 
@@ -61,13 +64,30 @@ export const Stacks = () => {
   return (
     <>
       <Space direction="vertical" size={24} style={{ width: '100%' }}>
-        <Button
-          type="primary"
-          onClick={openAddNewStackDialog}
-          style={{ marginLeft: 'auto', display: 'block' }}
-        >
-          Add New
-        </Button>
+        <Row justify="end" gutter={[8, 8]}>
+          <Col style={{ width: 256 }}>
+            <Input
+              placeholder="Search stacks"
+              bordered
+              onChange={debounce(
+                (event) =>
+                  setFilter({
+                    keyword: event.target.value,
+                  }),
+                300,
+              )}
+            />
+          </Col>
+          <Col>
+            <Button
+              type="primary"
+              onClick={openAddNewStackDialog}
+              style={{ marginLeft: 'auto', display: 'block' }}
+            >
+              Add New
+            </Button>
+          </Col>
+        </Row>
         <div>
           <TotalResultCount
             count={stacks.length}
@@ -82,6 +102,16 @@ export const Stacks = () => {
             scroll={{ x: 'max-content' }}
           />
         </div>
+        <Row justify="end">
+          <Pagination
+            current={filter.page}
+            onChange={(page, pageSize) => setFilter({ page, size: pageSize })}
+            total={stacksData?.total}
+            pageSize={filter.size}
+            size="small"
+            showSizeChanger
+          />
+        </Row>
       </Space>
       {isAddNewStackDialogOpen && (
         <StackFormModal
