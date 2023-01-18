@@ -95,6 +95,7 @@ export const GET_PATHS = {
   getProjectsSizes: '/dashboards/projects/sizes',
   getProjectsWorkSurveysAverage: '/dashboards/work-surveys',
   getProjectsEngineeringHealthScore: '/dashboards/engineering-healths',
+  getProjectsAuditScore: '/dashboards/audits',
 }
 export interface Meta {
   page?: number
@@ -795,6 +796,17 @@ class Client {
 
     return fetcher<ViewEngineringHealthResponse>(
       `${BASE_URL}/dashboards/projects/engineering-healths?${queryString}`,
+      {
+        headers: { ...this.privateHeaders },
+      },
+    )
+  }
+
+  public getProjectsAuditScore(projectID?: string) {
+    const queryString = qs.stringify({ projectID })
+
+    return fetcher<ViewEngineringHealthResponse>(
+      `${BASE_URL}/dashboards/projects/audits?${queryString}`,
       {
         headers: { ...this.privateHeaders },
       },
