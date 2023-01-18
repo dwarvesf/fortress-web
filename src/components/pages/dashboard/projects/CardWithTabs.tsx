@@ -4,6 +4,7 @@ import { ReactElement, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import {
   ViewAuditData,
+  ViewAuditResponse,
   ViewEngineeringHealthData,
   ViewEngineringHealthResponse,
 } from 'types/schema'
@@ -12,12 +13,10 @@ import { StatisticBlock } from '../StatisticBlock'
 
 interface Props {
   title: ReactElement | string
-  id?: string
-  tabKeys: (keyof ViewEngineeringHealthData | keyof ViewAuditData)[]
-  tabIds: string[]
-  swrKeys?: string[]
+  groupKeys: string[]
+  tabTitles: (keyof ViewEngineeringHealthData | keyof ViewAuditData)[]
   fetcher: () => Promise<any>
-  childrenRenderers: ((dataset: any) => JSX.Element | null)[]
+  childrenRenderers: ((dataset: any) => JSX.Element | null)[] //
 }
 
 const Card = styled(AntCard)`
@@ -31,26 +30,24 @@ const Card = styled(AntCard)`
 export const CardWithTabs = (props: Props) => {
   const {
     title,
-    id,
-    tabKeys,
-    tabIds,
-    swrKeys = [],
+    groupKeys, // works as identifiers for each tabs of a specific card, and also keys for swr, e.g ['engineering-health', 'average', selectedProjectId]
+    tabTitles, // used for tab's key and label
     fetcher,
-    childrenRenderers,
+    childrenRenderers, // children renderer for each tab
   } = props
 
-  const [currentTabKey, setCurrentTabKey] = useState<
+  const [currentTab, setCurrentTab] = useState<
     keyof ViewEngineeringHealthData | keyof ViewAuditData
-  >(tabKeys[0])
+  >(tabTitles[0])
+
   const currentTabIndex = useMemo(
-    () => tabKeys.indexOf(currentTabKey),
-    [currentTabKey, tabKeys],
+    () => tabTitles.indexOf(currentTab),
+    [currentTab, tabTitles],
   )
 
-  const { data, loading } = useFetchWithCache<ViewEngineringHealthResponse>( // TODO: BE fix typo
-    [id, ...swrKeys, tabIds[currentTabIndex]],
-    fetcher,
-  )
+  const { data, loading } = useFetchWithCache<
+    ViewEngineringHealthResponse | ViewAuditResponse // TODO: BE fix typo
+  >([...groupKeys, tabTitles[currentTabIndex]], fetcher)
 
   return (
     <Col span={12}>
@@ -62,13 +59,13 @@ export const CardWithTabs = (props: Props) => {
         title={title}
         extra={
           <Tabs
-            defaultActiveKey="average"
-            items={tabKeys.map((d) => ({
+            defaultActiveKey={tabTitles[0]}
+            items={tabTitles.map((d) => ({
               key: d,
               label: capitalizeFirstLetter(d),
             }))}
             onTabClick={(k) =>
-              setCurrentTabKey(
+              setCurrentTab(
                 k as keyof ViewEngineeringHealthData | keyof ViewAuditData,
               )
             }
@@ -100,9 +97,7 @@ export const CardWithTabs = (props: Props) => {
                 />
               </>
             ) : (
-              childrenRenderers[currentTabIndex](
-                (data?.data || {})[currentTabKey],
-              )
+              childrenRenderers[currentTabIndex]((data?.data || {})[currentTab])
             )}
           </Space>
         </div>

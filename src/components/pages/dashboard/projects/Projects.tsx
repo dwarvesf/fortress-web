@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { getTrendByPercentage, getTrendStatusColor } from 'utils/score'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { GET_PATHS, client } from 'libs/apis'
-import { theme } from 'styles'
 import { ViewAudit, ViewEngineeringHealth } from 'types/schema'
 import { StatisticBlock } from '../StatisticBlock'
 import { CardWithTabs } from './CardWithTabs'
@@ -157,13 +156,12 @@ const Projects = () => {
 
     const statisticBlockRenderer = () => {
       if (datasetArray.length === 0) {
-        return <StatisticBlock statColor={theme.colors.gray700} />
+        return <StatisticBlock />
       }
       if (datasetArray.length === 1) {
         return (
           <StatisticBlock
             stat={(datasetArray[datasetArray.length - 1].avg || 0).toFixed(1)}
-            statColor={theme.colors.gray700}
           />
         )
       }
@@ -174,7 +172,6 @@ const Projects = () => {
             postfix={getTrendByPercentage(
               datasetArray[datasetArray.length - 1].trend || 0,
             )}
-            statColor={theme.colors.gray700}
             postfixColor={getTrendStatusColor(
               datasetArray[datasetArray.length - 1].trend || 0,
             )}
@@ -230,23 +227,19 @@ const Projects = () => {
       <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
         <CardWithTabs
           title="Engineering Health"
-          tabKeys={['average', 'groups']}
-          tabIds={['engineering-health-average', 'engineering-health-group']}
+          tabTitles={['average', 'groups']}
+          groupKeys={['engineering-health', selectedProjectId]}
           fetcher={() =>
             client.getProjectsEngineeringHealthScore(selectedProjectId)
           }
-          swrKeys={[
-            GET_PATHS.getProjectsEngineeringHealthScore,
-            selectedProjectId,
-          ]}
           childrenRenderers={[averageDatasetRenderer, groupDatasetRenderer]}
         />
 
         <CardWithTabs
           title="Audit Score"
-          tabKeys={['average', 'groups']}
+          tabTitles={['average', 'groups']}
+          groupKeys={['audit-score', selectedProjectId]}
           fetcher={async () => mockAuditScoreAvgData}
-          tabIds={['audit-score-average', 'audit-score-group']}
           childrenRenderers={[averageDatasetRenderer, groupDatasetRenderer]}
         />
       </Row>
