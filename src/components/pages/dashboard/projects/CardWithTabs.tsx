@@ -1,41 +1,57 @@
 import { Card as AntCard, Col, Space, Spin, Tabs } from 'antd'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
-import { ReactElement, useId, useMemo, useState } from 'react'
+import { ReactElement, useMemo, useState } from 'react'
 import styled from 'styled-components'
+import {
+  ViewAuditData,
+  ViewAuditResponse,
+  ViewEngineeringHealthData,
+  ViewEngineringHealthResponse,
+} from 'types/schema'
 import { capitalizeFirstLetter } from 'utils/string'
+import { StatisticBlock } from '../StatisticBlock'
 
 interface Props {
+  groupKey: string
   title: ReactElement | string
-  id?: string
-  tabKeys: string[]
-  swrKeys: string[]
-  fetchers: (() => Promise<any[]>)[]
-  childrenRenderers: ((dataset: any) => JSX.Element | null)[] // TODO: update type
+  tabTitles: (keyof ViewEngineeringHealthData | keyof ViewAuditData)[]
+  selectedProjectId: string
+  fetcher: () => Promise<any>
+  childrenRenderers: ((dataset: any) => JSX.Element | null)[]
 }
 
 const Card = styled(AntCard)`
   .ant-card-extra {
     padding: 0;
-    width: 130px;
+    width: 140px;
     min-width: 100px;
   }
 `
 
 export const CardWithTabs = (props: Props) => {
-  const { title, id, tabKeys, swrKeys, fetchers, childrenRenderers } = props
+  const {
+    groupKey, // works as an identifier for a specific card
+    title,
+    tabTitles, // used for tab's key and label
+    selectedProjectId,
+    fetcher,
+    childrenRenderers, // children renderer for each tab
+  } = props
 
-  const [currentTabKey, setCurrentTabKey] = useState<string>(tabKeys[0])
+  const [currentTab, setCurrentTab] = useState<
+    keyof ViewEngineeringHealthData | keyof ViewAuditData
+  >(tabTitles[0])
+
   const currentTabIndex = useMemo(
-    () => tabKeys.indexOf(currentTabKey),
-    [currentTabKey, tabKeys],
+    () => tabTitles.indexOf(currentTab),
+    [currentTab, tabTitles],
   )
 
-  const uniqueId = useId()
-  const componentId = id || uniqueId
-
-  const { data = [], loading } = useFetchWithCache<any[], Error>( // TODO: update type
-    [swrKeys[currentTabIndex], componentId],
-    fetchers[currentTabIndex],
+  const { data, loading } = useFetchWithCache<
+    ViewEngineringHealthResponse | ViewAuditResponse // TODO: BE fix typo
+  >(
+    [groupKey, selectedProjectId], // e.g ['engineering-health', selectedProjectId]
+    fetcher,
   )
 
   return (
@@ -48,12 +64,16 @@ export const CardWithTabs = (props: Props) => {
         title={title}
         extra={
           <Tabs
-            defaultActiveKey="average"
-            items={tabKeys.map((d) => ({
+            defaultActiveKey={tabTitles[0]}
+            items={tabTitles.map((d) => ({
               key: d,
               label: capitalizeFirstLetter(d),
             }))}
-            onTabClick={setCurrentTabKey}
+            onTabClick={(k) =>
+              setCurrentTab(
+                k as keyof ViewEngineeringHealthData | keyof ViewAuditData,
+              )
+            }
           />
         }
       >
@@ -69,16 +89,20 @@ export const CardWithTabs = (props: Props) => {
         >
           <Space direction="vertical" size={12}>
             {loading ? (
-              <Spin
-                size="large"
-                style={{
-                  padding: 16,
-                  display: 'flex',
-                  justifyContent: 'center',
-                }}
-              />
+              <>
+                <StatisticBlock isLoading />
+                <Spin
+                  size="large"
+                  style={{
+                    height: 230,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                />
+              </>
             ) : (
-              childrenRenderers[currentTabIndex](data)
+              childrenRenderers[currentTabIndex]((data?.data || {})[currentTab])
             )}
           </Space>
         </div>

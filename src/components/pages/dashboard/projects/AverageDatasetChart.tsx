@@ -2,10 +2,11 @@ import { Card, Tag } from 'antd'
 import { AreaChart } from 'components/common/AreaChart'
 import { CartesianAxisProps, TooltipProps } from 'recharts'
 import { theme } from 'styles'
+import { ViewAudit, ViewEngineeringHealth } from 'types/schema'
 import { getTrendByPercentage, getTrendStatusColor } from 'utils/score'
 
 interface Props {
-  dataset: any[] // TODO: update type
+  dataset: (ViewAudit | ViewEngineeringHealth)[]
 }
 
 const CustomTooltip = (record: TooltipProps<any, any>) => {
@@ -101,7 +102,7 @@ export const AverageDatasetChart = (props: Props) => {
       height={230}
       minWidth={320}
       dataset={dataset}
-      lineDataKey="value"
+      lineDataKey="avg"
       xAxisDataKey="quarter"
       xAxisTick={
         <CustomAxisTick
