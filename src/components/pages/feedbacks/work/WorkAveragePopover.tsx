@@ -21,7 +21,7 @@ export const WorkAveragePopover = (props: Props) => {
     <>
       {typeof record.average === 'number' && (
         <span style={{ fontSize: 17 }}>
-          <strong>{record?.average || 0}</strong>
+          <strong>{Number(record?.average.toFixed(1) || 0)}</strong>
           <span style={{ fontSize: 14 }}>/5</span>
         </span>
       )}
@@ -45,6 +45,7 @@ export const WorkAveragePopover = (props: Props) => {
                       camelToSnakeCase(e[0]) as keyof typeof likertScalesColors
                     ].background
                   }`}
+                  size={28}
                 />
                 <span style={{ marginLeft: 8 }}>
                   {levels[camelToSnakeCase(e[0]) as AgreementLevel]}

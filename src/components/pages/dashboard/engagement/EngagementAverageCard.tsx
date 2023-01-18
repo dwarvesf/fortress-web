@@ -83,7 +83,7 @@ export const EngagementAverageCard = (props: Props) => {
 
         <Space direction="vertical" size={12}>
           <StatisticBlock
-            stat={currentQuarterData?.average || 0}
+            stat={Number(currentQuarterData?.average?.toFixed(1) || 0)}
             postfix="/5"
           />
 

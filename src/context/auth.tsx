@@ -99,7 +99,11 @@ const AuthContextProvider = ({ children }: WithChildren) => {
         setUser(profile.data)
         const auth = await client.getAuth()
         setPermissions(auth.data?.permissions || [])
-      } catch (error) {
+      } catch (error: any) {
+        if (error.response.status === 401) {
+          logout()
+        }
+
         console.error(error)
       } finally {
         setIsAuthenticating(false)

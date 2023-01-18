@@ -95,7 +95,7 @@ export const EditProjectContactInfoModal = (props: Props) => {
           <Form.Item
             label="Account Manager"
             name="accountManagerID"
-            rules={[{ required: true, message: 'Wrong email format' }]}
+            rules={[{ required: true, message: 'Required' }]}
           >
             <AsyncSelect
               placeholder="Select project's account manager"
