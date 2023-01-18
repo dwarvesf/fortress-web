@@ -57,6 +57,7 @@ import { ProjectWorkUnitListFilter } from 'types/filters/ProjectWorkUnitListFilt
 import { FeedbackListFilter } from 'types/filters/FeedbackListFilter'
 import { SurveyListFilter } from 'types/filters/SurveyListFilter'
 import { SurveyDetailFilter } from 'types/filters/SurveyDetailFilter'
+import { StackFilter } from 'types/filters/StackFilter'
 import qs from 'qs'
 import fetcher from './fetcher'
 
@@ -255,10 +256,15 @@ class Client {
     )
   }
 
-  public getStackMetadata = () => {
-    return fetcher<ViewStackResponse>(`${BASE_URL}/metadata/stacks`, {
-      headers: { ...this.privateHeaders },
-    })
+  public getStackMetadata = (filter: StackFilter) => {
+    const queryString = qs.stringify(filter)
+
+    return fetcher<ViewStackResponse & Meta>(
+      `${BASE_URL}/metadata/stacks?${queryString}`,
+      {
+        headers: { ...this.privateHeaders },
+      },
+    )
   }
 
   public createStackMetadata = (data: RequestCreateStackInput) => {
