@@ -41,7 +41,7 @@ const renderCustomizedLabel = ({
   midAngle,
   outerRadius,
 }: PieLabelRenderProps) => {
-  const radius = Number(outerRadius) * 1.25
+  const radius = Number(outerRadius) * 1.22
   const x = Number(cx) + radius * Math.cos(-Number(midAngle) * RADIAN)
   const y = Number(cy) + radius * Math.sin(-Number(midAngle) * RADIAN)
 
