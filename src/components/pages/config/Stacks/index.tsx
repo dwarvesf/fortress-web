@@ -64,7 +64,7 @@ export const Stacks = () => {
   return (
     <>
       <Space direction="vertical" size={24} style={{ width: '100%' }}>
-        <Row>
+        <Row justify="end" gutter={[8, 8]}>
           <Col style={{ width: 256 }}>
             <Input
               placeholder="Search stacks"
@@ -78,13 +78,15 @@ export const Stacks = () => {
               )}
             />
           </Col>
-          <Button
-            type="primary"
-            onClick={openAddNewStackDialog}
-            style={{ marginLeft: 'auto', display: 'block' }}
-          >
-            Add New
-          </Button>
+          <Col>
+            <Button
+              type="primary"
+              onClick={openAddNewStackDialog}
+              style={{ marginLeft: 'auto', display: 'block' }}
+            >
+              Add New
+            </Button>
+          </Col>
         </Row>
         <div>
           <TotalResultCount
