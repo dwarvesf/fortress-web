@@ -30,7 +30,7 @@ const Card = styled(AntCard)`
 
 export const CardWithTabs = (props: Props) => {
   const {
-    groupKey, // works as identifiers for a specific card
+    groupKey, // works as an identifier for a specific card
     title,
     tabTitles, // used for tab's key and label
     selectedProjectId,
