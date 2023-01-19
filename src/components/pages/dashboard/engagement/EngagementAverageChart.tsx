@@ -84,7 +84,7 @@ export const EngagementAverageChart = (props: Props) => {
       height={230}
       minWidth={320}
       dataset={(data.dataset || []).slice(-4)}
-      lineDataKeys="average"
+      lineDataKeys={['average']}
       xAxisDataKey="name"
       xAxisTick={
         <CustomAxisTick

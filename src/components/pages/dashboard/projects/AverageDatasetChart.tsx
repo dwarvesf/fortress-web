@@ -102,7 +102,7 @@ export const AverageDatasetChart = (props: Props) => {
       height={250}
       minWidth={320}
       dataset={dataset}
-      lineDataKeys="avg"
+      lineDataKeys={['avg']}
       xAxisDataKey="quarter"
       xAxisTick={
         <CustomAxisTick

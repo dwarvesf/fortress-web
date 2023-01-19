@@ -32,11 +32,12 @@ interface Props
   height: string | number
   minHeight?: string | number
   dataset?: any[]
-  lineDataKeys?: (string | DataKey<any>) | (string | DataKey<any>)[]
+  lineDataKeys?: (string | DataKey<any>)[]
   customToolTip?: ReactElement
   strokeColors: string[]
   hasLegend?: boolean
   customLegendRenderer?: (props: any) => JSX.Element
+  linesOpacity?: Record<string, number>
 }
 
 export const LineChart = (props: Props) => {
@@ -60,6 +61,7 @@ export const LineChart = (props: Props) => {
     strokeColors,
     hasLegend = false,
     customLegendRenderer,
+    linesOpacity,
     ...rest
   } = props
 
@@ -100,6 +102,7 @@ export const LineChart = (props: Props) => {
         {hasLegend && (
           <Legend verticalAlign="top" content={customLegendRenderer} />
         )}
+
         {customToolTip ? <Tooltip content={customToolTip} /> : <Tooltip />}
 
         {typeof lineDataKeys === 'string' ? (
@@ -116,6 +119,7 @@ export const LineChart = (props: Props) => {
               stroke={strokeColors[i % strokeColors.length]}
               strokeWidth={1.5}
               animationDuration={600}
+              opacity={linesOpacity ? linesOpacity[String(k)] : 1}
             />
           ))
         )}

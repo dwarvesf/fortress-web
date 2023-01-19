@@ -2,7 +2,9 @@ import { Icon } from '@iconify/react'
 import { Card, Tag } from 'antd'
 import { LineChart } from 'components/common/LineChart'
 import { chartColors } from 'constants/colors'
+import { useState } from 'react'
 import { CartesianAxisProps, TooltipProps } from 'recharts'
+import { DataKey } from 'recharts/types/util/types'
 import { theme } from 'styles'
 import { ViewGroupAudit, ViewGroupEngineeringHealth } from 'types/schema'
 import { getTrendByPercentage, getTrendStatusColor } from 'utils/score'
@@ -108,6 +110,17 @@ const CustomAxisTick = ({
 export const GroupDatasetChart = (props: Props) => {
   const { dataKeys, dataset } = props
 
+  const [linesOpacity, setLinesOpacity] = useState<Record<string, number>>(
+    () => {
+      const obj: Record<string, number> = {}
+
+      ;(dataKeys || [])?.forEach((k: DataKey<any>) => {
+        obj[String(k)] = 1
+      })
+      return obj
+    },
+  )
+
   const customLegendRenderer = (props: any) => {
     // need to use trend data from dataset
     const { payload } = props
@@ -118,43 +131,74 @@ export const GroupDatasetChart = (props: Props) => {
           display: 'flex',
           width: '100%',
           flexWrap: 'wrap',
-          marginBottom: 20,
+          paddingTop: 4,
+          paddingBottom: 16,
+          height: 'max-content',
+        }}
+        onMouseEnter={() => {
+          const obj: Record<string, number> = {}
+
+          ;(dataKeys || [])?.forEach((k: DataKey<any>) => {
+            obj[String(k)] = 1
+          })
+
+          setLinesOpacity(obj)
         }}
       >
-        {payload.map((entry: any, index: number) => (
-          <span
-            key={`item-${index}`}
-            style={{
-              marginLeft: 10,
-              marginRight: 10,
-              fontSize: 13,
-              display: 'flex',
-              alignItems: 'center',
-            }}
-          >
-            <Icon
-              icon="material-symbols:line-end-circle"
-              color={entry.color}
-              style={{ marginRight: 3 }}
-            />
-            <span>{capitalizeFirstLetter(entry.value).replace('-', ' ')}</span>
-            {dataset !== null && dataset.length > 1 ? (
-              <span
-                style={{
-                  color: getTrendStatusColor(
+        {payload.map((entry: any, index: number) => {
+          return (
+            <span
+              key={`item-${index}`}
+              style={{
+                marginLeft: 10,
+                marginRight: 10,
+                fontSize: 13,
+                display: 'flex',
+                alignItems: 'center',
+                cursor: 'pointer',
+                width: 135,
+              }}
+              className={`recharts-legend-item legend-item-${index}`}
+              onMouseEnter={() => {
+                const obj: Record<string, number> = {}
+
+                ;(dataKeys || [])?.forEach((k: DataKey<any>) => {
+                  obj[String(k)] = 0.1
+                })
+
+                const { dataKey } = entry
+                obj[dataKey] = 1
+
+                setLinesOpacity(obj)
+              }}
+            >
+              <Icon
+                icon="material-symbols:line-end-circle-outline"
+                color={entry.color}
+                style={{ fontSize: 15, marginRight: 2 }}
+              />
+              <span>
+                {capitalizeFirstLetter(entry.value).replace('-', ' ')}
+              </span>
+              {dataset !== null && dataset.length > 1 ? (
+                <span
+                  style={{
+                    color: getTrendStatusColor(
+                      dataset[dataset.length - 1].trend[
+                        payload[index].dataKey
+                      ] || 0,
+                    ),
+                  }}
+                >
+                  {getTrendByPercentage(
                     dataset[dataset.length - 1].trend[payload[index].dataKey] ||
                       0,
-                  ),
-                }}
-              >
-                {getTrendByPercentage(
-                  dataset[dataset.length - 1].trend[payload[index].dataKey] ||
-                    0,
-                )}
-              </span>
-            ) : null}
-          </span>
-        ))}
+                  )}
+                </span>
+              ) : null}
+            </span>
+          )
+        })}
       </div>
     )
   }
@@ -178,6 +222,7 @@ export const GroupDatasetChart = (props: Props) => {
       strokeColors={chartColors}
       hasLegend
       customLegendRenderer={customLegendRenderer}
+      linesOpacity={linesOpacity}
     />
   )
 }

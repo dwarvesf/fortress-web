@@ -137,7 +137,7 @@ export const WorkSurveyDomainChart = (props: Props) => {
       height={230}
       minWidth={350}
       dataset={dataset}
-      lineDataKeys={dataKey}
+      lineDataKeys={[dataKey]}
       xAxisDataKey="endDate"
       xAxisTick={
         <CustomAxisTick
