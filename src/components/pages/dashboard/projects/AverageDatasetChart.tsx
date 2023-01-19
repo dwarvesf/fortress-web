@@ -99,7 +99,7 @@ export const AverageDatasetChart = (props: Props) => {
   return (
     <LineChart
       width="100%"
-      height={250}
+      height={260}
       minWidth={320}
       dataset={dataset}
       lineDataKeys={['avg']}

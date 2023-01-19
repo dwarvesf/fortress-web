@@ -122,7 +122,6 @@ export const GroupDatasetChart = (props: Props) => {
   )
 
   const customLegendRenderer = (props: any) => {
-    // need to use trend data from dataset
     const { payload } = props
 
     return (
@@ -131,7 +130,7 @@ export const GroupDatasetChart = (props: Props) => {
           display: 'flex',
           width: '100%',
           flexWrap: 'wrap',
-          paddingTop: 4,
+          paddingTop: 8,
           paddingBottom: 16,
           height: 'max-content',
         }}
@@ -158,7 +157,6 @@ export const GroupDatasetChart = (props: Props) => {
                 cursor: 'pointer',
                 width: 135,
               }}
-              className={`recharts-legend-item legend-item-${index}`}
               onMouseEnter={() => {
                 const obj: Record<string, number> = {}
 
@@ -206,7 +204,7 @@ export const GroupDatasetChart = (props: Props) => {
   return (
     <LineChart
       width="100%"
-      height={292.59}
+      height={302.59}
       minWidth={320}
       dataset={dataset}
       lineDataKeys={dataKeys}
