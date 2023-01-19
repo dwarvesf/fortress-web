@@ -137,8 +137,8 @@ const CreateNewProjectPage = () => {
           memberData?.employeeID || '',
         )?.fullName,
         isLead: memberData.isLead,
-        joinedDate: memberData.joinedDate,
-        leftDate: memberData.leftDate,
+        startDate: memberData.startDate,
+        endDate: memberData.endDate,
         positions: getPositionsFromIDs(
           positionsData.data || [],
           memberData.positions,

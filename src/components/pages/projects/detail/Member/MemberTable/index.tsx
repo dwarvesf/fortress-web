@@ -68,15 +68,15 @@ export const MemberTable = ({
         render: (value) => (value ? capitalizeFirstLetter(value) : '-'),
       },
       {
-        title: 'Joined Date',
-        key: 'joinedDate',
-        dataIndex: 'joinedDate',
+        title: 'Start Date',
+        key: 'startDate',
+        dataIndex: 'startDate',
         render: (value) => (value ? format(new Date(value), DATE_FORMAT) : '-'),
       },
       {
-        title: 'Left Date',
-        key: 'leftDate',
-        dataIndex: 'leftDate',
+        title: 'End Date',
+        key: 'endDate',
+        dataIndex: 'endDate',
         render: (value) => (value ? format(new Date(value), DATE_FORMAT) : '-'),
       },
       {

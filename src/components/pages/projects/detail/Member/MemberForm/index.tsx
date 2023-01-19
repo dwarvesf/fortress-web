@@ -197,30 +197,30 @@ export const MemberForm = (props: Props) => {
         </Col>
         <Col span={24} md={{ span: 12 }}>
           <Form.Item
-            label="Joined Date"
-            name="joinedDate"
+            label="Start Date"
+            name="startDate"
             rules={[
               { required: isAssigning && !isPending, message: 'Required' },
             ]}
           >
             <Input
               type="date"
-              placeholder="Select joined date"
+              placeholder="Select start date"
               className="bordered"
             />
           </Form.Item>
         </Col>
         <Col span={24} md={{ span: 12 }}>
           <Form.Item
-            label="Left Date"
-            name="leftDate"
+            label="End Date"
+            name="endDate"
             rules={[{ required: isInactive, message: 'Required' }]}
           >
             <Input
               type="date"
-              placeholder="Select left date"
+              placeholder="Select end date"
               className="bordered"
-              // If status is not inactive, if we need to provide a leftDate,
+              // If status is not inactive, if we need to provide an endDate,
               // it must be some date into the future
               min={isInactive ? undefined : format(today, 'yyyy-MM-dd')}
             />

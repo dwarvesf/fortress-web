@@ -106,11 +106,11 @@ export const Actions = ({
             ...record,
             positions:
               record.positions?.map((position) => position.id || '') || [],
-            joinedDate: record.joinedDate
-              ? format(new Date(record.joinedDate), SERVER_DATE_FORMAT)
+            startDate: record.startDate
+              ? format(new Date(record.startDate), SERVER_DATE_FORMAT)
               : undefined,
-            leftDate: record.leftDate
-              ? format(new Date(record.leftDate), SERVER_DATE_FORMAT)
+            endDate: record.endDate
+              ? format(new Date(record.endDate), SERVER_DATE_FORMAT)
               : undefined,
             seniorityID: record.seniority?.id || '',
           }}
