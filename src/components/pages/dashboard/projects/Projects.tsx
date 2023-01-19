@@ -10,6 +10,100 @@ import { CardWithTabs } from './CardWithTabs'
 import { AverageDatasetChart } from './AverageDatasetChart'
 import { ProjectSizeCard } from './ProjectSizeCard'
 import { WorkSurveyDomainCard } from './WorkSurveyDomainCard'
+import { GroupDatasetChart } from './GroupDatasetChart'
+
+const averageDatasetRenderer = (
+  dataset: (ViewAudit | ViewEngineeringHealth)[],
+) => {
+  const datasetArray = dataset || []
+
+  const statisticBlockRenderer = () => {
+    if (datasetArray.length === 0) {
+      return <StatisticBlock />
+    }
+    if (datasetArray.length === 1) {
+      return (
+        <StatisticBlock
+          stat={(datasetArray[datasetArray.length - 1].avg || 0).toFixed(1)}
+        />
+      )
+    }
+    if (datasetArray.length > 1) {
+      return (
+        <StatisticBlock
+          stat={(datasetArray[datasetArray.length - 1].avg || 0).toFixed(1)}
+          postfix={getTrendByPercentage(
+            datasetArray[datasetArray.length - 1].trend || 0,
+          )}
+          postfixColor={getTrendStatusColor(
+            datasetArray[datasetArray.length - 1].trend || 0,
+          )}
+        />
+      )
+    }
+  }
+
+  return (
+    <>
+      {statisticBlockRenderer()}
+
+      <div
+        style={{
+          width: '100%',
+          overflowX: 'auto',
+          overflowY: 'hidden',
+        }}
+      >
+        <AverageDatasetChart dataset={datasetArray} />
+      </div>
+    </>
+  )
+}
+
+const engineeringHealthGroupDatasetRenderer = (dataset: any) => {
+  const datasetArray = dataset || []
+
+  return (
+    <div
+      style={{
+        width: '100%',
+        overflowX: 'auto',
+        overflowY: 'hidden',
+      }}
+    >
+      <GroupDatasetChart
+        dataKeys={['collaboration', 'delivery', 'feedback', 'quality']}
+        dataset={datasetArray}
+      />
+    </div>
+  )
+}
+
+const auditScoreGroupDatasetRenderer = (dataset: any) => {
+  const datasetArray = dataset || []
+
+  return (
+    <div
+      style={{
+        width: '100%',
+        overflowX: 'auto',
+        overflowY: 'hidden',
+      }}
+    >
+      <GroupDatasetChart
+        dataKeys={[
+          'backend',
+          'blockchain',
+          'frontend',
+          'mobile',
+          'process',
+          'system',
+        ]}
+        dataset={datasetArray}
+      />
+    </div>
+  )
+}
 
 const Projects = () => {
   const [selectedProjectId, setSelectedProjectId] = useState<string>('')
@@ -26,56 +120,6 @@ const Projects = () => {
     [GET_PATHS.getProjectsWorkSurveysAverage, selectedProjectId],
     () => client.getProjectsWorkSurveysAverage(selectedProjectId),
   )
-
-  const averageDatasetRenderer = (
-    dataset: (ViewAudit | ViewEngineeringHealth)[],
-  ) => {
-    const datasetArray = dataset || []
-
-    const statisticBlockRenderer = () => {
-      if (datasetArray.length === 0) {
-        return <StatisticBlock />
-      }
-      if (datasetArray.length === 1) {
-        return (
-          <StatisticBlock
-            stat={(datasetArray[datasetArray.length - 1].avg || 0).toFixed(1)}
-          />
-        )
-      }
-      if (datasetArray.length > 1) {
-        return (
-          <StatisticBlock
-            stat={(datasetArray[datasetArray.length - 1].avg || 0).toFixed(1)}
-            postfix={getTrendByPercentage(
-              datasetArray[datasetArray.length - 1].trend || 0,
-            )}
-            postfixColor={getTrendStatusColor(
-              datasetArray[datasetArray.length - 1].trend || 0,
-            )}
-          />
-        )
-      }
-    }
-
-    return (
-      <>
-        {statisticBlockRenderer()}
-
-        <div
-          style={{
-            width: '100%',
-            overflowX: 'auto',
-            overflowY: 'hidden',
-          }}
-        >
-          <AverageDatasetChart dataset={datasetArray} />
-        </div>
-      </>
-    )
-  }
-
-  const groupDatasetRenderer = () => null
 
   return (
     <>
@@ -111,7 +155,10 @@ const Projects = () => {
           fetcher={() =>
             client.getProjectsEngineeringHealthScore(selectedProjectId)
           }
-          childrenRenderers={[averageDatasetRenderer, groupDatasetRenderer]}
+          childrenRenderers={[
+            averageDatasetRenderer,
+            engineeringHealthGroupDatasetRenderer,
+          ]}
         />
 
         <CardWithTabs
@@ -120,7 +167,10 @@ const Projects = () => {
           tabTitles={['average', 'groups']}
           selectedProjectId={selectedProjectId}
           fetcher={() => client.getProjectsAuditScore(selectedProjectId)}
-          childrenRenderers={[averageDatasetRenderer, groupDatasetRenderer]}
+          childrenRenderers={[
+            averageDatasetRenderer,
+            auditScoreGroupDatasetRenderer,
+          ]}
         />
       </Row>
     </>

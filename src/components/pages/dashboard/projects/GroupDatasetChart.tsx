@@ -1,0 +1,183 @@
+import { Icon } from '@iconify/react'
+import { Card, Tag } from 'antd'
+import { LineChart } from 'components/common/LineChart'
+import { chartColors } from 'constants/colors'
+import { CartesianAxisProps, TooltipProps } from 'recharts'
+import { theme } from 'styles'
+import { ViewGroupAudit, ViewGroupEngineeringHealth } from 'types/schema'
+import { getTrendByPercentage, getTrendStatusColor } from 'utils/score'
+import { capitalizeFirstLetter } from 'utils/string'
+
+interface Props {
+  dataKeys: (keyof ViewGroupAudit | keyof ViewGroupEngineeringHealth)[]
+  dataset: any[]
+}
+
+const CustomTooltip = (record: TooltipProps<any, any>) => {
+  if (record.active && record.payload?.length) {
+    return (
+      <Card
+        bordered={false}
+        bodyStyle={{
+          padding: 12,
+          borderRadius: 8,
+          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+        }}
+      >
+        <strong>{record.label}</strong>
+        <div>
+          {record.payload.map((item) => {
+            return (
+              <div style={{ color: theme.colors.gray700 }} key={item.dataKey}>
+                <span>{capitalizeFirstLetter(item.name)}: </span>
+                {item.payload.trend === null ? (
+                  <strong style={{ color: theme.colors.primary }}>
+                    {item?.value === 0 ? 'No data' : item?.value.toFixed(1)}
+                  </strong>
+                ) : (
+                  <>
+                    <strong style={{ color: theme.colors.primary }}>
+                      {item?.value === 0 ? 'No data' : item?.value.toFixed(1)}
+                    </strong>{' '}
+                    {getTrendByPercentage(
+                      item.payload.trend[item.dataKey!],
+                    ) && (
+                      <Tag
+                        style={{
+                          color: getTrendStatusColor(
+                            item.payload.trend[item.dataKey!],
+                          ),
+                          borderColor: getTrendStatusColor(
+                            item.payload.trend[item.dataKey!],
+                          ),
+                          backgroundColor: `${getTrendStatusColor(
+                            item.payload.trend[item.dataKey!],
+                          )}08`,
+                        }}
+                      >
+                        {getTrendByPercentage(
+                          item.payload.trend[item.dataKey!],
+                        )}
+                      </Tag>
+                    )}
+                  </>
+                )}
+              </div>
+            )
+          })}
+        </div>
+      </Card>
+    )
+  }
+
+  return null
+}
+
+const CustomAxisTick = ({
+  x,
+  y,
+  payload,
+  currentEvent,
+}: CartesianAxisProps & {
+  payload?: any // TODO: update type
+  currentEvent: string
+}) => {
+  return (
+    <g
+      transform={`translate(${x},${y})`}
+      style={{
+        fontWeight: 400,
+        fontSize: 13,
+      }}
+    >
+      <text
+        role="button"
+        x={0}
+        y={0}
+        dy={14}
+        textAnchor="middle"
+        fill={theme.colors.gray700}
+        style={{ fontWeight: payload.value === currentEvent ? 600 : 400 }}
+      >
+        {payload.value}
+      </text>
+    </g>
+  )
+}
+
+export const GroupDatasetChart = (props: Props) => {
+  const { dataKeys, dataset } = props
+
+  const customLegendRenderer = (props: any) => {
+    // need to use trend data from dataset
+    const { payload } = props
+
+    return (
+      <div
+        style={{
+          display: 'flex',
+          width: '100%',
+          flexWrap: 'wrap',
+          marginBottom: 20,
+        }}
+      >
+        {payload.map((entry: any, index: number) => (
+          <span
+            key={`item-${index}`}
+            style={{
+              marginLeft: 10,
+              marginRight: 10,
+              fontSize: 13,
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
+            <Icon
+              icon="material-symbols:line-end-circle"
+              color={entry.color}
+              style={{ marginRight: 3 }}
+            />
+            <span>{capitalizeFirstLetter(entry.value).replace('-', ' ')}</span>
+            {dataset !== null && dataset.length > 1 ? (
+              <span
+                style={{
+                  color: getTrendStatusColor(
+                    dataset[dataset.length - 1].trend[payload[index].dataKey] ||
+                      0,
+                  ),
+                }}
+              >
+                {getTrendByPercentage(
+                  dataset[dataset.length - 1].trend[payload[index].dataKey] ||
+                    0,
+                )}
+              </span>
+            ) : null}
+          </span>
+        ))}
+      </div>
+    )
+  }
+
+  return (
+    <LineChart
+      width="100%"
+      height={292.59}
+      minWidth={320}
+      dataset={dataset}
+      lineDataKeys={dataKeys}
+      xAxisDataKey="quarter"
+      xAxisTick={
+        <CustomAxisTick
+          currentEvent={dataset[dataset.length - 1]?.quarter || ''}
+        />
+      }
+      yAxisTicks={[1, 3, 5]}
+      yAxisDomain={[0, 5]}
+      customToolTip={<CustomTooltip />}
+      strokeColors={chartColors}
+      hasLegend
+      customLegendRenderer={customLegendRenderer}
+    />
+  )
+}

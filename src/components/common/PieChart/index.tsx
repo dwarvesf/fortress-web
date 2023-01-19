@@ -1,4 +1,4 @@
-import { chartPieColors } from 'constants/colors'
+import { chartColors } from 'constants/colors'
 import { ReactElement } from 'react'
 import {
   ResponsiveContainer,
@@ -69,12 +69,12 @@ const getPieSectorFillColor = (
   colorIndex: number,
 ) => {
   if (selectedProjectId === '') {
-    return chartPieColors[colorIndex % chartPieColors.length]
+    return chartColors[colorIndex % chartColors.length]
   }
   if (selectedProjectId === payloadId) {
-    return chartPieColors[colorIndex % chartPieColors.length]
+    return chartColors[colorIndex % chartColors.length]
   }
-  return `${chartPieColors[colorIndex % chartPieColors.length]}55`
+  return `${chartColors[colorIndex % chartColors.length]}55`
 }
 
 export const PieChart = (props: Props) => {
@@ -112,6 +112,7 @@ export const PieChart = (props: Props) => {
           onClick={onPieClick}
           style={{ cursor: 'pointer' }}
           isAnimationActive={false}
+          innerRadius={50}
         >
           {dataset.map((payload: { id: string }, index) => (
             <Cell

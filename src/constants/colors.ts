@@ -42,7 +42,7 @@ export const chartTrendColors = {
   red: '#ff4d4f',
 }
 
-export const chartPieColors = [
+export const chartColors = [
   theme.colors.primary, // primary
   '#60A5FA', // blue
   '#4ADE80', // green

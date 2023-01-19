@@ -1,5 +1,5 @@
 import { Card } from 'antd'
-import { AreaChart } from 'components/common/AreaChart'
+import { LineChart } from 'components/common/LineChart'
 import { EngagementAverageProps } from 'pages/dashboard'
 import { Dispatch, SetStateAction } from 'react'
 import { CartesianAxisProps, TooltipProps } from 'recharts'
@@ -79,12 +79,12 @@ export const EngagementAverageChart = (props: Props) => {
   const { data, currentQuarter, setCurrentQuarter } = props
 
   return (
-    <AreaChart
+    <LineChart
       width="100%"
       height={230}
       minWidth={320}
       dataset={(data.dataset || []).slice(-4)}
-      lineDataKey="average"
+      lineDataKeys="average"
       xAxisDataKey="name"
       xAxisTick={
         <CustomAxisTick
@@ -95,6 +95,7 @@ export const EngagementAverageChart = (props: Props) => {
       yAxisTicks={[1, 3, 5]}
       yAxisDomain={[0, 5]}
       customToolTip={<CustomTooltip />}
+      strokeColors={[theme.colors.primary]}
     />
   )
 }

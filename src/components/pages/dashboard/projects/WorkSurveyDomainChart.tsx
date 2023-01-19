@@ -1,5 +1,5 @@
 import { Card, Spin, Tag } from 'antd'
-import { AreaChart } from 'components/common/AreaChart'
+import { LineChart } from 'components/common/LineChart'
 import { DomainTypes } from 'constants/feedbackTypes'
 import { CartesianAxisProps, TooltipProps } from 'recharts'
 import { theme } from 'styles'
@@ -132,12 +132,12 @@ export const WorkSurveyDomainChart = (props: Props) => {
       }}
     />
   ) : (
-    <AreaChart
+    <LineChart
       width="100%"
       height={230}
       minWidth={350}
       dataset={dataset}
-      lineDataKey={dataKey}
+      lineDataKeys={dataKey}
       xAxisDataKey="endDate"
       xAxisTick={
         <CustomAxisTick
@@ -147,6 +147,7 @@ export const WorkSurveyDomainChart = (props: Props) => {
       yAxisTicks={[1, 3, 5]}
       yAxisDomain={[0, 5]}
       customToolTip={<CustomTooltip dataset={dataset} dataKey={dataKey} />}
+      strokeColors={[theme.colors.primary]}
     />
   )
 }
