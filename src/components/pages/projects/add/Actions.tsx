@@ -117,11 +117,11 @@ export const Actions = ({
             deploymentType: rowData.deploymentType,
             positions:
               rowData.positions?.map((position) => position.id || '') || [],
-            joinedDate: rowData.joinedDate
-              ? format(new Date(rowData.joinedDate), SERVER_DATE_FORMAT)
+            startDate: rowData.startDate
+              ? format(new Date(rowData.startDate), SERVER_DATE_FORMAT)
               : undefined,
-            leftDate: rowData.leftDate
-              ? format(new Date(rowData.leftDate), SERVER_DATE_FORMAT)
+            endDate: rowData.endDate
+              ? format(new Date(rowData.endDate), SERVER_DATE_FORMAT)
               : undefined,
             seniorityID: rowData.seniority?.id || '',
           }}

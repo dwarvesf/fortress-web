@@ -86,9 +86,15 @@ export const ProjectMemberTable = ({
           value ? projectMemberStatuses[value as ProjectMemberStatus] : '-',
       },
       {
-        title: 'Joined Date',
-        key: 'joinedDate',
-        dataIndex: 'joinedDate',
+        title: 'Start Date',
+        key: 'startDate',
+        dataIndex: 'startDate',
+        render: (value) => (value ? format(new Date(value), DATE_FORMAT) : '-'),
+      },
+      {
+        title: 'End Date',
+        key: 'endDate',
+        dataIndex: 'endDate',
         render: (value) => (value ? format(new Date(value), DATE_FORMAT) : '-'),
       },
       {
