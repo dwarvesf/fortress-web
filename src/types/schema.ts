@@ -20,6 +20,14 @@ export interface ModelAccountingItem {
   name?: string
 }
 
+export interface ModelAudience {
+  created_at?: string
+  email?: string
+  full_name?: string
+  id?: string
+  source?: string[]
+}
+
 export interface ModelChapter {
   code?: string
   createdAt?: string
@@ -40,6 +48,156 @@ export interface ModelCountry {
   updatedAt?: string
 }
 
+export interface ModelDateTime {
+  has_time?: boolean
+  time?: string
+}
+
+export interface ModelEarn {
+  due_date?: string
+  function?: string[]
+  id?: string
+  name?: string
+  pics?: ModelEmployee[]
+  priority?: string
+  progress?: number
+  reward?: number
+  status?: string
+  tags?: string[]
+}
+
+export interface ModelEmployee {
+  address?: string
+  avatar?: string
+  basecampAttachableSGID?: string
+  /** social services */
+  basecampID?: string
+  city?: string
+  country?: string
+  createdAt?: string
+  dateOfBirth?: string
+  deletedAt?: GormDeletedAt
+  discordID?: string
+  discordName?: string
+  displayName?: string
+  employeeChapters?: ModelEmployeeChapter[]
+  employeePositions?: ModelEmployeePosition[]
+  employeeRoles?: ModelEmployeeRole[]
+  employeeStacks?: ModelEmployeeStack[]
+  /** basic info */
+  fullName?: string
+  gender?: string
+  githubID?: string
+  gitlabID?: string
+  horoscope?: string
+  id?: string
+  identityCardPhotoBack?: string
+  identityCardPhotoFront?: string
+  joinedDate?: string
+  leftDate?: string
+  lineManager?: ModelEmployee
+  lineManagerID?: string
+  linkedInName?: string
+  localBankBranch?: string
+  localBankCurrency?: string
+  localBankNumber?: string
+  localBankRecipientName?: string
+  localBranchName?: string
+  mbti?: string
+  mentees?: ModelEmployeeMentee[]
+  notionEmail?: string
+  notionID?: string
+  notionName?: string
+  organization?: string
+  passportPhotoBack?: string
+  passportPhotoFront?: string
+  personalEmail?: string
+  phoneNumber?: string
+  placeOfResidence?: string
+  positions?: ModelPosition[]
+  projectMembers?: ModelProjectMember[]
+  roles?: ModelRole[]
+  seniority?: ModelSeniority
+  seniorityID?: string
+  teamEmail?: string
+  updatedAt?: string
+  username?: string
+  wiseAccountNumber?: string
+  wiseCurrency?: string
+  /** payroll info */
+  wiseRecipientEmail?: string
+  wiseRecipientID?: string
+  wiseRecipientName?: string
+  /** working info */
+  workingStatus?: string
+}
+
+export interface ModelEmployeeChapter {
+  chapter?: ModelChapter
+  chapterID?: string
+  createdAt?: string
+  deletedAt?: GormDeletedAt
+  employeeID?: string
+  id?: string
+  updatedAt?: string
+}
+
+export interface ModelEmployeeMentee {
+  createdAt?: string
+  deletedAt?: GormDeletedAt
+  id?: string
+  mentee?: ModelEmployee
+  menteeID?: string
+  mentorID?: string
+  updatedAt?: string
+}
+
+export interface ModelEmployeePosition {
+  createdAt?: string
+  deletedAt?: GormDeletedAt
+  employeeID?: string
+  id?: string
+  position?: ModelPosition
+  positionID?: string
+  updatedAt?: string
+}
+
+export interface ModelEmployeeRole {
+  createdAt?: string
+  deletedAt?: GormDeletedAt
+  employeeID?: string
+  id?: string
+  role?: ModelRole
+  roleID?: string
+  updatedAt?: string
+}
+
+export interface ModelEmployeeStack {
+  createdAt?: string
+  deletedAt?: GormDeletedAt
+  employeeID?: string
+  id?: string
+  stack?: ModelStack
+  stackID?: string
+  updatedAt?: string
+}
+
+export interface ModelEvent {
+  activity_type?: string
+  created_at?: string
+  date?: ModelDateTime
+  id?: string
+  name?: string
+}
+
+export interface ModelHiringPosition {
+  created_at?: string
+  id?: string
+  name?: string
+  project?: string[]
+  status?: string
+}
+
 export interface ModelLikertScaleCount {
   agree?: number
   disagree?: number
@@ -57,11 +215,121 @@ export interface ModelPosition {
   updatedAt?: string
 }
 
+export interface ModelProject {
+  allowsSendingSurvey?: boolean
+  avatar?: string
+  clientEmail?: string
+  code?: string
+  country?: ModelCountry
+  countryID?: string
+  createdAt?: string
+  deletedAt?: GormDeletedAt
+  endDate?: string
+  function?: string
+  heads?: ModelProjectHead[]
+  id?: string
+  name?: string
+  projectEmail?: string
+  projectMembers?: ModelProjectMember[]
+  projectStacks?: ModelProjectStack[]
+  slots?: ModelProjectSlot[]
+  startDate?: string
+  status?: string
+  type?: string
+  updatedAt?: string
+}
+
+export interface ModelProjectHead {
+  commissionRate?: number
+  createdAt?: string
+  deletedAt?: GormDeletedAt
+  employee?: ModelEmployee
+  employeeID?: string
+  endDate?: string
+  id?: string
+  position?: string
+  projectID?: string
+  startDate?: string
+  updatedAt?: string
+}
+
+export interface ModelProjectMember {
+  createdAt?: string
+  deletedAt?: GormDeletedAt
+  deploymentType?: string
+  discount?: number
+  employee?: ModelEmployee
+  employeeID?: string
+  endDate?: string
+  id?: string
+  isLead?: boolean
+  positions?: ModelPosition[]
+  project?: ModelProject
+  projectID?: string
+  projectMemberPositions?: ModelProjectMemberPosition[]
+  projectSlotID?: string
+  rate?: number
+  seniority?: ModelSeniority
+  seniorityID?: string
+  startDate?: string
+  status?: string
+  updatedAt?: string
+  upsellPersonID?: string
+}
+
+export interface ModelProjectMemberPosition {
+  createdAt?: string
+  deletedAt?: GormDeletedAt
+  id?: string
+  position?: ModelPosition
+  positionID?: string
+  projectMemberID?: string
+  updatedAt?: string
+}
+
 export interface ModelProjectSize {
   code?: string
   id?: string
   name?: string
   size?: number
+}
+
+export interface ModelProjectSlot {
+  createdAt?: string
+  deletedAt?: GormDeletedAt
+  deploymentType?: string
+  discount?: number
+  id?: string
+  project?: ModelProject
+  projectID?: string
+  projectMember?: ModelProjectMember
+  projectSlotPositions?: ModelProjectSlotPosition[]
+  rate?: number
+  seniority?: ModelSeniority
+  seniorityID?: string
+  status?: string
+  updatedAt?: string
+  upsellPersonID?: string
+}
+
+export interface ModelProjectSlotPosition {
+  createdAt?: string
+  deletedAt?: GormDeletedAt
+  id?: string
+  position?: ModelPosition
+  positionID?: string
+  projectSlotID?: string
+  updatedAt?: string
+}
+
+export interface ModelProjectStack {
+  createdAt?: string
+  deletedAt?: GormDeletedAt
+  id?: string
+  projectID?: string
+  stack?: ModelStack
+  stackID?: string
+  updatedAt?: string
 }
 
 export interface ModelRole {
@@ -92,6 +360,15 @@ export interface ModelStack {
   id?: string
   name?: string
   updatedAt?: string
+}
+
+export interface ModelTechRadar {
+  assign?: string
+  categories?: string[]
+  id?: string
+  name?: string
+  quadrant?: string
+  ring?: string
 }
 
 export interface ModelValuation {
@@ -139,12 +416,12 @@ export interface RequestAssignMemberInput {
   deploymentType: string
   discount?: number
   employeeID?: string
+  endDate?: string
   isLead?: boolean
-  joinedDate?: string
-  leftDate?: string
   positions: string[]
   rate: number
   seniorityID: string
+  startDate?: string
   status: string
 }
 
@@ -282,14 +559,14 @@ export interface RequestUpdateMemberInput {
   deploymentType: string
   discount?: number
   employeeID?: string
+  endDate?: string
   isLead?: boolean
-  joinedDate?: string
-  leftDate?: string
   positions: string[]
   projectMemberID?: string
   projectSlotID: string
   rate: number
   seniorityID: string
+  startDate?: string
   status: string
 }
 
@@ -390,7 +667,7 @@ export interface ViewAuditActionItemReport {
 
 export interface ViewAuditData {
   average?: ViewAudit[]
-  groups?: ViewGroupAudit
+  groups?: ViewGroupAudit[]
 }
 
 export interface ViewAuditResponse {
@@ -566,11 +843,11 @@ export interface ViewEmployeeProjectData {
   avatar?: string
   code?: string
   deploymentType?: string
+  endDate?: string
   id?: string
-  joinedDate?: string
-  leftDate?: string
   name?: string
   positions?: ViewPosition[]
+  startDate?: string
   status?: string
 }
 
@@ -582,11 +859,18 @@ export interface ViewEngineeringHealth {
 
 export interface ViewEngineeringHealthData {
   average?: ViewEngineeringHealth[]
-  groups?: ViewGroupEngineeringHealth
+  groups?: ViewGroupEngineeringHealth[]
 }
 
-export interface ViewEngineringHealthResponse {
+export interface ViewEngineeringHealthResponse {
   data?: ViewEngineeringHealthData
+}
+
+export interface ViewEngineeringHealthTrend {
+  collaboration?: number
+  delivery?: number
+  feedback?: number
+  quality?: number
 }
 
 export interface ViewErrorResponse {
@@ -649,19 +933,36 @@ export interface ViewGetQuestionResponse {
 }
 
 export interface ViewGroupAudit {
-  backend?: ViewAudit[]
-  blockchain?: ViewAudit[]
-  frontend?: ViewAudit[]
-  mobile?: ViewAudit[]
-  process?: ViewAudit[]
-  system?: ViewAudit[]
+  backend?: number
+  blockchain?: number
+  frontend?: number
+  mobile?: number
+  process?: number
+  quarter?: string
+  system?: number
+  trend?: ViewGroupAuditTrend
+}
+
+export interface ViewGroupAuditTrend {
+  backend?: number
+  blockchain?: number
+  frontend?: number
+  mobile?: number
+  process?: number
+  system?: number
 }
 
 export interface ViewGroupEngineeringHealth {
-  collaboration?: ViewEngineeringHealth[]
-  delivery?: ViewEngineeringHealth[]
-  feedback?: ViewEngineeringHealth[]
-  quality?: ViewEngineeringHealth[]
+  collaboration?: number
+  delivery?: number
+  feedback?: number
+  quality?: number
+  quarter?: string
+  trend?: ViewEngineeringHealthTrend
+}
+
+export interface ViewHiringResponse {
+  data?: ModelHiringPosition[]
 }
 
 export interface ViewListFeedbackResponse {
@@ -812,15 +1113,15 @@ export interface ViewProjectMember {
   discount?: number
   displayName?: string
   employeeID?: string
+  endDate?: string
   fullName?: string
   isLead?: boolean
-  joinedDate?: string
-  leftDate?: string
   positions?: ViewPosition[]
   projectMemberID?: string
   projectSlotID?: string
   rate?: number
   seniority?: ModelSeniority
+  startDate?: string
   status?: string
   username?: string
 }
