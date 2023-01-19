@@ -49,7 +49,7 @@ import {
   RequestCreateStackInput,
   RequestUpdateStackBody,
   ViewProjectSizeResponse,
-  ViewEngineringHealthResponse,
+  ViewEngineeringHealthResponse,
   ViewWorkSurveyResponse,
 } from 'types/schema'
 import { EmployeeListFilter } from 'types/filters/EmployeeListFilter'
@@ -260,7 +260,7 @@ class Client {
     )
   }
 
-  public getStackMetadata = (filter: StackFilter) => {
+  public getStackMetadata = (filter?: StackFilter) => {
     const queryString = qs.stringify(filter)
 
     return fetcher<ViewStackResponse & Meta>(
@@ -794,7 +794,7 @@ class Client {
   public getProjectsEngineeringHealthScore(projectID?: string) {
     const queryString = qs.stringify({ projectID })
 
-    return fetcher<ViewEngineringHealthResponse>(
+    return fetcher<ViewEngineeringHealthResponse>(
       `${BASE_URL}/dashboards/projects/engineering-healths?${queryString}`,
       {
         headers: { ...this.privateHeaders },
@@ -805,7 +805,7 @@ class Client {
   public getProjectsAuditScore(projectID?: string) {
     const queryString = qs.stringify({ projectID })
 
-    return fetcher<ViewEngineringHealthResponse>(
+    return fetcher<ViewEngineeringHealthResponse>(
       `${BASE_URL}/dashboards/projects/audits?${queryString}`,
       {
         headers: { ...this.privateHeaders },

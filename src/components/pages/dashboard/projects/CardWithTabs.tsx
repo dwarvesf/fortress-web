@@ -6,7 +6,7 @@ import {
   ViewAuditData,
   ViewAuditResponse,
   ViewEngineeringHealthData,
-  ViewEngineringHealthResponse,
+  ViewEngineeringHealthResponse,
 } from 'types/schema'
 import { capitalizeFirstLetter } from 'utils/string'
 import { StatisticBlock } from '../StatisticBlock'
@@ -48,7 +48,7 @@ export const CardWithTabs = (props: Props) => {
   )
 
   const { data, loading } = useFetchWithCache<
-    ViewEngineringHealthResponse | ViewAuditResponse // TODO: BE fix typo
+    ViewEngineeringHealthResponse | ViewAuditResponse // TODO: BE fix typo
   >(
     [groupKey, selectedProjectId], // e.g ['engineering-health', selectedProjectId]
     fetcher,
