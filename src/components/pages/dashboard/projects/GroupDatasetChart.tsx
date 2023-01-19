@@ -120,6 +120,7 @@ export const GroupDatasetChart = (props: Props) => {
       return obj
     },
   )
+  const [selectedDataKey, setSelectedDataKey] = useState<string>('')
 
   const customLegendRenderer = (props: any) => {
     const { payload } = props
@@ -134,19 +135,11 @@ export const GroupDatasetChart = (props: Props) => {
           paddingBottom: 16,
           height: 'max-content',
         }}
-        onMouseEnter={() => {
-          const obj: Record<string, number> = {}
-
-          ;(dataKeys || [])?.forEach((k: DataKey<any>) => {
-            obj[String(k)] = 1
-          })
-
-          setLinesOpacity(obj)
-        }}
       >
         {payload.map((entry: any, index: number) => {
           return (
             <span
+              role="presentation"
               key={`item-${index}`}
               style={{
                 marginLeft: 10,
@@ -155,17 +148,24 @@ export const GroupDatasetChart = (props: Props) => {
                 display: 'flex',
                 alignItems: 'center',
                 cursor: 'pointer',
-                width: 135,
+                width: 142,
               }}
-              onMouseEnter={() => {
+              onMouseDown={() => {
+                const { dataKey } = entry
                 const obj: Record<string, number> = {}
 
-                ;(dataKeys || [])?.forEach((k: DataKey<any>) => {
-                  obj[String(k)] = 0.1
-                })
-
-                const { dataKey } = entry
-                obj[dataKey] = 1
+                if (selectedDataKey === dataKey) {
+                  ;(dataKeys || [])?.forEach((k: DataKey<any>) => {
+                    obj[String(k)] = 1
+                  })
+                  setSelectedDataKey('')
+                } else {
+                  ;(dataKeys || [])?.forEach((k: DataKey<any>) => {
+                    obj[String(k)] = 0.1
+                  })
+                  obj[dataKey] = 1
+                  setSelectedDataKey(String(dataKey))
+                }
 
                 setLinesOpacity(obj)
               }}
