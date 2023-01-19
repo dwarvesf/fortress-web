@@ -5,6 +5,7 @@ import { SEO } from 'components/common/SEO'
 import Projects from 'components/pages/dashboard/projects/Projects'
 import { useState } from 'react'
 import { useTabWithQuery } from 'hooks/useTabWithQuery'
+import Resources from 'components/pages/dashboard/resources/Resources'
 
 // mock interface, this should be base on the filter (department, seniority,...) and provided by BE
 interface Feedbacks {
@@ -65,11 +66,11 @@ const DashboardPage = () => {
               label: `Projects`,
               children: <Projects />,
             },
-            // {
-            //   key: 'resources',
-            //   label: `Resources`,
-            //   children: <>Resources</>,
-            // },
+            {
+              key: 'resources',
+              label: `Resources`,
+              children: <Resources />,
+            },
             // {
             //   key: 'engagement',
             //   label: `Engagement`,
