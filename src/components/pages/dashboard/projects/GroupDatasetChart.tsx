@@ -149,6 +149,7 @@ export const GroupDatasetChart = (props: Props) => {
                 alignItems: 'center',
                 cursor: 'pointer',
                 width: 142,
+                opacity: linesOpacity[entry.dataKey] * 3,
               }}
               onMouseDown={() => {
                 const { dataKey } = entry
