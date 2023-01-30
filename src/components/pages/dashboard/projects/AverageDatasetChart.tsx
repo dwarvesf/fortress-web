@@ -1,5 +1,5 @@
 import { Card, Tag } from 'antd'
-import { AreaChart } from 'components/common/AreaChart'
+import { LineChart } from 'components/common/LineChart'
 import { CartesianAxisProps, TooltipProps } from 'recharts'
 import { theme } from 'styles'
 import { ViewAudit, ViewEngineeringHealth } from 'types/schema'
@@ -97,20 +97,18 @@ export const AverageDatasetChart = (props: Props) => {
   const { dataset } = props
 
   return (
-    <AreaChart
+    <LineChart
       width="100%"
-      height={230}
+      height={260}
       minWidth={320}
       dataset={dataset}
-      lineDataKey="avg"
+      lineDataKeys={['avg']}
       xAxisDataKey="quarter"
       xAxisTick={
         <CustomAxisTick
           currentEvent={dataset[dataset.length - 1]?.quarter || ''}
         />
       }
-      yAxisTicks={[1, 3, 5]}
-      yAxisDomain={[0, 5]}
       customToolTip={<CustomTooltip />}
     />
   )
