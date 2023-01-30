@@ -16,7 +16,7 @@ const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: all 0.2s;
+  transition: all 0.3s linear;
 
   &:hover {
     background: ${(props) => props.theme.colors.gray100};
