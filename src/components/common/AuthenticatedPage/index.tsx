@@ -50,7 +50,9 @@ export const AuthenticatedPage = (props: Props) => {
           subTitle="Sorry, you are not authorized to access this page."
           extra={
             <Link href="/">
-              <Button type="primary">Back Home</Button>
+              <a>
+                <Button type="primary">Back Home</Button>
+              </a>
             </Link>
           }
         />
