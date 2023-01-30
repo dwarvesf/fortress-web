@@ -60,7 +60,6 @@ export const CardWithTabs = (props: Props) => {
         bodyStyle={{
           height: '100%',
           fontSize: 16,
-          paddingTop: 20,
         }}
         title={title}
         extra={

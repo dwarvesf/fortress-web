@@ -131,7 +131,7 @@ export const GroupDatasetChart = (props: Props) => {
           display: 'flex',
           width: '100%',
           flexWrap: 'wrap',
-          paddingTop: 8,
+          paddingTop: 0,
           paddingBottom: 16,
           height: 'max-content',
         }}
