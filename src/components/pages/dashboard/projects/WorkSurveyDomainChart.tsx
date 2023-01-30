@@ -144,10 +144,7 @@ export const WorkSurveyDomainChart = (props: Props) => {
           currentEvent={dataset[dataset.length - 1]?.endDate || ''}
         />
       }
-      yAxisTicks={[1, 3, 5]}
-      yAxisDomain={[0, 5]}
       customToolTip={<CustomTooltip dataset={dataset} dataKey={dataKey} />}
-      strokeColors={[theme.colors.primary]}
     />
   )
 }

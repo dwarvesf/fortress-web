@@ -109,10 +109,7 @@ export const AverageDatasetChart = (props: Props) => {
           currentEvent={dataset[dataset.length - 1]?.quarter || ''}
         />
       }
-      yAxisTicks={[1, 3, 5]}
-      yAxisDomain={[0, 5]}
       customToolTip={<CustomTooltip />}
-      strokeColors={[theme.colors.primary]}
     />
   )
 }

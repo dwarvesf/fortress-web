@@ -1,3 +1,4 @@
+import { chartColors } from 'constants/colors'
 import { CSSProperties, ReactElement } from 'react'
 import {
   ResponsiveContainer,
@@ -34,7 +35,6 @@ interface Props
   dataset?: any[]
   lineDataKeys?: (string | DataKey<any>)[]
   customToolTip?: ReactElement
-  strokeColors: string[]
   hasLegend?: boolean
   customLegendRenderer?: (props: any) => JSX.Element
   linesOpacity?: Record<string, number>
@@ -54,11 +54,10 @@ export const LineChart = (props: Props) => {
     xAxisDomain = [''],
     xAxisStyle,
     yAxisDataKey,
-    yAxisTicks,
-    yAxisDomain,
+    yAxisTicks = [1, 3, 5],
+    yAxisDomain = [0, 5],
     yAxisStyle,
     customToolTip,
-    strokeColors,
     hasLegend = false,
     customLegendRenderer,
     linesOpacity,
@@ -108,7 +107,7 @@ export const LineChart = (props: Props) => {
         {typeof lineDataKeys === 'string' ? (
           <Line
             dataKey={lineDataKeys!}
-            stroke={strokeColors[0]}
+            stroke={chartColors[0]}
             strokeWidth={1.5}
             animationDuration={600}
           />
@@ -116,7 +115,7 @@ export const LineChart = (props: Props) => {
           ((lineDataKeys as (string | DataKey<any>)[]) || []).map((k, i) => (
             <Line
               dataKey={k!}
-              stroke={strokeColors[i % strokeColors.length]}
+              stroke={chartColors[i % chartColors.length]}
               strokeWidth={1.5}
               animationDuration={600}
               opacity={linesOpacity ? linesOpacity[String(k)] : 1}

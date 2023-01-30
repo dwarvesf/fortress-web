@@ -1,7 +1,6 @@
 import { Icon } from '@iconify/react'
 import { Card, Tag } from 'antd'
 import { LineChart } from 'components/common/LineChart'
-import { chartColors } from 'constants/colors'
 import { useState } from 'react'
 import { CartesianAxisProps, TooltipProps } from 'recharts'
 import { DataKey } from 'recharts/types/util/types'
@@ -142,13 +141,13 @@ export const GroupDatasetChart = (props: Props) => {
               role="presentation"
               key={`item-${index}`}
               style={{
-                marginLeft: 10,
-                marginRight: 10,
+                marginLeft: 8,
+                marginRight: 8,
                 fontSize: 13,
                 display: 'flex',
                 alignItems: 'center',
                 cursor: 'pointer',
-                width: 142,
+                width: 153,
                 opacity: linesOpacity[entry.dataKey] * 3,
               }}
               onMouseDown={() => {
@@ -187,6 +186,7 @@ export const GroupDatasetChart = (props: Props) => {
                         payload[index].dataKey
                       ] || 0,
                     ),
+                    fontSize: 12,
                   }}
                 >
                   {getTrendByPercentage(
@@ -215,10 +215,7 @@ export const GroupDatasetChart = (props: Props) => {
           currentEvent={dataset[dataset.length - 1]?.quarter || ''}
         />
       }
-      yAxisTicks={[1, 3, 5]}
-      yAxisDomain={[0, 5]}
       customToolTip={<CustomTooltip />}
-      strokeColors={chartColors}
       hasLegend
       customLegendRenderer={customLegendRenderer}
       linesOpacity={linesOpacity}

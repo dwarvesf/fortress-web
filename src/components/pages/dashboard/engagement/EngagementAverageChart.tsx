@@ -92,10 +92,7 @@ export const EngagementAverageChart = (props: Props) => {
           setCurrentQuarter={setCurrentQuarter}
         />
       }
-      yAxisTicks={[1, 3, 5]}
-      yAxisDomain={[0, 5]}
       customToolTip={<CustomTooltip />}
-      strokeColors={[theme.colors.primary]}
     />
   )
 }
