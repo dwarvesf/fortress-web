@@ -6,31 +6,15 @@ import { pagePermissions, Permission } from 'constants/permission'
 import { ROUTES } from 'constants/routes'
 import { LOGIN_REDIRECTION_KEY, useAuthContext } from 'context/auth'
 import { useShouldRedirect } from 'hooks/useShouldRedirect'
-import { useUnreadFeedbackCount } from 'hooks/useUnreadFeedbackCount'
 import { useFlags, useLDClient } from 'launchdarkly-react-client-sdk'
 import { useRouter } from 'next/router'
 import React, { useEffect, useMemo } from 'react'
-import styled from 'styled-components'
 import { WithChildren } from 'types/common'
 import { isActivePath } from 'utils/link'
 import { AuthenticatedPage } from '../AuthenticatedPage'
 import { Header } from '../Header'
 import { PageSpinner } from '../PageSpinner'
 import { SidebarLogo } from './SidebarLogo'
-
-const UnreadDot = styled.span`
-  height: 16px;
-  border-radius: 8px;
-  background: ${(props) => props.theme.colors.primary};
-  margin-top: 2px;
-  margin-left: 5px;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 10px;
-  color: #ffffff;
-  padding: 0 4px;
-`
 
 const {
   Content,
@@ -106,7 +90,6 @@ export const AuthenticatedLayout = (props: Props) => {
 
   const ldClient = useLDClient()
   const flags = useFlags()
-  const { unreadCount } = useUnreadFeedbackCount()
 
   // Redirection control
   const shouldRedirect = useShouldRedirect()
@@ -141,25 +124,12 @@ export const AuthenticatedLayout = (props: Props) => {
       },
       {
         content: getItem(
-          <span>
-            <span style={{ position: 'relative' }}>
-              Feedbacks
-              {unreadCount > 0 && (
-                <UnreadDot className="unread-dot">{unreadCount}+</UnreadDot>
-              )}
-            </span>
-          </span>,
+          'Feedbacks',
           ROUTES.FEEDBACKS,
           <Icon icon="icon-park-outline:mail" width={20} />,
           [
             {
-              content: getItem(
-                <span style={{ position: 'relative' }}>
-                  Inbox
-                  {unreadCount > 0 && <UnreadDot>{unreadCount}+</UnreadDot>}
-                </span>,
-                ROUTES.INBOX,
-              ),
+              content: getItem('Inbox', ROUTES.INBOX),
               permission: Permission.FEEDBACKS_READ,
             },
             {
@@ -186,7 +156,7 @@ export const AuthenticatedLayout = (props: Props) => {
         feature: FEATURES.CONFIG,
       },
     ]
-  }, [unreadCount])
+  }, [])
 
   useEffect(() => {
     if (!isAuthenticated && !isAuthenticating) {
