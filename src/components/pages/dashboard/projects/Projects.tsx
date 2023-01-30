@@ -60,7 +60,7 @@ const averageDatasetRenderer = (
   )
 }
 
-const engineeringHealthGroupDatasetRenderer = (dataset: any) => {
+const groupDatasetRenderer = (dataset: any) => {
   const datasetArray = dataset || []
 
   return (
@@ -72,33 +72,11 @@ const engineeringHealthGroupDatasetRenderer = (dataset: any) => {
       }}
     >
       <GroupDatasetChart
-        dataKeys={['collaboration', 'delivery', 'feedback', 'quality']}
-        dataset={datasetArray}
-      />
-    </div>
-  )
-}
-
-const auditScoreGroupDatasetRenderer = (dataset: any) => {
-  const datasetArray = dataset || []
-
-  return (
-    <div
-      style={{
-        width: '100%',
-        overflowX: 'auto',
-        overflowY: 'hidden',
-      }}
-    >
-      <GroupDatasetChart
-        dataKeys={[
-          'backend',
-          'blockchain',
-          'frontend',
-          'mobile',
-          'process',
-          'system',
-        ]}
+        dataKeys={
+          datasetArray.length > 0 && datasetArray[0].trend
+            ? (Object.keys(datasetArray[0].trend) as string[])
+            : []
+        }
         dataset={datasetArray}
       />
     </div>
@@ -155,10 +133,7 @@ const Projects = () => {
           fetcher={() =>
             client.getProjectsEngineeringHealthScore(selectedProjectId)
           }
-          childrenRenderers={[
-            averageDatasetRenderer,
-            engineeringHealthGroupDatasetRenderer,
-          ]}
+          childrenRenderers={[averageDatasetRenderer, groupDatasetRenderer]}
         />
 
         <CardWithTabs
@@ -167,10 +142,7 @@ const Projects = () => {
           tabTitles={['average', 'groups']}
           selectedProjectId={selectedProjectId}
           fetcher={() => client.getProjectsAuditScore(selectedProjectId)}
-          childrenRenderers={[
-            averageDatasetRenderer,
-            auditScoreGroupDatasetRenderer,
-          ]}
+          childrenRenderers={[averageDatasetRenderer, groupDatasetRenderer]}
         />
       </Row>
     </>

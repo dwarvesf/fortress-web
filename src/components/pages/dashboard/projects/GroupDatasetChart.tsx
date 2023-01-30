@@ -10,7 +10,9 @@ import { getTrendByPercentage, getTrendStatusColor } from 'utils/score'
 import { capitalizeFirstLetter } from 'utils/string'
 
 interface Props {
-  dataKeys: (keyof ViewGroupAudit | keyof ViewGroupEngineeringHealth)[]
+  dataKeys:
+    | (keyof ViewGroupAudit | keyof ViewGroupEngineeringHealth)[]
+    | string[]
   dataset: any[]
 }
 
