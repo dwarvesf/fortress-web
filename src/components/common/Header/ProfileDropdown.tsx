@@ -1,4 +1,4 @@
-import { Avatar, Menu, Space, Image, Dropdown, Typography } from 'antd'
+import { Avatar, Menu, Image, Dropdown, Typography } from 'antd'
 import { ROUTES } from 'constants/routes'
 import { useAuthContext } from 'context/auth'
 import Link from 'next/link'
@@ -35,21 +35,18 @@ export const ProfileDropdown = () => {
 
   return (
     <Dropdown overlay={menuRender}>
-      <Space align="center" style={{ cursor: 'pointer' }}>
-        <span>{user?.displayName}</span>
-        <Avatar
-          size={32}
-          icon={
-            <Image
-              src={user?.avatar}
-              preview={false}
-              height="100%"
-              width="100%"
-              style={{ objectFit: 'cover' }}
-            />
-          }
-        />
-      </Space>
+      <Avatar
+        size={28}
+        icon={
+          <Image
+            src={user?.avatar}
+            preview={false}
+            height="100%"
+            width="100%"
+            style={{ objectFit: 'cover' }}
+          />
+        }
+      />
     </Dropdown>
   )
 }
