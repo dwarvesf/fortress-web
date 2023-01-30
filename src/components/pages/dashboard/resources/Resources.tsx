@@ -1,5 +1,5 @@
 import { Col, Row } from 'antd'
-import { PendingAndAvailableTable } from './PendingAndAvailableTable'
+import { PendingAndAvailablePositions } from './PendingAndAvailablePositions'
 import { UtilizationChart } from './UtilizationChart'
 
 const Resources = () => {
@@ -9,7 +9,7 @@ const Resources = () => {
         <UtilizationChart />
       </Col>
       <Col span={24} xl={{ span: 16 }}>
-        <PendingAndAvailableTable />
+        <PendingAndAvailablePositions />
       </Col>
     </Row>
   )

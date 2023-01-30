@@ -134,14 +134,14 @@ const dataSource: ViewEmployeeData[] = [
   },
 ]
 
-export const EmployeeTable = () => {
+export const AvailablePositions = () => {
   return (
     <Table
       columns={columns}
       dataSource={dataSource}
       rowKey={(row) => row.id || ''}
       pagination={false}
-      scroll={{ x: 'max-content' }}
+      scroll={{ x: 'max-content', y: 370 }}
     />
   )
 }
