@@ -37,25 +37,25 @@ export const likertScalesColors = {
 }
 
 export const chartTrendColors = {
-  green: '#1aae9f',
-  gray: '#788896',
-  red: '#ff4d4f',
+  green: likertScalesColors['strongly-agree'].background,
+  gray: likertScalesColors.mixed.background,
+  red: likertScalesColors['strongly-disagree'].background,
 }
 
-export const chartPieColors = [
+export const chartColors = [
   theme.colors.primary, // primary
-  '#60A5FA', // blue
-  '#4ADE80', // green
-  '#FACC15', // yellow
-  '#FB923C', // orange
-  '#22D3EE', // cyan
-  '#F472B6', // pink
-  '#C084FC', // purple
-  '#A3E635', // lime
-  '#F87171', // red
-  '#E879F9', // fuchsia
-  '#818CF8', // indigo
-  '#38BDF8', // sky
-  '#34D399', // emerald
-  '#FBBF24', // amber
+  likertScalesColors.agree.background, // blue
+  likertScalesColors['strongly-agree'].background, // green
+  likertScalesColors.disagree.background, // yellow
+  likertScalesColors.mixed.background, // gray
+  likertScalesColors['strongly-disagree'].background, // red
+  '#67E8F9', // cyan
+  '#F97316', // orange
+  '#A855F7', // purple
+  '#84CC16', // lime
+  '#0EA5E9', // sky
+  '#6366F1', // indigo
+  '#EC4899', // pink
+  '#D946EF', // fuchsia
+  '#10B981', // emerald
 ]

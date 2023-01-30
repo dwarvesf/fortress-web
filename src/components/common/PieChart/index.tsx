@@ -1,4 +1,4 @@
-import { chartPieColors } from 'constants/colors'
+import { chartColors } from 'constants/colors'
 import { ReactElement } from 'react'
 import {
   ResponsiveContainer,
@@ -40,24 +40,55 @@ const renderCustomizedLabel = ({
   name,
   midAngle,
   outerRadius,
+  percent,
 }: PieLabelRenderProps) => {
-  const radius = Number(outerRadius) * 1.22
-  const x = Number(cx) + radius * Math.cos(-Number(midAngle) * RADIAN)
-  const y = Number(cy) + radius * Math.sin(-Number(midAngle) * RADIAN)
+  const sin = Math.sin(-Number(midAngle) * RADIAN)
+  const cos = Math.cos(-Number(midAngle) * RADIAN)
+  const startX = Number(cx) + Number(outerRadius) * cos
+  const startY = Number(cy) + Number(outerRadius) * sin
+  const middleX = Number(cx) + (Number(outerRadius) + 10) * cos
+  const middleY = Number(cy) + (Number(outerRadius) + 12) * sin
+  const endX = middleX + (cos >= 0 ? 1 : -1) * 10
+  const endY = middleY
 
   return (
     <g>
-      <text
-        x={x}
-        y={y}
-        textAnchor={x > Number(cx) ? 'start' : 'end'}
+      <path
+        d={`M${startX},${startY}L${middleX},${middleY}L${endX},${endY}`}
+        stroke={theme.colors.gray600}
+        fill="none"
+      />
+      <circle
+        cx={endX}
+        cy={endY}
+        r={2}
         fill={theme.colors.gray600}
+        stroke="none"
+      />
+      <text
+        x={endX}
+        y={endY - 4.5}
+        textAnchor={endX >= Number(cx) ? 'start' : 'end'}
+        fill={theme.colors.gray700}
         style={{
           userSelect: 'none',
           fontSize: 13,
+          whiteSpace: 'pre-line',
         }}
       >
-        {name.length > 10 ? `${name.slice(0, 8)}...` : name}
+        <tspan>{name.length > 10 ? `${name.slice(0, 8)}...` : name}</tspan>
+      </text>
+      <text
+        x={endX >= Number(cx) ? endX + 2.0 : endX - 2.0}
+        y={endY + 8.5}
+        textAnchor={endX >= Number(cx) ? 'start' : 'end'}
+        fill={theme.colors.gray500}
+        style={{
+          userSelect: 'none',
+          fontSize: 10,
+        }}
+      >
+        {`(${(Number(percent) * 100).toFixed(0)}%)`}
       </text>
     </g>
   )
@@ -69,12 +100,12 @@ const getPieSectorFillColor = (
   colorIndex: number,
 ) => {
   if (selectedProjectId === '') {
-    return chartPieColors[colorIndex % chartPieColors.length]
+    return chartColors[colorIndex % chartColors.length]
   }
   if (selectedProjectId === payloadId) {
-    return chartPieColors[colorIndex % chartPieColors.length]
+    return chartColors[colorIndex % chartColors.length]
   }
-  return `${chartPieColors[colorIndex % chartPieColors.length]}55`
+  return `${chartColors[colorIndex % chartColors.length]}55`
 }
 
 export const PieChart = (props: Props) => {
@@ -105,13 +136,15 @@ export const PieChart = (props: Props) => {
           cx="50%"
           cy="50%"
           label={customLabelRenderer || renderCustomizedLabel}
-          outerRadius={100}
+          innerRadius={60}
+          outerRadius={105}
           dataKey={pieDataKey}
           startAngle={90}
           endAngle={-270}
           onClick={onPieClick}
           style={{ cursor: 'pointer' }}
           isAnimationActive={false}
+          labelLine={false}
         >
           {dataset.map((payload: { id: string }, index) => (
             <Cell

@@ -1,3 +1,4 @@
+import { chartColors } from 'constants/colors'
 import { CSSProperties, ReactElement } from 'react'
 import {
   ResponsiveContainer,
@@ -5,12 +6,12 @@ import {
   XAxis,
   YAxis,
   Tooltip,
-  Area,
-  AreaChart as Chart,
+  Line,
+  LineChart as Chart,
+  Legend,
 } from 'recharts'
 import { CategoricalChartProps } from 'recharts/types/chart/generateCategoricalChart'
 import { AxisDomain, DataKey } from 'recharts/types/util/types'
-import { theme } from 'styles'
 
 interface AxisProps {
   xAxisDataKey?: string
@@ -32,28 +33,34 @@ interface Props
   height: string | number
   minHeight?: string | number
   dataset?: any[]
-  areaDataKey?: string | DataKey<any>
+  lineDataKeys?: (string | DataKey<any>)[]
   customToolTip?: ReactElement
+  hasLegend?: boolean
+  customLegendRenderer?: (props: any) => JSX.Element
+  linesOpacity?: Record<string, number>
 }
 
-export const AreaChart = (props: Props) => {
+export const LineChart = (props: Props) => {
   const {
     width,
     minWidth,
     height,
     minHeight,
     dataset = [],
-    areaDataKey,
+    lineDataKeys,
     xAxisDataKey,
     xAxisTicks,
     xAxisTick,
     xAxisDomain = [''],
     xAxisStyle,
     yAxisDataKey,
-    yAxisTicks,
-    yAxisDomain,
+    yAxisTicks = [1, 3, 5],
+    yAxisDomain = [0, 5],
     yAxisStyle,
     customToolTip,
+    hasLegend = false,
+    customLegendRenderer,
+    linesOpacity,
     ...rest
   } = props
 
@@ -91,14 +98,30 @@ export const AreaChart = (props: Props) => {
           width={26}
           style={yAxisStyle}
         />
+        {hasLegend && (
+          <Legend verticalAlign="top" content={customLegendRenderer} />
+        )}
+
         {customToolTip ? <Tooltip content={customToolTip} /> : <Tooltip />}
 
-        <Area
-          dataKey={areaDataKey!}
-          stroke={theme.colors.primary}
-          fill={theme.colors.pink200}
-          animationDuration={600}
-        />
+        {typeof lineDataKeys === 'string' ? (
+          <Line
+            dataKey={lineDataKeys!}
+            stroke={chartColors[0]}
+            strokeWidth={1.5}
+            animationDuration={600}
+          />
+        ) : (
+          ((lineDataKeys as (string | DataKey<any>)[]) || []).map((k, i) => (
+            <Line
+              dataKey={k!}
+              stroke={chartColors[i % chartColors.length]}
+              strokeWidth={1.5}
+              animationDuration={600}
+              opacity={linesOpacity ? linesOpacity[String(k)] : 1}
+            />
+          ))
+        )}
       </Chart>
     </ResponsiveContainer>
   )

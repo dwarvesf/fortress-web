@@ -10,6 +10,78 @@ import { CardWithTabs } from './CardWithTabs'
 import { AverageDatasetChart } from './AverageDatasetChart'
 import { ProjectSizeCard } from './ProjectSizeCard'
 import { WorkSurveyDomainCard } from './WorkSurveyDomainCard'
+import { GroupDatasetChart } from './GroupDatasetChart'
+
+const averageDatasetRenderer = (
+  dataset: (ViewAudit | ViewEngineeringHealth)[],
+) => {
+  const datasetArray = dataset || []
+
+  const statisticBlockRenderer = () => {
+    if (datasetArray.length === 0) {
+      return <StatisticBlock />
+    }
+    if (datasetArray.length === 1) {
+      return (
+        <StatisticBlock
+          stat={(datasetArray[datasetArray.length - 1].avg || 0).toFixed(1)}
+        />
+      )
+    }
+    if (datasetArray.length > 1) {
+      return (
+        <StatisticBlock
+          stat={(datasetArray[datasetArray.length - 1].avg || 0).toFixed(1)}
+          postfix={getTrendByPercentage(
+            datasetArray[datasetArray.length - 1].trend || 0,
+          )}
+          postfixColor={getTrendStatusColor(
+            datasetArray[datasetArray.length - 1].trend || 0,
+          )}
+        />
+      )
+    }
+  }
+
+  return (
+    <>
+      {statisticBlockRenderer()}
+
+      <div
+        style={{
+          width: '100%',
+          overflowX: 'auto',
+          overflowY: 'hidden',
+        }}
+      >
+        <AverageDatasetChart dataset={datasetArray} />
+      </div>
+    </>
+  )
+}
+
+const groupDatasetRenderer = (dataset: any) => {
+  const datasetArray = dataset || []
+
+  return (
+    <div
+      style={{
+        width: '100%',
+        overflowX: 'auto',
+        overflowY: 'hidden',
+      }}
+    >
+      <GroupDatasetChart
+        dataKeys={
+          datasetArray.length > 0 && datasetArray[0].trend
+            ? (Object.keys(datasetArray[0].trend) as string[])
+            : []
+        }
+        dataset={datasetArray}
+      />
+    </div>
+  )
+}
 
 const Projects = () => {
   const [selectedProjectId, setSelectedProjectId] = useState<string>('')
@@ -26,56 +98,6 @@ const Projects = () => {
     [GET_PATHS.getProjectsWorkSurveysAverage, selectedProjectId],
     () => client.getProjectsWorkSurveysAverage(selectedProjectId),
   )
-
-  const averageDatasetRenderer = (
-    dataset: (ViewAudit | ViewEngineeringHealth)[],
-  ) => {
-    const datasetArray = dataset || []
-
-    const statisticBlockRenderer = () => {
-      if (datasetArray.length === 0) {
-        return <StatisticBlock />
-      }
-      if (datasetArray.length === 1) {
-        return (
-          <StatisticBlock
-            stat={(datasetArray[datasetArray.length - 1].avg || 0).toFixed(1)}
-          />
-        )
-      }
-      if (datasetArray.length > 1) {
-        return (
-          <StatisticBlock
-            stat={(datasetArray[datasetArray.length - 1].avg || 0).toFixed(1)}
-            postfix={getTrendByPercentage(
-              datasetArray[datasetArray.length - 1].trend || 0,
-            )}
-            postfixColor={getTrendStatusColor(
-              datasetArray[datasetArray.length - 1].trend || 0,
-            )}
-          />
-        )
-      }
-    }
-
-    return (
-      <>
-        {statisticBlockRenderer()}
-
-        <div
-          style={{
-            width: '100%',
-            overflowX: 'auto',
-            overflowY: 'hidden',
-          }}
-        >
-          <AverageDatasetChart dataset={datasetArray} />
-        </div>
-      </>
-    )
-  }
-
-  const groupDatasetRenderer = () => null
 
   return (
     <>
