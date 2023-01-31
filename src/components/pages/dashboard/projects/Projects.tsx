@@ -11,6 +11,7 @@ import { AverageDatasetChart } from './AverageDatasetChart'
 import { ProjectSizeCard } from './ProjectSizeCard'
 import { WorkSurveyDomainCard } from './WorkSurveyDomainCard'
 import { GroupDatasetChart } from './GroupDatasetChart'
+import { AuditEventsCard } from './AuditEventsCard'
 
 const averageDatasetRenderer = (
   dataset: (ViewAudit | ViewEngineeringHealth)[],
@@ -99,6 +100,12 @@ const Projects = () => {
     () => client.getProjectsWorkSurveysAverage(selectedProjectId),
   )
 
+  const { data: auditEventsData, loading: isAuditEventsLoading } =
+    useFetchWithCache(
+      [GET_PATHS.getProjectsAuditEvents, selectedProjectId],
+      () => client.getProjectsAuditEvents(selectedProjectId),
+    )
+
   return (
     <>
       <Row gutter={[16, 16]}>
@@ -114,7 +121,7 @@ const Projects = () => {
 
       <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
         {['workload', 'deadline', 'learning'].map((k) => (
-          <Col span={8} key={k}>
+          <Col span={24} lg={{ span: 8 }} key={k}>
             <WorkSurveyDomainCard
               data={projectsWorkSurveysData?.data || {}}
               domain={k as Exclude<DomainTypes, 'engagement'>}
@@ -144,6 +151,15 @@ const Projects = () => {
           fetcher={() => client.getProjectsAuditScore(selectedProjectId)}
           childrenRenderers={[averageDatasetRenderer, groupDatasetRenderer]}
         />
+      </Row>
+
+      <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
+        <Col span={24} lg={{ span: 12 }} xl={{ span: 8 }}>
+          <AuditEventsCard
+            data={auditEventsData?.data || []}
+            isLoading={isAuditEventsLoading}
+          />
+        </Col>
       </Row>
     </>
   )
