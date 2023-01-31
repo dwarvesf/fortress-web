@@ -97,6 +97,12 @@ const Default = () => {
   )
   // eslint-disable-next-line
   const seniorities = senioritiesData?.data || []
+  const { data: lineManagersData } = useFetchWithCache(
+    [GET_PATHS.getLineManagers],
+    () => client.getLineManagers(),
+  )
+  // eslint-disable-next-line
+  const lineManagers = lineManagersData?.data || []
 
   const columns = useMemo(() => {
     const finalColumns: ColumnsType<ViewEmployeeData> = [
@@ -237,6 +243,10 @@ const Default = () => {
             text: '-',
             value: '-',
           },
+          ...lineManagers.map((each) => ({
+            text: each.displayName,
+            value: each.id || '',
+          })),
         ],
       },
       {
@@ -325,6 +335,7 @@ const Default = () => {
     stacks,
     chapters,
     seniorities,
+    lineManagers,
   ])
 
   // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -51,6 +51,7 @@ import {
   ViewProjectSizeResponse,
   ViewEngineeringHealthResponse,
   ViewWorkSurveyResponse,
+  ViewLineManagersResponse,
 } from 'types/schema'
 import { EmployeeListFilter } from 'types/filters/EmployeeListFilter'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
@@ -96,6 +97,7 @@ export const GET_PATHS = {
   getProjectsWorkSurveysAverage: '/dashboards/work-surveys',
   getProjectsEngineeringHealthScore: '/dashboards/engineering-healths',
   getProjectsAuditScore: '/dashboards/audits',
+  getLineManagers: '/line-managers',
 }
 export interface Meta {
   page?: number
@@ -811,6 +813,12 @@ class Client {
         headers: { ...this.privateHeaders },
       },
     )
+  }
+
+  public getLineManagers() {
+    return fetcher<ViewLineManagersResponse>(`${BASE_URL}/line-managers`, {
+      headers: { ...this.privateHeaders },
+    })
   }
 }
 
