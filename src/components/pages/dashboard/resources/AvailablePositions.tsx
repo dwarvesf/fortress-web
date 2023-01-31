@@ -110,7 +110,14 @@ const dataSource: ViewEmployeeData[] = [
         name: 'Frontend',
       },
     ],
-    stacks: [],
+    stacks: [
+      {
+        id: 'fa0f4e46-7eab-4e5c-9d31-30489e69fe2e',
+        name: 'React',
+        code: 'react',
+        avatar: '',
+      },
+    ],
     roles: [
       {
         id: '11ccffea-2cc9-4e98-9bef-3464dfe4dec8',

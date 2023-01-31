@@ -9,7 +9,7 @@ export const PendingAndAvailablePositions = () => {
       bodyStyle={{ padding: 0, height: 500 }}
     >
       <Tabs
-        tabBarStyle={{ padding: '0 24px' }}
+        tabBarStyle={{ padding: '0 24px', margin: 0, height: 42 }}
         items={[
           {
             key: 'pending',
