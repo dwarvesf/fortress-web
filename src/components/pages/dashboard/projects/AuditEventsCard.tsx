@@ -95,7 +95,7 @@ const CustomAxisTick = ({
   payload,
   currentEvent,
 }: CartesianAxisProps & {
-  payload?: any // TODO: update type
+  payload?: any
   currentEvent: string
 }) => {
   return (
@@ -158,7 +158,10 @@ export const AuditEventsCard = (props: Props) => {
                 <Icon
                   icon="material-symbols:square"
                   color={entry.color}
-                  style={{ fontSize: 20, marginRight: 2 }}
+                  style={{
+                    fontSize: 21,
+                    marginRight: 2,
+                  }}
                 />
                 <span>
                   {capitalizeFirstLetter(entry.value).replace('-', ' ')}
