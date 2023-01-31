@@ -76,6 +76,7 @@ export const LineChart = (props: Props) => {
         style={{
           marginLeft: -10,
         }}
+        margin={{ left: 12, right: 16 }}
         {...rest}
       >
         <CartesianGrid strokeDasharray="3 3" />
@@ -114,6 +115,7 @@ export const LineChart = (props: Props) => {
         ) : (
           ((lineDataKeys as (string | DataKey<any>)[]) || []).map((k, i) => (
             <Line
+              key={String(k!)}
               dataKey={k!}
               stroke={chartColors[i % chartColors.length]}
               strokeWidth={1.5}

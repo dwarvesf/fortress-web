@@ -65,15 +65,6 @@ tr.inbox-row.not-read td {
   border-color: #2c323c !important;
 }
 
-.recharts-surface
-  > g:nth-of-type(2)
-  .recharts-cartesian-axis-ticks
-  .recharts-cartesian-axis-tick:first-child
-  text {
-  text-anchor: start;
-  transform: translateX(-6px);
-}
-
 .recharts-pie {
   outline: none;
 }

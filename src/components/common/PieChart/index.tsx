@@ -56,18 +56,19 @@ const renderCustomizedLabel = ({
       <path
         d={`M${startX},${startY}L${middleX},${middleY}L${endX},${endY}`}
         stroke={theme.colors.gray600}
+        strokeWidth={1.25}
         fill="none"
       />
       <circle
         cx={endX}
         cy={endY}
-        r={2}
+        r={2.75}
         fill={theme.colors.gray600}
         stroke="none"
       />
       <text
-        x={endX}
-        y={endY - 4.5}
+        x={endX >= Number(cx) ? endX + 1.75 : endX - 1.75}
+        y={endY - 3.75}
         textAnchor={endX >= Number(cx) ? 'start' : 'end'}
         fill={theme.colors.gray700}
         style={{
@@ -76,11 +77,11 @@ const renderCustomizedLabel = ({
           whiteSpace: 'pre-line',
         }}
       >
-        <tspan>{name.length > 10 ? `${name.slice(0, 8)}...` : name}</tspan>
+        <tspan>{name.length > 10 ? `${name.slice(0, 7)}...` : name}</tspan>
       </text>
       <text
-        x={endX >= Number(cx) ? endX + 2.0 : endX - 2.0}
-        y={endY + 8.5}
+        x={endX >= Number(cx) ? endX + 3.2 : endX - 3.2}
+        y={endY + 9}
         textAnchor={endX >= Number(cx) ? 'start' : 'end'}
         fill={theme.colors.gray500}
         style={{

@@ -128,34 +128,36 @@ export const UtilizationChart = () => {
     <Card
       title="Resource Utilization"
       style={{ height: 500, display: 'flex', flexDirection: 'column' }}
-      bodyStyle={{
-        overflowX: 'auto',
-        overflowY: 'hidden',
-        height: 500,
-        padding: 8,
-      }}
     >
-      <ResponsiveContainer width="100%" height="100%" minWidth={300}>
-        <BarChart data={data}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" tickLine={false} />
-          <YAxis width={40} tickLine={false} />
-          <Tooltip
-            cursor={{ fill: 'transparent' }}
-            content={<CustomTooltip />}
-          />
-          <Legend content={<CustomLegend />} />
-          {['staffed', 'shadow', 'available'].map((key, i) => (
-            <Bar
-              key={key}
-              dataKey={key}
-              stackId="a"
-              fill={Object.values(chartTrendColors)[i]}
-              maxBarSize={40}
+      <div
+        style={{
+          marginLeft: -10,
+          overflowX: 'auto',
+          overflowY: 'hidden',
+        }}
+      >
+        <ResponsiveContainer width="100%" height={400} minWidth={300}>
+          <BarChart data={data} margin={{ left: 4, right: 12 }}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" tickLine={false} fontSize={13} />
+            <YAxis width={40} tickLine={false} fontSize={13} />
+            <Tooltip
+              cursor={{ fill: 'transparent' }}
+              content={<CustomTooltip />}
             />
-          ))}
-        </BarChart>
-      </ResponsiveContainer>
+            <Legend content={<CustomLegend />} />
+            {['staffed', 'shadow', 'available'].map((key, i) => (
+              <Bar
+                key={key}
+                dataKey={key}
+                stackId="a"
+                fill={Object.values(chartTrendColors)[i]}
+                maxBarSize={40}
+              />
+            ))}
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
     </Card>
   )
 }
