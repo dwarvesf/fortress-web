@@ -52,6 +52,7 @@ import {
   ViewEngineeringHealthResponse,
   ViewWorkSurveyResponse,
   ViewLineManagersResponse,
+  ViewActionItemReportResponse,
 } from 'types/schema'
 import { EmployeeListFilter } from 'types/filters/EmployeeListFilter'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
@@ -94,10 +95,11 @@ export const GET_PATHS = {
   getSurveyReviewDetail: (id: string, topicID: string, reviewerID: string) =>
     `/surveys/${id}/topics/${topicID}/reviews/${reviewerID}`,
   getProjectsSizes: '/dashboards/projects/sizes',
-  getProjectsWorkSurveysAverage: '/dashboards/work-surveys',
-  getProjectsEngineeringHealthScore: '/dashboards/engineering-healths',
-  getProjectsAuditScore: '/dashboards/audits',
   getLineManagers: '/line-managers',
+  getProjectsWorkSurveysAverage: '/dashboards/projects/work-surveys',
+  getProjectsEngineeringHealthScore: '/dashboards/projects/engineering-healths',
+  getProjectsAuditScore: '/dashboards/projects/audits',
+  getProjectsAuditEvents: '/dashboards/projects/action-items',
 }
 export interface Meta {
   page?: number
@@ -819,6 +821,17 @@ class Client {
     return fetcher<ViewLineManagersResponse>(`${BASE_URL}/line-managers`, {
       headers: { ...this.privateHeaders },
     })
+  }
+
+  public getProjectsAuditEvents(projectID?: string) {
+    const queryString = qs.stringify({ projectID })
+
+    return fetcher<ViewActionItemReportResponse>(
+      `${BASE_URL}/dashboards/projects/action-items?${queryString}`,
+      {
+        headers: { ...this.privateHeaders },
+      },
+    )
   }
 }
 

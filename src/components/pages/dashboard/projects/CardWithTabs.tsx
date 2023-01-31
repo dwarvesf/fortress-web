@@ -55,7 +55,7 @@ export const CardWithTabs = (props: Props) => {
   )
 
   return (
-    <Col span={12}>
+    <Col span={24} lg={{ span: 12 }}>
       <Card
         bodyStyle={{
           height: '100%',
