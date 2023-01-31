@@ -12,6 +12,7 @@ import { ProjectSizeCard } from './ProjectSizeCard'
 import { WorkSurveyDomainCard } from './WorkSurveyDomainCard'
 import { GroupDatasetChart } from './GroupDatasetChart'
 import { AuditEventsCard } from './AuditEventsCard'
+import { WorkStatusSummaryCard } from './WorkStatusSummaryCard'
 
 const averageDatasetRenderer = (
   dataset: (ViewAudit | ViewEngineeringHealth)[],
@@ -108,14 +109,17 @@ const Projects = () => {
 
   return (
     <>
-      <Row gutter={[16, 16]}>
-        <Col span={24} lg={{ span: 12 }} xl={{ span: 8 }}>
+      <Row gutter={[16, 16]} align="middle">
+        <Col span={24} xl={{ span: 8 }}>
           <ProjectSizeCard
             data={projectsSizesData || {}}
             selectedProjectId={selectedProjectId}
             setSelectedProjectId={setSelectedProjectId}
             isLoading={isProjectsSizesLoading}
           />
+        </Col>
+        <Col span={24} xl={{ span: 16 }} style={{ height: 389.14 }}>
+          <WorkStatusSummaryCard />
         </Col>
       </Row>
 

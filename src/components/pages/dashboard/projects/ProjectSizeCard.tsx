@@ -21,7 +21,7 @@ export const ProjectSizeCard = (props: Props) => {
           size="large"
           style={{
             padding: 16,
-            height: 350,
+            height: 330,
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
@@ -34,7 +34,7 @@ export const ProjectSizeCard = (props: Props) => {
         <Empty
           style={{
             padding: 16,
-            height: 350,
+            height: 330,
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',

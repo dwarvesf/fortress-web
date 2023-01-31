@@ -49,7 +49,7 @@ export const ProjectSizeChart = (props: Props) => {
     <PieChart
       width="100%"
       minWidth={375}
-      height={350}
+      height={330}
       dataset={dataset}
       pieDataKey="size"
       customToolTip={<CustomTooltip />}
