@@ -94,7 +94,6 @@ const dataSource: ViewEmployeeData[] = [
     linkedInName: '',
     status: 'on-boarding',
     joinedDate: '2023-01-13T00:00:00Z',
-    organization: '',
     seniority: {
       id: 'd796884d-a8c4-4525-81e7-54a3b6099eac',
       createdAt: '2022-11-07T09:50:25.714604Z',
