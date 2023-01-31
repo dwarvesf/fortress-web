@@ -125,35 +125,37 @@ const CustomLegend = ({ payload }: LegendProps) => {
 
 export const UtilizationChart = () => {
   return (
-    <Card title="Resource Utilization">
-      <div
-        style={{
-          overflowX: 'auto',
-          overflowY: 'hidden',
-        }}
-      >
-        <ResponsiveContainer width="100%" height={350} minWidth={300}>
-          <BarChart data={data}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" tickLine={false} />
-            <YAxis width={40} tickLine={false} />
-            <Tooltip
-              cursor={{ fill: 'transparent' }}
-              content={<CustomTooltip />}
+    <Card
+      title="Resource Utilization"
+      style={{ height: 500, display: 'flex', flexDirection: 'column' }}
+      bodyStyle={{
+        overflowX: 'auto',
+        overflowY: 'hidden',
+        height: 500,
+        padding: 8,
+      }}
+    >
+      <ResponsiveContainer width="100%" height="100%" minWidth={300}>
+        <BarChart data={data}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="name" tickLine={false} />
+          <YAxis width={40} tickLine={false} />
+          <Tooltip
+            cursor={{ fill: 'transparent' }}
+            content={<CustomTooltip />}
+          />
+          <Legend content={<CustomLegend />} />
+          {['staffed', 'shadow', 'available'].map((key, i) => (
+            <Bar
+              key={key}
+              dataKey={key}
+              stackId="a"
+              fill={Object.values(chartTrendColors)[i]}
+              maxBarSize={40}
             />
-            <Legend content={<CustomLegend />} />
-            {['staffed', 'shadow', 'available'].map((key, i) => (
-              <Bar
-                key={key}
-                dataKey={key}
-                stackId="a"
-                fill={Object.values(chartTrendColors)[i]}
-                maxBarSize={40}
-              />
-            ))}
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
+          ))}
+        </BarChart>
+      </ResponsiveContainer>
     </Card>
   )
 }
