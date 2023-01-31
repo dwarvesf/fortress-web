@@ -220,7 +220,7 @@ export const WorkUnitDistributionChart = ({ data, total }: Props) => {
         onPaddingChange(e.deltaY)
       }}
     >
-      <ResponsiveContainer width="100%" height={300} minWidth={300}>
+      <ResponsiveContainer width="100%" height={300} minWidth={450}>
         <BarChart
           data={data}
           layout="vertical"
