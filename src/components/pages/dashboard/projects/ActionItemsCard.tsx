@@ -189,6 +189,7 @@ export const ActionItemsCard = (props: Props) => {
               orientation="left"
               width={40}
               tickLine={false}
+              fontSize={13}
             />
             <YAxis
               yAxisId="right"
