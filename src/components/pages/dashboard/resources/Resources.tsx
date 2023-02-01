@@ -1,6 +1,7 @@
 import { Col, Row } from 'antd'
 import { PendingAndAvailablePositions } from './PendingAndAvailablePositions'
 import { UtilizationChart } from './UtilizationChart'
+import { WorkUnitDistribution } from './WorkUnitDistribution'
 
 const Resources = () => {
   return (
@@ -10,6 +11,9 @@ const Resources = () => {
       </Col>
       <Col span={24} xl={{ span: 16 }}>
         <PendingAndAvailablePositions />
+      </Col>
+      <Col span={24} xl={{ span: 12 }}>
+        <WorkUnitDistribution />
       </Col>
     </Row>
   )
