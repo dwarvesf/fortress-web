@@ -145,22 +145,22 @@ export const EditProfileInfoModal = (props: Props) => {
           </Col>
           <Col span={24} md={{ span: 12 }}>
             <Form.Item label="Discord" name="discordName">
-              <Input placeholder="thanh#xxxx" className="bordered" />
+              <Input placeholder="johndoe#xxxx" className="bordered" />
             </Form.Item>
           </Col>
           <Col span={24} md={{ span: 12 }}>
             <Form.Item label="Github" name="githubID">
-              <Input placeholder="zlatanpham" className="bordered" />
+              <Input placeholder="johndoe" className="bordered" />
             </Form.Item>
           </Col>
           <Col span={24} md={{ span: 12 }}>
             <Form.Item label="Notion" name="notionName">
-              <Input placeholder="Thanh Pham" className="bordered" />
+              <Input placeholder="John Doe" className="bordered" />
             </Form.Item>
           </Col>
           <Col span={24} md={{ span: 12 }}>
             <Form.Item label="LinkedIn" name="linkedInName">
-              <Input placeholder="thanh-pham-1234" className="bordered" />
+              <Input placeholder="john-doe-1234" className="bordered" />
             </Form.Item>
           </Col>
           <Col span={24}>
