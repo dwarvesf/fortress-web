@@ -54,6 +54,7 @@ import {
   ViewLineManagersResponse,
   ViewActionItemReportResponse,
   ViewAuditSummariesResponse,
+  ViewActionItemSquashReportResponse,
 } from 'types/schema'
 import { EmployeeListFilter } from 'types/filters/EmployeeListFilter'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
@@ -102,6 +103,7 @@ export const GET_PATHS = {
   getProjectsAuditScore: '/dashboards/projects/audits',
   getProjectsAuditEvents: '/dashboards/projects/action-items',
   getProjectsSummary: '/dashboards/projects/summary',
+  getProjectsActionItemSquash: '/dashboards/projects/action-item-squash',
 }
 export interface Meta {
   page?: number
@@ -839,6 +841,17 @@ class Client {
   public getProjectsSummary() {
     return fetcher<ViewAuditSummariesResponse>(
       `${BASE_URL}/dashboards/projects/summary`,
+      {
+        headers: { ...this.privateHeaders },
+      },
+    )
+  }
+
+  public getProjectsActionItemSquash(projectID?: string) {
+    const queryString = qs.stringify({ projectID })
+
+    return fetcher<ViewActionItemSquashReportResponse>(
+      `${BASE_URL}/dashboards/projects/action-item-squash?${queryString}`,
       {
         headers: { ...this.privateHeaders },
       },

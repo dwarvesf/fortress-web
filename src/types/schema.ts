@@ -717,6 +717,7 @@ export interface ViewAuditSummariesResponse {
 
 export interface ViewAuditSummary {
   audit?: ViewAuditValue
+  avatar?: string
   code?: string
   health?: ViewAuditValue
   id?: string
