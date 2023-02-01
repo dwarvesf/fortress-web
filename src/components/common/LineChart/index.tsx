@@ -76,7 +76,7 @@ export const LineChart = (props: Props) => {
         style={{
           marginLeft: -10,
         }}
-        margin={{ left: 12, right: 16 }}
+        margin={{ left: 12, right: 16, top: 4 }}
         {...rest}
       >
         <CartesianGrid strokeDasharray="3 3" />

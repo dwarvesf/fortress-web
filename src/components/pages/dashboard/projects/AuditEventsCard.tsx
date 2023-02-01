@@ -234,13 +234,7 @@ export const AuditEventsCard = (props: Props) => {
               }
               domain={['']}
             />
-            <YAxis
-              width={40}
-              tickLine={false}
-              domain={[0, 100]}
-              ticks={[0, 20, 40, 60, 80, 100]}
-              fontSize={13}
-            />
+            <YAxis width={40} tickLine={false} fontSize={13} />
             <Tooltip
               cursor={{ fill: 'transparent' }}
               content={<CustomTooltip />}
