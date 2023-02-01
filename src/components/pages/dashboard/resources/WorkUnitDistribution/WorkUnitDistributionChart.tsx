@@ -234,19 +234,23 @@ export const WorkUnitDistributionChart = ({ data, total }: Props) => {
           />
           <Tooltip
             cursor={
-              <rect
-                x={151 + chartSize.width}
-                y={
-                  (-padding.top /
-                    ((chartSize.height / maxDisplayItems) * data.length)) *
-                  chartSize.height
-                }
-                rx={4}
-                ry={4}
-                width={8}
-                height={(maxDisplayItems / data.length) * chartSize.height}
-                fill="#ccc"
-              />
+              maxDisplayItems / data.length < 1 ? (
+                <rect
+                  x={151 + chartSize.width}
+                  y={
+                    (-padding.top /
+                      ((chartSize.height / maxDisplayItems) * data.length)) *
+                    chartSize.height
+                  }
+                  rx={4}
+                  ry={4}
+                  width={8}
+                  height={(maxDisplayItems / data.length) * chartSize.height}
+                  fill="#ccc"
+                />
+              ) : (
+                false
+              )
             }
             content={<CustomTooltip data={data} />}
           />
