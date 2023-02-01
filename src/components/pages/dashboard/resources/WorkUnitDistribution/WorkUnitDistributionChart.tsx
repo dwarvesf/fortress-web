@@ -20,7 +20,7 @@ import { ViewBasicEmployeeInfo } from 'types/schema'
 import { capitalizeFirstLetter } from 'utils/string'
 
 const YAxisSize = 150
-const maxDisplayItems = 5
+const maxDisplayItems = 8
 
 interface ToTalType {
   development?: number
@@ -222,7 +222,7 @@ export const WorkUnitDistributionChart = ({ data, total }: Props) => {
         onWheel(e.deltaY)
       }}
     >
-      <ResponsiveContainer width="100%" height={300} minWidth={450}>
+      <ResponsiveContainer width="100%" height={380} minWidth={450}>
         <BarChart data={data} layout="vertical">
           <CartesianGrid strokeDasharray="3 3" horizontal={false} />
           <XAxis type="number" tickLine={false} />
