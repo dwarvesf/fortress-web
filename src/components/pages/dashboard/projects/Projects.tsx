@@ -13,6 +13,7 @@ import { WorkSurveyDomainCard } from './WorkSurveyDomainCard'
 import { GroupDatasetChart } from './GroupDatasetChart'
 import { AuditEventsCard } from './AuditEventsCard'
 import { WorkStatusSummaryCard } from './WorkStatusSummaryCard'
+import { ActionItemsCard } from './ActionItemsCard'
 
 const averageDatasetRenderer = (
   dataset: (ViewAudit | ViewEngineeringHealth)[],
@@ -112,6 +113,14 @@ const Projects = () => {
       client.getProjectsSummary(),
     )
 
+  const {
+    data: projectsActionItemSquashData,
+    loading: isProjectsActionItemSquashLoading,
+  } = useFetchWithCache(
+    [GET_PATHS.getProjectsActionItemSquash, selectedProjectId],
+    () => client.getProjectsActionItemSquash(selectedProjectId),
+  )
+
   return (
     <>
       <Row gutter={[16, 16]}>
@@ -166,10 +175,16 @@ const Projects = () => {
       </Row>
 
       <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
-        <Col span={24} lg={{ span: 12 }} xl={{ span: 8 }}>
+        <Col span={24} xl={{ span: 8 }}>
           <AuditEventsCard
             data={auditEventsData?.data || []}
             isLoading={isAuditEventsLoading}
+          />
+        </Col>
+        <Col span={24} xl={{ span: 16 }}>
+          <ActionItemsCard
+            data={projectsActionItemSquashData?.data || {}}
+            isLoading={isProjectsActionItemSquashLoading}
           />
         </Col>
       </Row>
