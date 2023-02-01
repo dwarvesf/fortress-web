@@ -21,7 +21,7 @@ export const ProjectSizeCard = (props: Props) => {
           size="large"
           style={{
             padding: 16,
-            height: 330,
+            height: 350,
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
@@ -34,7 +34,7 @@ export const ProjectSizeCard = (props: Props) => {
         <Empty
           style={{
             padding: 16,
-            height: 330,
+            height: 350,
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
@@ -53,7 +53,7 @@ export const ProjectSizeCard = (props: Props) => {
   }, [dataset, isLoading, selectedProjectId, setSelectedProjectId])
 
   return (
-    <Card title="Project Size" bodyStyle={{ padding: 8 }}>
+    <Card title="Project Size" bodyStyle={{ padding: 0 }}>
       <div
         style={{
           overflowX: 'auto',

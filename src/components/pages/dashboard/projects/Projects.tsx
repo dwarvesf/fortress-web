@@ -123,7 +123,7 @@ const Projects = () => {
             isLoading={isProjectsSizesLoading}
           />
         </Col>
-        <Col span={24} xl={{ span: 16 }} style={{ height: 389.14 }}>
+        <Col span={24} xl={{ span: 16 }} style={{ height: 393.14 }}>
           <WorkStatusSummaryCard
             data={projectsSummaryData?.data || {}}
             isLoading={isProjectsSummaryLoading}
