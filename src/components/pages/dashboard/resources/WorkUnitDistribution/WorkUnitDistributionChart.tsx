@@ -2,7 +2,7 @@ import { Card, Col, Row, Space } from 'antd'
 import { UserAvatar } from 'components/common/AvatarWithName'
 import { chartColors } from 'constants/colors'
 import { ROUTES } from 'constants/routes'
-import { useRouter } from 'next/router'
+import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import {
   Bar,
@@ -18,6 +18,9 @@ import {
 } from 'recharts'
 import { ViewBasicEmployeeInfo } from 'types/schema'
 import { capitalizeFirstLetter } from 'utils/string'
+
+const YAxisSize = 150
+const maxDisplayItems = 5
 
 interface ToTalType {
   development?: number
@@ -114,7 +117,6 @@ const CustomTick = ({
   tickFormatter,
   ...props
 }: Record<string, any> & { data: RecordType[]; chartHeight: number }) => {
-  const { push } = useRouter()
   const employee = data.find(
     (each) => each.employee?.id === payload.value,
   )?.employee
@@ -124,17 +126,19 @@ const CustomTick = ({
   }
 
   return (
-    <g>
-      <text {...props}>
-        <tspan
-          dx={-30}
-          dy="0.355em"
-          onClick={() => push(ROUTES.EMPLOYEE_DETAIL(employee?.username!))}
-        >
-          <a>{employee?.displayName}</a>
-        </tspan>
-      </text>
-      <foreignObject x={props.x - 24} y={props.y - 12} width={24} height={24}>
+    <foreignObject
+      x={props.x - YAxisSize}
+      y={props.y - 12}
+      width={YAxisSize}
+      height={24}
+    >
+      <Space
+        align="center"
+        style={{ width: '100%', justifyContent: 'flex-end' }}
+      >
+        <Link href={ROUTES.EMPLOYEE_DETAIL(employee?.username!)}>
+          <a className="styled">{employee?.displayName}</a>
+        </Link>
         <img
           src={employee?.avatar}
           alt=""
@@ -142,8 +146,8 @@ const CustomTick = ({
           height={24}
           style={{ borderRadius: '50%', objectFit: 'cover' }}
         />
-      </foreignObject>
-    </g>
+      </Space>
+    </foreignObject>
   )
 }
 
@@ -166,7 +170,6 @@ interface Props {
 }
 
 export const WorkUnitDistributionChart = ({ data, total }: Props) => {
-  const maxDisplayItems = 5
   const wheelTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [chartSize, setChartSize] = useState({ width: 0, height: 0 })
   const [padding, setPadding] = useState({ top: 0, bottom: 0 })
@@ -229,14 +232,14 @@ export const WorkUnitDistributionChart = ({ data, total }: Props) => {
             tickLine={false}
             axisLine={false}
             tick={<CustomTick data={data} chartHeight={chartSize.height} />}
-            width={150}
+            width={YAxisSize}
             padding={padding}
           />
           <Tooltip
             cursor={
               maxDisplayItems / data.length < 1 ? (
                 <rect
-                  x={151 + chartSize.width}
+                  x={YAxisSize + 1 + chartSize.width}
                   y={
                     (-padding.top /
                       ((chartSize.height / maxDisplayItems) * data.length)) *
