@@ -87,7 +87,7 @@ export const WorkStatusSummaryCard = (props: Props) => {
     <Card
       title="Quarterly Summary"
       style={{ height: '100%' }}
-      bodyStyle={{ padding: '1px 0 0' }}
+      bodyStyle={{ padding: '1px 0 24px' }}
     >
       <Table
         dataSource={dataset}
