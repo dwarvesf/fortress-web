@@ -53,6 +53,7 @@ import {
   ViewWorkSurveyResponse,
   ViewLineManagersResponse,
   ViewActionItemReportResponse,
+  ViewAuditSummariesResponse,
 } from 'types/schema'
 import { EmployeeListFilter } from 'types/filters/EmployeeListFilter'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
@@ -100,6 +101,7 @@ export const GET_PATHS = {
   getProjectsEngineeringHealthScore: '/dashboards/projects/engineering-healths',
   getProjectsAuditScore: '/dashboards/projects/audits',
   getProjectsAuditEvents: '/dashboards/projects/action-items',
+  getProjectsSummary: '/dashboards/projects/summary',
 }
 export interface Meta {
   page?: number
@@ -828,6 +830,15 @@ class Client {
 
     return fetcher<ViewActionItemReportResponse>(
       `${BASE_URL}/dashboards/projects/action-items?${queryString}`,
+      {
+        headers: { ...this.privateHeaders },
+      },
+    )
+  }
+
+  public getProjectsSummary() {
+    return fetcher<ViewAuditSummariesResponse>(
+      `${BASE_URL}/dashboards/projects/summary`,
       {
         headers: { ...this.privateHeaders },
       },

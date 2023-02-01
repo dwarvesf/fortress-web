@@ -244,6 +244,7 @@ export interface ModelProject {
   heads?: ModelProjectHead[]
   id?: string
   name?: string
+  notionID?: string
   projectEmail?: string
   projectMembers?: ModelProjectMember[]
   projectStacks?: ModelProjectStack[]
@@ -706,6 +707,30 @@ export interface ViewAuditResponse {
   data?: ViewAuditData
 }
 
+export interface ViewAuditSummaries {
+  summary?: ViewAuditSummary[]
+}
+
+export interface ViewAuditSummariesResponse {
+  data?: ViewAuditSummaries
+}
+
+export interface ViewAuditSummary {
+  audit?: ViewAuditValue
+  code?: string
+  health?: ViewAuditValue
+  id?: string
+  name?: string
+  newItem?: ViewItemValue
+  resolvedItem?: ViewItemValue
+  size?: ViewItemValue
+}
+
+export interface ViewAuditValue {
+  trend?: number
+  value?: number
+}
+
 export interface ViewAuthData {
   accessToken?: string
   employee?: ViewEmployeeData
@@ -995,6 +1020,11 @@ export interface ViewGroupEngineeringHealth {
 
 export interface ViewHiringResponse {
   data?: ModelHiringPosition[]
+}
+
+export interface ViewItemValue {
+  trend?: number
+  value?: number
 }
 
 export interface ViewLineManagersResponse {
