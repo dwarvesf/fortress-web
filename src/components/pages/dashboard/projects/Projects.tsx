@@ -107,6 +107,11 @@ const Projects = () => {
       () => client.getProjectsAuditEvents(selectedProjectId),
     )
 
+  const { data: projectsSummaryData, loading: isProjectsSummaryLoading } =
+    useFetchWithCache([GET_PATHS.getProjectsSummary], () =>
+      client.getProjectsSummary(),
+    )
+
   return (
     <>
       <Row gutter={[16, 16]} align="middle">
@@ -119,7 +124,10 @@ const Projects = () => {
           />
         </Col>
         <Col span={24} xl={{ span: 16 }} style={{ height: 389.14 }}>
-          <WorkStatusSummaryCard />
+          <WorkStatusSummaryCard
+            data={projectsSummaryData?.data || {}}
+            isLoading={isProjectsSummaryLoading}
+          />
         </Col>
       </Row>
 
