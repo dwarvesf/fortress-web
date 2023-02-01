@@ -170,9 +170,8 @@ export const WorkUnitDistributionChart = ({ data, total }: Props) => {
   const wheelTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [chartSize, setChartSize] = useState({ width: 0, height: 0 })
   const [padding, setPadding] = useState({ top: 0, bottom: 0 })
-  const [dragging, setDragging] = useState({ enabled: false, y: 0 })
 
-  const onPaddingChange = (delta: number) => {
+  const onWheel = (delta: number) => {
     const { top, bottom } = padding
     if (top - delta > 0) {
       setPadding({
@@ -217,35 +216,11 @@ export const WorkUnitDistributionChart = ({ data, total }: Props) => {
         wheelTimeout.current = setTimeout(() => {
           wheelTimeout.current = null
         }, 300)
-        onPaddingChange(e.deltaY)
+        onWheel(e.deltaY)
       }}
     >
       <ResponsiveContainer width="100%" height={300} minWidth={450}>
-        <BarChart
-          data={data}
-          layout="vertical"
-          style={{ cursor: dragging.enabled ? 'grabbing' : 'grab' }}
-          onMouseDown={() => {
-            setDragging({ y: 0, enabled: true })
-          }}
-          onMouseUp={() => {
-            setDragging({ y: 0, enabled: false })
-          }}
-          onMouseLeave={() => {
-            setDragging({ y: 0, enabled: false })
-          }}
-          onMouseMove={(e) => {
-            if (dragging.enabled && e.chartY) {
-              if (!dragging.y) {
-                setDragging({ y: e.chartY, enabled: true })
-              } else {
-                const delta = dragging.y - e.chartY
-                onPaddingChange(delta)
-                setDragging({ y: e.chartY, enabled: true })
-              }
-            }
-          }}
-        >
+        <BarChart data={data} layout="vertical">
           <CartesianGrid strokeDasharray="3 3" horizontal={false} />
           <XAxis type="number" tickLine={false} />
           <YAxis
@@ -258,7 +233,21 @@ export const WorkUnitDistributionChart = ({ data, total }: Props) => {
             padding={padding}
           />
           <Tooltip
-            cursor={{ fill: 'transparent' }}
+            cursor={
+              <rect
+                x={151 + chartSize.width}
+                y={
+                  (-padding.top /
+                    ((chartSize.height / maxDisplayItems) * data.length)) *
+                  chartSize.height
+                }
+                rx={4}
+                ry={4}
+                width={8}
+                height={(maxDisplayItems / data.length) * chartSize.height}
+                fill="#ccc"
+              />
+            }
             content={<CustomTooltip data={data} />}
           />
           <Legend content={<CustomLegend total={total} />} />
