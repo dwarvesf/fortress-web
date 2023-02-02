@@ -9,6 +9,12 @@
  * ---------------------------------------------------------------
  */
 
+export interface GormDeletedAt {
+  time?: string
+  /** Valid is true if Time is not NULL */
+  valid?: boolean
+}
+
 export interface ModelAccountingItem {
   amount?: number
   name?: string
@@ -25,7 +31,7 @@ export interface ModelAudience {
 export interface ModelChapter {
   code?: string
   createdAt?: string
-  deletedAt?: string
+  deletedAt?: GormDeletedAt
   id?: string
   lead_id?: string
   name?: string
@@ -36,7 +42,7 @@ export interface ModelCountry {
   cities?: string[]
   code?: string
   createdAt?: string
-  deletedAt?: string
+  deletedAt?: GormDeletedAt
   id?: string
   name?: string
   updatedAt?: string
@@ -70,7 +76,7 @@ export interface ModelEmployee {
   country?: string
   createdAt?: string
   dateOfBirth?: string
-  deletedAt?: string
+  deletedAt?: GormDeletedAt
   discordID?: string
   discordName?: string
   displayName?: string
@@ -99,7 +105,7 @@ export interface ModelEmployee {
   localBankRecipientName?: string
   localBranchName?: string
   mbti?: string
-  mentees?: ModelEmployeeMentee[]
+  mentees?: ModelEmployee[]
   notionEmail?: string
   notionID?: string
   notionName?: string
@@ -131,25 +137,15 @@ export interface ModelEmployeeChapter {
   chapter?: ModelChapter
   chapterID?: string
   createdAt?: string
-  deletedAt?: string
+  deletedAt?: GormDeletedAt
   employeeID?: string
   id?: string
   updatedAt?: string
 }
 
-export interface ModelEmployeeMentee {
-  createdAt?: string
-  deletedAt?: string
-  id?: string
-  mentee?: ModelEmployee
-  menteeID?: string
-  mentorID?: string
-  updatedAt?: string
-}
-
 export interface ModelEmployeeOrganization {
   createdAt?: string
-  deletedAt?: string
+  deletedAt?: GormDeletedAt
   employeeID?: string
   id?: string
   organization?: ModelOrganization
@@ -159,7 +155,7 @@ export interface ModelEmployeeOrganization {
 
 export interface ModelEmployeePosition {
   createdAt?: string
-  deletedAt?: string
+  deletedAt?: GormDeletedAt
   employeeID?: string
   id?: string
   position?: ModelPosition
@@ -169,7 +165,7 @@ export interface ModelEmployeePosition {
 
 export interface ModelEmployeeRole {
   createdAt?: string
-  deletedAt?: string
+  deletedAt?: GormDeletedAt
   employeeID?: string
   id?: string
   role?: ModelRole
@@ -179,7 +175,7 @@ export interface ModelEmployeeRole {
 
 export interface ModelEmployeeStack {
   createdAt?: string
-  deletedAt?: string
+  deletedAt?: GormDeletedAt
   employeeID?: string
   id?: string
   stack?: ModelStack
@@ -215,7 +211,7 @@ export interface ModelOrganization {
   avatar?: string
   code?: string
   createdAt?: string
-  deletedAt?: string
+  deletedAt?: GormDeletedAt
   id?: string
   name?: string
   updatedAt?: string
@@ -224,7 +220,7 @@ export interface ModelOrganization {
 export interface ModelPosition {
   code?: string
   createdAt?: string
-  deletedAt?: string
+  deletedAt?: GormDeletedAt
   id?: string
   name?: string
   updatedAt?: string
@@ -238,7 +234,7 @@ export interface ModelProject {
   country?: ModelCountry
   countryID?: string
   createdAt?: string
-  deletedAt?: string
+  deletedAt?: GormDeletedAt
   endDate?: string
   function?: string
   heads?: ModelProjectHead[]
@@ -258,7 +254,7 @@ export interface ModelProject {
 export interface ModelProjectHead {
   commissionRate?: number
   createdAt?: string
-  deletedAt?: string
+  deletedAt?: GormDeletedAt
   employee?: ModelEmployee
   employeeID?: string
   endDate?: string
@@ -271,7 +267,7 @@ export interface ModelProjectHead {
 
 export interface ModelProjectMember {
   createdAt?: string
-  deletedAt?: string
+  deletedAt?: GormDeletedAt
   deploymentType?: string
   discount?: number
   employee?: ModelEmployee
@@ -295,7 +291,7 @@ export interface ModelProjectMember {
 
 export interface ModelProjectMemberPosition {
   createdAt?: string
-  deletedAt?: string
+  deletedAt?: GormDeletedAt
   id?: string
   position?: ModelPosition
   positionID?: string
@@ -312,7 +308,7 @@ export interface ModelProjectSize {
 
 export interface ModelProjectSlot {
   createdAt?: string
-  deletedAt?: string
+  deletedAt?: GormDeletedAt
   deploymentType?: string
   discount?: number
   id?: string
@@ -330,7 +326,7 @@ export interface ModelProjectSlot {
 
 export interface ModelProjectSlotPosition {
   createdAt?: string
-  deletedAt?: string
+  deletedAt?: GormDeletedAt
   id?: string
   position?: ModelPosition
   positionID?: string
@@ -340,7 +336,7 @@ export interface ModelProjectSlotPosition {
 
 export interface ModelProjectStack {
   createdAt?: string
-  deletedAt?: string
+  deletedAt?: GormDeletedAt
   id?: string
   projectID?: string
   stack?: ModelStack
@@ -351,7 +347,7 @@ export interface ModelProjectStack {
 export interface ModelRole {
   code?: string
   createdAt?: string
-  deletedAt?: string
+  deletedAt?: GormDeletedAt
   id?: string
   level?: number
   name?: string
@@ -361,7 +357,7 @@ export interface ModelRole {
 export interface ModelSeniority {
   code?: string
   createdAt?: string
-  deletedAt?: string
+  deletedAt?: GormDeletedAt
   id?: string
   level?: number
   name?: string
@@ -372,7 +368,7 @@ export interface ModelStack {
   avatar?: string
   code?: string
   createdAt?: string
-  deletedAt?: string
+  deletedAt?: GormDeletedAt
   id?: string
   name?: string
   updatedAt?: string
@@ -422,10 +418,6 @@ export interface ModelValuation {
   rate?: number
   /** basic info */
   year?: string
-}
-
-export interface RequestAddMenteeInput {
-  menteeID: string
 }
 
 export interface RequestAssignMemberInput {
@@ -547,12 +539,14 @@ export interface RequestUpdateEmployeeGeneralInfoInput {
   email: string
   fullName: string
   githubID?: string
+  joinedDate?: string
+  leftDate?: string
   lineManagerID?: string
   linkedInName?: string
   notionEmail?: string
   notionID?: string
   notionName?: string
-  organizationID?: string
+  organizationIDs?: string[]
   phone: string
 }
 
@@ -741,6 +735,26 @@ export interface ViewAuthUserResponse {
   data?: ViewLoggedInUserData
 }
 
+export interface ViewAvailableEmployee {
+  avatar?: string
+  displayName?: string
+  fullName?: string
+  id?: string
+  positions?: ViewPosition[]
+  projects?: ViewBasicProjectInfo[]
+  seniority?: ViewSeniority
+  stacks?: ViewStack[]
+}
+
+export interface ViewAvailableSlot {
+  createdAt?: string
+  id?: string
+  positions?: ViewPosition[]
+  project?: ViewBasicProjectInfo
+  seniority?: ViewSeniority
+  type?: string
+}
+
 export interface ViewBasicCountryInfo {
   code?: string
   id?: string
@@ -824,7 +838,7 @@ export interface ViewCreateProjectData {
   code?: string
   country?: ViewBasicCountryInfo
   createdAt?: string
-  deletedAt?: string
+  deletedAt?: GormDeletedAt
   deliveryManager?: ViewProjectHead
   function?: string
   id?: string
@@ -859,7 +873,7 @@ export interface ViewEmployeeData {
   city?: string
   country?: string
   createdAt?: string
-  deletedAt?: string
+  deletedAt?: GormDeletedAt
   discordID?: string
   discordName?: string
   displayName?: string
@@ -877,7 +891,7 @@ export interface ViewEmployeeData {
   mentees?: ViewMenteeInfo[]
   notionID?: string
   notionName?: string
-  organizations?: ModelOrganization[]
+  organizations?: ViewOrganization[]
   personalEmail?: string
   phoneNumber?: string
   placeOfResidence?: string
@@ -907,6 +921,29 @@ export interface ViewEmployeeProjectData {
   positions?: ViewPosition[]
   startDate?: string
   status?: string
+}
+
+export interface ViewEngagementDashboard {
+  content?: string
+  questionID?: string
+  stats?: ViewEngagementDashboardQuestionStat[]
+}
+
+export interface ViewEngagementDashboardDetail {
+  questionID?: string
+  stats?: ViewEngagementDashboardQuestionDetailStat[]
+}
+
+export interface ViewEngagementDashboardQuestionDetailStat {
+  field?: string
+  point?: number
+  startDate?: string
+}
+
+export interface ViewEngagementDashboardQuestionStat {
+  point?: number
+  startDate?: string
+  title?: string
 }
 
 export interface ViewEngineeringHealth {
@@ -984,6 +1021,14 @@ export interface ViewFeedbackDetailResponse {
 
 export interface ViewFeedbackReviewDetailResponse {
   data?: ViewFeedBackReviewDetail
+}
+
+export interface ViewGetEngagementDashboardDetailResponse {
+  data?: ViewEngagementDashboardDetail
+}
+
+export interface ViewGetEngagementDashboardResponse {
+  data?: ViewEngagementDashboard
 }
 
 export interface ViewGetQuestionResponse {
@@ -1078,6 +1123,13 @@ export interface ViewMetaData {
   name?: string
 }
 
+export interface ViewOrganization {
+  avatar?: string
+  code?: string
+  id?: string
+  name?: string
+}
+
 export interface ViewOrganizationsResponse {
   data?: ModelOrganization[]
 }
@@ -1144,7 +1196,7 @@ export interface ViewProjectData {
   code?: string
   country?: ViewBasicCountryInfo
   createdAt?: string
-  deletedAt?: string
+  deletedAt?: GormDeletedAt
   deliveryManager?: ViewProjectHead
   endDate?: string
   function?: string
@@ -1224,7 +1276,22 @@ export interface ViewQuestionAnswer {
   type?: string
 }
 
+export interface ViewResourceAvailability {
+  employees?: ViewAvailableEmployee[]
+  slots?: ViewAvailableSlot[]
+}
+
+export interface ViewResourceAvailabilityResponse {
+  data?: ViewResourceAvailability
+}
+
 export interface ViewRole {
+  code?: string
+  id?: string
+  name?: string
+}
+
+export interface ViewSeniority {
   code?: string
   id?: string
   name?: string
@@ -1327,7 +1394,7 @@ export interface ViewUpdateGeneralEmployeeResponse {
 
 export interface ViewUpdateGeneralInfoEmployeeData {
   createdAt?: string
-  deletedAt?: string
+  deletedAt?: GormDeletedAt
   discordID?: string
   discordName?: string
   displayName?: string
@@ -1340,7 +1407,7 @@ export interface ViewUpdateGeneralInfoEmployeeData {
   notionEmail?: string
   notionID?: string
   notionName?: string
-  organizations?: ModelOrganization[]
+  organizations?: ViewOrganization[]
   phoneNumber?: string
   teamEmail?: string
   updatedAt?: string
@@ -1352,7 +1419,7 @@ export interface ViewUpdatePersonalEmployeeData {
   city?: string
   country?: string
   createdAt?: string
-  deletedAt?: string
+  deletedAt?: GormDeletedAt
   gender?: string
   id?: string
   personalEmail?: string
@@ -1369,7 +1436,7 @@ export interface ViewUpdateProfileInfoData {
   city?: string
   country?: string
   createdAt?: string
-  deletedAt?: string
+  deletedAt?: GormDeletedAt
   discordID?: string
   discordName?: string
   githubID?: string
@@ -1419,7 +1486,7 @@ export interface ViewUpdateProjectStatusResponse {
 export interface ViewUpdateSkillEmployeeData {
   chapters?: ModelChapter[]
   createdAt?: string
-  deletedAt?: string
+  deletedAt?: GormDeletedAt
   id?: string
   positions?: ModelPosition[]
   seniority?: ModelSeniority
@@ -1433,7 +1500,7 @@ export interface ViewUpdateSkillsEmployeeResponse {
 
 export interface ViewUpdatedProject {
   createdAt?: string
-  deletedAt?: string
+  deletedAt?: GormDeletedAt
   endDate?: string
   id?: string
   name?: string

@@ -1,7 +1,7 @@
 import { Col, Input, Pagination, Row, Space, Tag, Tooltip } from 'antd'
 import { ROUTES } from 'constants/routes'
 import { PageHeader } from 'components/common/PageHeader'
-import Table, { ColumnsType } from 'antd/lib/table'
+import Table, { ColumnType } from 'antd/lib/table'
 import Link from 'next/link'
 import { UserAvatar } from 'components/common/AvatarWithName'
 import { Button } from 'components/common/Button'
@@ -35,6 +35,8 @@ import { employeeStatuses, EmployeeStatus } from 'constants/status'
 import { statusColors } from 'constants/colors'
 import { useAuthContext } from 'context/auth'
 import { TotalResultCount } from 'components/common/Table/TotalResultCount'
+import { format } from 'date-fns'
+import { DATE_FORMAT } from 'constants/date'
 
 const Default = () => {
   const { query, push } = useRouter()
@@ -105,7 +107,9 @@ const Default = () => {
   const lineManagers = lineManagersData?.data || []
 
   const columns = useMemo(() => {
-    const finalColumns: ColumnsType<ViewEmployeeData> = [
+    const finalColumns: (ColumnType<ViewEmployeeData> & {
+      permission?: string
+    })[] = [
       {
         title: 'Employee',
         fixed: 'left',
@@ -291,6 +295,20 @@ const Default = () => {
         render: (value) => value || '-',
       },
       {
+        title: 'Joined Date',
+        key: 'joinedDate',
+        dataIndex: 'joinedDate',
+        render: (value) => (value ? format(new Date(value), DATE_FORMAT) : '-'),
+        permission: Permission.EMPLOYEES_READ_GENERALINFO_FULLACCESS,
+      },
+      {
+        title: 'Left Date',
+        key: 'leftDate',
+        dataIndex: 'leftDate',
+        render: (value) => (value ? format(new Date(value), DATE_FORMAT) : '-'),
+        permission: Permission.EMPLOYEES_READ_GENERALINFO_FULLACCESS,
+      },
+      {
         title: '',
         key: 'actions',
         render: (value) => (
@@ -325,7 +343,9 @@ const Default = () => {
       },
     ]
 
-    return finalColumns
+    return finalColumns.flatMap(({ permission, ...col }) =>
+      permission && !permissions.includes(permission) ? [] : [col],
+    )
   }, [
     canFilterStatus,
     canFilterProject,
@@ -336,6 +356,7 @@ const Default = () => {
     chapters,
     seniorities,
     lineManagers,
+    permissions,
   ])
 
   // eslint-disable-next-line react-hooks/exhaustive-deps

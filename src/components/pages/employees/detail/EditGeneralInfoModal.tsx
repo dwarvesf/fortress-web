@@ -1,4 +1,4 @@
-import { Col, Form, Input, Modal, notification, Row } from 'antd'
+import { Col, DatePicker, Form, Input, Modal, notification, Row } from 'antd'
 import { AsyncSelect } from 'components/common/Select'
 import { renderEmployeeOption } from 'components/common/Select/renderers/employeeOption'
 import { GET_PATHS, client } from 'libs/apis'
@@ -12,11 +12,21 @@ import {
   getErrorMessage,
   removeLeadingZero,
 } from 'utils/string'
+import { SELECT_BOX_DATE_FORMAT, SERVER_DATE_FORMAT } from 'constants/date'
+import { format } from 'date-fns'
+
+type FormValues = Omit<
+  RequestUpdateEmployeeGeneralInfoInput,
+  'joinedDate' | 'leftDate'
+> & {
+  joinedDate?: moment.Moment
+  leftDate?: moment.Moment
+}
 
 interface Props {
   employeeID: string
   isOpen: boolean
-  initialValues?: RequestUpdateEmployeeGeneralInfoInput
+  initialValues?: FormValues
   onClose: () => void
   onAfterSubmit: () => void
 }
@@ -32,9 +42,7 @@ export const EditGeneralInfoModal = (props: Props) => {
     hasPrefix ? initialValues?.phone.split(' ')[0].slice(1) || '' : '84',
   )
 
-  const onSubmit = async (
-    values: Required<RequestUpdateEmployeeGeneralInfoInput>,
-  ) => {
+  const onSubmit = async (values: FormValues) => {
     try {
       setIsSubmitting(true)
 
@@ -48,7 +56,13 @@ export const EditGeneralInfoModal = (props: Props) => {
             `+${dialCode} ${removeLeadingZero(
               values.phone.slice(dialCode.length),
             )}`,
-      })
+        joinedDate: values.joinedDate
+          ? format(values.joinedDate.toDate(), SERVER_DATE_FORMAT)
+          : '',
+        leftDate: values.leftDate
+          ? format(values.leftDate.toDate(), SERVER_DATE_FORMAT)
+          : '',
+      } as RequestUpdateEmployeeGeneralInfoInput)
 
       notification.success({
         message: "Employee's general info successfully updated!",
@@ -205,6 +219,26 @@ export const EditGeneralInfoModal = (props: Props) => {
           <Col span={24} md={{ span: 12 }}>
             <Form.Item label="LinkedIn" name="linkedInName">
               <Input placeholder="john-doe-1234" className="bordered" />
+            </Form.Item>
+          </Col>
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item label="Joined Date" name="joinedDate">
+              <DatePicker
+                format={SELECT_BOX_DATE_FORMAT}
+                style={{ width: '100%' }}
+                placeholder="Select joined date"
+                className="bordered"
+              />
+            </Form.Item>
+          </Col>
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item label="Left Date" name="leftDate">
+              <DatePicker
+                format={SELECT_BOX_DATE_FORMAT}
+                style={{ width: '100%' }}
+                placeholder="Select left date"
+                className="bordered"
+              />
             </Form.Item>
           </Col>
         </Row>
