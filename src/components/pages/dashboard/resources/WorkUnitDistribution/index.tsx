@@ -100,7 +100,8 @@ export const WorkUnitDistribution = () => {
   return (
     <Card
       title="Work Unit Distribution"
-      bodyStyle={{ overflowX: 'auto', overflowY: 'hidden' }}
+      style={{ height: 500, display: 'flex', flexDirection: 'column' }}
+      bodyStyle={{ padding: 8, height: 500 }}
     >
       <Row gutter={10} style={{ marginBottom: 20 }}>
         <Col span={5}>
