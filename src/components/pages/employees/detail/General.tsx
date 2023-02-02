@@ -345,6 +345,22 @@ export const General = (props: Props) => {
                         permission:
                           Permission.EMPLOYEES_READ_GENERALINFO_FULLACCESS,
                       },
+                      {
+                        label: 'Joined Date',
+                        value: data?.joinedDate
+                          ? format(new Date(data.joinedDate), DATE_FORMAT)
+                          : '-',
+                        permission:
+                          Permission.EMPLOYEES_READ_GENERALINFO_FULLACCESS,
+                      },
+                      {
+                        label: 'Left Date',
+                        value: data?.leftDate
+                          ? format(new Date(data.leftDate), DATE_FORMAT)
+                          : '-',
+                        permission:
+                          Permission.EMPLOYEES_READ_GENERALINFO_FULLACCESS,
+                      },
                     ].flatMap(({ permission, ...item }) =>
                       permission && !permissions.includes(permission)
                         ? []
@@ -614,6 +630,8 @@ export const General = (props: Props) => {
           githubID: data.githubID || '',
           notionName: data.notionName || '',
           linkedInName: data.linkedInName || '',
+          joinedDate: data.joinedDate ? moment(data.joinedDate) : undefined,
+          leftDate: data.leftDate ? moment(data.leftDate) : undefined,
         }}
         onAfterSubmit={mutateEmployee}
       />

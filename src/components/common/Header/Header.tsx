@@ -29,7 +29,7 @@ const UnreadDot = styled.span`
   border-radius: 8px;
   background: ${(props) => props.theme.colors.primary};
   position: absolute;
-  bottom: 0;
+  top: 0;
   right: 0;
   display: inline-flex;
   justify-content: center;
