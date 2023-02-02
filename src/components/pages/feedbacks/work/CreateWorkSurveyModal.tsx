@@ -5,7 +5,6 @@ import { FeedbackSubtype } from 'constants/feedbackTypes'
 import { client } from 'libs/apis'
 import { useState } from 'react'
 import { RequestCreateSurveyFeedbackInput } from 'types/schema'
-import { format } from 'date-fns'
 import { getErrorMessage } from 'utils/string'
 import moment from 'moment'
 
@@ -47,11 +46,9 @@ export const CreateWorkSurveyModal = (props: Props) => {
     return {
       ...values,
       fromDate: values.fromDate
-        ? String(format(new Date(values.fromDate), SERVER_DATE_FORMAT))
+        ? values.fromDate.format(SERVER_DATE_FORMAT)
         : '',
-      toDate: values.toDate
-        ? String(format(new Date(values.toDate), SERVER_DATE_FORMAT))
-        : '',
+      toDate: values.toDate ? values.toDate.format(SERVER_DATE_FORMAT) : '',
       type: FeedbackSubtype.WORK,
     }
   }

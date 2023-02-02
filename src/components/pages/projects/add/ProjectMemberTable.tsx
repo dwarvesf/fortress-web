@@ -2,7 +2,7 @@ import { Space, Table, Tag } from 'antd'
 import { ColumnsType } from 'antd/lib/table'
 import { UserAvatar } from 'components/common/AvatarWithName'
 import { DATE_FORMAT } from 'constants/date'
-import { format } from 'date-fns'
+import { format } from 'utils/date'
 import { Meta } from 'libs/apis'
 import { Dispatch, SetStateAction, useMemo } from 'react'
 import {
@@ -89,13 +89,13 @@ export const ProjectMemberTable = ({
         title: 'Start Date',
         key: 'startDate',
         dataIndex: 'startDate',
-        render: (value) => (value ? format(new Date(value), DATE_FORMAT) : '-'),
+        render: (value) => (value ? format(value, DATE_FORMAT) : '-'),
       },
       {
         title: 'End Date',
         key: 'endDate',
         dataIndex: 'endDate',
-        render: (value) => (value ? format(new Date(value), DATE_FORMAT) : '-'),
+        render: (value) => (value ? format(value, DATE_FORMAT) : '-'),
       },
       {
         key: 'actions',

@@ -14,7 +14,7 @@ import { ProjectAvatar, UserAvatar } from 'components/common/AvatarWithName'
 import { DataRows } from 'components/common/DataRows'
 import { EditableDetailSectionCard } from 'components/common/EditableDetailSectionCard'
 import { DATE_FORMAT } from 'constants/date'
-import { format } from 'date-fns'
+import { format } from 'utils/date'
 import {
   ModelSeniority,
   RequestGetListEmployeeInput,
@@ -82,14 +82,14 @@ const projectColumns: (ColumnType<ViewEmployeeProjectData> & {
     title: 'Start Date',
     key: 'startDate',
     dataIndex: 'startDate',
-    render: (value) => (value ? format(new Date(value), DATE_FORMAT) : '-'),
+    render: (value) => (value ? format(value, DATE_FORMAT) : '-'),
     permission: Permission.EMPLOYEES_READ_PROJECTS_FULLACCESS,
   },
   {
     title: 'End Date',
     key: 'endDate',
     dataIndex: 'endDate',
-    render: (value) => (value ? format(new Date(value), DATE_FORMAT) : '-'),
+    render: (value) => (value ? format(value, DATE_FORMAT) : '-'),
     permission: Permission.EMPLOYEES_READ_PROJECTS_FULLACCESS,
   },
 ]
@@ -348,7 +348,7 @@ export const General = (props: Props) => {
                       {
                         label: 'Joined Date',
                         value: data?.joinedDate
-                          ? format(new Date(data.joinedDate), DATE_FORMAT)
+                          ? format(data.joinedDate, DATE_FORMAT)
                           : '-',
                         permission:
                           Permission.EMPLOYEES_READ_GENERALINFO_FULLACCESS,
@@ -356,7 +356,7 @@ export const General = (props: Props) => {
                       {
                         label: 'Left Date',
                         value: data?.leftDate
-                          ? format(new Date(data.leftDate), DATE_FORMAT)
+                          ? format(data.leftDate, DATE_FORMAT)
                           : '-',
                         permission:
                           Permission.EMPLOYEES_READ_GENERALINFO_FULLACCESS,
@@ -517,7 +517,7 @@ export const General = (props: Props) => {
                   {
                     label: 'Date of Birth',
                     value: data.birthday
-                      ? format(new Date(data.birthday), DATE_FORMAT)
+                      ? format(data.birthday, DATE_FORMAT)
                       : '',
                   },
                   { label: 'Gender', value: data.gender },

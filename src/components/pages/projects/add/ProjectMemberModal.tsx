@@ -1,5 +1,6 @@
 import { Modal, notification } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
+import { SERVER_DATE_FORMAT } from 'constants/date'
 import { Meta } from 'libs/apis'
 import { Dispatch, SetStateAction, useState } from 'react'
 import {
@@ -84,17 +85,17 @@ export const ProjectMemberModal = (props: Props) => {
   }
 
   const transformDataToSend = (
-    values: Record<string, any>,
+    values: MemberFormValues,
   ): RequestAssignMemberInput => {
     return {
       deploymentType: values.deploymentType || '',
       discount: values.discount,
       employeeID: values.employeeID,
       isLead: values.isLead,
-      startDate: values.startDate,
-      endDate: values.endDate,
+      startDate: values.startDate?.format(SERVER_DATE_FORMAT) || '',
+      endDate: values.endDate?.format(SERVER_DATE_FORMAT) || '',
       positions: values.positions || [],
-      rate: parseFloat(values.rate) || 0,
+      rate: parseFloat(values.rate?.toString() || '0'),
       seniorityID: values.seniorityID || '',
       status: values.status || '',
     }

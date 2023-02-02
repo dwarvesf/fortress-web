@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import { statusColors } from 'constants/colors'
 import { FeedbackType, feedbackTypes } from 'constants/feedbackTypes'
 import { feedbackStatuses, ModelEventReviewerStatus } from 'constants/status'
-import { format } from 'date-fns'
+import { format } from 'utils/date'
 import { useMemo } from 'react'
 import { ViewFeedback } from 'types/schema'
 import { DATETIME_FORMAT } from 'constants/date'
@@ -57,7 +57,7 @@ export const FeedbackInputTable = ({
         title: 'Last updated',
         key: 'lastUpdated',
         dataIndex: 'lastUpdated',
-        render: (value) => format(new Date(value), DATETIME_FORMAT),
+        render: (value) => format(value, DATETIME_FORMAT),
       },
       {
         title: 'Author',

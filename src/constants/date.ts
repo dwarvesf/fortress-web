@@ -1,4 +1,4 @@
-export const DATE_FORMAT = 'dd/MM/yyyy'
-export const DATETIME_FORMAT = 'dd/MM/yyyy HH:mm:ss'
-export const SERVER_DATE_FORMAT = 'yyyy-MM-dd'
-export const SELECT_BOX_DATE_FORMAT = 'DD/MM/yyyy'
+export const DATE_FORMAT = 'DD/MM/YYYY'
+export const DATETIME_FORMAT = 'DD/MM/YYYY HH:mm:ss'
+export const SERVER_DATE_FORMAT = 'YYYY-MM-DD'
+export const SELECT_BOX_DATE_FORMAT = 'DD/MM/YYYY'
