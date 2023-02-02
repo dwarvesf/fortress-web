@@ -48,7 +48,7 @@ export const ProjectSizeChart = (props: Props) => {
   return (
     <PieChart
       width="100%"
-      minWidth={375}
+      minWidth={385}
       height={350}
       dataset={dataset}
       pieDataKey="size"
