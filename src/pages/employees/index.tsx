@@ -35,7 +35,7 @@ import { employeeStatuses, EmployeeStatus } from 'constants/status'
 import { statusColors } from 'constants/colors'
 import { useAuthContext } from 'context/auth'
 import { TotalResultCount } from 'components/common/Table/TotalResultCount'
-import { format } from 'date-fns'
+import { format } from 'utils/date'
 import { DATE_FORMAT } from 'constants/date'
 
 const Default = () => {
@@ -298,14 +298,14 @@ const Default = () => {
         title: 'Joined Date',
         key: 'joinedDate',
         dataIndex: 'joinedDate',
-        render: (value) => (value ? format(new Date(value), DATE_FORMAT) : '-'),
+        render: (value) => (value ? format(value, DATE_FORMAT) : '-'),
         permission: Permission.EMPLOYEES_READ_GENERALINFO_FULLACCESS,
       },
       {
         title: 'Left Date',
         key: 'leftDate',
         dataIndex: 'leftDate',
-        render: (value) => (value ? format(new Date(value), DATE_FORMAT) : '-'),
+        render: (value) => (value ? format(value, DATE_FORMAT) : '-'),
         permission: Permission.EMPLOYEES_READ_GENERALINFO_FULLACCESS,
       },
       {

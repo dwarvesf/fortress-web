@@ -2,12 +2,11 @@ import { useDisclosure } from '@dwarvesf/react-hooks'
 import { Card, Pagination, Row, Space, Tabs } from 'antd'
 import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
 import { Button } from 'components/common/Button'
-import { SERVER_DATE_FORMAT } from 'constants/date'
 import { mutate } from 'swr'
 import { DeploymentType } from 'constants/deploymentTypes'
 import { Permission } from 'constants/permission'
 import { ProjectMemberStatus } from 'constants/status'
-import { format } from 'date-fns'
+import moment from 'moment'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { useFilter } from 'hooks/useFilter'
 import { useTabWithQuery } from 'hooks/useTabWithQuery'
@@ -293,7 +292,7 @@ export const Member = (props: Props) => {
             positions: [],
             seniorityID: '',
             deploymentType: DeploymentType.OFFICIAL,
-            startDate: format(new Date(), SERVER_DATE_FORMAT),
+            startDate: moment(),
             endDate: undefined,
             rate: 0,
             discount: 0,

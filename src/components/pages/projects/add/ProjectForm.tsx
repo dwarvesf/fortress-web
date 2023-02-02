@@ -20,10 +20,14 @@ import {
   transformMetadataToSelectOption,
 } from 'utils/select'
 
+export type ProjectFormValues = Omit<RequestCreateProjectInput, 'startDate'> & {
+  startDate?: moment.Moment
+}
+
 interface Props {
   form: FormInstance<any>
-  initialValues?: RequestCreateProjectInput
-  onSubmit: (values: Required<RequestCreateProjectInput>) => Promise<void>
+  initialValues?: ProjectFormValues
+  onSubmit: (values: ProjectFormValues) => Promise<void>
 }
 
 export const ProjectForm = (props: Props) => {
@@ -37,13 +41,7 @@ export const ProjectForm = (props: Props) => {
   }
 
   return (
-    <Form
-      form={form}
-      onFinish={(values) => {
-        onSubmit(values as Required<RequestCreateProjectInput>)
-      }}
-      initialValues={initialValues}
-    >
+    <Form form={form} onFinish={onSubmit} initialValues={initialValues}>
       <Row gutter={24}>
         <Col span={24} md={{ span: 12 }}>
           <Form.Item

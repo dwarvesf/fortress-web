@@ -5,9 +5,10 @@ import { UserAvatar } from 'components/common/AvatarWithName'
 import { DataRows } from 'components/common/DataRows'
 import { EditableDetailSectionCard } from 'components/common/EditableDetailSectionCard'
 import { AsyncSelect } from 'components/common/Select'
-import { DATE_FORMAT, SERVER_DATE_FORMAT } from 'constants/date'
-import { format } from 'date-fns'
+import { DATE_FORMAT } from 'constants/date'
+import { format } from 'utils/date'
 import { mutate } from 'swr'
+import moment from 'moment'
 import { client, GET_PATHS } from 'libs/apis'
 import { ViewProjectData } from 'types/schema'
 import { transformMetadataToSelectOption } from 'utils/select'
@@ -114,7 +115,7 @@ export const General = (props: Props) => {
                       {
                         label: 'Start Date',
                         value: data.startDate
-                          ? format(new Date(data.startDate), DATE_FORMAT)
+                          ? format(data.startDate, DATE_FORMAT)
                           : '',
                       },
                       { label: 'Industry', value: data.industry },
@@ -214,9 +215,7 @@ export const General = (props: Props) => {
         isOpen={isEditProjectGeneralInfoDialogOpen}
         initialValues={{
           ...data,
-          startDate: data.startDate
-            ? format(new Date(data.startDate), SERVER_DATE_FORMAT)
-            : undefined,
+          startDate: data.startDate ? moment(data.startDate) : undefined,
           stacks: (data.stacks || []).map((stack) => stack.id || ''),
           countryID: data.country?.id || '',
         }}

@@ -2,8 +2,7 @@ import { useDisclosure } from '@dwarvesf/react-hooks'
 import { Icon } from '@iconify/react'
 import { Col, Modal, notification, Row, Tooltip } from 'antd'
 import { Button } from 'components/common/Button'
-import { SERVER_DATE_FORMAT } from 'constants/date'
-import { format } from 'date-fns'
+import moment from 'moment'
 import { Meta } from 'libs/apis'
 import { Dispatch, SetStateAction, useState } from 'react'
 import {
@@ -118,11 +117,9 @@ export const Actions = ({
             positions:
               rowData.positions?.map((position) => position.id || '') || [],
             startDate: rowData.startDate
-              ? format(new Date(rowData.startDate), SERVER_DATE_FORMAT)
+              ? moment(rowData.startDate)
               : undefined,
-            endDate: rowData.endDate
-              ? format(new Date(rowData.endDate), SERVER_DATE_FORMAT)
-              : undefined,
+            endDate: rowData.endDate ? moment(rowData.endDate) : undefined,
             seniorityID: rowData.seniority?.id || '',
           }}
           memberData={memberData}

@@ -3,9 +3,8 @@ import { Icon } from '@iconify/react'
 import { Col, Modal, notification, Row, Tooltip } from 'antd'
 import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
 import { Button } from 'components/common/Button'
-import { SERVER_DATE_FORMAT } from 'constants/date'
 import { Permission } from 'constants/permission'
-import { format } from 'date-fns'
+import moment from 'moment'
 import { client } from 'libs/apis'
 import { useState } from 'react'
 import { ViewProjectMember } from 'types/schema'
@@ -106,12 +105,8 @@ export const Actions = ({
             ...record,
             positions:
               record.positions?.map((position) => position.id || '') || [],
-            startDate: record.startDate
-              ? format(new Date(record.startDate), SERVER_DATE_FORMAT)
-              : undefined,
-            endDate: record.endDate
-              ? format(new Date(record.endDate), SERVER_DATE_FORMAT)
-              : undefined,
+            startDate: record.startDate ? moment(record.startDate) : undefined,
+            endDate: record.endDate ? moment(record.endDate) : undefined,
             seniorityID: record.seniority?.id || '',
           }}
           onAfterSubmit={onAfterAction}

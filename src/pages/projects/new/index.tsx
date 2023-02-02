@@ -18,8 +18,10 @@ import {
   ViewSeniorityResponse,
   ViewEmployeeListDataResponse,
 } from 'types/schema'
-import { format } from 'date-fns'
-import { ProjectForm } from 'components/pages/projects/add/ProjectForm'
+import {
+  ProjectForm,
+  ProjectFormValues,
+} from 'components/pages/projects/add/ProjectForm'
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { ProjectMemberModal } from 'components/pages/projects/add/ProjectMemberModal'
 import { ProjectMemberTable } from 'components/pages/projects/add/ProjectMemberTable'
@@ -78,7 +80,7 @@ const CreateNewProjectPage = () => {
     onClose: closeAddNewMemberDialog,
   } = useDisclosure()
 
-  const onSubmit = async (values: Required<RequestCreateProjectInput>) => {
+  const onSubmit = async (values: ProjectFormValues) => {
     try {
       setIsSubmitting(true)
 
@@ -100,7 +102,7 @@ const CreateNewProjectPage = () => {
   }
 
   const transformDataToSend = (
-    values: Required<Record<string, any>>,
+    values: ProjectFormValues,
   ): RequestCreateProjectInput => {
     return {
       accountManagerID: values.accountManagerID,
@@ -110,9 +112,7 @@ const CreateNewProjectPage = () => {
       members: memberData,
       name: values.name,
       projectEmail: values.projectEmail,
-      startDate: values.startDate
-        ? String(format(values.startDate.toDate(), SERVER_DATE_FORMAT))
-        : '',
+      startDate: values.startDate?.format(SERVER_DATE_FORMAT) || '',
       status: values.status,
       type: values.type,
       function: values.function,
@@ -159,8 +159,8 @@ const CreateNewProjectPage = () => {
     setMemberTableData([])
     const newMemberTableData: ViewProjectMember[] = []
 
-    memberData.forEach((d) => {
-      const tableData = transformMemberDataToTableData(d)
+    memberData.forEach((data) => {
+      const tableData = transformMemberDataToTableData(data)
       newMemberTableData.push(tableData)
     })
 

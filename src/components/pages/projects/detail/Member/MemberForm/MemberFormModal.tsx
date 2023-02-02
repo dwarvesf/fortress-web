@@ -1,10 +1,15 @@
 import { Button, Modal, notification, Row } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
+import { SERVER_DATE_FORMAT } from 'constants/date'
 import { ProjectMemberStatus } from 'constants/status'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { client, GET_PATHS } from 'libs/apis'
 import { useMemo, useState } from 'react'
 import { fullListPagination } from 'types/filters/Pagination'
+import {
+  RequestAssignMemberInput,
+  RequestUpdateMemberInput,
+} from 'types/schema'
 import { getErrorMessage } from 'utils/string'
 import { MemberForm, MemberFormValues } from '.'
 
@@ -68,13 +73,19 @@ export const MemberFormModal = (props: Props) => {
       setIsLoading(true)
 
       if (!isEditing) {
-        await client.createProjectMember(projectID, values)
+        await client.createProjectMember(projectID, {
+          ...values,
+          startDate: values.startDate?.format(SERVER_DATE_FORMAT) || '',
+          endDate: values.endDate?.format(SERVER_DATE_FORMAT) || '',
+        } as RequestAssignMemberInput)
       } else {
         await client.updateProjectMember(projectID, {
           ...values,
           projectSlotID,
           projectMemberID,
-        })
+          startDate: values.startDate?.format(SERVER_DATE_FORMAT) || '',
+          endDate: values.endDate?.format(SERVER_DATE_FORMAT) || '',
+        } as RequestUpdateMemberInput)
       }
 
       notification.success({
