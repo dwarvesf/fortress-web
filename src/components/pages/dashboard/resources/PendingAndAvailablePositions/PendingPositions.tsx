@@ -2,7 +2,7 @@ import { Table } from 'antd'
 import { ColumnsType } from 'antd/lib/table'
 import { ProjectAvatar } from 'components/common/AvatarWithName'
 import { DATE_FORMAT } from 'constants/date'
-import { format } from 'date-fns'
+import { format } from 'utils/date'
 import {
   ModelSeniority,
   ViewBasicProjectInfo,
@@ -49,8 +49,7 @@ const columns: ColumnsType<RecordType> = [
     title: 'Created at',
     dataIndex: 'createdAt',
     key: 'createdAt',
-    render: (value?: string) =>
-      value ? format(new Date(value), DATE_FORMAT) : '-',
+    render: (value?: string) => (value ? format(value, DATE_FORMAT) : '-'),
   },
 ]
 

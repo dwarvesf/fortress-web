@@ -13,7 +13,6 @@ import {
   removeLeadingZero,
 } from 'utils/string'
 import { SELECT_BOX_DATE_FORMAT, SERVER_DATE_FORMAT } from 'constants/date'
-import { format } from 'date-fns'
 
 type FormValues = Omit<
   RequestUpdateEmployeeGeneralInfoInput,
@@ -57,10 +56,10 @@ export const EditGeneralInfoModal = (props: Props) => {
               values.phone.slice(dialCode.length),
             )}`,
         joinedDate: values.joinedDate
-          ? format(values.joinedDate.toDate(), SERVER_DATE_FORMAT)
+          ? values.joinedDate.format(SERVER_DATE_FORMAT)
           : '',
         leftDate: values.leftDate
-          ? format(values.leftDate.toDate(), SERVER_DATE_FORMAT)
+          ? values.leftDate.format(SERVER_DATE_FORMAT)
           : '',
       } as RequestUpdateEmployeeGeneralInfoInput)
 

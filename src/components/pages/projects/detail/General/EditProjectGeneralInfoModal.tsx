@@ -1,4 +1,12 @@
-import { Form, Input, Modal, notification, Select, Space } from 'antd'
+import {
+  DatePicker,
+  Form,
+  Input,
+  Modal,
+  notification,
+  Select,
+  Space,
+} from 'antd'
 import { useForm } from 'antd/lib/form/Form'
 import { client, GET_PATHS } from 'libs/apis'
 import { useState } from 'react'
@@ -7,9 +15,11 @@ import { AsyncSelect } from 'components/common/Select'
 import { transformMetadataToSelectOption } from 'utils/select'
 import { getErrorMessage } from 'utils/string'
 import { ProjectFunction, projectFunctions } from 'constants/projectTypes'
+import { SELECT_BOX_DATE_FORMAT, SERVER_DATE_FORMAT } from 'constants/date'
 
-type ProjectGeneralInfoFormValues =
-  Partial<RequestUpdateProjectGeneralInfoInput>
+type ProjectGeneralInfoFormValues = Partial<
+  Omit<RequestUpdateProjectGeneralInfoInput, 'startDate'>
+> & { startDate?: moment.Moment }
 
 interface Props {
   projectID: string
@@ -29,7 +39,10 @@ export const EditProjectGeneralInfoModal = (props: Props) => {
     try {
       setIsSubmitting(true)
 
-      await client.updateProjectGeneralInfo(projectID, values)
+      await client.updateProjectGeneralInfo(projectID, {
+        ...values,
+        startDate: values.startDate?.format(SERVER_DATE_FORMAT),
+      } as RequestUpdateProjectGeneralInfoInput)
 
       notification.success({
         message: "Project's general info updated successfully!",
@@ -71,8 +84,9 @@ export const EditProjectGeneralInfoModal = (props: Props) => {
             <Input placeholder="Enter project's name" className="bordered" />
           </Form.Item>
           <Form.Item label="Start Date" name="startDate">
-            <Input
-              type="date"
+            <DatePicker
+              format={SELECT_BOX_DATE_FORMAT}
+              style={{ width: '100%' }}
               placeholder="Select project's start date"
               className="bordered"
             />

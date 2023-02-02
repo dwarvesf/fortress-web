@@ -1,4 +1,4 @@
-import { Checkbox, Col, Form, Input, Row, Select } from 'antd'
+import { Checkbox, Col, DatePicker, Form, Input, Row, Select } from 'antd'
 import { client, GET_PATHS, Meta } from 'libs/apis'
 import {
   RequestAssignMemberInput,
@@ -19,11 +19,13 @@ import { useEffect } from 'react'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { theme } from 'styles'
 import { fullListPagination } from 'types/filters/Pagination'
-import { format } from 'date-fns'
+import { SELECT_BOX_DATE_FORMAT } from 'constants/date'
 
 const today = new Date()
 
-export type MemberFormValues = Partial<RequestAssignMemberInput>
+export type MemberFormValues = Partial<
+  Omit<RequestAssignMemberInput, 'startDate' | 'endDate'>
+> & { startDate?: moment.Moment; endDate?: moment.Moment }
 
 interface Props {
   isAssigning?: boolean
@@ -203,8 +205,9 @@ export const MemberForm = (props: Props) => {
               { required: isAssigning && !isPending, message: 'Required' },
             ]}
           >
-            <Input
-              type="date"
+            <DatePicker
+              format={SELECT_BOX_DATE_FORMAT}
+              style={{ width: '100%' }}
               placeholder="Select start date"
               className="bordered"
             />
@@ -216,13 +219,20 @@ export const MemberForm = (props: Props) => {
             name="endDate"
             rules={[{ required: isInactive, message: 'Required' }]}
           >
-            <Input
-              type="date"
+            <DatePicker
+              format={SELECT_BOX_DATE_FORMAT}
+              style={{ width: '100%' }}
               placeholder="Select end date"
               className="bordered"
-              // If status is not inactive, if we need to provide an endDate,
-              // it must be some date into the future
-              min={isInactive ? undefined : format(today, 'yyyy-MM-dd')}
+              disabledDate={(date) => {
+                // If status is not inactive, if we need to provide an endDate,
+                // it must be some date into the future
+                if (date.isBefore(today)) {
+                  return true
+                }
+
+                return false
+              }}
             />
           </Form.Item>
         </Col>
