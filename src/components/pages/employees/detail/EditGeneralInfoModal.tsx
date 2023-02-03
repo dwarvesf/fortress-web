@@ -5,7 +5,10 @@ import { GET_PATHS, client } from 'libs/apis'
 import { useState } from 'react'
 import { fullListPagination } from 'types/filters/Pagination'
 import { RequestUpdateEmployeeGeneralInfoInput } from 'types/schema'
-import { transformEmployeeDataToSelectOption } from 'utils/select'
+import {
+  transformEmployeeDataToSelectOption,
+  transformOrganizationMetaDataToSelectOption,
+} from 'utils/select'
 import PhoneInput from 'react-phone-input-2'
 import {
   formatPhoneNumber,
@@ -13,6 +16,8 @@ import {
   removeLeadingZero,
 } from 'utils/string'
 import { SELECT_BOX_DATE_FORMAT, SERVER_DATE_FORMAT } from 'constants/date'
+import { renderOrganizationOption } from 'components/common/Select/renderers/organizationOption'
+import { useFetchWithCache } from 'hooks/useFetchWithCache'
 
 type FormValues = Omit<
   RequestUpdateEmployeeGeneralInfoInput,
@@ -39,6 +44,11 @@ export const EditGeneralInfoModal = (props: Props) => {
 
   const [dialCode, setDialCode] = useState<string>(
     hasPrefix ? initialValues?.phone.split(' ')[0].slice(1) || '' : '84',
+  )
+
+  const { data: organizationsMetaData } = useFetchWithCache(
+    [GET_PATHS.getOrganizationMetadata],
+    () => client.getOrganizationMetadata(),
   )
 
   const onSubmit = async (values: FormValues) => {
@@ -101,6 +111,13 @@ export const EditGeneralInfoModal = (props: Props) => {
           // pass phone manually since antd Form pass value through
           // 'name' attr and overwrite PhoneInput's value
           phone: formatPhoneNumber(dialCode, initialValues?.phone),
+          organizationIDs: (initialValues?.organizationIDs || []).length
+            ? initialValues?.organizationIDs
+            : [
+                organizationsMetaData?.data?.find(
+                  (d) => d.code === 'dwarves-foundation',
+                )?.id,
+              ],
         }}
       >
         <Row gutter={24}>
@@ -237,6 +254,27 @@ export const EditGeneralInfoModal = (props: Props) => {
                 style={{ width: '100%' }}
                 placeholder="Select left date"
                 className="bordered"
+              />
+            </Form.Item>
+          </Col>
+
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item
+              label="Organizations"
+              name="organizationIDs"
+              rules={[{ required: true, message: 'Required' }]}
+            >
+              <AsyncSelect
+                mode="multiple"
+                optionGetter={async () => {
+                  return (organizationsMetaData?.data || []).map(
+                    transformOrganizationMetaDataToSelectOption,
+                  )
+                }}
+                swrKeys={GET_PATHS.getOrganizationMetadata}
+                placeholder="Select line manager"
+                customOptionRenderer={renderOrganizationOption}
+                allowClear
               />
             </Form.Item>
           </Col>

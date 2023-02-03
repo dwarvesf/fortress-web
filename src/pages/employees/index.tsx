@@ -146,10 +146,18 @@ const Default = () => {
         ),
         filterSearch: true,
         filteredValue: filter.positions,
-        filters: positions.map((each) => ({
-          text: each.name,
-          value: each.code!,
-        })),
+        filters: [
+          {
+            text: (
+              <span style={{ color: theme.colors.gray500 }}>No position</span>
+            ),
+            value: '-',
+          },
+          ...positions.map((each) => ({
+            text: each.name,
+            value: each.code!,
+          })),
+        ],
       },
       {
         title: 'Projects',
@@ -178,7 +186,11 @@ const Default = () => {
           ? undefined
           : [
               {
-                text: '-',
+                text: (
+                  <span style={{ color: theme.colors.gray500 }}>
+                    No project
+                  </span>
+                ),
                 value: '-',
               },
               ...projects.map((each) => ({
@@ -196,10 +208,16 @@ const Default = () => {
         ),
         filterSearch: true,
         filteredValue: filter.stacks,
-        filters: stacks.map((each) => ({
-          text: each.name,
-          value: each.code!,
-        })),
+        filters: [
+          {
+            text: <span style={{ color: theme.colors.gray500 }}>No stack</span>,
+            value: '-',
+          },
+          ...stacks.map((each) => ({
+            text: each.name,
+            value: each.code!,
+          })),
+        ],
       },
       {
         title: 'Chapters',
@@ -229,10 +247,18 @@ const Default = () => {
         ),
         filterSearch: true,
         filteredValue: filter.chapters,
-        filters: chapters.map((each) => ({
-          text: each.name,
-          value: each.code!,
-        })),
+        filters: [
+          {
+            text: (
+              <span style={{ color: theme.colors.gray500 }}>No chapter</span>
+            ),
+            value: '-',
+          },
+          ...chapters.map((each) => ({
+            text: each.name,
+            value: each.code!,
+          })),
+        ],
       },
       {
         title: 'Line manager',
@@ -244,7 +270,11 @@ const Default = () => {
         filteredValue: filter.lineManagers,
         filters: [
           {
-            text: '-',
+            text: (
+              <span style={{ color: theme.colors.gray500 }}>
+                No line manager
+              </span>
+            ),
             value: '-',
           },
           ...lineManagers.map((each) => ({
