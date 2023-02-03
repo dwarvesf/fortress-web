@@ -59,7 +59,9 @@ export const Header = () => {
                 <ButtonWrapper>
                   <Icon icon="mdi:bell-outline" width={24} />
                   {unreadCount > 0 && (
-                    <UnreadDot>{Math.min(unreadCount, 9)}+</UnreadDot>
+                    <UnreadDot>
+                      {unreadCount > 9 ? '9+' : unreadCount}
+                    </UnreadDot>
                   )}
                 </ButtonWrapper>
               </a>

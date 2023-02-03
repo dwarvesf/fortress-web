@@ -14,7 +14,7 @@ const Default = () => {
   // to trigger a refetch of the feedbacks that are being used
   // for unread count. See useUnreadFeedbackCount hook
   useEffect(() => {
-    mutate([GET_PATHS.getFeedbacks])
+    mutate([GET_PATHS.getUnreadFeedbacks])
   }, [])
 
   const content = useMemo(() => {

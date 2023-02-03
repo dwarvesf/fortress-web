@@ -55,6 +55,7 @@ import {
   ViewActionItemReportResponse,
   ViewAuditSummariesResponse,
   ViewActionItemSquashReportResponse,
+  ViewUnreadFeedbackCountResponse,
 } from 'types/schema'
 import { EmployeeListFilter } from 'types/filters/EmployeeListFilter'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
@@ -82,6 +83,7 @@ export const GET_PATHS = {
   getProjects: '/projects',
   getProjectMemberList: (id: string) => `/projects/${id}/members`,
   getFeedbacks: '/feedbacks',
+  getUnreadFeedbacks: '/feedbacks/unreads',
   getAccountStatusMetadata: '/metadata/account-statuses',
   getPositionMetadata: '/metadata/positions',
   getAccountRoleMetadata: '/metadata/account-roles',
@@ -852,6 +854,15 @@ class Client {
 
     return fetcher<ViewActionItemSquashReportResponse>(
       `${BASE_URL}/dashboards/projects/action-item-squash?${queryString}`,
+      {
+        headers: { ...this.privateHeaders },
+      },
+    )
+  }
+
+  public getUnreadFeedbacks() {
+    return fetcher<ViewUnreadFeedbackCountResponse>(
+      `${BASE_URL}/feedbacks/unreads`,
       {
         headers: { ...this.privateHeaders },
       },
