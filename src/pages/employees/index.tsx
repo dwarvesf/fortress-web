@@ -148,9 +148,7 @@ const Default = () => {
         filteredValue: filter.positions,
         filters: [
           {
-            text: (
-              <span style={{ color: theme.colors.gray500 }}>No position</span>
-            ),
+            text: 'No position',
             value: '-',
           },
           ...positions.map((each) => ({
@@ -186,11 +184,7 @@ const Default = () => {
           ? undefined
           : [
               {
-                text: (
-                  <span style={{ color: theme.colors.gray500 }}>
-                    No project
-                  </span>
-                ),
+                text: 'No project',
                 value: '-',
               },
               ...projects.map((each) => ({
@@ -210,7 +204,7 @@ const Default = () => {
         filteredValue: filter.stacks,
         filters: [
           {
-            text: <span style={{ color: theme.colors.gray500 }}>No stack</span>,
+            text: 'No stack',
             value: '-',
           },
           ...stacks.map((each) => ({
@@ -249,9 +243,7 @@ const Default = () => {
         filteredValue: filter.chapters,
         filters: [
           {
-            text: (
-              <span style={{ color: theme.colors.gray500 }}>No chapter</span>
-            ),
+            text: 'No chapter',
             value: '-',
           },
           ...chapters.map((each) => ({
@@ -270,11 +262,7 @@ const Default = () => {
         filteredValue: filter.lineManagers,
         filters: [
           {
-            text: (
-              <span style={{ color: theme.colors.gray500 }}>
-                No line manager
-              </span>
-            ),
+            text: 'No line manager',
             value: '-',
           },
           ...lineManagers.map((each) => ({
