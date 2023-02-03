@@ -367,19 +367,18 @@ export const General = (props: Props) => {
                       },
                       {
                         label: 'Organizations',
-                        value: (data.organizations || []).length
-                          ? (data.organizations || []).map((d, i) => (
-                              <>
-                                <AvatarWithName
-                                  avatar={d?.avatar || undefined}
-                                  name={d?.name || '-'}
-                                />
-                                {i < (data.organizations || []).length - 1
-                                  ? ', '
-                                  : ''}
-                              </>
-                            ))
-                          : '-',
+                        value: (data.organizations || []).length ? (
+                          <Space direction="vertical">
+                            {(data.organizations || []).map((d) => (
+                              <AvatarWithName
+                                avatar={d?.avatar || undefined}
+                                name={d?.name || '-'}
+                              />
+                            ))}
+                          </Space>
+                        ) : (
+                          '-'
+                        ),
                       },
                     ].flatMap(({ permission, ...item }) =>
                       permission && !permissions.includes(permission)

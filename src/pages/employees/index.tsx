@@ -146,16 +146,10 @@ const Default = () => {
         ),
         filterSearch: true,
         filteredValue: filter.positions,
-        filters: [
-          {
-            text: 'No position',
-            value: '-',
-          },
-          ...positions.map((each) => ({
-            text: each.name,
-            value: each.code!,
-          })),
-        ],
+        filters: positions.map((each) => ({
+          text: each.name,
+          value: each.code!,
+        })),
       },
       {
         title: 'Projects',
@@ -184,7 +178,7 @@ const Default = () => {
           ? undefined
           : [
               {
-                text: 'No project',
+                text: '-',
                 value: '-',
               },
               ...projects.map((each) => ({
@@ -202,16 +196,10 @@ const Default = () => {
         ),
         filterSearch: true,
         filteredValue: filter.stacks,
-        filters: [
-          {
-            text: 'No stack',
-            value: '-',
-          },
-          ...stacks.map((each) => ({
-            text: each.name,
-            value: each.code!,
-          })),
-        ],
+        filters: stacks.map((each) => ({
+          text: each.name,
+          value: each.code!,
+        })),
       },
       {
         title: 'Chapters',
@@ -241,16 +229,10 @@ const Default = () => {
         ),
         filterSearch: true,
         filteredValue: filter.chapters,
-        filters: [
-          {
-            text: 'No chapter',
-            value: '-',
-          },
-          ...chapters.map((each) => ({
-            text: each.name,
-            value: each.code!,
-          })),
-        ],
+        filters: chapters.map((each) => ({
+          text: each.name,
+          value: each.code!,
+        })),
       },
       {
         title: 'Line manager',
@@ -262,7 +244,7 @@ const Default = () => {
         filteredValue: filter.lineManagers,
         filters: [
           {
-            text: 'No line manager',
+            text: '-',
             value: '-',
           },
           ...lineManagers.map((each) => ({

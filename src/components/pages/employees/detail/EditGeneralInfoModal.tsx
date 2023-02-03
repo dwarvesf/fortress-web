@@ -1,4 +1,13 @@
-import { Col, DatePicker, Form, Input, Modal, notification, Row } from 'antd'
+import {
+  Col,
+  DatePicker,
+  Form,
+  Input,
+  Modal,
+  notification,
+  Row,
+  Select,
+} from 'antd'
 import { AsyncSelect } from 'components/common/Select'
 import { renderEmployeeOption } from 'components/common/Select/renderers/employeeOption'
 import { GET_PATHS, client } from 'libs/apis'
@@ -6,6 +15,7 @@ import { useState } from 'react'
 import { fullListPagination } from 'types/filters/Pagination'
 import { RequestUpdateEmployeeGeneralInfoInput } from 'types/schema'
 import {
+  searchFilterOption,
   transformEmployeeDataToSelectOption,
   transformOrganizationMetaDataToSelectOption,
 } from 'utils/select'
@@ -18,6 +28,7 @@ import {
 import { SELECT_BOX_DATE_FORMAT, SERVER_DATE_FORMAT } from 'constants/date'
 import { renderOrganizationOption } from 'components/common/Select/renderers/organizationOption'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
+import { theme } from 'styles'
 
 type FormValues = Omit<
   RequestUpdateEmployeeGeneralInfoInput,
@@ -264,18 +275,18 @@ export const EditGeneralInfoModal = (props: Props) => {
               name="organizationIDs"
               rules={[{ required: true, message: 'Required' }]}
             >
-              <AsyncSelect
+              <Select
                 mode="multiple"
-                optionGetter={async () => {
-                  return (organizationsMetaData?.data || []).map(
-                    transformOrganizationMetaDataToSelectOption,
-                  )
-                }}
-                swrKeys={GET_PATHS.getOrganizationMetadata}
-                placeholder="Select line manager"
-                customOptionRenderer={renderOrganizationOption}
-                allowClear
-              />
+                style={{ background: theme.colors.white }}
+                placeholder="Select organization"
+                showSearch
+                showArrow
+                filterOption={searchFilterOption}
+              >
+                {(organizationsMetaData?.data || [])
+                  .map(transformOrganizationMetaDataToSelectOption)
+                  .map(renderOrganizationOption)}
+              </Select>
             </Form.Item>
           </Col>
         </Row>
