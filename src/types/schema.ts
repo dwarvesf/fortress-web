@@ -344,6 +344,13 @@ export interface ModelProjectStack {
   updatedAt?: string
 }
 
+export interface ModelResourceUtilization {
+  available?: number
+  date?: string
+  official?: number
+  shadow?: number
+}
+
 export interface ModelRole {
   code?: string
   createdAt?: string
@@ -372,6 +379,12 @@ export interface ModelStack {
   id?: string
   name?: string
   updatedAt?: string
+}
+
+export interface ModelStaffingDemand {
+  id?: string
+  name?: string
+  request?: string
 }
 
 export interface ModelTechRadar {
@@ -787,6 +800,7 @@ export interface ViewBasicProjectHeadInfo {
 }
 
 export interface ViewBasicProjectInfo {
+  avatar?: string
   code?: string
   id?: string
   name?: string
@@ -1021,6 +1035,10 @@ export interface ViewFeedbackDetailResponse {
 
 export interface ViewFeedbackReviewDetailResponse {
   data?: ViewFeedBackReviewDetail
+}
+
+export interface ViewGetDashboardResourceUtilizationResponse {
+  data?: ModelResourceUtilization[]
 }
 
 export interface ViewGetEngagementDashboardDetailResponse {
@@ -1382,6 +1400,15 @@ export interface ViewTrend {
   deadline?: number
   learning?: number
   workload?: number
+}
+
+export interface ViewUnreadFeedbackCountData {
+  count?: number
+  reviewerID?: string
+}
+
+export interface ViewUnreadFeedbackCountResponse {
+  data?: ViewUnreadFeedbackCountData
 }
 
 export interface ViewUpdateEmployeeStatusResponse {

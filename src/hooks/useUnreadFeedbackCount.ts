@@ -1,19 +1,17 @@
 import { useAuthContext } from 'context/auth'
 import { client, GET_PATHS } from 'libs/apis'
-import { useEffect, useMemo } from 'react'
-import { FeedbackListFilter } from 'types/filters/FeedbackListFilter'
+import { useEffect } from 'react'
 import { useFetchWithCache } from './useFetchWithCache'
 
 export const useUnreadFeedbackCount = () => {
   const { isAuthenticated } = useAuthContext()
 
-  const { data, mutate } = useFetchWithCache([GET_PATHS.getFeedbacks], () =>
-    isAuthenticated
-      ? client.getPersonalFeedbacks(new FeedbackListFilter())
-      : undefined,
+  const { data, mutate } = useFetchWithCache(
+    [GET_PATHS.getUnreadFeedbacks],
+    () => (isAuthenticated ? client.getUnreadFeedbacks() : undefined),
   )
   // eslint-disable-next-line
-  const feedbacks = data?.data || []
+  const feedbacks = data?.data
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -21,11 +19,7 @@ export const useUnreadFeedbackCount = () => {
     }
   }, [isAuthenticated]) // eslint-disable-line
 
-  const unreadCount = useMemo(() => {
-    return feedbacks.filter((feedback) => !feedback.isRead).length
-  }, [feedbacks])
-
   return {
-    unreadCount,
+    unreadCount: feedbacks?.count || 0,
   }
 }
