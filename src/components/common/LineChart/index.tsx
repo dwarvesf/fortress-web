@@ -54,7 +54,7 @@ export const LineChart = (props: Props) => {
     xAxisDomain = [''],
     xAxisStyle,
     yAxisDataKey,
-    yAxisTicks = [1, 3, 5],
+    yAxisTicks = [0, 1, 2, 3, 4, 5],
     yAxisDomain = [0, 5],
     yAxisStyle,
     customToolTip,
@@ -76,7 +76,7 @@ export const LineChart = (props: Props) => {
         style={{
           marginLeft: -10,
         }}
-        margin={{ left: 12, right: 16, top: 4 }}
+        margin={{ left: 12, right: 16, top: hasLegend ? 0 : 14 }}
         {...rest}
       >
         <CartesianGrid strokeDasharray="3 3" />
@@ -109,7 +109,7 @@ export const LineChart = (props: Props) => {
           <Line
             dataKey={lineDataKeys!}
             stroke={chartColors[0]}
-            strokeWidth={1.5}
+            strokeWidth={1.75}
             animationDuration={600}
           />
         ) : (
@@ -118,7 +118,7 @@ export const LineChart = (props: Props) => {
               key={String(k!)}
               dataKey={k!}
               stroke={chartColors[i % chartColors.length]}
-              strokeWidth={1.5}
+              strokeWidth={1.75}
               animationDuration={600}
               opacity={linesOpacity ? linesOpacity[String(k)] : 1}
             />
