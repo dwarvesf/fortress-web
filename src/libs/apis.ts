@@ -57,6 +57,7 @@ import {
   ViewActionItemSquashReportResponse,
   ViewUnreadFeedbackCountResponse,
   ViewOrganizationsResponse,
+  ViewResourceAvailabilityResponse,
 } from 'types/schema'
 import { EmployeeListFilter } from 'types/filters/EmployeeListFilter'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
@@ -108,6 +109,7 @@ export const GET_PATHS = {
   getProjectsAuditEvents: '/dashboards/projects/action-items',
   getProjectsSummary: '/dashboards/projects/summary',
   getProjectsActionItemSquash: '/dashboards/projects/action-item-squash',
+  getResourceAvailability: '/dashboards/resources/availabilities',
 }
 export interface Meta {
   page?: number
@@ -874,6 +876,15 @@ class Client {
   public getUnreadFeedbacks() {
     return fetcher<ViewUnreadFeedbackCountResponse>(
       `${BASE_URL}/feedbacks/unreads`,
+      {
+        headers: { ...this.privateHeaders },
+      },
+    )
+  }
+
+  public getResourceAvailability() {
+    return fetcher<ViewResourceAvailabilityResponse>(
+      `${BASE_URL}/dashboards/resources/availabilities`,
       {
         headers: { ...this.privateHeaders },
       },
