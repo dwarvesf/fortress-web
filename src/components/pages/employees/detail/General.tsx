@@ -355,6 +355,7 @@ export const General = (props: Props) => {
                               <AvatarWithName
                                 avatar={d?.avatar || undefined}
                                 name={d?.name || '-'}
+                                align="end"
                               />
                             ))}
                           </Space>
