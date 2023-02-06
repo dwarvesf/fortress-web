@@ -15,7 +15,7 @@ const SummaryTdRender = ({
   value: { value: number; trend: number }
 }) => (
   <div style={{ display: 'flex', alignItems: 'end' }}>
-    <span>{value.value}</span>
+    <span>{value.value.toFixed(1)}</span>
     {getTrendByPercentage(value.trend) && (
       <span
         style={{

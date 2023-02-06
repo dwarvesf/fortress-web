@@ -1,5 +1,5 @@
 import { Icon } from '@iconify/react'
-import { Card, Col, Row, Space, Spin } from 'antd'
+import { Card, Col, Row, Spin } from 'antd'
 import { chartTrendColors } from 'constants/colors'
 import { useMemo, useCallback } from 'react'
 import {
@@ -12,7 +12,6 @@ import {
   Bar,
   Tooltip,
   TooltipProps,
-  LegendProps,
   CartesianAxisProps,
 } from 'recharts'
 import { theme } from 'styles'
@@ -65,28 +64,6 @@ const CustomTooltip = ({
     )
   }
   return null
-}
-
-const CustomLegend = ({ payload }: LegendProps) => {
-  return (
-    <Space
-      style={{ width: '100%', justifyContent: 'space-evenly', marginTop: 10 }}
-    >
-      {payload?.map((data) => (
-        <Row key={data.value} align="middle">
-          <div
-            style={{
-              width: 16,
-              height: 16,
-              background: data.color,
-              marginRight: 5,
-            }}
-          />
-          <div>{capitalizeFirstLetter(data.value)}</div>
-        </Row>
-      ))}
-    </Space>
-  )
 }
 
 const CustomAxisTick = ({
@@ -239,8 +216,6 @@ export const AuditEventsCard = (props: Props) => {
               cursor={{ fill: 'transparent' }}
               content={<CustomTooltip />}
             />
-
-            <Legend content={<CustomLegend />} />
 
             {(dataset.length > 1 && dataset[dataset.length - 1].trend
               ? (Object.keys(
