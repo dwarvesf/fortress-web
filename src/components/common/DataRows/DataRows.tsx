@@ -17,7 +17,7 @@ export const DataRows = (props: Props) => {
   const { permissions } = useAuthContext()
 
   return (
-    <Row gutter={[24, 8]} align="middle">
+    <Row gutter={[24, 8]} align="top">
       {data
         .filter(
           ({ permission }) => !permission || permissions.includes(permission),
