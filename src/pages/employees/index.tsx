@@ -146,10 +146,16 @@ const Default = () => {
         ),
         filterSearch: true,
         filteredValue: filter.positions,
-        filters: positions.map((each) => ({
-          text: each.name,
-          value: each.code!,
-        })),
+        filters: [
+          {
+            text: '-',
+            value: '-',
+          },
+          ...positions.map((each) => ({
+            text: each.name,
+            value: each.code!,
+          })),
+        ],
       },
       {
         title: 'Projects',
@@ -196,10 +202,16 @@ const Default = () => {
         ),
         filterSearch: true,
         filteredValue: filter.stacks,
-        filters: stacks.map((each) => ({
-          text: each.name,
-          value: each.code!,
-        })),
+        filters: [
+          {
+            text: '-',
+            value: '-',
+          },
+          ...stacks.map((each) => ({
+            text: each.name,
+            value: each.code!,
+          })),
+        ],
       },
       {
         title: 'Chapters',
@@ -229,10 +241,16 @@ const Default = () => {
         ),
         filterSearch: true,
         filteredValue: filter.chapters,
-        filters: chapters.map((each) => ({
-          text: each.name,
-          value: each.code!,
-        })),
+        filters: [
+          {
+            text: '-',
+            value: '-',
+          },
+          ...chapters.map((each) => ({
+            text: each.name,
+            value: each.code!,
+          })),
+        ],
       },
       {
         title: 'Line manager',
