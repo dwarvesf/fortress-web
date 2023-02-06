@@ -13,6 +13,7 @@ export const renderOrganizationOption = (
     label={option.label.name}
   >
     <AvatarWithName
+      avatarSize={20}
       avatar={option.label?.avatar || undefined}
       name={option.label.name}
     />
