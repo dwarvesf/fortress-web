@@ -205,6 +205,15 @@ export const ProjectForm = (props: Props) => {
             />
           </Form.Item>
         </Col>
+
+        <Col span={24} md={{ span: 12 }}>
+          <Form.Item label="Notion ID" name="notionID">
+            <Input
+              placeholder="123e4567-e89b-12d3-a456-426655440000"
+              className="bordered"
+            />
+          </Form.Item>
+        </Col>
       </Row>
     </Form>
   )

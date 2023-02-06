@@ -116,6 +116,7 @@ const CreateNewProjectPage = () => {
       status: values.status,
       type: values.type,
       function: values.function,
+      notionID: values.notionID || '',
     }
   }
 
