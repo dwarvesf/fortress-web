@@ -156,9 +156,9 @@ export const General = (props: Props) => {
                 data={[
                   {
                     label: 'Client Email',
-                    value: (
+                    value: (data.clientEmail || []).length ? (
                       <Space direction="vertical">
-                        {data.clientEmail?.map((mail) => (
+                        {(data.clientEmail || []).map((mail) => (
                           <a
                             href={`mailto:${mail}`}
                             key={mail}
@@ -168,6 +168,8 @@ export const General = (props: Props) => {
                           </a>
                         ))}
                       </Space>
+                    ) : (
+                      '-'
                     ),
                     permission: Permission.PROJECTS_READ_FULLACCESS,
                   },
