@@ -6,25 +6,10 @@ import Projects from 'components/pages/dashboard/projects/Projects'
 import { useState } from 'react'
 import { useTabWithQuery } from 'hooks/useTabWithQuery'
 import Resources from 'components/pages/dashboard/resources/Resources'
-
-// mock interface, this should be base on the filter (department, seniority,...) and provided by BE
-interface Feedbacks {
-  design?: number
-  operation?: number
-  engineering?: number
-}
-
-export interface EngagementAverageProps {
-  question?: string
-  dataset?: {
-    name?: string
-    average?: number
-    feedbacks?: Feedbacks
-  }[]
-}
+import Engagement from 'components/pages/dashboard/engagement/Engagement'
 
 const DashboardPage = () => {
-  const [filterCategory, setFilterCategory] = useState<string>('department')
+  const [filterCategory, setFilterCategory] = useState<string>('chapter')
   const { tabKey = 'projects', setTabKey } = useTabWithQuery()
 
   return (
@@ -52,7 +37,7 @@ const DashboardPage = () => {
                 value={filterCategory}
                 onChange={setFilterCategory}
                 options={[
-                  { label: 'Department', value: 'department' },
+                  // { label: 'Department', value: 'department' },
                   { label: 'Chapter', value: 'chapter' },
                   { label: 'Seniority', value: 'seniority' },
                   { label: 'Project', value: 'project' },
@@ -71,11 +56,11 @@ const DashboardPage = () => {
               label: `Resources`,
               children: <Resources />,
             },
-            // {
-            //   key: 'engagement',
-            //   label: `Engagement`,
-            //   children: <Engagement filterCategory={filterCategory} />,
-            // },
+            {
+              key: 'engagement',
+              label: `Engagement`,
+              children: <Engagement filterCategory={filterCategory} />,
+            },
           ]}
         />
       </Space>
