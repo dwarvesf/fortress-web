@@ -5,15 +5,10 @@ import { EditableDetailSectionCard } from 'components/common/EditableDetailSecti
 import { PageHeader } from 'components/common/PageHeader'
 import { EditProfileInfoModal } from 'components/pages/profile/EditProfileInfoModal'
 import { useAuthContext } from 'context/auth'
-import { Button } from 'components/common/Button'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
-import { Icon } from '@iconify/react'
 import { SEO } from 'components/common/SEO'
 import { LinkWithIcon } from 'components/common/LinkWithIcon'
-import {
-  EditableAvatar,
-  EditAvatarModal,
-} from 'components/common/EditableAvatar'
+import { EditableAvatar } from 'components/common/EditableAvatar'
 import { SVGIcon } from 'components/common/SVGIcon'
 
 const Default = () => {
@@ -23,12 +18,6 @@ const Default = () => {
     isOpen: isEditProfileInfoDialogOpen,
     onOpen: openEditProfileInfoDialog,
     onClose: closeEditProfileInfoDialog,
-  } = useDisclosure()
-
-  const {
-    isOpen: isEditAvatarDialogOpen,
-    onOpen: openEditAvatarDialog,
-    onClose: closeEditAvatarDialog,
   } = useDisclosure()
 
   return (
@@ -53,26 +42,13 @@ const Default = () => {
             >
               <Row gutter={[24, 24]}>
                 <Col span={24} lg={{ span: 8 }}>
-                  <Space
-                    direction="vertical"
-                    size={24}
-                    style={{ justifyContent: 'center', alignItems: 'center' }}
-                  >
-                    <EditableAvatar
-                      onAfterSubmit={revalidate}
-                      type="profile"
-                      avatar={user?.avatar}
-                      name={user?.displayName || user?.fullName}
-                      editable={false}
-                    />
-                    <Button
-                      type="primary"
-                      icon={<Icon icon="icon-park-outline:edit" width={16} />}
-                      onClick={openEditAvatarDialog}
-                    >
-                      Edit
-                    </Button>
-                  </Space>
+                  <EditableAvatar
+                    onAfterSubmit={revalidate}
+                    type="profile"
+                    avatar={user?.avatar}
+                    name={user?.displayName || user?.fullName}
+                    hasEditButton
+                  />
                 </Col>
                 <Col span={24} lg={{ span: 16 }}>
                   <DataRows
@@ -158,15 +134,6 @@ const Default = () => {
         initialValues={user || {}}
         onClose={closeEditProfileInfoDialog}
         onAfterSubmit={revalidate}
-      />
-
-      <EditAvatarModal
-        isOpen={isEditAvatarDialogOpen}
-        onClose={closeEditAvatarDialog}
-        onAfterSubmit={revalidate}
-        type="profile"
-        avatar={user?.avatar}
-        name={user?.displayName || user?.fullName}
       />
     </>
   )
