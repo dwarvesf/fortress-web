@@ -200,9 +200,7 @@ export const General = (props: Props) => {
                       ''
                     ),
                   },
-                ].flatMap(({ permission, ...item }) =>
-                  permission && !permissions.includes(permission) ? [] : [item],
-                )}
+                ]}
               />
             </EditableDetailSectionCard>
           </Col>

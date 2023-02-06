@@ -44,10 +44,7 @@ import { ROUTES } from 'constants/routes'
 import { ColumnsType, ColumnType } from 'antd/lib/table'
 import { DeploymentType, deploymentTypes } from 'constants/deploymentTypes'
 import { LinkWithIcon } from 'components/common/LinkWithIcon'
-import {
-  EditableAvatar,
-  EditAvatarModal,
-} from 'components/common/EditableAvatar'
+import { EditableAvatar } from 'components/common/EditableAvatar'
 import { getErrorMessage } from 'utils/string'
 import { EmployeeListFilter } from 'types/filters/EmployeeListFilter'
 import { Permission } from 'constants/permission'
@@ -55,7 +52,6 @@ import { useAuthContext } from 'context/auth'
 import { AsyncSelect } from 'components/common/Select'
 import { transformMetadataToSelectOption } from 'utils/select'
 import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
-import { Button } from 'components/common/Button'
 import { TotalResultCount } from 'components/common/Table/TotalResultCount'
 import { EditPersonalInfoModal } from './EditPersonalInfoModal'
 import { EditSkillsModal } from './EditSkillsModal'
@@ -158,6 +154,8 @@ export const General = (props: Props) => {
   const [isLoading, setIsLoading] = useState(false)
   const { permissions } = useAuthContext()
 
+  const isEditable = permissions.includes(Permission.EMPLOYEES_EDIT)
+
   // We'll be showing projects of the status users pick
   // By default, we show projects that the employee is active in
   const [viewProjectStatus, setViewProjectStatus] = useState(
@@ -230,12 +228,6 @@ export const General = (props: Props) => {
     onClose: closeEditPersonalInfoDialog,
   } = useDisclosure()
 
-  const {
-    isOpen: isEditAvatarDialogOpen,
-    onOpen: openEditAvatarDialog,
-    onClose: closeEditAvatarDialog,
-  } = useDisclosure()
-
   return (
     <>
       <Space direction="vertical" size={24} style={{ width: '100%' }}>
@@ -259,19 +251,9 @@ export const General = (props: Props) => {
                       id={data.id}
                       avatar={data.avatar}
                       name={data.displayName || data.fullName}
-                      editable={false}
+                      editable={isEditable}
+                      hasEditButton={isEditable}
                     />
-                    <AuthenticatedContent
-                      permission={Permission.EMPLOYEES_EDIT}
-                    >
-                      <Button
-                        type="primary"
-                        icon={<Icon icon="icon-park-outline:edit" width={16} />}
-                        onClick={openEditAvatarDialog}
-                      >
-                        Edit
-                      </Button>
-                    </AuthenticatedContent>
                   </Space>
                 </Col>
                 <Col span={24} lg={{ span: 16 }}>
@@ -380,11 +362,7 @@ export const General = (props: Props) => {
                           '-'
                         ),
                       },
-                    ].flatMap(({ permission, ...item }) =>
-                      permission && !permissions.includes(permission)
-                        ? []
-                        : [item],
-                    )}
+                    ]}
                   />
                 </Col>
               </Row>
@@ -570,9 +548,7 @@ export const General = (props: Props) => {
                     permission:
                       Permission.EMPLOYEES_READ_GENERALINFO_FULLACCESS,
                   },
-                ].flatMap(({ permission, ...item }) =>
-                  permission && !permissions.includes(permission) ? [] : [item],
-                )}
+                ]}
               />
             </EditableDetailSectionCard>
           </Col>
@@ -686,16 +662,6 @@ export const General = (props: Props) => {
           placeOfResidence: data.placeOfResidence || '',
         }}
         onAfterSubmit={mutateEmployee}
-      />
-
-      <EditAvatarModal
-        isOpen={isEditAvatarDialogOpen}
-        onClose={closeEditAvatarDialog}
-        onAfterSubmit={mutateEmployee}
-        type="employee"
-        id={data.id}
-        avatar={data.avatar}
-        name={data.displayName || data.fullName}
       />
     </>
   )

@@ -1,7 +1,9 @@
 import { useDisclosure } from '@dwarvesf/react-hooks'
-import { Avatar, Image } from 'antd'
+import { Icon } from '@iconify/react'
+import { Avatar, Image, Space } from 'antd'
 import { theme } from 'styles'
 import { getFirstLetterCapitalized } from 'utils/string'
+import { Button } from '../Button'
 import { EditAvatarModal } from './EditAvatarModal'
 
 interface Props {
@@ -11,10 +13,19 @@ interface Props {
   avatar?: string
   name?: string
   editable?: boolean
+  hasEditButton?: boolean
 }
 
 export const EditableAvatar = (props: Props) => {
-  const { onAfterSubmit, type, id, avatar, name, editable = true } = props
+  const {
+    onAfterSubmit,
+    type,
+    id,
+    avatar,
+    name,
+    editable = true,
+    hasEditButton = false,
+  } = props
 
   const {
     isOpen: isEditAvatarDialogOpen,
@@ -23,7 +34,11 @@ export const EditableAvatar = (props: Props) => {
   } = useDisclosure()
 
   return (
-    <>
+    <Space
+      direction="vertical"
+      size={24}
+      style={{ justifyContent: 'center', alignItems: 'center' }}
+    >
       <Avatar
         size={128}
         onClick={editable ? openEditAvatarDialog : undefined}
@@ -75,6 +90,15 @@ export const EditableAvatar = (props: Props) => {
           {...{ onAfterSubmit, type, id, avatar, name }}
         />
       )}
-    </>
+      {hasEditButton ? (
+        <Button
+          type="primary"
+          icon={<Icon icon="icon-park-outline:edit" width={16} />}
+          onClick={openEditAvatarDialog}
+        >
+          Edit
+        </Button>
+      ) : null}
+    </Space>
   )
 }
