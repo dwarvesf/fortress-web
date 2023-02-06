@@ -207,17 +207,7 @@ export const ProjectForm = (props: Props) => {
         </Col>
 
         <Col span={24} md={{ span: 12 }}>
-          <Form.Item
-            label="Notion ID"
-            name="notionID"
-            rules={[
-              {
-                pattern:
-                  /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/,
-                message: 'Wrong UUID format',
-              },
-            ]}
-          >
+          <Form.Item label="Notion ID" name="notionID">
             <Input
               placeholder="123e4567-e89b-12d3-a456-426655440000"
               className="bordered"
