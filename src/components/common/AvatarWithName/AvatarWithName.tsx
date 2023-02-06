@@ -1,4 +1,5 @@
-import { Avatar, Space } from 'antd'
+import { Avatar, Space as AntSpace } from 'antd'
+import styled from 'styled-components'
 import { getFirstLetterCapitalized } from 'utils/string'
 
 interface Props {
@@ -8,6 +9,13 @@ interface Props {
   fontSize?: number
   renderName?: (value?: string) => React.ReactNode
 }
+
+const Space = styled(AntSpace)`
+  .ant-space-item:first-child {
+    display: flex;
+    flex-direction: column;
+  }
+`
 
 export const AvatarWithName = (props: Props) => {
   const {
