@@ -1,15 +1,13 @@
-import { Select, Space, Tabs } from 'antd'
+import { Space, Tabs } from 'antd'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 import { PageHeader } from 'components/common/PageHeader'
 import { SEO } from 'components/common/SEO'
 import Projects from 'components/pages/dashboard/projects/Projects'
-import { useState } from 'react'
 import { useTabWithQuery } from 'hooks/useTabWithQuery'
 import Resources from 'components/pages/dashboard/resources/Resources'
 import Engagement from 'components/pages/dashboard/engagement/Engagement'
 
 const DashboardPage = () => {
-  const [filterCategory, setFilterCategory] = useState<string>('chapter')
   const { tabKey = 'projects', setTabKey } = useTabWithQuery()
 
   return (
@@ -30,21 +28,6 @@ const DashboardPage = () => {
         <Tabs
           defaultActiveKey={tabKey}
           onTabClick={(t) => setTabKey(t)}
-          tabBarExtraContent={
-            tabKey === 'engagement' ? (
-              <Select
-                style={{ width: 135 }}
-                value={filterCategory}
-                onChange={setFilterCategory}
-                options={[
-                  // { label: 'Department', value: 'department' },
-                  { label: 'Chapter', value: 'chapter' },
-                  { label: 'Seniority', value: 'seniority' },
-                  { label: 'Project', value: 'project' },
-                ]}
-              />
-            ) : null
-          }
           items={[
             {
               key: 'projects',
@@ -59,7 +42,7 @@ const DashboardPage = () => {
             {
               key: 'engagement',
               label: `Engagement`,
-              children: <Engagement filterCategory={filterCategory} />,
+              children: <Engagement />,
             },
           ]}
         />

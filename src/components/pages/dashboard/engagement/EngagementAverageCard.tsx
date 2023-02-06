@@ -21,7 +21,6 @@ interface Props {
 
 const CardLabel = styled.div`
   font-size: 15px;
-  margin-bottom: 8px;
 `
 
 const EngagementFeedbacksRow = ({

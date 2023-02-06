@@ -90,6 +90,7 @@ export const EngagementAverageChart = (props: Props) => {
       lineDataKeys={['point']}
       xAxisDataKey="title"
       xAxisTick={<CustomAxisTick {...{ currentQuarter, setCurrentQuarter }} />}
+      yAxisProps={{ width: 30 }}
       customToolTip={<CustomTooltip />}
     />
   )
