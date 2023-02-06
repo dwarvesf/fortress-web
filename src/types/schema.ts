@@ -53,6 +53,12 @@ export interface ModelDateTime {
   time?: string
 }
 
+export interface ModelDigest {
+  created_at?: string
+  id?: string
+  name?: string
+}
+
 export interface ModelEarn {
   due_date?: string
   function?: string[]
@@ -120,6 +126,7 @@ export interface ModelEmployee {
   roles?: ModelRole[]
   seniority?: ModelSeniority
   seniorityID?: string
+  socialAccounts?: ModelSocialAccount[]
   teamEmail?: string
   updatedAt?: string
   username?: string
@@ -205,6 +212,14 @@ export interface ModelLikertScaleCount {
   mixed?: number
   stronglyAgree?: number
   stronglyDisagree?: number
+}
+
+export interface ModelMemo {
+  author?: string
+  created_at?: string
+  id?: string
+  name?: string
+  tags?: string[]
 }
 
 export interface ModelOrganization {
@@ -371,6 +386,18 @@ export interface ModelSeniority {
   updatedAt?: string
 }
 
+export interface ModelSocialAccount {
+  accountID?: string
+  createdAt?: string
+  deletedAt?: GormDeletedAt
+  email?: string
+  employeeID?: string
+  id?: string
+  name?: string
+  type?: string
+  updatedAt?: string
+}
+
 export interface ModelStack {
   avatar?: string
   code?: string
@@ -394,6 +421,13 @@ export interface ModelTechRadar {
   name?: string
   quadrant?: string
   ring?: string
+}
+
+export interface ModelUpdate {
+  audience?: string
+  created_at?: string
+  id?: string
+  name?: string
 }
 
 export interface ModelValuation {
@@ -478,6 +512,7 @@ export interface RequestCreateProjectInput {
   function: string
   members?: RequestAssignMemberInput[]
   name: string
+  notionID?: string
   projectEmail?: string
   startDate?: string
   status: string
@@ -612,6 +647,7 @@ export interface RequestUpdateProjectGeneralInfoInput {
   countryID: string
   function: string
   name: string
+  notionID?: string
   stacks?: string[]
   startDate?: string
 }
@@ -1042,11 +1078,11 @@ export interface ViewGetDashboardResourceUtilizationResponse {
 }
 
 export interface ViewGetEngagementDashboardDetailResponse {
-  data?: ViewEngagementDashboardDetail
+  data?: ViewEngagementDashboardDetail[]
 }
 
 export interface ViewGetEngagementDashboardResponse {
-  data?: ViewEngagementDashboard
+  data?: ViewEngagementDashboard[]
 }
 
 export interface ViewGetQuestionResponse {
@@ -1222,6 +1258,7 @@ export interface ViewProjectData {
   industry?: string
   members?: ViewProjectMember[]
   name?: string
+  notionID?: string
   projectEmail?: string
   salePerson?: ViewProjectHead
   stacks?: ViewStack[]
@@ -1498,6 +1535,7 @@ export interface ViewUpdateProjectGeneralInfo {
   country?: ViewBasicCountryInfo
   function?: string
   name?: string
+  notionID?: string
   stacks?: ModelStack[]
   startDate?: string
 }
@@ -1564,6 +1602,22 @@ export interface ViewWorkUnit {
   status?: string
   type?: string
   url?: string
+}
+
+export interface ViewWorkUnitDistribution {
+  development?: number
+  employee?: ViewBasicEmployeeInfo
+  learning?: number
+  management?: number
+  training?: number
+}
+
+export interface ViewWorkUnitDistributionData {
+  workUnitDistributions?: ViewWorkUnitDistribution[]
+}
+
+export interface ViewWorkUnitDistributionsResponse {
+  data?: ViewWorkUnitDistributionData
 }
 
 export interface ViewWorkUnitResponse {

@@ -134,6 +134,20 @@ export const EditProjectGeneralInfoModal = (props: Props) => {
               })}
             />
           </Form.Item>
+
+          <Form.Item
+            label="Notion ID"
+            name="notionID"
+            rules={[
+              {
+                pattern:
+                  /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/,
+                message: 'Wrong UUID format',
+              },
+            ]}
+          >
+            <Input placeholder="Input Notion ID" className="bordered" />
+          </Form.Item>
         </Space>
       </Form>
     </Modal>

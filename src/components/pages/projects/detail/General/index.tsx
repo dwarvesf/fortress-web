@@ -110,7 +110,11 @@ export const General = (props: Props) => {
                       },
                       {
                         label: 'Technical Leads',
-                        value: <AvatarArray data={data.technicalLeads || []} />,
+                        value: (data.technicalLeads || []).length ? (
+                          <AvatarArray data={data.technicalLeads || []} />
+                        ) : (
+                          '-'
+                        ),
                       },
                       {
                         label: 'Start Date',
@@ -131,6 +135,10 @@ export const General = (props: Props) => {
                         value:
                           data.function &&
                           projectFunctions[data.function as ProjectFunction],
+                      },
+                      {
+                        label: 'Notion ID',
+                        value: data?.notionID || '-',
                       },
                     ]}
                   />
