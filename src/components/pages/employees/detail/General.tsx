@@ -10,7 +10,11 @@ import {
   Tag,
 } from 'antd'
 import { useDisclosure } from '@dwarvesf/react-hooks'
-import { ProjectAvatar, UserAvatar } from 'components/common/AvatarWithName'
+import {
+  AvatarWithName,
+  ProjectAvatar,
+  UserAvatar,
+} from 'components/common/AvatarWithName'
 import { DataRows } from 'components/common/DataRows'
 import { EditableDetailSectionCard } from 'components/common/EditableDetailSectionCard'
 import { DATE_FORMAT } from 'constants/date'
@@ -361,6 +365,21 @@ export const General = (props: Props) => {
                         permission:
                           Permission.EMPLOYEES_READ_GENERALINFO_FULLACCESS,
                       },
+                      {
+                        label: 'Organizations',
+                        value: (data.organizations || []).length ? (
+                          <Space direction="vertical">
+                            {(data.organizations || []).map((d) => (
+                              <AvatarWithName
+                                avatar={d?.avatar || undefined}
+                                name={d?.name || '-'}
+                              />
+                            ))}
+                          </Space>
+                        ) : (
+                          '-'
+                        ),
+                      },
                     ].flatMap(({ permission, ...item }) =>
                       permission && !permissions.includes(permission)
                         ? []
@@ -632,6 +651,7 @@ export const General = (props: Props) => {
           linkedInName: data.linkedInName || '',
           joinedDate: data.joinedDate ? moment(data.joinedDate) : undefined,
           leftDate: data.leftDate ? moment(data.leftDate) : undefined,
+          organizationIDs: (data.organizations || []).map((d) => d.id || ''),
         }}
         onAfterSubmit={mutateEmployee}
       />

@@ -56,6 +56,7 @@ import {
   ViewAuditSummariesResponse,
   ViewActionItemSquashReportResponse,
   ViewUnreadFeedbackCountResponse,
+  ViewOrganizationsResponse,
 } from 'types/schema'
 import { EmployeeListFilter } from 'types/filters/EmployeeListFilter'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
@@ -92,6 +93,7 @@ export const GET_PATHS = {
   getStackMetadata: '/metadata/stacks',
   getCountryMetadata: '/metadata/countries',
   getChapterMetadata: '/metadata/chapters',
+  getOrganizationMetadata: '/metadata/organizations',
   getSurveys: '/surveys',
   getSurveyDetail: (id: string) => `/surveys/${id}`,
   getSurveyTopic: (id: string, topicId: string) =>
@@ -314,6 +316,15 @@ class Client {
     return fetcher<Response<ViewMetaData[]>>(`${BASE_URL}/metadata/countries`, {
       headers: { ...this.privateHeaders },
     })
+  }
+
+  public getOrganizationMetadata = () => {
+    return fetcher<ViewOrganizationsResponse>(
+      `${BASE_URL}/metadata/organizations`,
+      {
+        headers: { ...this.privateHeaders },
+      },
+    )
   }
 
   public createNewEmployee(data: RequestCreateEmployeeInput) {
