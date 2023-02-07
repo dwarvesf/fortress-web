@@ -139,6 +139,7 @@ export const General = (props: Props) => {
                       {
                         label: 'Notion ID',
                         value: data?.notionID || '-',
+                        permission: Permission.PROJECTS_READ_FULLACCESS,
                       },
                     ]}
                   />

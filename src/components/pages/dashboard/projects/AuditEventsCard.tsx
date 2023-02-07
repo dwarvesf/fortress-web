@@ -239,7 +239,7 @@ export const AuditEventsCard = (props: Props) => {
 
   return (
     <Card
-      title="Audit Events"
+      title="Action Items"
       bodyStyle={{
         display: 'flex',
         flexDirection: 'column',
