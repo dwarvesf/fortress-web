@@ -105,17 +105,6 @@ const CustomTick = ({
       </text>
     </g>
   )
-  return (
-    <text {...props}>
-      <tspan
-        x={payload.coordinate}
-        dy="0.71em"
-        fontWeight={props.index === 3 ? 700 : 400}
-      >
-        {format(payload.value, MONTH_YEAR_FORMAT)}
-      </tspan>
-    </text>
-  )
 }
 
 const CustomShape = ({ tooltipPayload, tooltipPosition, ...props }: any) => {
