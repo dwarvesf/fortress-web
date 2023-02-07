@@ -225,7 +225,7 @@ export const ActionItemsCard = (props: Props) => {
 
   return (
     <Card
-      title="Action Items"
+      title="Action Items Squash"
       style={{ height: '100%' }}
       bodyStyle={{
         display: 'flex',

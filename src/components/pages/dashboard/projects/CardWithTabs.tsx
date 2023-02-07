@@ -94,7 +94,7 @@ export const CardWithTabs = (props: Props) => {
                 <Spin
                   size="large"
                   style={{
-                    height: 230,
+                    height: 260,
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
