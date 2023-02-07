@@ -1,5 +1,8 @@
 import { Card, Col, Row, Space } from 'antd'
 import { chartTrendColors } from 'constants/colors'
+import { MONTH_YEAR_FORMAT } from 'constants/date'
+import { useFetchWithCache } from 'hooks/useFetchWithCache'
+import { client, GET_PATHS } from 'libs/apis'
 import {
   Bar,
   BarChart,
@@ -12,52 +15,8 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
+import { format } from 'utils/date'
 import { capitalizeFirstLetter } from 'utils/string'
-
-const data = [
-  {
-    name: '08/2022',
-    staffed: 58,
-    shadow: 8,
-    available: 5,
-  },
-  {
-    name: '09/2022',
-    staffed: 65,
-    shadow: 8,
-    available: 2,
-  },
-  {
-    name: '10/2022',
-    staffed: 65,
-    shadow: 5,
-    available: 5,
-  },
-  {
-    name: '11/2022',
-    staffed: 56,
-    shadow: 8,
-    available: 6,
-  },
-  {
-    name: '12/2022',
-    staffed: 60,
-    shadow: 10,
-    available: 6,
-  },
-  {
-    name: '01/2023',
-    staffed: 52,
-    shadow: 6,
-    available: 4,
-  },
-  {
-    name: '02/2023',
-    staffed: 58,
-    shadow: 10,
-    available: 7,
-  },
-]
 
 const CustomTooltip = ({
   active,
@@ -75,7 +34,7 @@ const CustomTooltip = ({
           boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
         }}
       >
-        <strong>{label}</strong>
+        <strong>{format(label, MONTH_YEAR_FORMAT)}</strong>
         {payload.map((data) => (
           <Row
             key={data.dataKey}
@@ -123,7 +82,51 @@ const CustomLegend = ({ payload }: LegendProps) => {
   )
 }
 
+const CustomTick = ({
+  verticalAnchor,
+  visibleTicksCount,
+  tickFormatter,
+  payload,
+  ...props
+}: any) => {
+  const { x, y } = props
+  return (
+    <g transform={`translate(${x},${y})`}>
+      <text
+        {...props}
+        x={0}
+        y={0}
+        dx={-16}
+        dy={20}
+        transform="rotate(-45)"
+        fontWeight={payload.index === 3 ? 700 : 400}
+      >
+        {format(payload.value, MONTH_YEAR_FORMAT)}
+      </text>
+    </g>
+  )
+  return (
+    <text {...props}>
+      <tspan
+        x={payload.coordinate}
+        dy="0.71em"
+        fontWeight={props.index === 3 ? 700 : 400}
+      >
+        {format(payload.value, MONTH_YEAR_FORMAT)}
+      </tspan>
+    </text>
+  )
+}
+
+const CustomShape = ({ tooltipPayload, tooltipPosition, ...props }: any) => {
+  return <rect {...props} opacity={props.index === 3 ? 1 : 0.8} />
+}
+
 export const UtilizationChart = () => {
+  const { data } = useFetchWithCache(GET_PATHS.getResourceUtilization, () =>
+    client.getResourceUtilization(),
+  )
+
   return (
     <Card
       title="Resource Utilization"
@@ -136,23 +139,31 @@ export const UtilizationChart = () => {
           overflowY: 'hidden',
         }}
       >
-        <ResponsiveContainer width="100%" height={400} minWidth={300}>
-          <BarChart data={data} margin={{ left: 4, right: 12 }}>
+        <ResponsiveContainer width="100%" height={410} minWidth={300}>
+          <BarChart data={data?.data} margin={{ left: 4, right: 12 }}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" tickLine={false} fontSize={13} />
+            <XAxis
+              dataKey="date"
+              tickLine={false}
+              fontSize={13}
+              tickFormatter={() => ''}
+              tick={<CustomTick />}
+              height={60}
+            />
             <YAxis width={40} tickLine={false} fontSize={13} />
             <Tooltip
               cursor={{ fill: 'transparent' }}
               content={<CustomTooltip />}
             />
             <Legend content={<CustomLegend />} />
-            {['staffed', 'shadow', 'available'].map((key, i) => (
+            {['official', 'shadow', 'available'].map((key, i) => (
               <Bar
                 key={key}
                 dataKey={key}
                 stackId="a"
                 fill={Object.values(chartTrendColors)[i]}
                 maxBarSize={40}
+                shape={<CustomShape />}
               />
             ))}
           </BarChart>
