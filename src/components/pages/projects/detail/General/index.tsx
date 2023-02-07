@@ -136,6 +136,11 @@ export const General = (props: Props) => {
                           data.function &&
                           projectFunctions[data.function as ProjectFunction],
                       },
+                      {
+                        label: 'Notion ID',
+                        value: data?.notionID || '-',
+                        permission: Permission.PROJECTS_READ_FULLACCESS,
+                      },
                     ]}
                   />
                 </Col>
