@@ -1,6 +1,7 @@
 import { Card, Col, Row, Space } from 'antd'
 import { chartTrendColors } from 'constants/colors'
 import { MONTH_YEAR_FORMAT } from 'constants/date'
+import { Utilization, utilizations } from 'constants/utilization'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { client, GET_PATHS } from 'libs/apis'
 import {
@@ -16,7 +17,6 @@ import {
   YAxis,
 } from 'recharts'
 import { format } from 'utils/date'
-import { capitalizeFirstLetter } from 'utils/string'
 
 const CustomTooltip = ({
   active,
@@ -75,7 +75,7 @@ const CustomLegend = ({ payload }: LegendProps) => {
               marginRight: 5,
             }}
           />
-          <div>{capitalizeFirstLetter(data.value)}</div>
+          <div>{utilizations[data.value as Utilization]}</div>
         </Row>
       ))}
     </Space>
@@ -145,7 +145,7 @@ export const UtilizationChart = () => {
               content={<CustomTooltip />}
             />
             <Legend content={<CustomLegend />} />
-            {['official', 'shadow', 'available'].map((key, i) => (
+            {Object.keys(utilizations).map((key, i) => (
               <Bar
                 key={key}
                 dataKey={key}

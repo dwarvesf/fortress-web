@@ -79,7 +79,7 @@ export const AvailablePositions = ({ data, loading }: Props) => {
       loading={loading}
       rowKey={(row) => row.id || ''}
       pagination={false}
-      scroll={{ x: 'max-content', y: 370 }}
+      scroll={{ x: 'max-content', y: 390 }}
     />
   )
 }
