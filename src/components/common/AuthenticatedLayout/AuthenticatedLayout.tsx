@@ -5,8 +5,6 @@ import { FEATURES } from 'constants/features'
 import { pagePermissions, Permission } from 'constants/permission'
 import { ROUTES } from 'constants/routes'
 import { LOGIN_REDIRECTION_KEY, useAuthContext } from 'context/auth'
-import { useShouldRedirect } from 'hooks/useShouldRedirect'
-import { useFlags, useLDClient } from 'launchdarkly-react-client-sdk'
 import { useRouter } from 'next/router'
 import React, { useEffect, useMemo } from 'react'
 import { WithChildren } from 'types/common'
@@ -42,15 +40,10 @@ function getItem(
   }
 }
 
-const filterItems = (
-  items: MenuItem[],
-  permissions: string[],
-  flags?: Record<string, boolean>,
-): ItemType[] => {
+const filterItems = (items: MenuItem[], permissions: string[]): ItemType[] => {
   return items
-    .flatMap(({ permission, feature = '', content: { children, ...item } }) =>
-      (permission && !permissions.includes(permission)) ||
-      (flags && flags[feature] === false)
+    .flatMap(({ permission, content: { children, ...item } }) =>
+      permission && !permissions.includes(permission)
         ? []
         : [
             {
@@ -87,12 +80,6 @@ export const AuthenticatedLayout = (props: Props) => {
 
   const { isAuthenticated, isAuthenticating, permissions } = useAuthContext()
   const { replace, push, pathname } = useRouter()
-
-  const ldClient = useLDClient()
-  const flags = useFlags()
-
-  // Redirection control
-  const shouldRedirect = useShouldRedirect()
 
   // Get menu items
   const items: MenuItem[] = useMemo(() => {
@@ -196,11 +183,7 @@ export const AuthenticatedLayout = (props: Props) => {
     // Is authenticating
     isAuthenticating ||
     // Not authenticated yet & pathname is not login (meaning we are loading the authentication, e.g. from cookie)
-    (!isAuthenticated && pathname !== ROUTES.LOGIN) ||
-    // LD client is not yet loaded
-    !ldClient ||
-    // We have a redirection coming in
-    shouldRedirect
+    (!isAuthenticated && pathname !== ROUTES.LOGIN)
   ) {
     return <PageSpinner />
   }
@@ -215,7 +198,7 @@ export const AuthenticatedLayout = (props: Props) => {
         <SidebarLogo />
         <Menu
           mode="inline"
-          items={filterItems(items, permissions, flags)}
+          items={filterItems(items, permissions)}
           onClick={({ key }) => push(key)}
           selectedKeys={activeMenuKeys}
           defaultOpenKeys={activeMenuKeys}
