@@ -10,7 +10,6 @@ import { NextComponentType, NextPageContext } from 'next'
 import { AuthenticatedLayout } from 'components/common/AuthenticatedLayout'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import { SEO } from 'components/common/SEO'
-import { withLDProvider } from 'launchdarkly-react-client-sdk'
 import ErrorBoundary from 'components/common/ErrorBoundary'
 
 require('../styles/ant-custom.less')
@@ -41,7 +40,4 @@ const MyApp = ({
   )
 }
 
-export default withLDProvider({
-  clientSideID: process.env.LD_CLIENT_ID || '',
-  // @ts-ignore
-})(MyApp)
+export default MyApp
