@@ -60,6 +60,7 @@ export const AsyncSelect = (props: Props) => {
       // Do not show value when it's loading
       value={loading ? undefined : value}
       id={componentId}
+      allowClear
       {...rest}
     >
       {typeof customOptionRenderer === 'function' &&

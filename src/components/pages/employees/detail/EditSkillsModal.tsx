@@ -121,7 +121,6 @@ export const EditSkillsModal = (props: Props) => {
 
                   setSelectedChapters(newSelectedChapters)
                 }}
-                allowClear
               />
             </Form.Item>
           </Col>

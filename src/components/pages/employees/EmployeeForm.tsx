@@ -1,23 +1,25 @@
 import { Form, Row, Col, Input, Button, notification, Select } from 'antd'
 import { FormWrapper } from 'components/common/FormWrapper'
 import { AsyncSelect } from 'components/common/Select'
+import { renderEmployeeOption } from 'components/common/Select/renderers/employeeOption'
 import { renderStatusOption } from 'components/common/Select/renderers/statusOption'
 import { ROUTES } from 'constants/routes'
 import { employeeStatuses } from 'constants/status'
 import { client, GET_PATHS } from 'libs/apis'
 import { useRouter } from 'next/router'
-import { CreateEmployeeFormValues } from 'pages/employees/new'
 import { useState, useEffect } from 'react'
 import { theme } from 'styles'
+import { fullListPagination } from 'types/filters/Pagination'
 import { RequestCreateEmployeeInput } from 'types/schema'
 import {
   searchFilterOption,
+  transformEmployeeDataToSelectOption,
   transformMetadataToSelectOption,
 } from 'utils/select'
 import { getErrorMessage } from 'utils/string'
 
 interface Props {
-  initialValues?: CreateEmployeeFormValues
+  initialValues?: RequestCreateEmployeeInput
   isEditing?: boolean
 }
 
@@ -80,6 +82,7 @@ export const EmployeeForm = (props: Props) => {
       seniorityID: values.seniorityID,
       status: values.status,
       teamEmail: values.teamEmail,
+      referredBy: values.referredBy,
     }
   }
 
@@ -274,6 +277,21 @@ export const EmployeeForm = (props: Props) => {
                 }}
                 swrKeys={GET_PATHS.getAccountRoleMetadata}
                 placeholder="Select account role"
+              />
+            </Form.Item>
+          </Col>
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item label="Referred By" name="referredBy">
+              <AsyncSelect
+                optionGetter={async () => {
+                  const { data } = await client.getEmployees({
+                    ...fullListPagination,
+                  })
+                  return data?.map(transformEmployeeDataToSelectOption) || []
+                }}
+                swrKeys={GET_PATHS.getEmployees}
+                placeholder="Select referrer"
+                customOptionRenderer={renderEmployeeOption}
               />
             </Form.Item>
           </Col>

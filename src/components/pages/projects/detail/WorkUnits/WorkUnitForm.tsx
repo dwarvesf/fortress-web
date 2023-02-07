@@ -79,7 +79,6 @@ export const WorkUnitForm = (props: Props) => {
               swrKeys={[GET_PATHS.getEmployees, projectID as string]}
               placeholder="Select work unit's members"
               customOptionRenderer={renderEmployeeOption}
-              allowClear
             />
           </Form.Item>
         </Col>

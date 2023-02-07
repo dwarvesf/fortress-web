@@ -348,6 +348,14 @@ export const General = (props: Props) => {
                           Permission.EMPLOYEES_READ_GENERALINFO_FULLACCESS,
                       },
                       {
+                        label: 'Referred By',
+                        value: data?.referredBy ? (
+                          <UserAvatar user={data.referredBy} />
+                        ) : (
+                          '-'
+                        ),
+                      },
+                      {
                         label: 'Organizations',
                         value: (data.organizations || []).length ? (
                           <Space direction="vertical">
@@ -627,6 +635,7 @@ export const General = (props: Props) => {
           linkedInName: data.linkedInName || '',
           joinedDate: data.joinedDate ? moment(data.joinedDate) : undefined,
           leftDate: data.leftDate ? moment(data.leftDate) : undefined,
+          referredBy: data.referredBy?.id || '',
           organizationIDs: (data.organizations || []).map((d) => d.id || ''),
         }}
         onAfterSubmit={mutateEmployee}
