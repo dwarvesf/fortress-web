@@ -151,7 +151,6 @@ export const EditGeneralInfoModal = (props: Props) => {
               />
             </Form.Item>
           </Col>
-
           <Col span={24} md={{ span: 12 }}>
             <Form.Item
               label="Display Name"
@@ -171,7 +170,6 @@ export const EditGeneralInfoModal = (props: Props) => {
               />
             </Form.Item>
           </Col>
-
           <Col span={24} md={{ span: 12 }}>
             <Form.Item
               label="Team Email"
@@ -188,7 +186,6 @@ export const EditGeneralInfoModal = (props: Props) => {
               />
             </Form.Item>
           </Col>
-
           <Col span={24} md={{ span: 12 }}>
             <Form.Item
               label="Phone Number"
@@ -210,7 +207,6 @@ export const EditGeneralInfoModal = (props: Props) => {
               />
             </Form.Item>
           </Col>
-
           <Col span={24} md={{ span: 12 }}>
             <Form.Item label="Line Manager" name="lineManagerID">
               <AsyncSelect
@@ -223,11 +219,9 @@ export const EditGeneralInfoModal = (props: Props) => {
                 swrKeys={GET_PATHS.getEmployees}
                 placeholder="Select line manager"
                 customOptionRenderer={renderEmployeeOption}
-                allowClear
               />
             </Form.Item>
           </Col>
-
           <Col span={24} md={{ span: 12 }}>
             <Form.Item label="Discord" name="discordName">
               <Input placeholder="johndoe#xxxx" className="bordered" />
@@ -268,7 +262,21 @@ export const EditGeneralInfoModal = (props: Props) => {
               />
             </Form.Item>
           </Col>
-
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item label="Referred By" name="referredBy">
+              <AsyncSelect
+                optionGetter={async () => {
+                  const { data } = await client.getEmployees({
+                    ...fullListPagination,
+                  })
+                  return data?.map(transformEmployeeDataToSelectOption) || []
+                }}
+                swrKeys={GET_PATHS.getEmployees}
+                placeholder="Select referrer"
+                customOptionRenderer={renderEmployeeOption}
+              />
+            </Form.Item>
+          </Col>
           <Col span={24} md={{ span: 12 }}>
             <Form.Item
               label="Organizations"

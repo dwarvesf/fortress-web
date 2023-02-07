@@ -116,7 +116,6 @@ export const EditProjectGeneralInfoModal = (props: Props) => {
                   transformMetadataToSelectOption,
                 )
               }
-              allowClear
             />
           </Form.Item>
           <Form.Item
