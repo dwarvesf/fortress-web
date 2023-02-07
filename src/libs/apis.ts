@@ -58,6 +58,8 @@ import {
   ViewUnreadFeedbackCountResponse,
   ViewOrganizationsResponse,
   ViewResourceAvailabilityResponse,
+  ViewGetEngagementDashboardResponse,
+  ViewGetEngagementDashboardDetailResponse,
 } from 'types/schema'
 import { EmployeeListFilter } from 'types/filters/EmployeeListFilter'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
@@ -110,6 +112,8 @@ export const GET_PATHS = {
   getProjectsSummary: '/dashboards/projects/summary',
   getProjectsActionItemSquash: '/dashboards/projects/action-item-squash',
   getResourceAvailability: '/dashboards/resources/availabilities',
+  getDashboardsEngagementInfo: '/dashboards/engagement/info',
+  getDashboardsEngagementDetail: '/dashboards/engagement/detail',
 }
 export interface Meta {
   page?: number
@@ -885,6 +889,26 @@ class Client {
   public getResourceAvailability() {
     return fetcher<ViewResourceAvailabilityResponse>(
       `${BASE_URL}/dashboards/resources/availabilities`,
+      {
+        headers: { ...this.privateHeaders },
+      },
+    )
+  }
+
+  public getDashboardsEngagementInfo() {
+    return fetcher<ViewGetEngagementDashboardResponse>(
+      `${BASE_URL}/dashboards/engagement/info`,
+      {
+        headers: { ...this.privateHeaders },
+      },
+    )
+  }
+
+  public getDashboardsEngagementDetail(filter: string, startDate: string) {
+    const queryString = qs.stringify({ filter, startDate })
+
+    return fetcher<ViewGetEngagementDashboardDetailResponse>(
+      `${BASE_URL}/dashboards/engagement/detail?${queryString}`,
       {
         headers: { ...this.privateHeaders },
       },

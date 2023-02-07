@@ -1,14 +1,13 @@
 import { Card } from 'antd'
 import { LineChart } from 'components/common/LineChart'
-import { EngagementAverageProps } from 'pages/dashboard'
-import { Dispatch, SetStateAction } from 'react'
 import { CartesianAxisProps, TooltipProps } from 'recharts'
 import { theme } from 'styles'
+import { ViewEngagementDashboard } from 'types/schema'
 
 interface Props {
-  data: EngagementAverageProps
+  data: ViewEngagementDashboard
   currentQuarter: string
-  setCurrentQuarter: Dispatch<SetStateAction<string>>
+  setCurrentQuarter: (currentQuarter: string) => void
 }
 
 const CustomAxisTick = ({
@@ -20,7 +19,7 @@ const CustomAxisTick = ({
 }: CartesianAxisProps & {
   payload?: any // TODO: update type
   currentQuarter: string
-  setCurrentQuarter: Dispatch<SetStateAction<string>>
+  setCurrentQuarter: (currentQuarter: string) => void
 }) => {
   return (
     <g
@@ -63,7 +62,7 @@ const CustomTooltip = ({ active, payload, label }: TooltipProps<any, any>) => {
             <div key={item.dataKey}>
               <span>Average: </span>
               <strong style={{ color: theme.colors.primary }}>
-                {item.value}
+                {Number(item.value || 0).toFixed(1)}
               </strong>
             </div>
           ))}
@@ -83,15 +82,15 @@ export const EngagementAverageChart = (props: Props) => {
       width="100%"
       height={230}
       minWidth={320}
-      dataset={(data.dataset || []).slice(-4)}
-      lineDataKeys={['average']}
-      xAxisDataKey="name"
-      xAxisTick={
-        <CustomAxisTick
-          currentQuarter={currentQuarter}
-          setCurrentQuarter={setCurrentQuarter}
-        />
-      }
+      dataset={(data.stats || []).sort(
+        (a, b) =>
+          new Date(a.startDate || 0).getTime() -
+          new Date(b.startDate || 0).getTime(),
+      )}
+      lineDataKeys={['point']}
+      xAxisDataKey="title"
+      xAxisTick={<CustomAxisTick {...{ currentQuarter, setCurrentQuarter }} />}
+      yAxisProps={{ width: 30 }}
       customToolTip={<CustomTooltip />}
     />
   )

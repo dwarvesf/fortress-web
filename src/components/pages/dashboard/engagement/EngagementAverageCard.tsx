@@ -1,23 +1,26 @@
 import { Card, Col, Divider, Row, Space } from 'antd'
-import { EngagementAverageProps } from 'pages/dashboard'
-import { CSSProperties, Dispatch, SetStateAction, useMemo } from 'react'
+import { CSSProperties, useMemo } from 'react'
 import styled from 'styled-components'
 import { theme } from 'styles'
+import {
+  ViewEngagementDashboard,
+  ViewEngagementDashboardDetail,
+} from 'types/schema'
 import { capitalizeFirstLetter } from 'utils/string'
 import { StatisticBlock } from '../StatisticBlock'
 import { EngagementAverageChart } from './EngagementAverageChart'
 
 interface Props {
-  data: EngagementAverageProps
+  data: ViewEngagementDashboard
+  detail?: ViewEngagementDashboardDetail
   currentQuarter: string
-  setCurrentQuarter: Dispatch<SetStateAction<string>>
+  setCurrentQuarter: (currentQuarter: string) => void
   filterCategory: string
   style?: CSSProperties
 }
 
 const CardLabel = styled.div`
   font-size: 15px;
-  margin-bottom: 8px;
 `
 
 const EngagementFeedbacksRow = ({
@@ -48,6 +51,7 @@ const EngagementFeedbacksRow = ({
 export const EngagementAverageCard = (props: Props) => {
   const {
     data,
+    detail,
     style,
     currentQuarter,
     setCurrentQuarter,
@@ -56,14 +60,14 @@ export const EngagementAverageCard = (props: Props) => {
   } = props
 
   const currentQuarterData = useMemo(() => {
-    const currentData = data.dataset?.find((d) => d.name === currentQuarter)
+    const currentData = data.stats?.find((d) => d.title === currentQuarter)
 
     return currentData
   }, [currentQuarter, data])
 
   return (
     <Card
-      style={{ width: '30%', flexGrow: 1, ...style }}
+      style={{ height: '100%', ...style }}
       {...rest}
       bodyStyle={{
         height: '100%',
@@ -79,11 +83,11 @@ export const EngagementAverageCard = (props: Props) => {
           gap: 12,
         }}
       >
-        <strong>{data?.question || '-'}</strong>
+        <strong>{data.content || '-'}</strong>
 
         <Space direction="vertical" size={12}>
           <StatisticBlock
-            stat={Number(currentQuarterData?.average?.toFixed(1) || 0)}
+            stat={Number(currentQuarterData?.point?.toFixed(1) || 0)}
             postfix="/5"
           />
 
@@ -97,8 +101,7 @@ export const EngagementAverageCard = (props: Props) => {
           >
             <EngagementAverageChart
               data={data}
-              currentQuarter={currentQuarter}
-              setCurrentQuarter={setCurrentQuarter}
+              {...{ currentQuarter, setCurrentQuarter }}
             />
           </div>
 
@@ -107,20 +110,12 @@ export const EngagementAverageCard = (props: Props) => {
             <strong>{capitalizeFirstLetter(filterCategory)}</strong>
           </CardLabel>
           <EngagementFeedbacksRow
-            data={[
-              {
-                label: 'Design',
-                value: currentQuarterData?.feedbacks?.design || 0,
-              },
-              {
-                label: 'Operation',
-                value: currentQuarterData?.feedbacks?.operation || 0,
-              },
-              {
-                label: 'Engineering',
-                value: currentQuarterData?.feedbacks?.engineering || 0,
-              },
-            ]}
+            data={
+              detail?.stats?.map((each) => ({
+                label: each.field || '-',
+                value: each.point || 0,
+              })) || []
+            }
           />
         </Space>
       </div>
