@@ -5,18 +5,6 @@ import { SEO } from 'components/common/SEO'
 import { EmployeeForm } from 'components/pages/employees/EmployeeForm'
 import { ROUTES } from 'constants/routes'
 
-export class CreateEmployeeFormValues {
-  fullName?: string
-  displayName?: string
-  status?: string
-  teamEmail?: string
-  personalEmail?: string
-  positions?: string[]
-  seniorityID?: string
-  salary?: number
-  roleID?: string
-}
-
 const CreateEmployeePage = () => {
   return (
     <>

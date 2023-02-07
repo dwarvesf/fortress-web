@@ -110,7 +110,6 @@ export const EditProjectContactInfoModal = (props: Props) => {
               swrKeys={GET_PATHS.getEmployees}
               optionGetter={employeeOptionGetter}
               customOptionRenderer={renderEmployeeOption}
-              allowClear
             />
           </Form.Item>
         </Space>

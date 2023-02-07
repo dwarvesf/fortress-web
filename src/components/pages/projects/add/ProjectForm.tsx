@@ -119,7 +119,6 @@ export const ProjectForm = (props: Props) => {
               swrKeys={GET_PATHS.getEmployees}
               placeholder="Select delivery manager"
               customOptionRenderer={renderEmployeeOption}
-              allowClear
             />
           </Form.Item>
         </Col>
