@@ -60,6 +60,7 @@ import {
   ViewResourceAvailabilityResponse,
   ViewGetEngagementDashboardResponse,
   ViewGetEngagementDashboardDetailResponse,
+  ViewGetDashboardResourceUtilizationResponse,
 } from 'types/schema'
 import { EmployeeListFilter } from 'types/filters/EmployeeListFilter'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
@@ -114,6 +115,7 @@ export const GET_PATHS = {
   getResourceAvailability: '/dashboards/resources/availabilities',
   getDashboardsEngagementInfo: '/dashboards/engagement/info',
   getDashboardsEngagementDetail: '/dashboards/engagement/detail',
+  getResourceUtilization: 'dashboards/resources/utilization',
 }
 export interface Meta {
   page?: number
@@ -909,6 +911,15 @@ class Client {
 
     return fetcher<ViewGetEngagementDashboardDetailResponse>(
       `${BASE_URL}/dashboards/engagement/detail?${queryString}`,
+      {
+        headers: { ...this.privateHeaders },
+      },
+    )
+  }
+
+  public getResourceUtilization() {
+    return fetcher<ViewGetDashboardResourceUtilizationResponse>(
+      `${BASE_URL}/dashboards/resources/utilization`,
       {
         headers: { ...this.privateHeaders },
       },
