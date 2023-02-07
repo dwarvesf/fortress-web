@@ -108,7 +108,7 @@ const CustomTick = ({
 }
 
 const CustomShape = ({ tooltipPayload, tooltipPosition, ...props }: any) => {
-  return <rect {...props} opacity={props.index === 3 ? 1 : 0.8} />
+  return <rect {...props} opacity={props.index === 3 ? 1 : 0.7} />
 }
 
 export const UtilizationChart = () => {
