@@ -9,6 +9,8 @@ import {
   Line,
   LineChart as Chart,
   Legend,
+  XAxisProps,
+  YAxisProps,
 } from 'recharts'
 import { CategoricalChartProps } from 'recharts/types/chart/generateCategoricalChart'
 import { AxisDomain, DataKey } from 'recharts/types/util/types'
@@ -19,10 +21,12 @@ interface AxisProps {
   xAxisTick?: ReactElement
   xAxisDomain?: AxisDomain
   xAxisStyle?: CSSProperties
+  xAxisProps?: XAxisProps
   yAxisDataKey?: string
   yAxisTicks?: (string | number)[]
   yAxisDomain?: AxisDomain
   yAxisStyle?: CSSProperties
+  yAxisProps?: YAxisProps
 }
 
 interface Props
@@ -53,10 +57,12 @@ export const LineChart = (props: Props) => {
     xAxisTick,
     xAxisDomain = [''],
     xAxisStyle,
+    xAxisProps,
     yAxisDataKey,
     yAxisTicks = [0, 1, 2, 3, 4, 5],
     yAxisDomain = [0, 5],
     yAxisStyle,
+    yAxisProps,
     customToolTip,
     hasLegend = false,
     customLegendRenderer,
@@ -88,6 +94,7 @@ export const LineChart = (props: Props) => {
           height={30}
           domain={xAxisDomain}
           style={xAxisStyle}
+          {...xAxisProps}
         />
         <YAxis
           dataKey={yAxisDataKey}
@@ -98,6 +105,7 @@ export const LineChart = (props: Props) => {
           fontSize={13}
           width={26}
           style={yAxisStyle}
+          {...yAxisProps}
         />
         {hasLegend && (
           <Legend verticalAlign="top" content={customLegendRenderer} />
