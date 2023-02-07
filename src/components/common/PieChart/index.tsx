@@ -67,7 +67,7 @@ const renderCustomizedLabel = ({
         stroke="none"
       />
       <text
-        x={endX >= Number(cx) ? endX + 3.0 : endX - 3.0}
+        x={endX >= Number(cx) ? endX + 5.0 : endX - 5.0}
         y={endY - 3.75}
         textAnchor={endX >= Number(cx) ? 'start' : 'end'}
         fill={theme.colors.gray700}
@@ -80,7 +80,7 @@ const renderCustomizedLabel = ({
         <tspan>{name.length > 10 ? `${name.slice(0, 8)}...` : name}</tspan>
       </text>
       <text
-        x={endX >= Number(cx) ? endX + 3.0 : endX - 3.0}
+        x={endX >= Number(cx) ? endX + 5.0 : endX - 5.0}
         y={endY + 9.5}
         textAnchor={endX >= Number(cx) ? 'start' : 'end'}
         fill={theme.colors.gray500}
