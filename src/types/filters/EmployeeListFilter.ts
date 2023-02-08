@@ -14,6 +14,7 @@ export class EmployeeListFilter
   stacks?
   workingStatuses?
   lineManagers?
+  organizations?
 
   constructor({
     keyword = '',
@@ -24,6 +25,7 @@ export class EmployeeListFilter
     stacks = null,
     workingStatuses = null,
     lineManagers = null,
+    organizations = null,
   }: Nullable<RequestGetListEmployeeInput> = {}) {
     super()
     this.keyword = keyword
@@ -34,5 +36,6 @@ export class EmployeeListFilter
     this.stacks = stacks
     this.workingStatuses = workingStatuses
     this.lineManagers = lineManagers
+    this.organizations = organizations
   }
 }

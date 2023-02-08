@@ -124,7 +124,7 @@ const Projects = () => {
   return (
     <>
       <Row gutter={[16, 16]}>
-        <Col span={24} xl={{ span: 10 }}>
+        <Col span={24} xl={{ span: 8 }}>
           <ProjectSizeCard
             data={projectsSizesData || {}}
             selectedProjectId={selectedProjectId}
@@ -132,7 +132,7 @@ const Projects = () => {
             isLoading={isProjectsSizesLoading}
           />
         </Col>
-        <Col span={24} xl={{ span: 14 }}>
+        <Col span={24} xl={{ span: 16 }}>
           <WorkStatusSummaryCard
             data={projectsSummaryData?.data || {}}
             isLoading={isProjectsSummaryLoading}

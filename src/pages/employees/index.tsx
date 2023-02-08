@@ -3,7 +3,11 @@ import { ROUTES } from 'constants/routes'
 import { PageHeader } from 'components/common/PageHeader'
 import Table, { ColumnType } from 'antd/lib/table'
 import Link from 'next/link'
-import { UserAvatar } from 'components/common/AvatarWithName'
+import {
+  AvatarWithName,
+  ProjectAvatar,
+  UserAvatar,
+} from 'components/common/AvatarWithName'
 import { Button } from 'components/common/Button'
 import { EmployeeListFilter } from 'types/filters/EmployeeListFilter'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
@@ -14,6 +18,7 @@ import {
   ViewChapter,
   ViewEmployeeData,
   ViewEmployeeProjectData,
+  ViewOrganization,
   ViewPosition,
   ViewStack,
 } from 'types/schema'
@@ -46,10 +51,6 @@ const Default = () => {
   const canFilterStatus = permissions.includes(
     Permission.EMPLOYEES_READ_FILTERBYALLSTATUSES,
   )
-  const canFilterProject = permissions.includes(
-    Permission.EMPLOYEES_READ_FILTERBYPROJECT,
-  )
-
   const [value, setValue] = useState((query.keyword || '') as string)
   const { filter, setFilter } = useFilter(
     new EmployeeListFilter({
@@ -57,6 +58,9 @@ const Default = () => {
       workingStatuses: Object.values(EmployeeStatus).filter(
         (status) => status !== EmployeeStatus.LEFT,
       ),
+      // Only show DF employees by default
+      // FIXME: Should not hardcode. Maybe need BE to provide this somewhere?
+      organizations: ['dwarves-foundation'],
     }),
     {
       shouldUpdateToQuery: true,
@@ -105,6 +109,12 @@ const Default = () => {
   )
   // eslint-disable-next-line
   const lineManagers = lineManagersData?.data || []
+  const { data: organizationsData } = useFetchWithCache(
+    [GET_PATHS.getOrganizationMetadata],
+    () => client.getOrganizationMetadata(),
+  )
+  // eslint-disable-next-line
+  const organizations = organizationsData?.data || []
 
   const columns = useMemo(() => {
     const finalColumns: (ColumnType<ViewEmployeeData> & {
@@ -138,6 +148,34 @@ const Default = () => {
           }),
       },
       {
+        title: 'Organizations',
+        key: 'organizations',
+        dataIndex: 'organizations',
+        render: (value?: ViewOrganization[]) => (
+          <TagArray
+            value={value}
+            maxTag={2}
+            color="red"
+            // eslint-disable-next-line
+            content={(organization) => (
+              <AvatarWithName
+                avatarSize={20}
+                avatar={organization.avatar}
+                name={organization.name}
+                style={{ marginLeft: -7 }}
+              />
+            )}
+          />
+        ),
+        filterSearch: true,
+        filteredValue: filter.organizations,
+        filters: organizations.map((each) => ({
+          text: each.name,
+          value: each.code!,
+        })),
+        permission: Permission.EMPLOYEES_READ_GENERALINFO_FULLACCESS,
+      },
+      {
         title: 'Positions',
         key: 'positions',
         dataIndex: 'positions',
@@ -166,32 +204,27 @@ const Default = () => {
             value={value}
             // eslint-disable-next-line
             content={(project) => (
-              <Link href={ROUTES.PROJECT_DETAIL(project.code || '')}>
-                <a>
-                  <Space size={4}>
-                    {project.name}
-                    <Icon icon="icon-park-outline:link" />
-                  </Space>
-                </a>
-              </Link>
+              <ProjectAvatar
+                avatarSize={20}
+                project={project}
+                style={{ marginLeft: -7 }}
+              />
             )}
             maxTag={2}
           />
         ),
         filterSearch: true,
         filteredValue: filter.projects,
-        filters: !canFilterProject
-          ? undefined
-          : [
-              {
-                text: '-',
-                value: '-',
-              },
-              ...projects.map((each) => ({
-                text: each.name,
-                value: each.code!,
-              })),
-            ],
+        filters: [
+          {
+            text: '-',
+            value: '-',
+          },
+          ...projects.map((each) => ({
+            text: each.name,
+            value: each.code!,
+          })),
+        ],
       },
       {
         title: 'Stacks',
@@ -366,7 +399,6 @@ const Default = () => {
     )
   }, [
     canFilterStatus,
-    canFilterProject,
     filter,
     positions,
     projects,
@@ -374,6 +406,7 @@ const Default = () => {
     chapters,
     seniorities,
     lineManagers,
+    organizations,
     permissions,
   ])
 

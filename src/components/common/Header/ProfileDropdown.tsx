@@ -38,13 +38,17 @@ export const ProfileDropdown = () => {
       <Avatar
         size={28}
         icon={
-          <Image
-            src={user?.avatar}
-            preview={false}
-            height="100%"
-            width="100%"
-            style={{ objectFit: 'cover' }}
-          />
+          user?.avatar ? (
+            <Image
+              src={user?.avatar}
+              preview={false}
+              height="100%"
+              width="100%"
+              style={{ objectFit: 'cover' }}
+            />
+          ) : (
+            user?.displayName?.slice(0, 1)
+          )
         }
       />
     </Dropdown>
