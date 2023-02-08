@@ -10,6 +10,7 @@ interface Props {
   postfix?: ReactElement | string
   postfixColor?: string
   isLoading?: boolean
+  formatStat?: (stat?: number | string) => string
 }
 
 export const StatisticBlock = (props: Props) => {
@@ -23,6 +24,7 @@ export const StatisticBlock = (props: Props) => {
         theme.colors.gray700,
     postfixColor,
     isLoading = false,
+    formatStat,
   } = props
 
   return (
@@ -46,7 +48,7 @@ export const StatisticBlock = (props: Props) => {
               lineHeight: 0.85,
             }}
           >
-            {stat || '-'}
+            {(formatStat ? formatStat(stat) : stat) || '-'}
           </span>
 
           {postfix && (

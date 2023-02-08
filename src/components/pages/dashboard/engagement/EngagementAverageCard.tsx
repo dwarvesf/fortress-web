@@ -26,7 +26,7 @@ const CardLabel = styled.div`
 const EngagementFeedbacksRow = ({
   data,
 }: {
-  data: { label: string; value: number }[]
+  data: { label: string; value: string }[]
 }) => {
   return (
     <Space
@@ -87,7 +87,8 @@ export const EngagementAverageCard = (props: Props) => {
 
         <Space direction="vertical" size={12}>
           <StatisticBlock
-            stat={Number(currentQuarterData?.point?.toFixed(1) || 0)}
+            stat={currentQuarterData?.point || 0}
+            formatStat={(value) => (value ? Number(value).toFixed(1) : '-')}
             postfix="/5"
           />
 
@@ -113,7 +114,7 @@ export const EngagementAverageCard = (props: Props) => {
             data={
               detail?.stats?.map((each) => ({
                 label: each.field || '-',
-                value: each.point || 0,
+                value: Number(each.point || 0).toFixed(1),
               })) || []
             }
           />
