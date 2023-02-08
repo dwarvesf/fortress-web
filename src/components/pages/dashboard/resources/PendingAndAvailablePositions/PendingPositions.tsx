@@ -10,20 +10,23 @@ import {
   ViewSeniority,
 } from 'types/schema'
 import { DeploymentType, deploymentTypes } from 'constants/deploymentTypes'
+import { TagArray } from 'components/common/TagArray'
 
 const columns: ColumnsType<ViewAvailableSlot> = [
   {
     title: 'Position',
     dataIndex: 'positions',
     key: 'positions',
-    render: (value?: ViewPosition[]) =>
-      value?.map((each) => each.name).join(', ') || '-',
+    render: (value?: ViewPosition[]) => (
+      <TagArray value={value || []} maxTag={2} color="blue" />
+    ),
     fixed: 'left',
   },
   {
     title: 'Seniority',
     dataIndex: 'seniority',
     key: 'seniority',
+    width: 100,
     render: (value?: ViewSeniority) => value?.name || '-',
   },
   {
@@ -37,12 +40,14 @@ const columns: ColumnsType<ViewAvailableSlot> = [
     title: 'Type',
     dataIndex: 'type',
     key: 'type',
+    width: 100,
     render: (value: DeploymentType) => deploymentTypes[value],
   },
   {
     title: 'Created at',
     dataIndex: 'createdAt',
     key: 'createdAt',
+    width: 115,
     render: (value?: string) => (value ? format(value, DATE_FORMAT) : '-'),
   },
 ]
