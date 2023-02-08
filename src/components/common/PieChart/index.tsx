@@ -39,23 +39,32 @@ const renderCustomizedLabel = ({
   cy,
   name,
   midAngle,
-  outerRadius,
+  outerRadius: baseOuterRadius,
   payload,
+  percent,
 }: PieLabelRenderProps) => {
+  let outerRadius
+
+  if (percent! < 0.2) {
+    outerRadius = Number(baseOuterRadius) + 5.0
+  } else {
+    outerRadius = Number(baseOuterRadius)
+  }
+
   const sin = Math.sin(-Number(midAngle) * RADIAN)
   const cos = Math.cos(-Number(midAngle) * RADIAN)
-  const startX = Number(cx) + (Number(outerRadius) - 1.5) * cos
-  const startY = Number(cy) + (Number(outerRadius) - 1.5) * sin
+  const startX = Number(cx) + (Number(baseOuterRadius) - 1.5) * cos
+  const startY = Number(cy) + (Number(baseOuterRadius) - 1.5) * sin
   const middleX = Number(cx) + (Number(outerRadius) - 1.5 + 10) * cos
   const middleY = Number(cy) + (Number(outerRadius) - 1.5 + 12) * sin
-  const endX = middleX + (cos >= 0 ? 0.8 : -0.8) * 10
+  const endX = middleX + (cos >= 0 ? 1.1 : -1.1) * 10
   const endY = middleY
 
-  return (
+  return percent! >= 0.1 ? (
     <g>
       <path
         d={`M${startX},${startY}L${middleX},${middleY}L${endX},${endY}`}
-        stroke={theme.colors.gray600}
+        stroke={theme.colors.gray500}
         strokeWidth={1.25}
         fill="none"
       />
@@ -63,12 +72,12 @@ const renderCustomizedLabel = ({
         cx={endX}
         cy={endY}
         r={2.5}
-        fill={theme.colors.gray600}
+        fill={theme.colors.gray500}
         stroke="none"
       />
       <text
         x={endX >= Number(cx) ? endX + 5.0 : endX - 5.0}
-        y={endY - 3.75}
+        y={endY - 2.75}
         textAnchor={endX >= Number(cx) ? 'start' : 'end'}
         fill={theme.colors.gray700}
         style={{
@@ -77,7 +86,7 @@ const renderCustomizedLabel = ({
           whiteSpace: 'pre-line',
         }}
       >
-        <tspan>{name.length > 10 ? `${name.slice(0, 8)}...` : name}</tspan>
+        <tspan>{name.length > 12 ? `${name.slice(0, 10)}...` : name}</tspan>
       </text>
       <text
         x={endX >= Number(cx) ? endX + 5.0 : endX - 5.0}
@@ -92,7 +101,7 @@ const renderCustomizedLabel = ({
         size: {payload.payload.size}
       </text>
     </g>
-  )
+  ) : null
 }
 
 const getPieSectorFillColor = (
@@ -137,8 +146,8 @@ export const PieChart = (props: Props) => {
           cx="50%"
           cy="50%"
           label={customLabelRenderer || renderCustomizedLabel}
-          innerRadius={60}
-          outerRadius={108}
+          innerRadius={65}
+          outerRadius={110}
           dataKey={pieDataKey}
           startAngle={90}
           endAngle={-270}
