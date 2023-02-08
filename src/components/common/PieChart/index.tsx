@@ -46,9 +46,9 @@ const renderCustomizedLabel = ({
   let outerRadius
 
   if (percent! < 0.2) {
-    outerRadius = Number(baseOuterRadius) + 10.0
+    outerRadius = Number(baseOuterRadius) + 5.0
   } else {
-    outerRadius = Number(baseOuterRadius) + 0.0
+    outerRadius = Number(baseOuterRadius)
   }
 
   const sin = Math.sin(-Number(midAngle) * RADIAN)
