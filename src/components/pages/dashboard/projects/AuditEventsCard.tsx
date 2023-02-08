@@ -1,6 +1,6 @@
 import { Icon } from '@iconify/react'
 import { Card, Col, Row, Spin } from 'antd'
-import { chartTrendColors } from 'constants/colors'
+import { chartActionItemsColors } from 'constants/colors'
 import { useMemo, useCallback } from 'react'
 import {
   ResponsiveContainer,
@@ -16,7 +16,10 @@ import {
 } from 'recharts'
 import { theme } from 'styles'
 import { ViewActionItemTrend, ViewAuditActionItemReport } from 'types/schema'
-import { getTrendByPercentage, getTrendStatusColor } from 'utils/score'
+import {
+  getTrendByPercentage,
+  getActionItemsTrendStatusColor,
+} from 'utils/score'
 import { capitalizeFirstLetter } from 'utils/string'
 
 interface Props {
@@ -129,7 +132,7 @@ export const AuditEventsCard = (props: Props) => {
                   fontSize: 13,
                   display: 'flex',
                   alignItems: 'center',
-                  width: 120,
+                  width: 150,
                 }}
               >
                 <Icon
@@ -146,7 +149,7 @@ export const AuditEventsCard = (props: Props) => {
                 {dataset !== null && dataset.length > 1 ? (
                   <span
                     style={{
-                      color: getTrendStatusColor(
+                      color: getActionItemsTrendStatusColor(
                         (dataset[dataset.length - 1].trend || {})[
                           payload[index].dataKey as keyof ViewActionItemTrend
                         ] || 0,
@@ -222,15 +225,17 @@ export const AuditEventsCard = (props: Props) => {
                   dataset[dataset.length - 1].trend || {},
                 ) as string[])
               : []
-            ).map((key, i) => (
-              <Bar
-                key={key}
-                dataKey={key}
-                stackId="a"
-                fill={Object.values(chartTrendColors)[i]}
-                maxBarSize={40}
-              />
-            ))}
+            )
+              .reverse()
+              .map((key, i) => (
+                <Bar
+                  key={key}
+                  dataKey={key}
+                  stackId="a"
+                  fill={Object.values(chartActionItemsColors)[i]}
+                  maxBarSize={40}
+                />
+              ))}
           </BarChart>
         </ResponsiveContainer>
       </div>
@@ -239,7 +244,7 @@ export const AuditEventsCard = (props: Props) => {
 
   return (
     <Card
-      title="Action Items"
+      title="Audit Events"
       bodyStyle={{
         display: 'flex',
         flexDirection: 'column',

@@ -1,6 +1,7 @@
 import { Card, Space, Spin } from 'antd'
 import { DomainTypes } from 'constants/feedbackTypes'
 import { useMemo } from 'react'
+import { theme } from 'styles'
 import { ViewWorkSurveysData } from 'types/schema'
 import { getTrendByPercentage, getTrendScoreColor } from 'utils/score'
 import { capitalizeFirstLetter } from 'utils/string'
@@ -35,13 +36,14 @@ export const WorkSurveyDomainCard = (props: Props) => {
     }
 
     if (dataset.length === 0) {
-      return <StatisticBlock />
+      return <StatisticBlock statColor={theme.colors.gray700} />
     }
 
     if (dataset.length === 1) {
       return (
         <StatisticBlock
           stat={(dataset[dataset.length - 1][domain] || 0).toFixed(1)}
+          statColor={theme.colors.gray700}
         />
       )
     }
@@ -50,6 +52,7 @@ export const WorkSurveyDomainCard = (props: Props) => {
       return (
         <StatisticBlock
           stat={(dataset[dataset.length - 1][domain] || 0).toFixed(1)}
+          statColor={theme.colors.gray700}
           postfix={getTrendByPercentage(
             dataset[dataset.length - 1].trend![domain] || 0,
           )}

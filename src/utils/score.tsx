@@ -67,6 +67,16 @@ export const getActionItemsTrendStatusColor = (trend: number) => {
   return chartColors.gray
 }
 
+export const getActionItemsTrendStatusColor = (trend: number) => {
+  if (trend > 0) {
+    return '#ff4d4f'
+  }
+  if (trend < 0) {
+    return '#1aae9f'
+  }
+  return '#788896'
+}
+
 // threshold to select color based on the interval ranging from the
 // last score and the latest one
 const trendColorThresholds: Record<

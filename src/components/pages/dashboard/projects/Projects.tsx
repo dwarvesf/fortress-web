@@ -5,6 +5,7 @@ import { getTrendByPercentage, getTrendStatusColor } from 'utils/score'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { GET_PATHS, client } from 'libs/apis'
 import { ViewAudit, ViewEngineeringHealth } from 'types/schema'
+import { theme } from 'styles'
 import { StatisticBlock } from '../StatisticBlock'
 import { CardWithTabs } from './CardWithTabs'
 import { AverageDatasetChart } from './AverageDatasetChart'
@@ -22,12 +23,13 @@ const averageDatasetRenderer = (
 
   const statisticBlockRenderer = () => {
     if (datasetArray.length === 0) {
-      return <StatisticBlock />
+      return <StatisticBlock statColor={theme.colors.gray700} />
     }
     if (datasetArray.length === 1) {
       return (
         <StatisticBlock
           stat={(datasetArray[datasetArray.length - 1].avg || 0).toFixed(1)}
+          statColor={theme.colors.gray700}
         />
       )
     }
@@ -35,6 +37,7 @@ const averageDatasetRenderer = (
       return (
         <StatisticBlock
           stat={(datasetArray[datasetArray.length - 1].avg || 0).toFixed(1)}
+          statColor={theme.colors.gray700}
           postfix={getTrendByPercentage(
             datasetArray[datasetArray.length - 1].trend || 0,
           )}

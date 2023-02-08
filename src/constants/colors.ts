@@ -42,20 +42,26 @@ export const chartTrendColors = {
   red: likertScalesColors['strongly-disagree'].background,
 }
 
-export const chartColors = {
-  primary: theme.colors.primary,
-  blue: likertScalesColors.agree.background,
+export const chartActionItemsColors = {
   green: likertScalesColors['strongly-agree'].background,
   yellow: likertScalesColors.disagree.background,
-  gray: likertScalesColors.mixed.background,
   red: likertScalesColors['strongly-disagree'].background,
-  cyan: '#67E8F9',
-  orange: '#F97316',
-  purple: '#A855F7',
-  lime: '#84CC16',
-  sky: '#0EA5E9',
-  indigo: '#6366F1',
-  pink: '#EC4899',
-  fuchsia: '#D946EF',
-  emerald: '#10B981',
 }
+
+export const chartColors = [
+  theme.colors.primary, // primary
+  likertScalesColors.agree.background, // blue
+  likertScalesColors['strongly-agree'].background, // green
+  likertScalesColors.disagree.background, // yellow
+  likertScalesColors.mixed.background, // gray
+  likertScalesColors['strongly-disagree'].background, // red
+  '#67E8F9', // cyan
+  '#F97316', // orange
+  '#A855F7', // purple
+  '#84CC16', // lime
+  '#0EA5E9', // sky
+  '#6366F1', // indigo
+  '#EC4899', // pink
+  '#D946EF', // fuchsia
+  '#10B981', // emerald
+]

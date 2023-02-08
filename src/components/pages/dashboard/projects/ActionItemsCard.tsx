@@ -40,13 +40,27 @@ const CustomTooltip = (record: TooltipProps<any, any>) => {
         <div>
           <span style={{ color: theme.colors.gray700 }} key={item.dataKey}>
             {item.payload.trend === null ? (
-              <strong style={{ color: theme.colors.primary }}>
-                {item?.value === 0 ? 'No data' : item?.value}
+              <strong
+                style={{
+                  color:
+                    item?.value !== 0
+                      ? theme.colors.primary
+                      : theme.colors.gray700,
+                }}
+              >
+                {item?.value === 0 ? '-' : item?.value}
               </strong>
             ) : (
               <>
-                <strong style={{ color: theme.colors.primary }}>
-                  {item?.value === 0 ? 'No data' : item?.value}
+                <strong
+                  style={{
+                    color:
+                      item?.value !== 0
+                        ? theme.colors.primary
+                        : theme.colors.gray700,
+                  }}
+                >
+                  {item?.value === 0 ? '-' : item?.value}
                 </strong>{' '}
                 {getTrendByPercentage(item.payload.trend) && (
                   <Tag
@@ -225,7 +239,7 @@ export const ActionItemsCard = (props: Props) => {
 
   return (
     <Card
-      title="Action Items Squash"
+      title="Action Items"
       style={{ height: '100%' }}
       bodyStyle={{
         display: 'flex',
