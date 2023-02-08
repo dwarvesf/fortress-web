@@ -1,10 +1,7 @@
-import { Icon } from '@iconify/react'
-import { Space, Table } from 'antd'
+import { Table } from 'antd'
 import { ColumnsType } from 'antd/lib/table'
-import { UserAvatar } from 'components/common/AvatarWithName'
+import { ProjectAvatar, UserAvatar } from 'components/common/AvatarWithName'
 import { TagArray } from 'components/common/TagArray'
-import { ROUTES } from 'constants/routes'
-import Link from 'next/link'
 import {
   ViewAvailableEmployee,
   ViewBasicProjectInfo,
@@ -55,14 +52,11 @@ const columns: ColumnsType<ViewAvailableEmployee> = [
       <TagArray
         value={value || []}
         content={(project) => (
-          <Link href={ROUTES.PROJECT_DETAIL(project.code || '')}>
-            <a>
-              <Space size={4}>
-                {project.name}
-                <Icon icon="icon-park-outline:link" />
-              </Space>
-            </a>
-          </Link>
+          <ProjectAvatar
+            avatarSize={20}
+            project={project}
+            style={{ marginLeft: -7 }}
+          />
         )}
         maxTag={2}
       />

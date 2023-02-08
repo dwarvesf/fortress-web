@@ -1,16 +1,15 @@
 import { ROUTES } from 'constants/routes'
 import Link from 'next/link'
+import { ComponentProps } from 'react'
 import { ViewProjectData } from 'types/schema'
 import { AvatarWithName } from './AvatarWithName'
 
-interface Props {
+interface Props extends ComponentProps<typeof AvatarWithName> {
   project: ViewProjectData
-  avatarSize?: number
-  fontSize?: number
 }
 
 export const ProjectAvatar = (props: Props) => {
-  const { project, avatarSize, fontSize } = props
+  const { project, ...rest } = props
 
   return (
     <AvatarWithName
@@ -21,7 +20,7 @@ export const ProjectAvatar = (props: Props) => {
           <a className="styled">{name}</a>
         </Link>
       )}
-      {...{ avatarSize, fontSize }}
+      {...rest}
     />
   )
 }

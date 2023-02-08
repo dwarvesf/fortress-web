@@ -1,6 +1,6 @@
 import { Button, Pagination, Row, Space, Table, Tag, Tooltip } from 'antd'
 import { ColumnsType } from 'antd/lib/table'
-import { UserAvatar } from 'components/common/AvatarWithName'
+import { ProjectAvatar, UserAvatar } from 'components/common/AvatarWithName'
 import { PageHeader } from 'components/common/PageHeader'
 import { ROUTES } from 'constants/routes'
 import { likertScalesColors, statusColors } from 'constants/colors'
@@ -12,7 +12,6 @@ import React from 'react'
 import { WorkDetailActions } from 'components/pages/feedbacks/work/WorkDetailActions'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 import { SEO } from 'components/common/SEO'
-import { Icon } from '@iconify/react'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { useFilter } from 'hooks/useFilter'
 import { GET_PATHS, client } from 'libs/apis'
@@ -25,7 +24,6 @@ import { getWorkSurveyDetailReview, renderDomainLevels } from 'utils/level'
 import { DomainTypes } from 'constants/feedbackTypes'
 import { WorkAverageIcon } from 'components/pages/feedbacks/work'
 import { mapScoreToLikertScale } from 'utils/score'
-import Link from 'next/link'
 import { TotalResultCount } from 'components/common/Table/TotalResultCount'
 import { Permission } from 'constants/permission'
 
@@ -107,18 +105,7 @@ const EmployeePeerReviewsPage = () => {
         text: p.name,
       })),
       onFilter: (value, record) => value === record?.project?.id,
-      render: (value) => (
-        <Tag>
-          <Link href={ROUTES.PROJECT_DETAIL(value.code)}>
-            <a>
-              <Space size={4}>
-                {value.name}
-                <Icon icon="icon-park-outline:link" />
-              </Space>
-            </a>
-          </Link>
-        </Tag>
-      ),
+      render: (value) => <ProjectAvatar project={value} />,
     },
     {
       title: 'Workload',
