@@ -25,12 +25,14 @@ const columns: ColumnsType<ViewAvailableEmployee> = [
     title: 'Seniority',
     dataIndex: 'seniority',
     key: 'seniority',
+    width: 100,
     render: (value?: ViewSeniority) => value?.name || '-',
   },
   {
     title: 'Positions',
     key: 'positions',
     dataIndex: 'positions',
+    width: 100,
     render: (value?: ViewPosition[]) => (
       <TagArray value={value || []} maxTag={2} color="blue" />
     ),
@@ -39,6 +41,7 @@ const columns: ColumnsType<ViewAvailableEmployee> = [
     title: 'Stacks',
     key: 'stacks',
     dataIndex: 'stacks',
+    width: 100,
     render: (value?: ViewStack[]) => (
       <TagArray value={value || []} maxTag={2} color="green" />
     ),
@@ -47,6 +50,7 @@ const columns: ColumnsType<ViewAvailableEmployee> = [
     title: 'Projects',
     key: 'projects',
     dataIndex: 'projects',
+    width: 100,
     render: (value?: ViewBasicProjectInfo[]) => (
       <TagArray
         value={value || []}

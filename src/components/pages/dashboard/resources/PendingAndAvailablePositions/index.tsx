@@ -20,7 +20,7 @@ export const PendingAndAvailablePositions = () => {
         items={[
           {
             key: 'pending',
-            label: `Pending (3)`,
+            label: `Pending (${data?.data?.slots?.length || 0})`,
             children: (
               <PendingPositions
                 data={data?.data?.slots || []}
@@ -30,7 +30,7 @@ export const PendingAndAvailablePositions = () => {
           },
           {
             key: 'available',
-            label: `Available (2)`,
+            label: `Available (${data?.data?.employees?.length || 0})`,
             children: (
               <AvailablePositions
                 data={data?.data?.employees || []}
