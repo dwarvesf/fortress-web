@@ -33,7 +33,6 @@ const columns: ColumnsType<ViewAvailableSlot> = [
     title: 'Project',
     dataIndex: 'project',
     key: 'project',
-    width: 100,
     render: (value?: ViewBasicProjectInfo) =>
       value ? <ProjectAvatar project={value} /> : '-',
   },
