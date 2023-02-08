@@ -1,7 +1,6 @@
 import { Spin } from 'antd'
 import { likertScalesColors } from 'constants/colors'
 import { ReactElement } from 'react'
-import { theme } from 'styles'
 import { mapScoreToLikertScale } from 'utils/score'
 
 interface Props {
@@ -10,21 +9,16 @@ interface Props {
   postfix?: ReactElement | string
   postfixColor?: string
   isLoading?: boolean
-  formatStat?: (stat?: number | string) => string
 }
 
 export const StatisticBlock = (props: Props) => {
   const {
     stat,
     postfix,
-    statColor = typeof stat === 'number'
-      ? // auto map average score colors as default if passing stat as number
-        likertScalesColors[mapScoreToLikertScale(stat)].background
-      : // otherwise use gray700 as default
-        theme.colors.gray700,
+    statColor = likertScalesColors[mapScoreToLikertScale(Number(stat || 0))]
+      .background,
     postfixColor,
     isLoading = false,
-    formatStat,
   } = props
 
   return (
@@ -48,7 +42,7 @@ export const StatisticBlock = (props: Props) => {
               lineHeight: 0.85,
             }}
           >
-            {(formatStat ? formatStat(stat) : stat) || '-'}
+            {stat || '-'}
           </span>
 
           {postfix && (
