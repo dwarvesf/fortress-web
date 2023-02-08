@@ -49,11 +49,11 @@ const renderCustomizedLabel = ({
   let outerRadius
 
   if (percent! < 0.1) {
-    outerRadius = Number(baseOuterRadius) + 32.0
+    outerRadius = Number(baseOuterRadius) + 35.0
   } else if (percent! < 0.2) {
-    outerRadius = Number(baseOuterRadius) + 24.0
+    outerRadius = Number(baseOuterRadius) + 25.0
   } else {
-    outerRadius = Number(baseOuterRadius) + 16.0
+    outerRadius = Number(baseOuterRadius) + 15.0
   }
 
   const sin = Math.sin(-Number(midAngle) * RADIAN)
@@ -91,7 +91,7 @@ const renderCustomizedLabel = ({
       />
       <text
         x={endX >= Number(cx) ? endX + 5.0 : endX - 5.0}
-        y={endY - 2.75}
+        y={percent! >= 0.1 ? endY - 2.75 : endY + 3.5}
         textAnchor={endX >= Number(cx) ? 'start' : 'end'}
         fill={theme.colors.gray700}
         style={{
@@ -100,20 +100,22 @@ const renderCustomizedLabel = ({
           whiteSpace: 'pre-line',
         }}
       >
-        <tspan>{name.length > 10 ? `${name.slice(0, 8)}...` : name}</tspan>
+        <tspan>{name.length > 12 ? `${name.slice(0, 10)}...` : name}</tspan>
       </text>
-      <text
-        x={endX >= Number(cx) ? endX + 5.0 : endX - 5.0}
-        y={endY + 9.5}
-        textAnchor={endX >= Number(cx) ? 'start' : 'end'}
-        fill={theme.colors.gray500}
-        style={{
-          userSelect: 'none',
-          fontSize: 11,
-        }}
-      >
-        size: {payload.payload.size}
-      </text>
+      {percent! >= 0.1 ? (
+        <text
+          x={endX >= Number(cx) ? endX + 5.0 : endX - 5.0}
+          y={endY + 9.5}
+          textAnchor={endX >= Number(cx) ? 'start' : 'end'}
+          fill={theme.colors.gray500}
+          style={{
+            userSelect: 'none',
+            fontSize: 11,
+          }}
+        >
+          size: {payload.payload.size}
+        </text>
+      ) : null}
     </g>
   )
 }
