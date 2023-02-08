@@ -26,7 +26,7 @@ const CardLabel = styled.div`
 const EngagementFeedbacksRow = ({
   data,
 }: {
-  data: { label: string; value: number }[]
+  data: { label?: string; value?: number }[]
 }) => {
   return (
     <Space
@@ -37,10 +37,12 @@ const EngagementFeedbacksRow = ({
       {data.map((d) => (
         <Row style={{ width: '100%' }} justify="space-between" key={d.label}>
           <Col>
-            <span style={{ color: theme.colors.gray500 }}>{d.label}</span>
+            <span style={{ color: theme.colors.gray500 }}>
+              {d.label || '-'}
+            </span>
           </Col>
           <Col>
-            <span>{d.value}</span>
+            <span>{d.value ? d.value.toFixed(1) : '-'}</span>
           </Col>
         </Row>
       ))}
@@ -87,7 +89,7 @@ export const EngagementAverageCard = (props: Props) => {
 
         <Space direction="vertical" size={12}>
           <StatisticBlock
-            stat={Number(currentQuarterData?.point?.toFixed(1) || 0)}
+            stat={Number(currentQuarterData?.point || 0).toFixed(1)}
             postfix="/5"
           />
 
@@ -105,18 +107,20 @@ export const EngagementAverageCard = (props: Props) => {
             />
           </div>
 
-          <CardLabel>
-            Avg. score by{' '}
-            <strong>{capitalizeFirstLetter(filterCategory)}</strong>
-          </CardLabel>
-          <EngagementFeedbacksRow
-            data={
-              detail?.stats?.map((each) => ({
-                label: each.field || '-',
-                value: each.point || 0,
-              })) || []
-            }
-          />
+          {detail?.stats?.length && (
+            <>
+              <CardLabel>
+                Avg. score by{' '}
+                <strong>{capitalizeFirstLetter(filterCategory)}</strong>
+              </CardLabel>
+              <EngagementFeedbacksRow
+                data={detail.stats.map((each) => ({
+                  label: each.field,
+                  value: each.point,
+                }))}
+              />
+            </>
+          )}
         </Space>
       </div>
     </Card>
