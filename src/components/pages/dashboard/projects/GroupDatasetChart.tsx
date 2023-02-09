@@ -134,21 +134,8 @@ export const GroupDatasetChart = (props: Props) => {
       return dataset[collectedQuarters.indexOf(q)]
     }
 
-    const groupDatasetObj: Record<
-      keyof ViewGroupAudit | keyof ViewGroupEngineeringHealth,
-      number
-      // @ts-ignore
-    > = dataKeys.reduce((acc, curr) => {
-      // eslint-disable-next-line
-      return (acc[curr] = 0), acc
-    }, {})
-
     return {
-      ...groupDatasetObj,
       quarter: q,
-      trend: {
-        ...groupDatasetObj,
-      },
     }
   })
 

@@ -66,7 +66,7 @@ const averageDatasetRenderer = (
   )
 }
 
-const groupHealthDatasetRenderer = (dataset: any) => {
+const groupDatasetRenderer = (dataset: any) => {
   const datasetArray = dataset || []
 
   return (
@@ -78,36 +78,11 @@ const groupHealthDatasetRenderer = (dataset: any) => {
       }}
     >
       <GroupDatasetChart
-        // I define hard-coded dataKeys to support the feature of pre-filling to display 4 quarters.
-        // If we generate legends base on the API response, in case the response is empty, we cannot
-        // generate quarter slot (with the value of each dataKeys is assigned to 0)
-        dataKeys={['delivery', 'quality', 'collaboration', 'feedback']}
-        dataset={datasetArray}
-      />
-    </div>
-  )
-}
-
-const groupAuditDatasetRenderer = (dataset: any) => {
-  const datasetArray = dataset || []
-
-  return (
-    <div
-      style={{
-        width: '100%',
-        overflowX: 'auto',
-        overflowY: 'hidden',
-      }}
-    >
-      <GroupDatasetChart
-        dataKeys={[
-          'frontend',
-          'backend',
-          'system',
-          'process',
-          'mobile',
-          'blockchain',
-        ]}
+        dataKeys={
+          datasetArray.length > 0 && datasetArray[0].trend
+            ? (Object.keys(datasetArray[0].trend) as string[])
+            : []
+        }
         dataset={datasetArray}
       />
     </div>
@@ -189,10 +164,7 @@ const Projects = () => {
           fetcher={() =>
             client.getProjectsEngineeringHealthScore(selectedProjectId)
           }
-          childrenRenderers={[
-            averageDatasetRenderer,
-            groupHealthDatasetRenderer,
-          ]}
+          childrenRenderers={[averageDatasetRenderer, groupDatasetRenderer]}
         />
 
         <CardWithTabs
@@ -201,10 +173,7 @@ const Projects = () => {
           tabTitles={['average', 'groups']}
           selectedProjectId={selectedProjectId}
           fetcher={() => client.getProjectsAuditScore(selectedProjectId)}
-          childrenRenderers={[
-            averageDatasetRenderer,
-            groupAuditDatasetRenderer,
-          ]}
+          childrenRenderers={[averageDatasetRenderer, groupDatasetRenderer]}
         />
       </Row>
 

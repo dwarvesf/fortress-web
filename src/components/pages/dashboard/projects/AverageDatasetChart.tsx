@@ -120,8 +120,6 @@ export const AverageDatasetChart = (props: Props) => {
     }
     return {
       quarter: q,
-      avg: 0,
-      trend: 0,
     }
   })
 
