@@ -4,7 +4,11 @@ import { ProjectAvatar } from 'components/common/AvatarWithName'
 import { ROUTES } from 'constants/routes'
 import { useRouter } from 'next/router'
 import { ViewAuditSummaries, ViewAuditSummary } from 'types/schema'
-import { getTrendByPercentage, getTrendStatusColor } from 'utils/score'
+import {
+  getActionItemsTrendStatusColor,
+  getTrendByPercentage,
+  getTrendStatusColor,
+} from 'utils/score'
 
 interface Props {
   data: ViewAuditSummaries
@@ -14,20 +18,21 @@ interface Props {
 const SummaryTdRender = ({
   value,
   hasFloatingPoint = false,
-  reverseTrendColor = false,
+  isActionItemsStat = false,
 }: {
   value: { value: number; trend: number }
   hasFloatingPoint?: boolean
-  reverseTrendColor?: boolean
+  isActionItemsStat?: boolean
 }) => (
   <div style={{ display: 'flex', alignItems: 'end' }}>
     <span>{hasFloatingPoint ? value.value.toFixed(1) : value.value}</span>
     {getTrendByPercentage(value.trend) && (
       <span
         style={{
-          color: getTrendStatusColor(
-            reverseTrendColor ? -value.trend : value.trend,
-          ),
+          color: isActionItemsStat
+            ? getActionItemsTrendStatusColor(value.trend)
+            : getTrendStatusColor(value.trend),
+
           fontSize: 13,
         }}
       >
@@ -87,7 +92,7 @@ export const WorkStatusSummaryCard = (props: Props) => {
           key: 'newItem',
           dataIndex: 'newItem',
           render: (value) => (
-            <SummaryTdRender value={value} reverseTrendColor />
+            <SummaryTdRender value={value} isActionItemsStat />
           ),
           sorter: (a, b) =>
             a.newItem && b.newItem ? a.newItem.value! - b.newItem.value! : 0,
@@ -97,7 +102,7 @@ export const WorkStatusSummaryCard = (props: Props) => {
           key: 'resolvedItem',
           dataIndex: 'resolvedItem',
           render: (value) => (
-            <SummaryTdRender value={value} reverseTrendColor />
+            <SummaryTdRender value={value} isActionItemsStat />
           ),
           sorter: (a, b) =>
             a.resolvedItem && b.resolvedItem
