@@ -1,5 +1,5 @@
 import { Card, Col, Row, Space } from 'antd'
-import { chartTrendColors } from 'constants/colors'
+import { chartActionItemsColors } from 'constants/colors'
 import { MONTH_YEAR_FORMAT } from 'constants/date'
 import { Utilization, utilizations } from 'constants/utilization'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
@@ -150,7 +150,7 @@ export const UtilizationChart = () => {
                 key={key}
                 dataKey={key}
                 stackId="a"
-                fill={Object.values(chartTrendColors)[i]}
+                fill={Object.values(chartActionItemsColors)[i]}
                 maxBarSize={40}
                 shape={<CustomShape />}
               />

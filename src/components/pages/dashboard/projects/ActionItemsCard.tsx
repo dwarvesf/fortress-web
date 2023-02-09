@@ -1,5 +1,5 @@
 import { Card, Select, Spin, Tag } from 'antd'
-import { chartTrendColors } from 'constants/colors'
+import { chartColors } from 'constants/colors'
 import { useMemo, useState } from 'react'
 import {
   Bar,
@@ -219,7 +219,7 @@ export const ActionItemsCard = (props: Props) => {
             />
             <Bar
               dataKey="value"
-              fill={Object.values(chartTrendColors)[0]}
+              fill={chartColors.green}
               stackId="a"
               maxBarSize={40}
               yAxisId="left"
