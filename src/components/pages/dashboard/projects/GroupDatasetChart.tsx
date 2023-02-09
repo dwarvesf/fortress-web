@@ -6,6 +6,7 @@ import { CartesianAxisProps, TooltipProps } from 'recharts'
 import { DataKey } from 'recharts/types/util/types'
 import { theme } from 'styles'
 import { ViewGroupAudit, ViewGroupEngineeringHealth } from 'types/schema'
+import { fillQuarters } from 'utils/quarter'
 import { getTrendByPercentage, getTrendStatusColor } from 'utils/score'
 import { capitalizeFirstLetter } from 'utils/string'
 
@@ -125,6 +126,32 @@ const CustomAxisTick = ({
 export const GroupDatasetChart = (props: Props) => {
   const { dataKeys, dataset } = props
 
+  const collectedQuarters = dataset.map((d) => d.quarter || '')
+  const filledQuarters = fillQuarters(collectedQuarters)
+
+  const filledDataset = filledQuarters.map((q) => {
+    if (collectedQuarters.includes(q)) {
+      return dataset[collectedQuarters.indexOf(q)]
+    }
+
+    const groupDatasetObj: Record<
+      keyof ViewGroupAudit | keyof ViewGroupEngineeringHealth,
+      number
+      // @ts-ignore
+    > = dataKeys.reduce((acc: any, curr) => {
+      // eslint-disable-next-line
+      return (acc[curr] = 0), acc
+    }, {})
+
+    return {
+      ...groupDatasetObj,
+      quarter: q,
+      trend: {
+        ...groupDatasetObj,
+      },
+    }
+  })
+
   const [linesOpacity, setLinesOpacity] = useState<Record<string, number>>(
     () => {
       const obj: Record<string, number> = {}
@@ -223,7 +250,7 @@ export const GroupDatasetChart = (props: Props) => {
       width="100%"
       height={302.59}
       minWidth={320}
-      dataset={dataset}
+      dataset={filledDataset}
       lineDataKeys={dataKeys}
       xAxisDataKey="quarter"
       xAxisTick={

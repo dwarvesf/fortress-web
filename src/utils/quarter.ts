@@ -1,7 +1,7 @@
 const quartersEnum = ['Q1', 'Q2', 'Q3', 'Q4']
 
 export const fillQuarters = (quarters: string[]) => {
-  if (quarters.length >= 4) {
+  if (quarters.length >= 4 || quarters.length === 0) {
     return quarters
   }
 

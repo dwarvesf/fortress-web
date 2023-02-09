@@ -3,6 +3,7 @@ import { LineChart } from 'components/common/LineChart'
 import { CartesianAxisProps, TooltipProps } from 'recharts'
 import { theme } from 'styles'
 import { ViewAudit, ViewEngineeringHealth } from 'types/schema'
+import { fillQuarters } from 'utils/quarter'
 import { getTrendByPercentage, getTrendStatusColor } from 'utils/score'
 
 interface Props {
@@ -110,12 +111,26 @@ const CustomAxisTick = ({
 export const AverageDatasetChart = (props: Props) => {
   const { dataset } = props
 
+  const collectedQuarters = dataset.map((d) => d.quarter || '')
+  const filledQuarters = fillQuarters(collectedQuarters)
+
+  const filledDataset = filledQuarters.map((q) => {
+    if (collectedQuarters.includes(q)) {
+      return dataset[collectedQuarters.indexOf(q)]
+    }
+    return {
+      quarter: q,
+      avg: 0,
+      trend: 0,
+    }
+  })
+
   return (
     <LineChart
       width="100%"
       height={260}
       minWidth={320}
-      dataset={dataset}
+      dataset={filledDataset}
       lineDataKeys={['avg']}
       xAxisDataKey="quarter"
       xAxisTick={
