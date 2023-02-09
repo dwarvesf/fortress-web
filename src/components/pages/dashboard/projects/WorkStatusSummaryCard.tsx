@@ -123,7 +123,7 @@ export const WorkStatusSummaryCard = (props: Props) => {
         columns={columns}
         rowKey={(row) => row.id || ''}
         pagination={false}
-        scroll={{ x: 'max-content', y: 230 }}
+        scroll={{ x: 'max-content', y: 240 }}
         loading={isLoading}
         onRow={(record) => ({
           onClick: (e) => {
