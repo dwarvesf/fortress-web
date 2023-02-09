@@ -1,21 +1,65 @@
-import { Card } from 'antd'
-import Table, { ColumnsType } from 'antd/lib/table'
+import { Card, Table } from 'antd'
+import { ColumnsType } from 'antd/lib/table'
 import { ProjectAvatar } from 'components/common/AvatarWithName'
+import { ROUTES } from 'constants/routes'
+import { useRouter } from 'next/router'
+import styled from 'styled-components'
 import { ViewAuditSummaries, ViewAuditSummary } from 'types/schema'
-import { getTrendByPercentage, getTrendStatusColor } from 'utils/score'
+import {
+  getActionItemsTrendStatusColor,
+  getTrendByPercentage,
+  getTrendStatusColor,
+} from 'utils/score'
 
 interface Props {
   data: ViewAuditSummaries
   isLoading: boolean
 }
 
+const SummaryTable = styled(Table)`
+  .ant-table-thead {
+    tr {
+      th {
+        &[rowspan='2'],
+        &[colspan='2'] {
+          padding: 12px;
+        }
+
+        &[colspan='2'] {
+          background-color: #f8f8f8 !important;
+        }
+
+        &[colspan='2']:nth-of-type(2n) {
+          background-color: #f5f5f5 !important;
+        }
+      }
+
+      &:nth-of-type(2) {
+        th {
+          padding: 12px !important;
+        }
+      }
+    }
+  }
+
+  .ant-table-body {
+    .ant-table-cell {
+      .ant-table-expanded-row-fixed {
+        min-height: 239px !important;
+      }
+    }
+  }
+`
+
 const SummaryTdRender = ({
   value,
+  hasFloatingPoint = false,
 }: {
   value: { value: number; trend: number }
+  hasFloatingPoint?: boolean
 }) => (
   <div style={{ display: 'flex', alignItems: 'end' }}>
-    <span>{value.value.toFixed(1)}</span>
+    <span>{hasFloatingPoint ? value.value.toFixed(1) : value.value}</span>
     {getTrendByPercentage(value.trend) && (
       <span
         style={{
@@ -29,10 +73,32 @@ const SummaryTdRender = ({
   </div>
 )
 
+const SummaryActionItemsTdRender = ({
+  value,
+}: {
+  value: { value: number; trend: number }
+}) => (
+  <div style={{ display: 'flex', alignItems: 'end' }}>
+    <span>{value.value}</span>
+    {getTrendByPercentage(value.trend) && (
+      <span
+        style={{
+          color: getActionItemsTrendStatusColor(value.trend),
+          fontSize: 13,
+        }}
+      >
+        {getTrendByPercentage(value.trend)}
+      </span>
+    )}
+  </div>
+)
+
 export const WorkStatusSummaryCard = (props: Props) => {
   const { data, isLoading } = props
 
   const dataset = data.summary || []
+
+  const { push } = useRouter()
 
   const columns: ColumnsType<ViewAuditSummary> = [
     {
@@ -49,53 +115,69 @@ export const WorkStatusSummaryCard = (props: Props) => {
       sorter: (a, b) => (a.size && b.size ? a.size.value! - b.size.value! : 0),
     },
     {
-      title: 'Health score',
-      key: 'health',
-      dataIndex: 'health',
-      render: (value) => <SummaryTdRender value={value} />,
-      sorter: (a, b) =>
-        a.health && b.health ? a.health.value! - b.health.value! : 0,
+      title: 'Scores',
+      children: [
+        {
+          title: 'Health',
+          key: 'health',
+          dataIndex: 'health',
+          render: (value) => <SummaryTdRender value={value} hasFloatingPoint />,
+          sorter: (a, b) =>
+            a.health && b.health ? a.health.value! - b.health.value! : 0,
+        },
+        {
+          title: 'Audit',
+          key: 'audit',
+          dataIndex: 'audit',
+          render: (value) => <SummaryTdRender value={value} hasFloatingPoint />,
+          sorter: (a, b) =>
+            a.audit && b.audit ? a.audit.value! - b.audit.value! : 0,
+        },
+      ],
     },
     {
-      title: 'Audit score',
-      key: 'audit',
-      dataIndex: 'audit',
-      render: (value) => <SummaryTdRender value={value} />,
-      sorter: (a, b) =>
-        a.audit && b.audit ? a.audit.value! - b.audit.value! : 0,
-    },
-    {
-      title: 'New items',
-      key: 'newItem',
-      dataIndex: 'newItem',
-      render: (value) => <SummaryTdRender value={value} />,
-      sorter: (a, b) =>
-        a.newItem && b.newItem ? a.newItem.value! - b.newItem.value! : 0,
-    },
-    {
-      title: 'Resolved items',
-      key: 'resolvedItem',
-      dataIndex: 'resolvedItem',
-      render: (value) => <SummaryTdRender value={value} />,
-      sorter: (a, b) =>
-        a.resolvedItem && b.resolvedItem
-          ? a.resolvedItem.value! - b.resolvedItem.value!
-          : 0,
+      title: 'Action Items',
+      children: [
+        {
+          title: 'New',
+          key: 'newItem',
+          dataIndex: 'newItem',
+          render: (value) => <SummaryActionItemsTdRender value={value} />,
+          sorter: (a, b) =>
+            a.newItem && b.newItem ? a.newItem.value! - b.newItem.value! : 0,
+        },
+        {
+          title: 'Resolved',
+          key: 'resolvedItem',
+          dataIndex: 'resolvedItem',
+          render: (value) => <SummaryActionItemsTdRender value={value} />,
+          sorter: (a, b) =>
+            a.resolvedItem && b.resolvedItem
+              ? a.resolvedItem.value! - b.resolvedItem.value!
+              : 0,
+        },
+      ],
     },
   ]
   return (
     <Card
       title="Quarterly Summary"
       style={{ height: '100%' }}
-      bodyStyle={{ padding: '1px 0 24px' }}
+      bodyStyle={{ padding: '1px 0 20px' }}
     >
-      <Table
+      <SummaryTable
         dataSource={dataset}
         columns={columns}
-        rowKey={(row) => row.id || ''}
+        rowKey={(row: ViewAuditSummary) => row.id || ''}
         pagination={false}
-        scroll={{ x: 'max-content', y: 250 }}
+        scroll={{ x: 'max-content', y: 240 }}
         loading={isLoading}
+        onRow={(record: ViewAuditSummary) => ({
+          onClick: (e) => {
+            if (e.defaultPrevented) return
+            push(ROUTES.PROJECT_DETAIL(record.code!))
+          },
+        })}
       />
     </Card>
   )

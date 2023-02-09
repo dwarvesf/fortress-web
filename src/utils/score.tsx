@@ -2,7 +2,7 @@ import { AgreementLevel } from 'constants/agreementLevel'
 import { ReactElement } from 'react'
 import { Icon } from '@iconify/react'
 import { DomainTypes } from 'constants/feedbackTypes'
-import { chartTrendColors } from 'constants/colors'
+import { chartColors } from 'constants/colors'
 
 export const mapScoreToLikertScale = (score: number): AgreementLevel => {
   if (!score) {
@@ -49,12 +49,22 @@ export const getTrendByPercentage = (
 
 export const getTrendStatusColor = (trend: number) => {
   if (trend > 0) {
-    return '#1aae9f'
+    return chartColors.green
   }
   if (trend < 0) {
-    return '#ff4d4f'
+    return chartColors.red
   }
-  return '#788896'
+  return chartColors.gray
+}
+
+export const getActionItemsTrendStatusColor = (trend: number) => {
+  if (trend > 0) {
+    return chartColors.red
+  }
+  if (trend < 0) {
+    return chartColors.green
+  }
+  return chartColors.gray
 }
 
 // threshold to select color based on the interval ranging from the
@@ -64,26 +74,26 @@ const trendColorThresholds: Record<
   { color: string; from: number; to: number }[]
 > = {
   workload: [
-    { color: chartTrendColors.green, from: 0, to: 3.6 }, // Up from 0 to 3.6
-    { color: chartTrendColors.green, from: 5, to: 3.6 }, // Down from 5 to 3.6
-    { color: chartTrendColors.red, from: 3.6, to: 5 }, // Up from 3.6 to 5
-    { color: chartTrendColors.red, from: 2.1, to: 0 }, // Down from 2.1 to 0
-    { color: chartTrendColors.gray, from: 3.6, to: 2.1 }, // Down from 3.6 to 2.1
-    { color: chartTrendColors.red, from: 5, to: 0 }, // Since these 2 leads to Down from 2.1 to 0
-    { color: chartTrendColors.red, from: 3.6, to: 0 },
-    { color: chartTrendColors.red, from: 0, to: 5 }, // Since this lead to Up from 3.6 to 5
+    { color: chartColors.green, from: 0, to: 3.6 }, // Up from 0 to 3.6
+    { color: chartColors.green, from: 5, to: 3.6 }, // Down from 5 to 3.6
+    { color: chartColors.red, from: 3.6, to: 5 }, // Up from 3.6 to 5
+    { color: chartColors.red, from: 2.1, to: 0 }, // Down from 2.1 to 0
+    { color: chartColors.gray, from: 3.6, to: 2.1 }, // Down from 3.6 to 2.1
+    { color: chartColors.red, from: 5, to: 0 }, // Since these 2 leads to Down from 2.1 to 0
+    { color: chartColors.red, from: 3.6, to: 0 },
+    { color: chartColors.red, from: 0, to: 5 }, // Since this lead to Up from 3.6 to 5
   ],
   deadline: [
-    { color: chartTrendColors.green, from: 0, to: 5 }, // Up from 0 to 5
-    { color: chartTrendColors.red, from: 3, to: 0 }, // Down from 3 to 0
-    { color: chartTrendColors.gray, from: 5, to: 3 }, // Down from 5 to 3
-    { color: chartTrendColors.red, from: 5, to: 0 }, // Since this lead to Down from 3 to 0
+    { color: chartColors.green, from: 0, to: 5 }, // Up from 0 to 5
+    { color: chartColors.red, from: 3, to: 0 }, // Down from 3 to 0
+    { color: chartColors.gray, from: 5, to: 3 }, // Down from 5 to 3
+    { color: chartColors.red, from: 5, to: 0 }, // Since this lead to Down from 3 to 0
   ],
   learning: [
-    { color: chartTrendColors.green, from: 0, to: 5 },
-    { color: chartTrendColors.red, from: 3, to: 0 },
-    { color: chartTrendColors.gray, from: 5, to: 3 },
-    { color: chartTrendColors.red, from: 5, to: 0 },
+    { color: chartColors.green, from: 0, to: 5 },
+    { color: chartColors.red, from: 3, to: 0 },
+    { color: chartColors.gray, from: 5, to: 3 },
+    { color: chartColors.red, from: 5, to: 0 },
   ],
 }
 
@@ -104,6 +114,6 @@ export const getTrendScoreColor = (
   return prevScore
     ? trendColorThresholds[domain].find((t) =>
         checkIsSubInterval([t.from, t.to], prevScore, curScore),
-      )?.color || chartTrendColors.gray
-    : chartTrendColors.gray
+      )?.color || chartColors.gray
+    : chartColors.gray
 }

@@ -110,12 +110,18 @@ const getPieSectorFillColor = (
   colorIndex: number,
 ) => {
   if (selectedProjectId === '') {
-    return chartColors[colorIndex % chartColors.length]
+    return Object.values(chartColors)[
+      colorIndex % Object.values(chartColors).length
+    ]
   }
   if (selectedProjectId === payloadId) {
-    return chartColors[colorIndex % chartColors.length]
+    return Object.values(chartColors)[
+      colorIndex % Object.values(chartColors).length
+    ]
   }
-  return `${chartColors[colorIndex % chartColors.length]}55`
+  return `${
+    Object.values(chartColors)[colorIndex % Object.values(chartColors).length]
+  }55`
 }
 
 export const PieChart = (props: Props) => {
