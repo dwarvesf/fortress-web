@@ -138,7 +138,7 @@ export const GroupDatasetChart = (props: Props) => {
       keyof ViewGroupAudit | keyof ViewGroupEngineeringHealth,
       number
       // @ts-ignore
-    > = dataKeys.reduce((acc: any, curr) => {
+    > = dataKeys.reduce((acc, curr) => {
       // eslint-disable-next-line
       return (acc[curr] = 0), acc
     }, {})
