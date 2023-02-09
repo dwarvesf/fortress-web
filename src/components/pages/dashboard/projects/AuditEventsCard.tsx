@@ -1,6 +1,6 @@
 import { Icon } from '@iconify/react'
 import { Card, Col, Row, Spin } from 'antd'
-import { chartActionItemsColors } from 'constants/colors'
+import { chartColors } from 'constants/colors'
 import { useMemo, useCallback } from 'react'
 import {
   ResponsiveContainer,
@@ -232,7 +232,9 @@ export const AuditEventsCard = (props: Props) => {
                   key={key}
                   dataKey={key}
                   stackId="a"
-                  fill={Object.values(chartActionItemsColors)[i]}
+                  fill={
+                    [chartColors.green, chartColors.yellow, chartColors.red][i]
+                  }
                   maxBarSize={40}
                 />
               ))}

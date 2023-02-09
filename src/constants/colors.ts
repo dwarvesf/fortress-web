@@ -36,12 +36,6 @@ export const likertScalesColors = {
   'strongly-agree': { background: '#1aae9f', text: 'white' },
 }
 
-export const chartActionItemsColors = {
-  green: likertScalesColors['strongly-agree'].background,
-  yellow: likertScalesColors.disagree.background,
-  red: likertScalesColors['strongly-disagree'].background,
-}
-
 export const chartColors = {
   primary: theme.colors.primary,
   blue: likertScalesColors.agree.background,
