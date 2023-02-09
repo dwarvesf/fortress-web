@@ -116,7 +116,7 @@ export const LineChart = (props: Props) => {
         {typeof lineDataKeys === 'string' ? (
           <Line
             dataKey={lineDataKeys!}
-            stroke={chartColors[0]}
+            stroke={Object.values(chartColors)[0]}
             strokeWidth={1.75}
             animationDuration={600}
           />
@@ -125,7 +125,11 @@ export const LineChart = (props: Props) => {
             <Line
               key={String(k!)}
               dataKey={k!}
-              stroke={chartColors[i % chartColors.length]}
+              stroke={
+                Object.values(chartColors)[
+                  i % Object.values(chartColors).length
+                ]
+              }
               strokeWidth={1.75}
               animationDuration={600}
               opacity={linesOpacity ? linesOpacity[String(k)] : 1}
