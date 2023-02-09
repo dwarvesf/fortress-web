@@ -1,8 +1,9 @@
-import { Card } from 'antd'
-import Table, { ColumnsType } from 'antd/lib/table'
+import { Card, Table } from 'antd'
+import { ColumnsType } from 'antd/lib/table'
 import { ProjectAvatar } from 'components/common/AvatarWithName'
 import { ROUTES } from 'constants/routes'
 import { useRouter } from 'next/router'
+import styled from 'styled-components'
 import { ViewAuditSummaries, ViewAuditSummary } from 'types/schema'
 import {
   getActionItemsTrendStatusColor,
@@ -15,24 +16,74 @@ interface Props {
   isLoading: boolean
 }
 
+const SummaryTable = styled(Table)`
+  .ant-table-thead {
+    tr {
+      th {
+        &[rowspan='2'],
+        &[colspan='2'] {
+          padding: 12px;
+        }
+
+        &[colspan='2'] {
+          background-color: #f8f8f8 !important;
+        }
+
+        &[colspan='2']:nth-of-type(2n) {
+          background-color: #f5f5f5 !important;
+        }
+      }
+
+      &:nth-of-type(2) {
+        th {
+          padding: 12px !important;
+        }
+      }
+    }
+  }
+
+  .ant-table-body {
+    .ant-table-cell {
+      .ant-table-expanded-row-fixed {
+        min-height: 239px !important;
+      }
+    }
+  }
+`
+
 const SummaryTdRender = ({
   value,
   hasFloatingPoint = false,
-  isActionItemsStat = false,
 }: {
   value: { value: number; trend: number }
   hasFloatingPoint?: boolean
-  isActionItemsStat?: boolean
 }) => (
   <div style={{ display: 'flex', alignItems: 'end' }}>
     <span>{hasFloatingPoint ? value.value.toFixed(1) : value.value}</span>
     {getTrendByPercentage(value.trend) && (
       <span
         style={{
-          color: isActionItemsStat
-            ? getActionItemsTrendStatusColor(value.trend)
-            : getTrendStatusColor(value.trend),
+          color: getTrendStatusColor(value.trend),
+          fontSize: 13,
+        }}
+      >
+        {getTrendByPercentage(value.trend)}
+      </span>
+    )}
+  </div>
+)
 
+const SummaryActionItemsTdRender = ({
+  value,
+}: {
+  value: { value: number; trend: number }
+}) => (
+  <div style={{ display: 'flex', alignItems: 'end' }}>
+    <span>{value.value}</span>
+    {getTrendByPercentage(value.trend) && (
+      <span
+        style={{
+          color: getActionItemsTrendStatusColor(value.trend),
           fontSize: 13,
         }}
       >
@@ -91,9 +142,7 @@ export const WorkStatusSummaryCard = (props: Props) => {
           title: 'New',
           key: 'newItem',
           dataIndex: 'newItem',
-          render: (value) => (
-            <SummaryTdRender value={value} isActionItemsStat />
-          ),
+          render: (value) => <SummaryActionItemsTdRender value={value} />,
           sorter: (a, b) =>
             a.newItem && b.newItem ? a.newItem.value! - b.newItem.value! : 0,
         },
@@ -101,9 +150,7 @@ export const WorkStatusSummaryCard = (props: Props) => {
           title: 'Resolved',
           key: 'resolvedItem',
           dataIndex: 'resolvedItem',
-          render: (value) => (
-            <SummaryTdRender value={value} isActionItemsStat />
-          ),
+          render: (value) => <SummaryActionItemsTdRender value={value} />,
           sorter: (a, b) =>
             a.resolvedItem && b.resolvedItem
               ? a.resolvedItem.value! - b.resolvedItem.value!
@@ -116,16 +163,16 @@ export const WorkStatusSummaryCard = (props: Props) => {
     <Card
       title="Quarterly Summary"
       style={{ height: '100%' }}
-      bodyStyle={{ padding: '1px 0 0' }}
+      bodyStyle={{ padding: '1px 0 20px' }}
     >
-      <Table
+      <SummaryTable
         dataSource={dataset}
         columns={columns}
-        rowKey={(row) => row.id || ''}
+        rowKey={(row: ViewAuditSummary) => row.id || ''}
         pagination={false}
         scroll={{ x: 'max-content', y: 240 }}
         loading={isLoading}
-        onRow={(record) => ({
+        onRow={(record: ViewAuditSummary) => ({
           onClick: (e) => {
             if (e.defaultPrevented) return
             push(ROUTES.PROJECT_DETAIL(record.code!))
