@@ -61,6 +61,7 @@ import {
   ViewGetEngagementDashboardResponse,
   ViewGetEngagementDashboardDetailResponse,
   ViewGetDashboardResourceUtilizationResponse,
+  ViewWorkSurveySummaryResponse,
 } from 'types/schema'
 import { EmployeeListFilter } from 'types/filters/EmployeeListFilter'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
@@ -115,7 +116,8 @@ export const GET_PATHS = {
   getResourceAvailability: '/dashboards/resources/availabilities',
   getDashboardsEngagementInfo: '/dashboards/engagement/info',
   getDashboardsEngagementDetail: '/dashboards/engagement/detail',
-  getResourceUtilization: 'dashboards/resources/utilization',
+  getResourceUtilization: '/dashboards/resources/utilization',
+  getResourceWorkSurveySummaries: '/dashboards/resources/work-survey-summaries',
 }
 export interface Meta {
   page?: number
@@ -920,6 +922,17 @@ class Client {
   public getResourceUtilization() {
     return fetcher<ViewGetDashboardResourceUtilizationResponse>(
       `${BASE_URL}/dashboards/resources/utilization`,
+      {
+        headers: { ...this.privateHeaders },
+      },
+    )
+  }
+
+  public getResourceWorkSurveySummaries(keyword?: string) {
+    const queryString = qs.stringify({ keyword })
+
+    return fetcher<ViewWorkSurveySummaryResponse>(
+      `${BASE_URL}/dashboards/resources/work-survey-summaries?${queryString}`,
       {
         headers: { ...this.privateHeaders },
       },
