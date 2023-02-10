@@ -1,7 +1,7 @@
 import { Icon } from '@iconify/react'
 import { Card, Tag } from 'antd'
 import { LineChart } from 'components/common/LineChart'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { CartesianAxisProps, TooltipProps } from 'recharts'
 import { DataKey } from 'recharts/types/util/types'
 import { theme } from 'styles'
@@ -129,15 +129,41 @@ export const GroupDatasetChart = (props: Props) => {
   const collectedQuarters = dataset.map((d) => d.quarter || '')
   const filledQuarters = fillQuarters(collectedQuarters)
 
-  const filledDataset = filledQuarters.map((q) => {
-    if (collectedQuarters.includes(q)) {
-      return dataset[collectedQuarters.indexOf(q)]
-    }
+  const filledDataset = useMemo(() => {
+    const tempDataset = dataset
+    const firstCollectedRecord = tempDataset.find((e) =>
+      dataKeys.find((k) => e[k] && e[k] > 0),
+    )
+    const lastCollectedRecord = tempDataset
+      .reverse()
+      .find((e) => dataKeys.find((k) => e[k] && e[k] > 0))
 
-    return {
-      quarter: q,
-    }
-  })
+    const firstCollectedIndex = firstCollectedRecord
+      ? dataset.indexOf(firstCollectedRecord)
+      : -1
+    const lastCollectedIndex = lastCollectedRecord
+      ? dataset.indexOf(lastCollectedRecord)
+      : -1
+
+    return filledQuarters.map((q) => {
+      if (collectedQuarters.includes(q)) {
+        if (
+          (firstCollectedIndex > -1 &&
+            lastCollectedIndex > -1 &&
+            firstCollectedIndex < collectedQuarters.indexOf(q) &&
+            collectedQuarters.indexOf(q) < lastCollectedIndex) ||
+          firstCollectedIndex === collectedQuarters.indexOf(q) ||
+          lastCollectedIndex === collectedQuarters.indexOf(q)
+        ) {
+          return dataset[collectedQuarters.indexOf(q)]
+        }
+      }
+
+      return {
+        quarter: q,
+      }
+    })
+  }, [collectedQuarters, dataKeys, dataset, filledQuarters])
 
   const [linesOpacity, setLinesOpacity] = useState<Record<string, number>>(
     () => {

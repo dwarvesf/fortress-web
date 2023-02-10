@@ -1,5 +1,6 @@
 import { Card, Tag } from 'antd'
 import { LineChart } from 'components/common/LineChart'
+import { useMemo } from 'react'
 import { CartesianAxisProps, TooltipProps } from 'recharts'
 import { theme } from 'styles'
 import { ViewAudit, ViewEngineeringHealth } from 'types/schema'
@@ -114,18 +115,39 @@ export const AverageDatasetChart = (props: Props) => {
   const collectedQuarters = dataset.map((d) => d.quarter || '')
   const filledQuarters = fillQuarters(collectedQuarters)
 
-  const filledDataset = filledQuarters.map((q) => {
-    if (
-      collectedQuarters.includes(q) &&
-      dataset[collectedQuarters.indexOf(q)]?.avg
-    ) {
-      return dataset[collectedQuarters.indexOf(q)]
-    }
+  const filledDataset = useMemo(() => {
+    const tempDataset = dataset
+    const firstCollectedRecord = tempDataset.find((e) => e.avg && e.avg > 0)
+    const lastCollectedRecord = tempDataset
+      .reverse()
+      .find((e) => e.avg && e.avg > 0)
 
-    return {
-      quarter: q,
-    }
-  })
+    const firstCollectedIndex = firstCollectedRecord
+      ? dataset.indexOf(firstCollectedRecord)
+      : -1
+    const lastCollectedIndex = lastCollectedRecord
+      ? dataset.indexOf(lastCollectedRecord)
+      : -1
+
+    return filledQuarters.map((q) => {
+      if (collectedQuarters.includes(q)) {
+        if (
+          (firstCollectedIndex > -1 &&
+            lastCollectedIndex > -1 &&
+            firstCollectedIndex < collectedQuarters.indexOf(q) &&
+            collectedQuarters.indexOf(q) < lastCollectedIndex) ||
+          firstCollectedIndex === collectedQuarters.indexOf(q) ||
+          lastCollectedIndex === collectedQuarters.indexOf(q)
+        ) {
+          return dataset[collectedQuarters.indexOf(q)]
+        }
+      }
+
+      return {
+        quarter: q,
+      }
+    })
+  }, [collectedQuarters, dataset, filledQuarters])
 
   return (
     <LineChart
