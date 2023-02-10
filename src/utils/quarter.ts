@@ -12,6 +12,8 @@ export const fillQuarters = (quarters: string[]) => {
     const currentQuarter = currentMonth / 3 + 1
 
     quarters = [`Q${currentQuarter.toFixed()}/${currentYear}`]
+  } else {
+    quarters = [quarters[quarters.length - 1]]
   }
 
   while (quarters.length < 4) {
