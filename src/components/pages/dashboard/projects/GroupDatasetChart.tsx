@@ -249,6 +249,7 @@ export const GroupDatasetChart = (props: Props) => {
       hasLegend
       customLegendRenderer={customLegendRenderer}
       linesOpacity={linesOpacity}
+      isAnimationActive={(dataset || []).length >= 4}
     />
   )
 }

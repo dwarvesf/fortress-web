@@ -28,7 +28,11 @@ const averageDatasetRenderer = (
     if (datasetArray.length === 1) {
       return (
         <StatisticBlock
-          stat={(datasetArray[datasetArray.length - 1].avg || 0).toFixed(1)}
+          stat={
+            (datasetArray[datasetArray.length - 1].avg || 0) >= 1
+              ? (datasetArray[datasetArray.length - 1].avg || 1).toFixed(1)
+              : undefined
+          }
           statColor={theme.colors.gray700}
         />
       )
@@ -36,7 +40,11 @@ const averageDatasetRenderer = (
     if (datasetArray.length > 1) {
       return (
         <StatisticBlock
-          stat={(datasetArray[datasetArray.length - 1].avg || 0).toFixed(1)}
+          stat={
+            (datasetArray[datasetArray.length - 1].avg || 0) >= 1
+              ? (datasetArray[datasetArray.length - 1].avg || 1).toFixed(1)
+              : undefined
+          }
           statColor={theme.colors.gray700}
           postfix={getTrendByPercentage(
             datasetArray[datasetArray.length - 1].trend || 0,

@@ -115,9 +115,13 @@ export const AverageDatasetChart = (props: Props) => {
   const filledQuarters = fillQuarters(collectedQuarters)
 
   const filledDataset = filledQuarters.map((q) => {
-    if (collectedQuarters.includes(q)) {
+    if (
+      collectedQuarters.includes(q) &&
+      dataset[collectedQuarters.indexOf(q)]?.avg
+    ) {
       return dataset[collectedQuarters.indexOf(q)]
     }
+
     return {
       quarter: q,
     }
@@ -137,6 +141,7 @@ export const AverageDatasetChart = (props: Props) => {
         />
       }
       customToolTip={<CustomTooltip />}
+      isAnimationActive={(dataset || []).length >= 4}
     />
   )
 }
