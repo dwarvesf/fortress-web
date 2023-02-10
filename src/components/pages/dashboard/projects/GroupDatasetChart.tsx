@@ -148,12 +148,10 @@ export const GroupDatasetChart = (props: Props) => {
     return filledQuarters.map((q) => {
       if (collectedQuarters.includes(q)) {
         if (
-          (firstCollectedIndex > -1 &&
-            lastCollectedIndex > -1 &&
-            firstCollectedIndex < collectedQuarters.indexOf(q) &&
-            collectedQuarters.indexOf(q) < lastCollectedIndex) ||
-          firstCollectedIndex === collectedQuarters.indexOf(q) ||
-          lastCollectedIndex === collectedQuarters.indexOf(q)
+          firstCollectedIndex > -1 &&
+          lastCollectedIndex > -1 &&
+          firstCollectedIndex <= collectedQuarters.indexOf(q) &&
+          collectedQuarters.indexOf(q) <= lastCollectedIndex
         ) {
           return dataset[collectedQuarters.indexOf(q)]
         }
