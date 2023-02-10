@@ -224,6 +224,14 @@ export const SurveyForm = () => {
                 }}
                 initialValues={initialValues}
                 validateTrigger="onSubmit"
+                scrollToFirstError={{
+                  behavior: (actions) => {
+                    actions.forEach(({ el, top }) => {
+                      const offsetTop = el.scrollTop > top ? -50 : 200
+                      el.scrollTop = top + offsetTop
+                    })
+                  },
+                }}
               >
                 <Space direction="vertical" style={{ width: '100%' }}>
                   {detail.answers && detail.answers.length ? (
