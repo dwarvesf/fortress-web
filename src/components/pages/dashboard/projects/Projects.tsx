@@ -6,6 +6,7 @@ import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { GET_PATHS, client } from 'libs/apis'
 import { ViewAudit, ViewEngineeringHealth } from 'types/schema'
 import { theme } from 'styles'
+import { AuditGroupTypes } from 'constants/auditGroups'
 import { StatisticBlock } from '../StatisticBlock'
 import { CardWithTabs } from './CardWithTabs'
 import { AverageDatasetChart } from './AverageDatasetChart'
@@ -74,7 +75,7 @@ const averageDatasetRenderer = (
   )
 }
 
-const groupDatasetRenderer = (dataset: any) => {
+const groupHealthDatasetRenderer = (dataset: any) => {
   const datasetArray = dataset || []
 
   return (
@@ -86,6 +87,31 @@ const groupDatasetRenderer = (dataset: any) => {
       }}
     >
       <GroupDatasetChart
+        type={AuditGroupTypes.ENGINEERING_HEALTH}
+        dataKeys={
+          datasetArray.length > 0 && datasetArray[0].trend
+            ? (Object.keys(datasetArray[0].trend) as string[])
+            : []
+        }
+        dataset={datasetArray}
+      />
+    </div>
+  )
+}
+
+const groupAuditDatasetRenderer = (dataset: any) => {
+  const datasetArray = dataset || []
+
+  return (
+    <div
+      style={{
+        width: '100%',
+        overflowX: 'auto',
+        overflowY: 'hidden',
+      }}
+    >
+      <GroupDatasetChart
+        type={AuditGroupTypes.AUDIT}
         dataKeys={
           datasetArray.length > 0 && datasetArray[0].trend
             ? (Object.keys(datasetArray[0].trend) as string[])
@@ -165,23 +191,29 @@ const Projects = () => {
 
       <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
         <CardWithTabs
-          groupKey="engineering-health"
+          groupKey={AuditGroupTypes.ENGINEERING_HEALTH}
           title="Engineering Health"
           tabTitles={['average', 'groups']}
           selectedProjectId={selectedProjectId}
           fetcher={() =>
             client.getProjectsEngineeringHealthScore(selectedProjectId)
           }
-          childrenRenderers={[averageDatasetRenderer, groupDatasetRenderer]}
+          childrenRenderers={[
+            averageDatasetRenderer,
+            groupHealthDatasetRenderer,
+          ]}
         />
 
         <CardWithTabs
-          groupKey="audit-score"
+          groupKey={AuditGroupTypes.AUDIT}
           title="Audit Score"
           tabTitles={['average', 'groups']}
           selectedProjectId={selectedProjectId}
           fetcher={() => client.getProjectsAuditScore(selectedProjectId)}
-          childrenRenderers={[averageDatasetRenderer, groupDatasetRenderer]}
+          childrenRenderers={[
+            averageDatasetRenderer,
+            groupAuditDatasetRenderer,
+          ]}
         />
       </Row>
 

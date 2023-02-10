@@ -112,35 +112,67 @@ const CustomAxisTick = ({
 export const AverageDatasetChart = (props: Props) => {
   const { dataset } = props
 
-  const collectedQuarters = dataset.map((d) => d.quarter || '')
-  const filledQuarters = fillQuarters(collectedQuarters)
+  const collectedQuarters = dataset.map((d) => d.quarter || '') // collected quarters (possibly skipping 1 or some quarters)
+  const filledQuarters = fillQuarters(collectedQuarters) // after filling gap or expanding
 
   const filledDataset = useMemo(() => {
-    const tempDataset = dataset
-    const firstCollectedRecord = tempDataset.find((e) => e.avg && e.avg > 0)
-    const lastCollectedRecord = tempDataset
-      .reverse()
-      .find((e) => e.avg && e.avg > 0)
+    // among the records from data (possibly skipping a quarter)
+    // get the index of the first quarter from left to right that has any field > 0
+    // meaning all the left side of this has all field = 0
+    let firstCollectedIndex: number = -1
+    for (let i = 0; i < dataset.length; i++) {
+      if (dataset[i].avg && dataset[i].avg! > 0) {
+        firstCollectedIndex = i
+        break
+      }
+    }
 
-    const firstCollectedIndex = firstCollectedRecord
-      ? dataset.indexOf(firstCollectedRecord)
-      : -1
-    const lastCollectedIndex = lastCollectedRecord
-      ? dataset.indexOf(lastCollectedRecord)
-      : -1
+    // among the records from data (possibly skipping a quarter)
+    // get the index of the first quarter from right to left that has any field > 0
+    // meaning all the right side of this has all field = 0
+    let lastCollectedIndex: number = -1
+    for (let i = dataset.length - 1; i >= 0; i--) {
+      if (dataset[i].avg && dataset[i].avg! > 0) {
+        lastCollectedIndex = i
+        break
+      }
+    }
 
-    return filledQuarters.map((q) => {
+    return filledQuarters.map((q, i) => {
       if (collectedQuarters.includes(q)) {
+        // quarters that already appears in the data
         if (
           firstCollectedIndex > -1 &&
           lastCollectedIndex > -1 &&
           firstCollectedIndex <= collectedQuarters.indexOf(q) &&
           collectedQuarters.indexOf(q) <= lastCollectedIndex
+          // check if is in the range of the 2 index got above
+          // so that we slice all the empty quarters outside the has-data-quarter-interval
         ) {
           return dataset[collectedQuarters.indexOf(q)]
         }
       }
 
+      // otherwise (quarters that were filled)
+      if (
+        i >= filledQuarters.indexOf(collectedQuarters[firstCollectedIndex]) &&
+        i <= filledQuarters.indexOf(collectedQuarters[lastCollectedIndex])
+        // check if this quarter if inside the has-data-quarter-interval
+        // a bit complex since we are working between to quarters arrays
+        // Collected: e.g. _______, q4/2021, _______, q2/2022
+        // Filled:    e.g. q3/2021, q4/2021, q1/2022, q2/2022
+      ) {
+        // fill with the record with data of 0
+        return {
+          quarter: q,
+          avg: 0,
+          trend: {
+            avg: 0,
+          },
+        }
+      }
+
+      // other cases, outside of the has-data-quarter-interval
       return {
         quarter: q,
       }
