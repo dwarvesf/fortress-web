@@ -55,6 +55,44 @@ export interface ModelChapter {
   updatedAt?: string
 }
 
+export interface ModelClient {
+  address?: string
+  contacts?: ModelClientContact[]
+  country?: string
+  createdAt?: string
+  deletedAt?: GormDeletedAt
+  description?: string
+  id?: string
+  industry?: string
+  name?: string
+  registrationNumber?: string
+  updatedAt?: string
+  website?: string
+}
+
+export interface ModelClientContact {
+  clientID?: string
+  createdAt?: string
+  deletedAt?: GormDeletedAt
+  emails?: number[]
+  id?: string
+  isMainContact?: boolean
+  name?: string
+  role?: string
+  updatedAt?: string
+}
+
+export interface ModelCompanyInfo {
+  createdAt?: string
+  deletedAt?: GormDeletedAt
+  description?: string
+  id?: string
+  info?: number[]
+  name?: string
+  registration_number?: string
+  updatedAt?: string
+}
+
 export interface ModelCountry {
   cities?: string[]
   code?: string
@@ -236,6 +274,47 @@ export interface ModelHiringPosition {
   status?: string
 }
 
+export interface ModelInvoice {
+  bank?: ModelBankAccount
+  bankID?: string
+  cc?: number[]
+  conversionAmount?: number
+  conversionRate?: number
+  createdAt?: string
+  deletedAt?: GormDeletedAt
+  description?: string
+  discount?: number
+  dueAt?: string
+  email?: string
+  errorInvoiceID?: string
+  failedAt?: string
+  id?: string
+  /** we not store this in db */
+  invoiceFileContent?: number[]
+  invoiceFileURL?: string
+  invoicedAt?: string
+  lineItems?: number[]
+  messageID?: string
+  month?: number
+  note?: string
+  number?: string
+  paidAt?: string
+  project?: ModelProject
+  projectID?: string
+  references?: string
+  scheduledDate?: string
+  sender?: ModelEmployee
+  sentBy?: string
+  status?: string
+  subTotal?: number
+  tax?: number
+  threadID?: string
+  todoAttachment?: string
+  total?: number
+  updatedAt?: string
+  year?: number
+}
+
 export interface ModelLikertScaleCount {
   agree?: number
   disagree?: number
@@ -276,8 +355,12 @@ export interface ModelProject {
   avatar?: string
   bankAccount?: ModelBankAccount
   bankAccountID?: string
+  client?: ModelClient
   clientEmail?: string
+  clientID?: string
   code?: string
+  companyInfo?: ModelCompanyInfo
+  companyInfoID?: string
   country?: ModelCountry
   countryID?: string
   createdAt?: string
@@ -287,9 +370,9 @@ export interface ModelProject {
   heads?: ModelProjectHead[]
   id?: string
   name?: string
-  notionID?: string
   projectEmail?: string
   projectMembers?: ModelProjectMember[]
+  projectNotion?: ModelProjectNotion
   projectStacks?: ModelProjectStack[]
   slots?: ModelProjectSlot[]
   startDate?: string
@@ -343,6 +426,16 @@ export interface ModelProjectMemberPosition {
   position?: ModelPosition
   positionID?: string
   projectMemberID?: string
+  updatedAt?: string
+}
+
+export interface ModelProjectNotion {
+  auditNotionID?: string
+  createdAt?: string
+  deletedAt?: GormDeletedAt
+  id?: string
+  project?: ModelProject
+  projectID?: string
   updatedAt?: string
 }
 
@@ -531,6 +624,28 @@ export interface RequestCreateEmployeeInput {
   teamEmail: string
 }
 
+export interface RequestCreateInput {
+  bankID: string
+  conversionAmount?: number
+  conversionRate?: number
+  description?: string
+  discount?: number
+  dueAt?: string
+  email?: string
+  month?: number
+  note?: string
+  number?: string
+  paidAt?: string
+  projectID?: string
+  scheduledDate?: string
+  status?: string
+  subTotal?: number
+  tax?: number
+  threadID?: string
+  total?: number
+  year?: number
+}
+
 export interface RequestCreatePositionInput {
   code: string
   name: string
@@ -538,6 +653,7 @@ export interface RequestCreatePositionInput {
 
 export interface RequestCreateProjectInput {
   accountManagerID: string
+  auditNotionID?: string
   bankAccountID?: string
   clientEmail?: string[]
   code?: string
@@ -546,7 +662,6 @@ export interface RequestCreateProjectInput {
   function: string
   members?: RequestAssignMemberInput[]
   name: string
-  notionID?: string
   projectEmail?: string
   startDate?: string
   status: string
@@ -679,11 +794,11 @@ export interface RequestUpdatePositionBody {
 }
 
 export interface RequestUpdateProjectGeneralInfoInput {
+  auditNotionID?: string
   bankAccountID?: string
   countryID: string
   function: string
   name: string
-  notionID?: string
   stacks?: string[]
   startDate?: string
 }
@@ -904,6 +1019,10 @@ export interface ViewCitiesResponse {
 
 export interface ViewCountriesResponse {
   data?: ModelCountry[]
+}
+
+export interface ViewCreateInvoiceResponse {
+  data?: ModelInvoice
 }
 
 export interface ViewCreateMemberData {
@@ -1130,6 +1249,10 @@ export interface ViewGetEngagementDashboardResponse {
   data?: ViewEngagementDashboard[]
 }
 
+export interface ViewGetLatestInvoiceResponse {
+  data?: ModelInvoice
+}
+
 export interface ViewGetQuestionResponse {
   data?: ViewQuestion[]
 }
@@ -1294,6 +1417,7 @@ export interface ViewProjectContentDataResponse {
 export interface ViewProjectData {
   accountManager?: ViewProjectHead
   allowsSendingSurvey?: boolean
+  auditNotionID?: string
   avatar?: string
   bankAccount?: ViewBasicBankAccountInfo
   clientEmail?: string[]
@@ -1308,7 +1432,6 @@ export interface ViewProjectData {
   industry?: string
   members?: ViewProjectMember[]
   name?: string
-  notionID?: string
   projectEmail?: string
   salePerson?: ViewProjectHead
   stacks?: ViewStack[]
@@ -1583,11 +1706,11 @@ export interface ViewUpdateProjectContactInfoResponse {
 }
 
 export interface ViewUpdateProjectGeneralInfo {
+  auditNotionID?: string
   bankAccount?: ViewBasicBankAccountInfo
   country?: ViewBasicCountryInfo
   function?: string
   name?: string
-  notionID?: string
   stacks?: ModelStack[]
   startDate?: string
 }
@@ -1641,18 +1764,23 @@ export interface ViewWorkSurveyResponse {
 
 export interface ViewWorkSurveySummary {
   data?: ViewWorkSurveySummaryEmployee[]
+  dates?: string[]
   type?: string
 }
 
 export interface ViewWorkSurveySummaryAnswer {
   answer?: string
-  date?: string
+  project?: ViewBasicProjectInfo
 }
 
 export interface ViewWorkSurveySummaryEmployee {
-  answers?: ViewWorkSurveySummaryAnswer[]
-  project?: ViewBasicProjectInfo
+  listAnswers?: ViewWorkSurveySummaryListAnswer[]
   reviewer?: ViewBasicEmployeeInfo
+}
+
+export interface ViewWorkSurveySummaryListAnswer {
+  answers?: ViewWorkSurveySummaryAnswer[]
+  date?: string
 }
 
 export interface ViewWorkSurveySummaryResponse {
