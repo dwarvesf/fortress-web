@@ -220,24 +220,17 @@ export const AuditEventsCard = (props: Props) => {
               content={<CustomTooltip />}
             />
 
-            {(dataset.length > 1 && dataset[dataset.length - 1].trend
-              ? (Object.keys(
-                  dataset[dataset.length - 1].trend || {},
-                ) as string[])
-              : []
-            )
-              .reverse()
-              .map((key, i) => (
-                <Bar
-                  key={key}
-                  dataKey={key}
-                  stackId="a"
-                  fill={
-                    [chartColors.green, chartColors.yellow, chartColors.red][i]
-                  }
-                  maxBarSize={40}
-                />
-              ))}
+            {['low', 'medium', 'high'].map((key, i) => (
+              <Bar
+                key={key}
+                dataKey={key}
+                stackId="a"
+                fill={
+                  [chartColors.green, chartColors.yellow, chartColors.red][i]
+                }
+                maxBarSize={40}
+              />
+            ))}
           </BarChart>
         </ResponsiveContainer>
       </div>
