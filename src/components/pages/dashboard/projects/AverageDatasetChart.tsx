@@ -1,8 +1,10 @@
 import { Card, Tag } from 'antd'
 import { LineChart } from 'components/common/LineChart'
+import { useMemo } from 'react'
 import { CartesianAxisProps, TooltipProps } from 'recharts'
 import { theme } from 'styles'
 import { ViewAudit, ViewEngineeringHealth } from 'types/schema'
+import { fillQuartersData } from 'utils/quarter'
 import { getTrendByPercentage, getTrendStatusColor } from 'utils/score'
 
 interface Props {
@@ -110,12 +112,18 @@ const CustomAxisTick = ({
 export const AverageDatasetChart = (props: Props) => {
   const { dataset } = props
 
+  const collectedQuarters = dataset.map((d) => d.quarter || '') // collected quarters (possibly skipping 1 or some quarters)
+
+  const filledDataset = useMemo(() => {
+    return fillQuartersData(dataset, ['avg'], collectedQuarters)
+  }, [collectedQuarters, dataset])
+
   return (
     <LineChart
       width="100%"
       height={260}
       minWidth={320}
-      dataset={dataset}
+      dataset={filledDataset}
       lineDataKeys={['avg']}
       xAxisDataKey="quarter"
       xAxisTick={
@@ -124,6 +132,7 @@ export const AverageDatasetChart = (props: Props) => {
         />
       }
       customToolTip={<CustomTooltip />}
+      isAnimationActive={(dataset || []).length >= 4}
     />
   )
 }
