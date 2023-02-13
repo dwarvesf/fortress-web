@@ -88,11 +88,7 @@ const groupHealthDatasetRenderer = (dataset: any) => {
     >
       <GroupDatasetChart
         type={AuditGroupTypes.ENGINEERING_HEALTH}
-        dataKeys={
-          datasetArray.length > 0 && datasetArray[0].trend
-            ? (Object.keys(datasetArray[0].trend) as string[])
-            : auditGroupNames[AuditGroupTypes.ENGINEERING_HEALTH]
-        }
+        dataKeys={auditGroupNames[AuditGroupTypes.ENGINEERING_HEALTH]}
         dataset={datasetArray}
       />
     </div>
@@ -112,11 +108,7 @@ const groupAuditDatasetRenderer = (dataset: any) => {
     >
       <GroupDatasetChart
         type={AuditGroupTypes.AUDIT}
-        dataKeys={
-          datasetArray.length > 0 && datasetArray[0].trend
-            ? (Object.keys(datasetArray[0].trend) as string[])
-            : auditGroupNames[AuditGroupTypes.AUDIT]
-        }
+        dataKeys={auditGroupNames[AuditGroupTypes.AUDIT]}
         dataset={datasetArray}
       />
     </div>
