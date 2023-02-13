@@ -51,104 +51,89 @@ const CustomTooltip = ({
           boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
         }}
       >
-        <div>
-          <Row align="middle" gutter={5} style={{ marginTop: 3 }}>
-            <Col
-              style={{
-                width: 16,
-                height: 16,
-                background: item?.color,
-                marginRight: 5,
-              }}
-            />
-            <Col>{capitalizeFirstLetter(item?.name)}</Col>
-            <Col>({item?.value})</Col>
-          </Row>
-          <div style={{ paddingLeft: 21 }}>
-            {tooltip === 'development' &&
-              development?.workUnits?.map((each) => (
-                <div
-                  key={`development_${each.project?.id}_${each.workUnitName}`}
-                  style={{ marginTop: 5 }}
-                >
-                  <ProjectAvatar
-                    project={each.project!}
-                    renderName={(name) => name}
-                  />{' '}
-                  - {each.workUnitName}
+        <Row align="middle" gutter={5}>
+          <Col
+            style={{
+              width: 16,
+              height: 16,
+              background: item?.color,
+              marginRight: 5,
+            }}
+          />
+          <Col>{capitalizeFirstLetter(item?.name)}</Col>
+          <Col>({item?.value})</Col>
+        </Row>
+        <Space direction="vertical" style={{ paddingLeft: 21, paddingTop: 10 }}>
+          {tooltip === 'development' &&
+            development?.workUnits?.map((each) => (
+              <div key={`development_${each.project?.id}_${each.workUnitName}`}>
+                <ProjectAvatar
+                  project={each.project!}
+                  renderName={(name) => name}
+                />{' '}
+                - {each.workUnitName}
+              </div>
+            ))}
+          {tooltip === 'management' &&
+            management?.workUnits?.map((each) => (
+              <div
+                key={`management_workUnits_${each.project?.id}_${each.workUnitName}`}
+              >
+                <ProjectAvatar
+                  project={each.project!}
+                  renderName={(name) => name}
+                />{' '}
+                - {each.workUnitName}
+              </div>
+            ))}
+          {tooltip === 'management' &&
+            management?.projectHeads?.map((each) => (
+              <div
+                key={`management_projectHeads_${each.project?.id}_${each.position}`}
+              >
+                <ProjectAvatar
+                  project={each.project!}
+                  renderName={(name) => name}
+                />{' '}
+                - {each.position}
+              </div>
+            ))}
+          {tooltip === 'learning' &&
+            learning?.workUnits?.map((each) => (
+              <div key={`learning_${each.project?.id}_${each.workUnitName}`}>
+                <ProjectAvatar
+                  project={each.project!}
+                  renderName={(name) => name}
+                />{' '}
+                - {each.workUnitName}
+              </div>
+            ))}
+          {tooltip === 'training' && training?.mentees?.length && (
+            <>
+              <div>Mentor:</div>
+              {training.mentees.slice(0, 3).map((each) => (
+                <div key={`training_${each.username}`}>
+                  <UserAvatar user={each} isLink={false} />
                 </div>
               ))}
-            {tooltip === 'management' &&
-              management?.workUnits?.map((each) => (
-                <div
-                  key={`management_workUnits_${each.project?.id}_${each.workUnitName}`}
-                  style={{ marginTop: 5 }}
-                >
-                  <ProjectAvatar
-                    project={each.project!}
-                    renderName={(name) => name}
-                  />{' '}
-                  - {each.workUnitName}
-                </div>
-              ))}
-            {tooltip === 'management' &&
-              management?.projectHeads?.map((each) => (
-                <div
-                  key={`management_projectHeads_${each.project?.id}_${each.position}`}
-                  style={{ marginTop: 5 }}
-                >
-                  <ProjectAvatar
-                    project={each.project!}
-                    renderName={(name) => name}
-                  />{' '}
-                  - {each.position}
-                </div>
-              ))}
-            {tooltip === 'learning' &&
-              learning?.workUnits?.map((each) => (
-                <div
-                  key={`learning_${each.project?.id}_${each.workUnitName}`}
-                  style={{ marginTop: 5 }}
-                >
-                  <ProjectAvatar
-                    project={each.project!}
-                    renderName={(name) => name}
-                  />{' '}
-                  - {each.workUnitName}
-                </div>
-              ))}
-            {tooltip === 'training' && training?.mentees?.length && (
-              <div style={{ marginTop: 5 }}>
-                <div>Mentor:</div>
-                {training.mentees.slice(0, 3).map((each) => (
-                  <div
-                    key={`training_${each.username}`}
-                    style={{ marginTop: 5 }}
-                  >
-                    <UserAvatar user={each} isLink={false} />
-                  </div>
+              {training.mentees.length > 3 && (
+                <AvatarArray data={training.mentees.slice(3)} />
+              )}
+            </>
+          )}
+          {tooltip === 'training' && training?.workUnits?.length && (
+            <>
+              <div>Training:</div>
+              <ul style={{ paddingLeft: 30 }}>
+                {training.workUnits.map((each) => (
+                  <li key={`training_${each.workUnitName}`}>
+                    {each.workUnitName}
+                  </li>
                 ))}
-                {training.mentees.length > 3 && (
-                  <div style={{ marginTop: 5 }}>
-                    <AvatarArray data={training.mentees.slice(3)} />
-                  </div>
-                )}
-              </div>
-            )}
-            {tooltip === 'training' && training?.workUnits?.length && (
-              <div style={{ marginTop: 5 }}>
-                <div>Training:</div>
-                <ul style={{ paddingLeft: 30 }}>
-                  {training.workUnits.map((each) => (
-                    <li key={`training_${each.workUnitName}`}>
-                      {each.workUnitName}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </div>
-        </div>
+              </ul>
+            </>
+          )}
+        </Space>
       </Card>
     )
   }
