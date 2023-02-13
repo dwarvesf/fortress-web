@@ -142,6 +142,19 @@ export const AuthenticatedLayout = (props: Props) => {
       //   ),
       //   feature: FEATURES.CONFIG,
       // },
+      {
+        content: getItem(
+          'Invoice',
+          ROUTES.INVOICE,
+          <Icon icon="nimbus:invoice" width={20} />,
+          [
+            {
+              content: getItem('Create invoice', ROUTES.ADD_INVOICE),
+              permission: Permission.EMPLOYEES_READ_FULLACCESS,
+            },
+          ],
+        ),
+      },
     ]
   }, [])
 
