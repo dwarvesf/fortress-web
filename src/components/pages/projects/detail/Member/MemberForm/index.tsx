@@ -227,7 +227,7 @@ export const MemberForm = (props: Props) => {
               disabledDate={(date) => {
                 // If status is not inactive, if we need to provide an endDate,
                 // it must be some date into the future
-                if (date.isBefore(today)) {
+                if (!isInactive && date.isBefore(today)) {
                   return true
                 }
 

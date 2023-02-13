@@ -148,34 +148,6 @@ const Default = () => {
           }),
       },
       {
-        title: 'Organizations',
-        key: 'organizations',
-        dataIndex: 'organizations',
-        render: (value?: ViewOrganization[]) => (
-          <TagArray
-            value={value}
-            maxTag={2}
-            color="red"
-            // eslint-disable-next-line
-            content={(organization) => (
-              <AvatarWithName
-                avatarSize={20}
-                avatar={organization.avatar}
-                name={organization.name}
-                style={{ marginLeft: -7 }}
-              />
-            )}
-          />
-        ),
-        filterSearch: true,
-        filteredValue: filter.organizations,
-        filters: organizations.map((each) => ({
-          text: each.name,
-          value: each.code!,
-        })),
-        permission: Permission.EMPLOYEES_READ_GENERALINFO_FULLACCESS,
-      },
-      {
         title: 'Positions',
         key: 'positions',
         dataIndex: 'positions',
@@ -315,6 +287,34 @@ const Default = () => {
           text: each.name,
           value: each.code!,
         })),
+      },
+      {
+        title: 'Organizations',
+        key: 'organizations',
+        dataIndex: 'organizations',
+        render: (value?: ViewOrganization[]) => (
+          <TagArray
+            value={value}
+            maxTag={2}
+            color="red"
+            // eslint-disable-next-line
+            content={(organization) => (
+              <AvatarWithName
+                avatarSize={20}
+                avatar={organization.avatar}
+                name={organization.name}
+                style={{ marginLeft: -7 }}
+              />
+            )}
+          />
+        ),
+        filterSearch: true,
+        filteredValue: filter.organizations,
+        filters: organizations.map((each) => ({
+          text: each.name,
+          value: each.code!,
+        })),
+        permission: Permission.EMPLOYEES_READ_GENERALINFO_FULLACCESS,
       },
       {
         title: 'Discord',
