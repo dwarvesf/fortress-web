@@ -1,7 +1,9 @@
-import { Card, Col, Row, Space } from 'antd'
-import { UserAvatar } from 'components/common/AvatarWithName'
+import { Avatar, Card, Col, Row, Space } from 'antd'
+import { AvatarArray } from 'components/common/AvatarArray'
+import { ProjectAvatar, UserAvatar } from 'components/common/AvatarWithName'
 import { chartColors } from 'constants/colors'
 import { ROUTES } from 'constants/routes'
+import { WorkUnitType, workUnitTypes } from 'constants/workUnitTypes'
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import {
@@ -16,32 +18,29 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
-import { ViewBasicEmployeeInfo } from 'types/schema'
-import { capitalizeFirstLetter } from 'utils/string'
+import {
+  ViewSummaryWorkUnitDistributionData,
+  ViewWorkUnitDistribution,
+} from 'types/schema'
+import { capitalizeFirstLetter, getFirstLetterCapitalized } from 'utils/string'
 
 const YAxisSize = 150
 const maxDisplayItems = 8
-
-interface ToTalType {
-  development?: number
-  management?: number
-  training?: number
-  learning?: number
-}
-
-type RecordType = ToTalType & {
-  id?: string
-  employee?: ViewBasicEmployeeInfo
-}
 
 const CustomTooltip = ({
   active,
   payload,
   label,
   data,
-}: TooltipProps<string | number, string> & { data: RecordType[] }) => {
+  tooltip,
+}: TooltipProps<string | number, string> & {
+  data: ViewWorkUnitDistribution[]
+  tooltip: WorkUnitType
+}) => {
   if (active && payload && payload.length) {
-    const user = data.find((each) => each.employee?.id === label)?.employee
+    const { development, management, learning, training } =
+      data.find((each) => each.employee?.id === label) || {}
+    const item = payload.find((each) => each.dataKey === tooltip)
 
     return (
       <Card
@@ -52,26 +51,104 @@ const CustomTooltip = ({
           boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
         }}
       >
-        <UserAvatar user={user!} isLink={false} />
-        {payload.map((data) => (
-          <Row
-            key={data.dataKey}
-            align="middle"
-            gutter={5}
-            style={{ marginTop: 3 }}
-          >
+        <div>
+          <Row align="middle" gutter={5} style={{ marginTop: 3 }}>
             <Col
               style={{
                 width: 16,
                 height: 16,
-                background: data.color,
+                background: item?.color,
                 marginRight: 5,
               }}
             />
-            <Col>{capitalizeFirstLetter(data.name)}</Col>
-            <Col>({data.value}%)</Col>
+            <Col>{capitalizeFirstLetter(item?.name)}</Col>
+            <Col>({item?.value})</Col>
           </Row>
-        ))}
+          <div style={{ paddingLeft: 21 }}>
+            {tooltip === 'development' &&
+              development?.workUnits?.map((each) => (
+                <div
+                  key={`development_${each.project?.id}_${each.workUnitName}`}
+                  style={{ marginTop: 5 }}
+                >
+                  <ProjectAvatar
+                    project={each.project!}
+                    renderName={(name) => name}
+                  />{' '}
+                  - {each.workUnitName}
+                </div>
+              ))}
+            {tooltip === 'management' &&
+              management?.workUnits?.map((each) => (
+                <div
+                  key={`management_workUnits_${each.project?.id}_${each.workUnitName}`}
+                  style={{ marginTop: 5 }}
+                >
+                  <ProjectAvatar
+                    project={each.project!}
+                    renderName={(name) => name}
+                  />{' '}
+                  - {each.workUnitName}
+                </div>
+              ))}
+            {tooltip === 'management' &&
+              management?.projectHeads?.map((each) => (
+                <div
+                  key={`management_projectHeads_${each.project?.id}_${each.position}`}
+                  style={{ marginTop: 5 }}
+                >
+                  <ProjectAvatar
+                    project={each.project!}
+                    renderName={(name) => name}
+                  />{' '}
+                  - {each.position}
+                </div>
+              ))}
+            {tooltip === 'learning' &&
+              learning?.workUnits?.map((each) => (
+                <div
+                  key={`learning_${each.project?.id}_${each.workUnitName}`}
+                  style={{ marginTop: 5 }}
+                >
+                  <ProjectAvatar
+                    project={each.project!}
+                    renderName={(name) => name}
+                  />{' '}
+                  - {each.workUnitName}
+                </div>
+              ))}
+            {tooltip === 'training' && training?.mentees?.length && (
+              <div style={{ marginTop: 5 }}>
+                <div>Mentor:</div>
+                {training.mentees.slice(0, 3).map((each) => (
+                  <div
+                    key={`training_${each.username}`}
+                    style={{ marginTop: 5 }}
+                  >
+                    <UserAvatar user={each} isLink={false} />
+                  </div>
+                ))}
+                {training.mentees.length > 3 && (
+                  <div style={{ marginTop: 5 }}>
+                    <AvatarArray data={training.mentees.slice(3)} />
+                  </div>
+                )}
+              </div>
+            )}
+            {tooltip === 'training' && training?.workUnits?.length && (
+              <div style={{ marginTop: 5 }}>
+                <div>Training:</div>
+                <ul style={{ paddingLeft: 30 }}>
+                  {training.workUnits.map((each) => (
+                    <li key={`training_${each.workUnitName}`}>
+                      {each.workUnitName}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        </div>
       </Card>
     )
   }
@@ -80,8 +157,8 @@ const CustomTooltip = ({
 
 const CustomLegend = ({
   payload,
-  total,
-}: LegendProps & { total: ToTalType }) => {
+  summary,
+}: LegendProps & { summary: ViewSummaryWorkUnitDistributionData }) => {
   return (
     <Space
       style={{ width: '100%', justifyContent: 'space-evenly', marginTop: 10 }}
@@ -100,7 +177,10 @@ const CustomLegend = ({
             <div style={{ fontWeight: '500' }}>
               {capitalizeFirstLetter(data.value)}
             </div>
-            <div>{total[data.value as keyof ToTalType]}%</div>
+            <div>
+              {summary[data.value as keyof ViewSummaryWorkUnitDistributionData]}
+              %
+            </div>
           </div>
         </Row>
       ))}
@@ -116,7 +196,10 @@ const CustomTick = ({
   visibleTicksCount,
   tickFormatter,
   ...props
-}: Record<string, any> & { data: RecordType[]; chartHeight: number }) => {
+}: Record<string, any> & {
+  data: ViewWorkUnitDistribution[]
+  chartHeight: number
+}) => {
   const employee = data.find(
     (each) => each.employee?.id === payload.value,
   )?.employee
@@ -137,15 +220,28 @@ const CustomTick = ({
         style={{ width: '100%', justifyContent: 'flex-end' }}
       >
         <Link href={ROUTES.EMPLOYEE_DETAIL(employee?.username!)}>
-          <a className="styled">{employee?.displayName}</a>
+          <a
+            className="styled"
+            style={{
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {employee?.displayName}
+          </a>
         </Link>
-        <img
+        <Avatar
           src={employee?.avatar}
-          alt=""
-          width={24}
-          height={24}
+          size={24}
           style={{ borderRadius: '50%', objectFit: 'cover' }}
-        />
+        >
+          {!employee?.avatar && (
+            <span style={{ fontSize: 16 }}>
+              {getFirstLetterCapitalized(
+                employee?.displayName || employee?.fullName,
+              )}
+            </span>
+          )}
+        </Avatar>
       </Space>
     </foreignObject>
   )
@@ -165,14 +261,15 @@ const CustomShape = ({
 }
 
 interface Props {
-  data: RecordType[]
-  total: ToTalType
+  data: ViewWorkUnitDistribution[]
+  summary: ViewSummaryWorkUnitDistributionData
 }
 
-export const WorkUnitDistributionChart = ({ data, total }: Props) => {
+export const WorkUnitDistributionChart = ({ data, summary }: Props) => {
   const wheelTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [chartSize, setChartSize] = useState({ width: 0, height: 0 })
   const [padding, setPadding] = useState({ top: 0, bottom: 0 })
+  const [tooltip, setTooltip] = useState<WorkUnitType>()
 
   const onWheel = (delta: number) => {
     const { top, bottom } = padding
@@ -223,7 +320,16 @@ export const WorkUnitDistributionChart = ({ data, total }: Props) => {
       }}
     >
       <ResponsiveContainer width="100%" height={380} minWidth={450}>
-        <BarChart data={data} layout="vertical">
+        <BarChart
+          data={data.map((each) => ({
+            ...each,
+            development: each.development?.total,
+            learning: each.learning?.total,
+            management: each.management?.total,
+            training: each.training?.total,
+          }))}
+          layout="vertical"
+        >
           <CartesianGrid strokeDasharray="3 3" horizontal={false} />
           <XAxis type="number" tickLine={false} />
           <YAxis
@@ -255,31 +361,37 @@ export const WorkUnitDistributionChart = ({ data, total }: Props) => {
                 false
               )
             }
-            content={<CustomTooltip data={data} />}
+            content={
+              tooltip ? (
+                <CustomTooltip data={data} tooltip={tooltip} />
+              ) : (
+                () => null
+              )
+            }
           />
-          <Legend content={<CustomLegend total={total} />} />
-          {['development', 'management', 'training', 'learning'].map(
-            (key, i) => (
-              <Bar
-                key={key}
-                dataKey={key}
-                stackId="a"
-                fill={Object.values(chartColors)[i]}
-                barSize={15}
-                shape={<CustomShape chartHeight={chartSize.height} />}
-                ref={(ref: any) => {
-                  const { width, height } = ref?.props || {}
-                  if (
-                    width &&
-                    height &&
-                    (chartSize.width !== width || chartSize.height !== height)
-                  ) {
-                    setChartSize({ width, height })
-                  }
-                }}
-              />
-            ),
-          )}
+          <Legend content={<CustomLegend summary={summary} />} />
+          {Object.keys(workUnitTypes).map((key, i) => (
+            <Bar
+              key={key}
+              dataKey={key}
+              stackId="a"
+              fill={Object.values(chartColors)[i]}
+              barSize={15}
+              shape={<CustomShape chartHeight={chartSize.height} />}
+              ref={(ref: any) => {
+                const { width, height } = ref?.props || {}
+                if (
+                  width &&
+                  height &&
+                  (chartSize.width !== width || chartSize.height !== height)
+                ) {
+                  setChartSize({ width, height })
+                }
+              }}
+              onMouseOver={() => setTooltip(key as WorkUnitType)}
+              onMouseOut={() => setTooltip(undefined)}
+            />
+          ))}
         </BarChart>
       </ResponsiveContainer>
     </div>

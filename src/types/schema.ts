@@ -656,6 +656,7 @@ export interface RequestCreateProjectInput {
   auditNotionID?: string
   bankAccountID?: string
   clientEmail?: string[]
+  clientID?: string
   code?: string
   countryID: string
   deliveryManagerID?: string
@@ -796,6 +797,7 @@ export interface RequestUpdatePositionBody {
 export interface RequestUpdateProjectGeneralInfoInput {
   auditNotionID?: string
   bankAccountID?: string
+  clientID?: string
   countryID: string
   function: string
   name: string
@@ -955,11 +957,39 @@ export interface ViewAvailableSlot {
   type?: string
 }
 
+export interface ViewBankAccount {
+  accountNumber?: string
+  address?: string
+  bankName?: string
+  currency?: ViewCurrency
+  currencyID?: string
+  id?: string
+  name?: string
+  ownerName?: string
+  routingNumber?: string
+  swiftCode?: string
+  ukSortCode?: string
+}
+
 export interface ViewBasicBankAccountInfo {
   accountNumber?: string
   bankName?: string
   id?: string
   ownerName?: string
+}
+
+export interface ViewBasicClientInfo {
+  description?: string
+  id?: string
+  name?: string
+  registrationNumber?: string
+}
+
+export interface ViewBasicCompanyInfo {
+  description?: string
+  id?: string
+  name?: string
+  registrationNumber?: string
 }
 
 export interface ViewBasicCountryInfo {
@@ -1017,6 +1047,26 @@ export interface ViewCitiesResponse {
   data?: string[]
 }
 
+export interface ViewClient {
+  address?: string
+  contacts?: ViewClientContact[]
+  country?: string
+  description?: string
+  id?: string
+  industry?: string
+  name?: string
+  registrationNumber?: string
+  website?: string
+}
+
+export interface ViewClientContact {
+  emails?: string[]
+  id?: string
+  isMainContact?: boolean
+  name?: string
+  role?: string
+}
+
 export interface ViewCountriesResponse {
   data?: ModelCountry[]
 }
@@ -1047,6 +1097,7 @@ export interface ViewCreateMemberDataResponse {
 export interface ViewCreateProjectData {
   accountManager?: ViewProjectHead
   bankAccount?: ViewBasicBankAccountInfo
+  client?: ViewClient
   clientEmail?: string[]
   code?: string
   country?: ViewBasicCountryInfo
@@ -1062,6 +1113,14 @@ export interface ViewCreateProjectData {
   status?: string
   type?: string
   updatedAt?: string
+}
+
+export interface ViewCurrency {
+  id?: string
+  locale?: string
+  name?: string
+  symbol?: string
+  type?: string
 }
 
 export interface ViewDomain {
@@ -1300,7 +1359,7 @@ export interface ViewLineManagersResponse {
 }
 
 export interface ViewListBankAccountResponse {
-  data?: ModelBankAccount[]
+  data?: ViewBankAccount[]
 }
 
 export interface ViewListFeedbackResponse {
@@ -1420,8 +1479,10 @@ export interface ViewProjectData {
   auditNotionID?: string
   avatar?: string
   bankAccount?: ViewBasicBankAccountInfo
+  client?: ViewBasicClientInfo
   clientEmail?: string[]
   code?: string
+  companyInfo?: ViewBasicCompanyInfo
   country?: ViewBasicCountryInfo
   createdAt?: string
   deletedAt?: GormDeletedAt
@@ -1552,6 +1613,17 @@ export interface ViewSubmitFeedback {
 
 export interface ViewSubmitFeedbackResponse {
   data?: ViewSubmitFeedback
+}
+
+export interface ViewSummaryWorkUnitDistributionData {
+  development?: number
+  learning?: number
+  management?: number
+  training?: number
+}
+
+export interface ViewSummaryWorkUnitDistributionResponse {
+  data?: ViewSummaryWorkUnitDistributionData
 }
 
 export interface ViewSurvey {
@@ -1708,6 +1780,7 @@ export interface ViewUpdateProjectContactInfoResponse {
 export interface ViewUpdateProjectGeneralInfo {
   auditNotionID?: string
   bankAccount?: ViewBasicBankAccountInfo
+  client?: ViewClient
   country?: ViewBasicCountryInfo
   function?: string
   name?: string
@@ -1805,15 +1878,47 @@ export interface ViewWorkUnit {
 }
 
 export interface ViewWorkUnitDistribution {
-  development?: number
+  development?: ViewWorkUnitDistributionDevelopment
   employee?: ViewBasicEmployeeInfo
-  learning?: number
-  management?: number
-  training?: number
+  learning?: ViewWorkUnitDistributionLearning
+  management?: ViewWorkUnitDistributionManagement
+  training?: ViewWorkUnitDistributionTraining
 }
 
 export interface ViewWorkUnitDistributionData {
   workUnitDistributions?: ViewWorkUnitDistribution[]
+}
+
+export interface ViewWorkUnitDistributionDevelopment {
+  total?: number
+  workUnits?: ViewWorkUnitDistributionWU[]
+}
+
+export interface ViewWorkUnitDistributionLearning {
+  total?: number
+  workUnits?: ViewWorkUnitDistributionWU[]
+}
+
+export interface ViewWorkUnitDistributionManagement {
+  projectHeads?: ViewWorkUnitDistributionWUProjectHead[]
+  total?: number
+  workUnits?: ViewWorkUnitDistributionWU[]
+}
+
+export interface ViewWorkUnitDistributionTraining {
+  mentees?: ViewBasicEmployeeInfo[]
+  total?: number
+  workUnits?: ViewWorkUnitDistributionWU[]
+}
+
+export interface ViewWorkUnitDistributionWU {
+  project?: ViewBasicProjectInfo
+  workUnitName?: string
+}
+
+export interface ViewWorkUnitDistributionWUProjectHead {
+  position?: string
+  project?: ViewBasicProjectInfo
 }
 
 export interface ViewWorkUnitDistributionsResponse {
