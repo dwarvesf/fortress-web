@@ -6,7 +6,7 @@ import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { GET_PATHS, client } from 'libs/apis'
 import { ViewAudit, ViewEngineeringHealth } from 'types/schema'
 import { theme } from 'styles'
-import { AuditGroupTypes } from 'constants/auditGroups'
+import { auditGroupNames, AuditGroupTypes } from 'constants/auditGroups'
 import { StatisticBlock } from '../StatisticBlock'
 import { CardWithTabs } from './CardWithTabs'
 import { AverageDatasetChart } from './AverageDatasetChart'
@@ -91,7 +91,7 @@ const groupHealthDatasetRenderer = (dataset: any) => {
         dataKeys={
           datasetArray.length > 0 && datasetArray[0].trend
             ? (Object.keys(datasetArray[0].trend) as string[])
-            : []
+            : auditGroupNames[AuditGroupTypes.ENGINEERING_HEALTH]
         }
         dataset={datasetArray}
       />
@@ -115,7 +115,7 @@ const groupAuditDatasetRenderer = (dataset: any) => {
         dataKeys={
           datasetArray.length > 0 && datasetArray[0].trend
             ? (Object.keys(datasetArray[0].trend) as string[])
-            : []
+            : auditGroupNames[AuditGroupTypes.AUDIT]
         }
         dataset={datasetArray}
       />

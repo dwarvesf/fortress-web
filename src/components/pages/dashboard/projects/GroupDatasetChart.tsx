@@ -7,7 +7,7 @@ import { CartesianAxisProps, TooltipProps } from 'recharts'
 import { DataKey } from 'recharts/types/util/types'
 import { theme } from 'styles'
 import { ViewGroupAudit, ViewGroupEngineeringHealth } from 'types/schema'
-import { fillQuarters } from 'utils/quarter'
+import { fillQuartersData } from 'utils/quarter'
 import { getTrendByPercentage, getTrendStatusColor } from 'utils/score'
 import { capitalizeFirstLetter } from 'utils/string'
 
@@ -133,78 +133,10 @@ export const GroupDatasetChart = (props: Props) => {
   const { type, dataKeys, dataset } = props
 
   const collectedQuarters = dataset.map((d) => d.quarter || '') // collected quarters (possibly skipping 1 or some quarters)
-  const filledQuarters = fillQuarters(collectedQuarters) // after filling gap or expanding
 
   const filledDataset = useMemo(() => {
-    // get the index of the first quarter from left to right that has any field > 0 (has data)
-    // meaning all the left side of this index has no data
-    let firstCollectedIndex: number = -1
-    for (let i = 0; i < dataset.length; i++) {
-      if (dataKeys.find((k) => dataset[i][k] && dataset[i][k] > 0)) {
-        firstCollectedIndex = i
-        break
-      }
-    }
-
-    // get the index of the first quarter from right to left that has any field > 0 (has data)
-    // meaning all the right side of this index has no data
-    let lastCollectedIndex: number = -1
-    for (let i = dataset.length - 1; i >= 0; i--) {
-      if (dataKeys.find((k) => dataset[i][k] && dataset[i][k] > 0)) {
-        lastCollectedIndex = i
-        break
-      }
-    }
-
-    return filledQuarters.map((q, i) => {
-      if (collectedQuarters.includes(q)) {
-        // quarters data collected
-        if (
-          firstCollectedIndex > -1 &&
-          lastCollectedIndex > -1 &&
-          firstCollectedIndex <= collectedQuarters.indexOf(q) &&
-          collectedQuarters.indexOf(q) <= lastCollectedIndex
-          // check if is in the range of the 2 index got above
-          // so that we slice all the empty quarters outside the range of first and last quarter that has data
-        ) {
-          return dataset[collectedQuarters.indexOf(q)]
-        }
-      }
-
-      // otherwise (quarters that were filled)
-      if (
-        i >= filledQuarters.indexOf(collectedQuarters[firstCollectedIndex]) &&
-        i <= filledQuarters.indexOf(collectedQuarters[lastCollectedIndex])
-        // check if this quarter is inside the range of first and last quarter that has data
-        // a bit complex since we are working between two quarters arrays
-        // Collected: e.g. _______, q4/2021, _______, q2/2022
-        // Filled:    e.g. q3/2021, q4/2021, q1/2022, q2/2022
-      ) {
-        const names = auditGroupNames[type]
-        const namesObj: Record<string, number> = {}
-
-        // generate record from audit group names with data of 0
-        // since we also draw line for empty quarter inside the range
-        for (const name of names) {
-          namesObj[name] = 0
-        }
-
-        return {
-          quarter: q,
-          ...namesObj,
-          trend: {
-            ...namesObj,
-          },
-        }
-      }
-
-      // other cases, outside of the range, only fill with quarter info, no data
-      // since we don't want to draw line for these quarters
-      return {
-        quarter: q,
-      }
-    })
-  }, [collectedQuarters, dataKeys, dataset, filledQuarters, type])
+    return fillQuartersData(dataset, auditGroupNames[type], collectedQuarters)
+  }, [collectedQuarters, dataset, type])
 
   const [linesOpacity, setLinesOpacity] = useState<Record<string, number>>(
     () => {
