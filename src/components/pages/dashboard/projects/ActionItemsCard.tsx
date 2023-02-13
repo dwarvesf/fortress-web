@@ -253,7 +253,7 @@ export const ActionItemsCard = (props: Props) => {
         style={{ width: 100, alignSelf: 'end' }}
         value={activeTab}
         onChange={setActiveTab}
-        options={Object.keys(data || {}).map((key) => {
+        options={['all', 'high', 'medium', 'low'].map((key) => {
           return {
             label: capitalizeFirstLetter(key),
             value: key,

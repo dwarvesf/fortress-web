@@ -42,6 +42,7 @@ interface Props
   hasLegend?: boolean
   customLegendRenderer?: (props: any) => JSX.Element
   linesOpacity?: Record<string, number>
+  isAnimationActive?: boolean
 }
 
 export const LineChart = (props: Props) => {
@@ -67,6 +68,7 @@ export const LineChart = (props: Props) => {
     hasLegend = false,
     customLegendRenderer,
     linesOpacity,
+    isAnimationActive = true,
     ...rest
   } = props
 
@@ -119,6 +121,7 @@ export const LineChart = (props: Props) => {
             stroke={Object.values(chartColors)[0]}
             strokeWidth={1.75}
             animationDuration={600}
+            isAnimationActive={isAnimationActive}
           />
         ) : (
           ((lineDataKeys as (string | DataKey<any>)[]) || []).map((k, i) => (
@@ -133,6 +136,7 @@ export const LineChart = (props: Props) => {
               strokeWidth={1.75}
               animationDuration={600}
               opacity={linesOpacity ? linesOpacity[String(k)] : 1}
+              isAnimationActive={isAnimationActive}
             />
           ))
         )}

@@ -1,15 +1,18 @@
 import { Icon } from '@iconify/react'
 import { Card, Tag } from 'antd'
 import { LineChart } from 'components/common/LineChart'
-import { useState } from 'react'
+import { auditGroupNames, AuditGroupTypes } from 'constants/auditGroups'
+import { useMemo, useState } from 'react'
 import { CartesianAxisProps, TooltipProps } from 'recharts'
 import { DataKey } from 'recharts/types/util/types'
 import { theme } from 'styles'
 import { ViewGroupAudit, ViewGroupEngineeringHealth } from 'types/schema'
+import { fillQuartersData } from 'utils/quarter'
 import { getTrendByPercentage, getTrendStatusColor } from 'utils/score'
 import { capitalizeFirstLetter } from 'utils/string'
 
 interface Props {
+  type: AuditGroupTypes
   dataKeys:
     | (keyof ViewGroupAudit | keyof ViewGroupEngineeringHealth)[]
     | string[]
@@ -123,7 +126,17 @@ const CustomAxisTick = ({
 }
 
 export const GroupDatasetChart = (props: Props) => {
-  const { dataKeys, dataset } = props
+  // 'type' is used for checking whether it is Engineering Health or Audit group
+  // to get the names relating to each group
+  // 'delivery', 'quality',... for Engineering Health
+  // 'frontend', 'backend',... for Audit
+  const { type, dataKeys, dataset } = props
+
+  const collectedQuarters = dataset.map((d) => d.quarter || '') // collected quarters (possibly skipping 1 or some quarters)
+
+  const filledDataset = useMemo(() => {
+    return fillQuartersData(dataset, auditGroupNames[type], collectedQuarters)
+  }, [collectedQuarters, dataset, type])
 
   const [linesOpacity, setLinesOpacity] = useState<Record<string, number>>(
     () => {
@@ -223,7 +236,7 @@ export const GroupDatasetChart = (props: Props) => {
       width="100%"
       height={302.59}
       minWidth={320}
-      dataset={dataset}
+      dataset={filledDataset}
       lineDataKeys={dataKeys}
       xAxisDataKey="quarter"
       xAxisTick={
@@ -235,6 +248,7 @@ export const GroupDatasetChart = (props: Props) => {
       hasLegend
       customLegendRenderer={customLegendRenderer}
       linesOpacity={linesOpacity}
+      isAnimationActive={(dataset || []).length >= 4}
     />
   )
 }
