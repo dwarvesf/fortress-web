@@ -116,9 +116,8 @@ export const AverageDatasetChart = (props: Props) => {
   const filledQuarters = fillQuarters(collectedQuarters) // after filling gap or expanding
 
   const filledDataset = useMemo(() => {
-    // among the records from data (possibly skipping a quarter)
-    // get the index of the first quarter from left to right that has any field > 0
-    // meaning all the left side of this has all field = 0
+    // get the index of the first quarter from left to right that has any field > 0 (has data)
+    // meaning all the left side of this index has no data
     let firstCollectedIndex: number = -1
     for (let i = 0; i < dataset.length; i++) {
       if (dataset[i].avg && dataset[i].avg! > 0) {
@@ -127,9 +126,8 @@ export const AverageDatasetChart = (props: Props) => {
       }
     }
 
-    // among the records from data (possibly skipping a quarter)
-    // get the index of the first quarter from right to left that has any field > 0
-    // meaning all the right side of this has all field = 0
+    // get the index of the first quarter from right to left that has any field > 0 (has data)
+    // meaning all the right side of this index has no data
     let lastCollectedIndex: number = -1
     for (let i = dataset.length - 1; i >= 0; i--) {
       if (dataset[i].avg && dataset[i].avg! > 0) {
@@ -140,14 +138,14 @@ export const AverageDatasetChart = (props: Props) => {
 
     return filledQuarters.map((q, i) => {
       if (collectedQuarters.includes(q)) {
-        // quarters that already appears in the data
+        // quarters data collected
         if (
           firstCollectedIndex > -1 &&
           lastCollectedIndex > -1 &&
           firstCollectedIndex <= collectedQuarters.indexOf(q) &&
           collectedQuarters.indexOf(q) <= lastCollectedIndex
           // check if is in the range of the 2 index got above
-          // so that we slice all the empty quarters outside the has-data-quarter-interval
+          // so that we slice all the empty quarters outside the range of first and last quarter that has data
         ) {
           return dataset[collectedQuarters.indexOf(q)]
         }
@@ -157,12 +155,13 @@ export const AverageDatasetChart = (props: Props) => {
       if (
         i >= filledQuarters.indexOf(collectedQuarters[firstCollectedIndex]) &&
         i <= filledQuarters.indexOf(collectedQuarters[lastCollectedIndex])
-        // check if this quarter if inside the has-data-quarter-interval
-        // a bit complex since we are working between to quarters arrays
+        // check if this quarter is inside the range of first and last quarter that has data
+        // a bit complex since we are working between two quarters arrays
         // Collected: e.g. _______, q4/2021, _______, q2/2022
         // Filled:    e.g. q3/2021, q4/2021, q1/2022, q2/2022
       ) {
         // fill with the record with data of 0
+        // since we also draw line for empty quarter inside the range
         return {
           quarter: q,
           avg: 0,
@@ -172,7 +171,8 @@ export const AverageDatasetChart = (props: Props) => {
         }
       }
 
-      // other cases, outside of the has-data-quarter-interval
+      // other cases, outside of the range, only fill with quarter info, no data
+      // since we don't want to draw line for these quarters
       return {
         quarter: q,
       }
