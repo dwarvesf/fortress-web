@@ -1,5 +1,4 @@
 import { Avatar, Card, Col, Row, Space } from 'antd'
-import { AvatarArray } from 'components/common/AvatarArray'
 import { ProjectAvatar, UserAvatar } from 'components/common/AvatarWithName'
 import { chartColors } from 'constants/colors'
 import { ROUTES } from 'constants/routes'
@@ -111,14 +110,11 @@ const CustomTooltip = ({
           {tooltip === 'training' && training?.mentees?.length && (
             <>
               <div>Mentor:</div>
-              {training.mentees.slice(0, 3).map((each) => (
+              {training.mentees.map((each) => (
                 <div key={`training_${each.username}`}>
                   <UserAvatar user={each} isLink={false} />
                 </div>
               ))}
-              {training.mentees.length > 3 && (
-                <AvatarArray data={training.mentees.slice(3)} />
-              )}
             </>
           )}
           {tooltip === 'training' && training?.workUnits?.length && (
@@ -242,8 +238,10 @@ const CustomShape = ({
 }: Record<string, any> & { chartHeight: number }) => {
   const { fill, x, y, width, height } = props
   if (chartHeight && y > chartHeight) return null
+  if (y + height < 17) return null
+  if (y + 8 > chartHeight) return null
   const customHeight = Math.max(
-    y + height > chartHeight ? chartHeight - y : height,
+    y + height > chartHeight + 5 ? chartHeight - y + 5 : height,
     0,
   )
   return <rect {...{ x, y, width, height: customHeight }} fill={fill} />
