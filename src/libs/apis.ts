@@ -62,6 +62,8 @@ import {
   ViewGetEngagementDashboardDetailResponse,
   ViewGetDashboardResourceUtilizationResponse,
   ViewWorkSurveySummaryResponse,
+  ViewWorkUnitDistributionsResponse,
+  ViewSummaryWorkUnitDistributionResponse,
 } from 'types/schema'
 import { EmployeeListFilter } from 'types/filters/EmployeeListFilter'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
@@ -71,6 +73,7 @@ import { FeedbackListFilter } from 'types/filters/FeedbackListFilter'
 import { SurveyListFilter } from 'types/filters/SurveyListFilter'
 import { SurveyDetailFilter } from 'types/filters/SurveyDetailFilter'
 import { StackFilter } from 'types/filters/StackFilter'
+import { WorkUnitDistributionsFilter } from 'types/filters/WorkUnitDistributionsFilter'
 import qs from 'qs'
 import fetcher from './fetcher'
 
@@ -118,6 +121,10 @@ export const GET_PATHS = {
   getDashboardsEngagementDetail: '/dashboards/engagement/detail',
   getResourceUtilization: '/dashboards/resources/utilization',
   getResourceWorkSurveySummaries: '/dashboards/resources/work-survey-summaries',
+  getResourceWorkUnitDistribution:
+    '/dashboards/resources/work-unit-distribution',
+  getResourceWorkUnitDistributionSummary:
+    '/dashboards/resources/work-unit-distribution-summary',
 }
 export interface Meta {
   page?: number
@@ -933,6 +940,26 @@ class Client {
 
     return fetcher<ViewWorkSurveySummaryResponse>(
       `${BASE_URL}/dashboards/resources/work-survey-summaries?${queryString}`,
+      {
+        headers: { ...this.privateHeaders },
+      },
+    )
+  }
+
+  public getResourceWorkUnitDistribution(filter: WorkUnitDistributionsFilter) {
+    const queryString = qs.stringify(filter)
+
+    return fetcher<ViewWorkUnitDistributionsResponse>(
+      `${BASE_URL}/dashboards/resources/work-unit-distribution?${queryString}`,
+      {
+        headers: { ...this.privateHeaders },
+      },
+    )
+  }
+
+  public getResourceWorkUnitDistributionSummary() {
+    return fetcher<ViewSummaryWorkUnitDistributionResponse>(
+      `${BASE_URL}/dashboards/resources/work-unit-distribution-summary`,
       {
         headers: { ...this.privateHeaders },
       },
