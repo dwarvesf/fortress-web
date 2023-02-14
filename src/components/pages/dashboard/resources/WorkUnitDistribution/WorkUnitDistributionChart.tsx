@@ -189,6 +189,10 @@ const CustomTick = ({
     (each) => each.employee?.id === payload.value,
   )?.employee
 
+  if (!employee) {
+    return null
+  }
+
   if (chartHeight && payload.coordinate > chartHeight) {
     return null
   }
