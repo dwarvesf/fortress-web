@@ -21,7 +21,11 @@ import {
   ViewSummaryWorkUnitDistributionData,
   ViewWorkUnitDistribution,
 } from 'types/schema'
-import { capitalizeFirstLetter, getFirstLetterCapitalized } from 'utils/string'
+import {
+  capitalizeFirstLetter,
+  getFirstLetterCapitalized,
+  kebabToPascalCase,
+} from 'utils/string'
 
 const YAxisSize = 150
 const maxDisplayItems = 8
@@ -93,8 +97,9 @@ const CustomTooltip = ({
                 <ProjectAvatar
                   project={each.project!}
                   renderName={(name) => name}
-                />{' '}
-                - {each.position}
+                />
+                {' - '}
+                {kebabToPascalCase(each.position || '')}
               </div>
             ))}
           {tooltip === 'learning' &&
