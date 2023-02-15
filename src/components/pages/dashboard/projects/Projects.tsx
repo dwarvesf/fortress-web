@@ -164,6 +164,8 @@ const Projects = () => {
         <Col span={24} xl={{ span: 16 }}>
           <WorkStatusSummaryCard
             data={projectsSummaryData?.data || {}}
+            selectedProjectId={selectedProjectId}
+            setSelectedProjectId={setSelectedProjectId}
             isLoading={isProjectsSummaryLoading}
           />
         </Col>
