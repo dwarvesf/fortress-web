@@ -29,7 +29,7 @@ export const ProjectSizeCard = (props: Props) => {
         />
       )
     }
-    if (!isLoading && !dataset) {
+    if (!isLoading && (!dataset || dataset.length === 0)) {
       return (
         <Empty
           style={{
