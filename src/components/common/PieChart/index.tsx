@@ -86,7 +86,7 @@ const renderCustomizedLabel = ({
           whiteSpace: 'pre-line',
         }}
       >
-        <tspan>{name.length > 12 ? `${name.slice(0, 10)}...` : name}</tspan>
+        <tspan>{name.length > 8 ? `${name.slice(0, 6)}...` : name}</tspan>
       </text>
       <text
         x={endX >= Number(cx) ? endX + 5.0 : endX - 5.0}

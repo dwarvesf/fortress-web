@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Col, Row } from 'antd'
 import { DomainTypes } from 'constants/feedbackTypes'
 import { useState } from 'react'
@@ -7,6 +8,7 @@ import { GET_PATHS, client } from 'libs/apis'
 import { ViewAudit, ViewEngineeringHealth } from 'types/schema'
 import { theme } from 'styles'
 import { auditGroupNames, AuditGroupTypes } from 'constants/auditGroups'
+import { mockData, mockProjectSizeData } from 'pages/dashboard'
 import { StatisticBlock } from '../StatisticBlock'
 import { CardWithTabs } from './CardWithTabs'
 import { AverageDatasetChart } from './AverageDatasetChart'
@@ -155,7 +157,8 @@ const Projects = () => {
       <Row gutter={[16, 16]}>
         <Col span={24} xl={{ span: 8 }}>
           <ProjectSizeCard
-            data={projectsSizesData || {}}
+            // data={projectsSizesData || {}}
+            data={{ data: mockProjectSizeData }}
             selectedProjectId={selectedProjectId}
             setSelectedProjectId={setSelectedProjectId}
             isLoading={isProjectsSizesLoading}
@@ -163,7 +166,10 @@ const Projects = () => {
         </Col>
         <Col span={24} xl={{ span: 16 }}>
           <WorkStatusSummaryCard
-            data={projectsSummaryData?.data || {}}
+            // data={projectsSummaryData?.data || {}}
+            data={{ summary: mockData }}
+            selectedProjectId={selectedProjectId}
+            setSelectedProjectId={setSelectedProjectId}
             isLoading={isProjectsSummaryLoading}
           />
         </Col>

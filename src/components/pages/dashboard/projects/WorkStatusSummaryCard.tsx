@@ -1,9 +1,7 @@
 import { Card, Table } from 'antd'
 import { ColumnsType } from 'antd/lib/table'
 import { ProjectAvatar } from 'components/common/AvatarWithName'
-import { Button } from 'components/common/Button'
-import { ROUTES } from 'constants/routes'
-import { useRouter } from 'next/router'
+import { Dispatch, SetStateAction, useEffect, useMemo } from 'react'
 import styled from 'styled-components'
 import { ViewAuditSummaries, ViewAuditSummary } from 'types/schema'
 import {
@@ -14,236 +12,10 @@ import {
 
 interface Props {
   data: ViewAuditSummaries
+  selectedProjectId: string
+  setSelectedProjectId: Dispatch<SetStateAction<string>>
   isLoading: boolean
 }
-
-export const mockData = [
-  {
-    id: '1',
-    name: 'Fortress',
-    code: 'fortress',
-    size: {
-      value: 3,
-      trend: 0,
-    },
-    health: {
-      value: 3.8,
-      trend: -2.56,
-    },
-    audit: {
-      value: 3.5,
-      trend: -2.78,
-    },
-    newItem: {
-      value: 6,
-      trend: -50,
-    },
-    resolvedItem: {
-      value: 3,
-      trend: 0,
-    },
-  },
-  {
-    id: '2',
-    name: 'Lorem ipsum',
-    code: 'lorem-ipsum',
-    size: {
-      value: 3,
-      trend: 0,
-    },
-    health: {
-      value: 3.5,
-      trend: -2.78,
-    },
-    audit: {
-      value: 3.9,
-      trend: 2.63,
-    },
-    newItem: {
-      value: 27,
-      trend: 50,
-    },
-    resolvedItem: {
-      value: 2,
-      trend: -33.33,
-    },
-  },
-  {
-    id: '3',
-    name: 'Lorem ipsum3',
-    code: 'lorem-ipsum3',
-    size: {
-      value: 3,
-      trend: 0,
-    },
-    health: {
-      value: 3.5,
-      trend: -2.78,
-    },
-    audit: {
-      value: 3.9,
-      trend: 2.63,
-    },
-    newItem: {
-      value: 27,
-      trend: 50,
-    },
-    resolvedItem: {
-      value: 2,
-      trend: -33.33,
-    },
-  },
-  {
-    id: '4',
-    name: 'Lorem ipsum4',
-    code: 'lorem-ipsum4',
-    size: {
-      value: 3,
-      trend: 0,
-    },
-    health: {
-      value: 3.5,
-      trend: -2.78,
-    },
-    audit: {
-      value: 3.9,
-      trend: 2.63,
-    },
-    newItem: {
-      value: 27,
-      trend: 50,
-    },
-    resolvedItem: {
-      value: 2,
-      trend: -33.33,
-    },
-  },
-  {
-    id: '5',
-    name: 'Lorem ipsum5',
-    code: 'lorem-ipsum5',
-    size: {
-      value: 3,
-      trend: 0,
-    },
-    health: {
-      value: 3.5,
-      trend: -2.78,
-    },
-    audit: {
-      value: 3.9,
-      trend: 2.63,
-    },
-    newItem: {
-      value: 27,
-      trend: 50,
-    },
-    resolvedItem: {
-      value: 2,
-      trend: -33.33,
-    },
-  },
-  {
-    id: '6',
-    name: 'Lorem ipsum6',
-    code: 'lorem-ipsum6',
-    size: {
-      value: 3,
-      trend: 0,
-    },
-    health: {
-      value: 3.5,
-      trend: -2.78,
-    },
-    audit: {
-      value: 3.9,
-      trend: 2.63,
-    },
-    newItem: {
-      value: 27,
-      trend: 50,
-    },
-    resolvedItem: {
-      value: 2,
-      trend: -33.33,
-    },
-  },
-  {
-    id: '7',
-    name: 'Lorem ipsum7',
-    code: 'lorem-ipsum7',
-    size: {
-      value: 3,
-      trend: 0,
-    },
-    health: {
-      value: 3.5,
-      trend: -2.78,
-    },
-    audit: {
-      value: 3.9,
-      trend: 2.63,
-    },
-    newItem: {
-      value: 27,
-      trend: 50,
-    },
-    resolvedItem: {
-      value: 2,
-      trend: -33.33,
-    },
-  },
-  {
-    id: '8',
-    name: 'Lorem ipsum8',
-    code: 'lorem-ipsum8',
-    size: {
-      value: 3,
-      trend: 0,
-    },
-    health: {
-      value: 3.5,
-      trend: -2.78,
-    },
-    audit: {
-      value: 3.9,
-      trend: 2.63,
-    },
-    newItem: {
-      value: 27,
-      trend: 50,
-    },
-    resolvedItem: {
-      value: 2,
-      trend: -33.33,
-    },
-  },
-  {
-    id: '9',
-    name: 'Lorem ipsum9',
-    code: 'lorem-ipsum9',
-    size: {
-      value: 3,
-      trend: 0,
-    },
-    health: {
-      value: 3.5,
-      trend: -2.78,
-    },
-    audit: {
-      value: 3.9,
-      trend: 2.63,
-    },
-    newItem: {
-      value: 27,
-      trend: 50,
-    },
-    resolvedItem: {
-      value: 2,
-      trend: -33.33,
-    },
-  },
-]
 
 const SummaryTable = styled(Table)`
   .ant-table-thead {
@@ -323,17 +95,23 @@ const SummaryActionItemsTdRender = ({
 )
 
 export const WorkStatusSummaryCard = (props: Props) => {
-  const { data, isLoading } = props
+  const { data, selectedProjectId, setSelectedProjectId, isLoading } = props
 
-  const dataset = data.summary || []
+  const dataset = useMemo(() => data.summary || [], [data])
 
-  const { push } = useRouter()
+  useEffect(() => {
+    const selectedProject = dataset.find((d) => d.id === selectedProjectId)
+    const selectedProjectRowIndex = dataset.indexOf(selectedProject!)
 
-  const scroll = (index: number) => {
-    const a = document.querySelector('div.ant-table-body')
+    const a = document.querySelectorAll('div.ant-table-body')
 
-    a!.scrollTop = index * 57.18
-  }
+    if (a.length) {
+      a[0]!.scrollTo({
+        top: selectedProjectRowIndex * 57.18,
+        behavior: 'smooth',
+      })
+    }
+  }, [dataset, selectedProjectId])
 
   const columns: ColumnsType<ViewAuditSummary> = [
     {
@@ -400,10 +178,11 @@ export const WorkStatusSummaryCard = (props: Props) => {
       style={{ height: '100%' }}
       bodyStyle={{ padding: '1px 0 20px' }}
     >
-      <Button type="default" onClick={() => scroll(2)}>
-        a
-      </Button>
       <SummaryTable
+        rowClassName={(record) => {
+          // @ts-ignore
+          return record?.id === selectedProjectId ? 'highlight' : ''
+        }}
         dataSource={dataset}
         columns={columns}
         rowKey={(row: ViewAuditSummary) => row.id || ''}
@@ -413,7 +192,9 @@ export const WorkStatusSummaryCard = (props: Props) => {
         onRow={(record: ViewAuditSummary) => ({
           onClick: (e) => {
             if (e.defaultPrevented) return
-            push(ROUTES.PROJECT_DETAIL(record.code!))
+            if (record.id) {
+              setSelectedProjectId(record.id)
+            }
           },
         })}
       />
