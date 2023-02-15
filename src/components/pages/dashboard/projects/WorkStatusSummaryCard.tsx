@@ -1,8 +1,7 @@
 import { Card, Table } from 'antd'
 import { ColumnsType } from 'antd/lib/table'
 import { ProjectAvatar } from 'components/common/AvatarWithName'
-import { ROUTES } from 'constants/routes'
-import { useRouter } from 'next/router'
+import { Dispatch, SetStateAction, useEffect, useMemo } from 'react'
 import styled from 'styled-components'
 import { ViewAuditSummaries, ViewAuditSummary } from 'types/schema'
 import {
@@ -13,6 +12,8 @@ import {
 
 interface Props {
   data: ViewAuditSummaries
+  selectedProjectId: string
+  setSelectedProjectId: Dispatch<SetStateAction<string>>
   isLoading: boolean
 }
 
@@ -94,11 +95,22 @@ const SummaryActionItemsTdRender = ({
 )
 
 export const WorkStatusSummaryCard = (props: Props) => {
-  const { data, isLoading } = props
+  const { data, selectedProjectId, setSelectedProjectId, isLoading } = props
 
-  const dataset = data.summary || []
+  const dataset = useMemo(() => data.summary || [], [data])
 
-  const { push } = useRouter()
+  useEffect(() => {
+    const antTableRowElement = document.querySelector(
+      'div.ant-table-body .highlight',
+    )
+
+    if (antTableRowElement) {
+      antTableRowElement.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+      })
+    }
+  }, [selectedProjectId])
 
   const columns: ColumnsType<ViewAuditSummary> = [
     {
@@ -166,6 +178,10 @@ export const WorkStatusSummaryCard = (props: Props) => {
       bodyStyle={{ padding: '1px 0 20px' }}
     >
       <SummaryTable
+        rowClassName={(record) => {
+          // @ts-ignore
+          return record?.id === selectedProjectId ? 'highlight' : ''
+        }}
         dataSource={dataset}
         columns={columns}
         rowKey={(row: ViewAuditSummary) => row.id || ''}
@@ -175,7 +191,9 @@ export const WorkStatusSummaryCard = (props: Props) => {
         onRow={(record: ViewAuditSummary) => ({
           onClick: (e) => {
             if (e.defaultPrevented) return
-            push(ROUTES.PROJECT_DETAIL(record.code!))
+            if (record.id) {
+              setSelectedProjectId(record.id)
+            }
           },
         })}
       />
