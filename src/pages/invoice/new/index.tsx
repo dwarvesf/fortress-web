@@ -1,5 +1,4 @@
 import { Col, Row, Space } from 'antd'
-import { Button } from 'components/common/Button'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
 import { PageHeader } from 'components/common/PageHeader'
 import { SEO } from 'components/common/SEO'
@@ -22,10 +21,7 @@ const Default = () => {
       />
 
       <Space direction="vertical" size={24} style={{ width: '100%' }}>
-        <PageHeader
-          title="New invoice"
-          rightRender={<Button type="primary">Send</Button>}
-        />
+        <PageHeader title="New invoice" />
         <Row>
           <Col span={24}>
             <InvoiceForm />

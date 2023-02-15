@@ -155,6 +155,14 @@ export const AuthenticatedLayout = (props: Props) => {
           ],
         ),
       },
+      {
+        content: getItem(
+          'Config',
+          ROUTES.CONFIG,
+          <Icon icon="icon-park-outline:setting" width={20} />,
+        ),
+        feature: FEATURES.CONFIG,
+      },
     ]
   }, [])
 
