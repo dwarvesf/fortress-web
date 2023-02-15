@@ -102,14 +102,19 @@ export const WorkStatusSummaryCard = (props: Props) => {
   useEffect(() => {
     const selectedProject = dataset.find((d) => d.id === selectedProjectId)
     const selectedProjectRowIndex = dataset.indexOf(selectedProject!)
+    const antTableBodyElement = document.querySelectorAll('div.ant-table-body')
 
-    const a = document.querySelectorAll('div.ant-table-body')
+    if (antTableBodyElement.length) {
+      const antTableRowElement = document.querySelector(
+        'div.ant-table-body .highlight',
+      )
 
-    if (a.length) {
-      a[0]!.scrollTo({
-        top: selectedProjectRowIndex * 57.18,
-        behavior: 'smooth',
-      })
+      if (antTableRowElement) {
+        antTableBodyElement[0]!.scrollTo({
+          top: selectedProjectRowIndex * antTableRowElement.scrollHeight,
+          behavior: 'smooth',
+        })
+      }
     }
   }, [dataset, selectedProjectId])
 

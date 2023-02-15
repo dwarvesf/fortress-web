@@ -12,6 +12,7 @@ import {
 import { CategoricalChartProps } from 'recharts/types/chart/generateCategoricalChart'
 import { DataKey } from 'recharts/types/util/types'
 import { theme } from 'styles'
+import { truncate } from '@dwarvesf/react-utils'
 
 interface Props extends Omit<CategoricalChartProps, 'width' | 'height'> {
   width: string | number
@@ -86,7 +87,7 @@ const renderCustomizedLabel = ({
           whiteSpace: 'pre-line',
         }}
       >
-        <tspan>{name.length > 8 ? `${name.slice(0, 6)}...` : name}</tspan>
+        <tspan>{truncate(name, 6)}</tspan>
       </text>
       <text
         x={endX >= Number(cx) ? endX + 5.0 : endX - 5.0}
