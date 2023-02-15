@@ -15,11 +15,11 @@ export const agreementLevels: Record<AgreementLevel, string> = {
 }
 
 export const workloadLevels: Record<AgreementLevel, string> = {
-  [AgreementLevel.STRONGLY_DISAGREE]: 'Breeze',
-  [AgreementLevel.DISAGREE]: 'Could handle more',
+  [AgreementLevel.STRONGLY_DISAGREE]: "Can't keep up",
+  [AgreementLevel.DISAGREE]: 'Overwhelming',
   [AgreementLevel.MIXED]: 'Manageable',
-  [AgreementLevel.AGREE]: 'Overwhelming',
-  [AgreementLevel.STRONGLY_AGREE]: `Can't keep up`,
+  [AgreementLevel.AGREE]: 'Could handle more',
+  [AgreementLevel.STRONGLY_AGREE]: 'Breeze',
 }
 
 export const deadlineLevels: Record<AgreementLevel, string> = {

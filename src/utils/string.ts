@@ -27,6 +27,9 @@ export function parseJWT(token: string) {
 export const camelToSnakeCase = (str: string) =>
   str.replace(/[A-Z]/g, (letter: string) => `-${letter.toLowerCase()}`)
 
+export const kebabToPascalCase = (str: string) =>
+  str.split('-').map(capitalizeFirstLetter).join(' ')
+
 export const getErrorMessage = (error?: any, prefix?: string) => {
   const message = [prefix, error?.message].join(' - ')
   return message || 'Unknown error'

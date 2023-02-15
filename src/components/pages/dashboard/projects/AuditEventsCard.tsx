@@ -34,6 +34,8 @@ const CustomTooltip = ({
 }: TooltipProps<string | number, string>) => {
   if (active && payload && payload.length) {
     const total = payload.reduce((total, each) => total + Number(each.value), 0)
+    const reversedPayload = [...payload].reverse() // reverse order of tooltip fields, since the order is opposite of stacked bar chart order
+
     return (
       <Card
         bordered={false}
@@ -44,7 +46,7 @@ const CustomTooltip = ({
         }}
       >
         <strong>{label}</strong>
-        {payload.map((data) => (
+        {reversedPayload.map((data) => (
           <Row
             key={data.dataKey}
             align="middle"
@@ -109,6 +111,7 @@ export const AuditEventsCard = (props: Props) => {
   const customLegendRenderer = useCallback(
     (props: any) => {
       const { payload } = props
+      const reversedPayload = [...payload].reverse() // reverse order of legend fields, since the order is opposite of stacked bar chart order
 
       return (
         <div
@@ -121,7 +124,7 @@ export const AuditEventsCard = (props: Props) => {
             height: 'max-content',
           }}
         >
-          {payload.map((entry: any, index: number) => {
+          {reversedPayload.map((entry: any, index: number) => {
             return (
               <span
                 role="presentation"
@@ -151,7 +154,8 @@ export const AuditEventsCard = (props: Props) => {
                     style={{
                       color: getActionItemsTrendStatusColor(
                         (dataset[dataset.length - 1].trend || {})[
-                          payload[index].dataKey as keyof ViewActionItemTrend
+                          reversedPayload[index]
+                            .dataKey as keyof ViewActionItemTrend
                         ] || 0,
                       ),
                       fontSize: 12,
@@ -159,7 +163,8 @@ export const AuditEventsCard = (props: Props) => {
                   >
                     {getTrendByPercentage(
                       (dataset[dataset.length - 1].trend || {})[
-                        payload[index].dataKey as keyof ViewActionItemTrend
+                        reversedPayload[index]
+                          .dataKey as keyof ViewActionItemTrend
                       ] || 0,
                     )}
                   </span>

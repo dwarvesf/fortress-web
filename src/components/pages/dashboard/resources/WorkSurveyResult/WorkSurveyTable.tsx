@@ -26,6 +26,7 @@ const columns = (
   },
   ...dates.map((date) => ({
     title: date,
+    width: 120,
     render: (record: ViewWorkSurveySummaryEmployee) => (
       <Space>
         {record.listAnswers
