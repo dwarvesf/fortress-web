@@ -187,7 +187,7 @@ export const WorkStatusSummaryCard = (props: Props) => {
         columns={columns}
         rowKey={(row: ViewAuditSummary) => row.id || ''}
         pagination={false}
-        scroll={{ x: 'max-content', y: 250 }}
+        scroll={{ x: 'max-content', y: 240 }}
         loading={isLoading}
         onRow={(record: ViewAuditSummary) => ({
           onClick: (e) => {
