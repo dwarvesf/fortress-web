@@ -110,7 +110,7 @@ export const WorkStatusSummaryCard = (props: Props) => {
         block: 'nearest',
       })
     }
-  }, [dataset, selectedProjectId])
+  }, [selectedProjectId])
 
   const columns: ColumnsType<ViewAuditSummary> = [
     {
