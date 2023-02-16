@@ -142,6 +142,15 @@ export const EditAvatarModal = (props: Props) => {
           customRequest={(options) => {
             onSubmit(options.file as File)
           }}
+          beforeUpload={(file) => {
+            if (file.size > 1000000) {
+              notification.error({
+                message: `Could not update ${type} avatar`,
+                description: 'Image size must less than 1000000 bytes',
+              })
+              return false
+            }
+          }}
         >
           <Button
             type="primary"
