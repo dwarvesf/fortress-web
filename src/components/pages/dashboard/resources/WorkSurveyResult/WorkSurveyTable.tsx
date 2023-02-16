@@ -2,6 +2,7 @@ import { Button, Popover, Space, Table } from 'antd'
 import { ColumnsType } from 'antd/lib/table'
 import { UserAvatar } from 'components/common/AvatarWithName'
 import { WorkAverageIcon } from 'components/pages/feedbacks/work'
+import { AgreementLevel } from 'constants/agreementLevel'
 import { likertScalesColors } from 'constants/colors'
 import { DomainTypes } from 'constants/feedbackTypes'
 import {
@@ -10,7 +11,6 @@ import {
   ViewWorkSurveySummaryEmployee,
 } from 'types/schema'
 import { renderDomainLevels } from 'utils/level'
-import { mapScoreToLikertScale } from 'utils/score'
 
 const columns = (
   domain: DomainTypes,
@@ -40,18 +40,13 @@ const columns = (
                 <div>
                   <WorkAverageIcon
                     backgroundColor={
-                      likertScalesColors[
-                        mapScoreToLikertScale(Number(each.answer || 0))
-                      ].background
+                      likertScalesColors[each?.answer as AgreementLevel]
+                        .background
                     }
                     size={28}
                   />
                   <span style={{ marginLeft: 8 }}>
-                    {
-                      renderDomainLevels(domain)[
-                        mapScoreToLikertScale(Number(each.answer || 0))
-                      ]
-                    }
+                    {renderDomainLevels(domain)[each?.answer as AgreementLevel]}
                   </span>
                 </div>
               }
@@ -67,9 +62,8 @@ const columns = (
               >
                 <WorkAverageIcon
                   backgroundColor={
-                    likertScalesColors[
-                      mapScoreToLikertScale(Number(each.answer || 0))
-                    ].background
+                    likertScalesColors[each?.answer as AgreementLevel]
+                      .background
                   }
                 />
               </Button>
