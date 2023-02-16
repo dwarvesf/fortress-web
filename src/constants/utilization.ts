@@ -1,11 +1,11 @@
 export enum Utilization {
-  OFFICIAL = 'official',
-  SHADOW = 'shadow',
+  STAFFED = 'staffed',
+  INTERNAL = 'internal',
   AVAILABLE = 'available',
 }
 
 export const utilizations: Record<Utilization, string> = {
-  [Utilization.OFFICIAL]: 'Official',
-  [Utilization.SHADOW]: 'Shadow',
+  [Utilization.STAFFED]: 'Staffed',
+  [Utilization.INTERNAL]: 'Internal',
   [Utilization.AVAILABLE]: 'Available',
 }
