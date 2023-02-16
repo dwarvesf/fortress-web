@@ -62,7 +62,9 @@ const CustomTooltip = ({
               }}
             />
             <Col>{data.value}</Col>
-            <Col>({((Number(data.value) / total) * 100).toFixed(0)}%)</Col>
+            {total > 0 ? (
+              <Col>({((Number(data.value) / total) * 100).toFixed(0)}%)</Col>
+            ) : null}
           </Row>
         ))}
       </Card>
