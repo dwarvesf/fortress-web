@@ -112,7 +112,7 @@ export const MemberForm = (props: Props) => {
                 isEmployeesDataLoading ? 'Fetching data' : 'Select a member'
               }
               loading={isEmployeesDataLoading}
-              disabled={isEmployeesDataLoading}
+              disabled={isEmployeesDataLoading || !!initialValues?.employeeID}
               showSearch
               showArrow
               filterOption={searchFilterOption}
