@@ -25,6 +25,8 @@ const CustomTooltip = ({
 }: TooltipProps<string | number, string>) => {
   if (active && payload && payload.length) {
     const total = payload.reduce((total, each) => total + Number(each.value), 0)
+    const reversedPayload = [...payload].reverse()
+
     return (
       <Card
         bordered={false}
@@ -35,7 +37,7 @@ const CustomTooltip = ({
         }}
       >
         <strong>{format(label, MONTH_YEAR_FORMAT)}</strong>
-        {payload.map((data) => (
+        {reversedPayload.map((data) => (
           <Row
             key={data.dataKey}
             align="middle"
@@ -63,11 +65,13 @@ const CustomTooltip = ({
 }
 
 const CustomLegend = ({ payload }: LegendProps) => {
+  const reversedPayload = [...(payload || [])].reverse()
+
   return (
     <Space
       style={{ width: '100%', justifyContent: 'space-evenly', marginTop: 10 }}
     >
-      {payload?.map((data) => (
+      {reversedPayload?.map((data) => (
         <Row key={data.value} align="middle">
           <div
             style={{
