@@ -25,7 +25,7 @@ const CustomTooltip = ({
 }: TooltipProps<string | number, string>) => {
   if (active && payload && payload.length) {
     const total = payload.reduce((total, each) => total + Number(each.value), 0)
-    const reversedPayload = [...(payload || [])].reverse()
+    const reversedPayload = [...(payload || [])].reverse() // reverse order of tooltip fields, since the order is opposite of stacked bar chart order
 
     return (
       <Card
@@ -65,7 +65,7 @@ const CustomTooltip = ({
 }
 
 const CustomLegend = ({ payload }: LegendProps) => {
-  const reversedPayload = [...(payload || [])].reverse()
+  const reversedPayload = [...(payload || [])].reverse() // reverse order of tooltip fields, since the order is opposite of stacked bar chart order
 
   return (
     <Space
