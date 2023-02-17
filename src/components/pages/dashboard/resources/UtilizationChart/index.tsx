@@ -25,7 +25,7 @@ const CustomTooltip = ({
 }: TooltipProps<string | number, string>) => {
   if (active && payload && payload.length) {
     const total = payload.reduce((total, each) => total + Number(each.value), 0)
-    const reversedPayload = [...payload].reverse()
+    const reversedPayload = [...(payload || [])].reverse()
 
     return (
       <Card
