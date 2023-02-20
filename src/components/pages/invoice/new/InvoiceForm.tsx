@@ -14,6 +14,7 @@ import { TagInput } from 'components/common/TagsInput'
 import { InvoiceFormInputList } from 'components/pages/invoice/new/InvoiceFormInputList'
 import { useForm } from 'antd/lib/form/Form'
 import styled from 'styled-components'
+import { SummarySection } from './SummarySection'
 
 // style the tag input to have the same focus behavior as antd inputs
 const TagInputWrapper = styled.div`
@@ -225,6 +226,8 @@ export const InvoiceForm = () => {
         </Row>
 
         <InvoiceFormInputList form={form} name="lineItems" />
+
+        <SummarySection style={{ marginTop: 40 }} />
       </Form>
     </FormWrapper>
   )
