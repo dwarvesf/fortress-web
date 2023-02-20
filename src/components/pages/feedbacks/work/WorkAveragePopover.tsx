@@ -1,9 +1,8 @@
 import { Col, Row } from 'antd'
 import { AgreementLevel } from 'constants/agreementLevel'
-import { likertScalesColors } from 'constants/colors'
 import { DomainTypes } from 'constants/feedbackTypes'
+import { workSurveys } from 'constants/workSurveys'
 import { ViewDomain } from 'types/schema'
-import { renderDomainLevels } from 'utils/level'
 import { camelToSnakeCase } from 'utils/string'
 import { WorkAverageIcon } from './WorkAverageIcon'
 
@@ -14,8 +13,6 @@ interface Props {
 
 export const WorkAveragePopover = (props: Props) => {
   const { domain, record } = props
-
-  const levels = renderDomainLevels(domain)
 
   return (
     <>
@@ -41,14 +38,18 @@ export const WorkAveragePopover = (props: Props) => {
               <div>
                 <WorkAverageIcon
                   backgroundColor={`${
-                    likertScalesColors[
-                      camelToSnakeCase(e[0]) as keyof typeof likertScalesColors
+                    workSurveys[domain][
+                      camelToSnakeCase(e[0]) as AgreementLevel
                     ].background
                   }`}
                   size={28}
                 />
                 <span style={{ marginLeft: 8 }}>
-                  {levels[camelToSnakeCase(e[0]) as AgreementLevel]}
+                  {
+                    workSurveys[domain][
+                      camelToSnakeCase(e[0]) as AgreementLevel
+                    ].name
+                  }
                 </span>
               </div>
               <span style={{ fontSize: 17 }}>{e[1]}</span>
