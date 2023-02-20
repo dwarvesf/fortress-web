@@ -15,6 +15,7 @@ import { InvoiceFormInputList } from 'components/pages/invoice/new/InvoiceFormIn
 import { useForm } from 'antd/lib/form/Form'
 import styled from 'styled-components'
 
+// style the tag input to have the same focus behavior as antd inputs
 const TagInputWrapper = styled.div`
   .rti--container {
     border: 1px solid #d9d9d9 !important;
@@ -55,7 +56,7 @@ export const InvoiceForm = () => {
           console.log({ ...values, cc: ccValues })
         }}
       >
-        <Row gutter={[24, 24]} style={{ marginBottom: 36 }}>
+        <Row gutter={24} style={{ marginBottom: 36 }}>
           <Col span={24} lg={{ span: 8 }}>
             <Row gutter={24}>
               <Col span={24}>
@@ -204,7 +205,7 @@ export const InvoiceForm = () => {
               </Col>
 
               <Col span={24}>
-                <Form.Item label="Description" name="addressDescription">
+                <Form.Item label="Description" name="description">
                   <TextArea
                     className="bordered"
                     rows={4}
@@ -223,7 +224,7 @@ export const InvoiceForm = () => {
           </Col>
         </Row>
 
-        <InvoiceFormInputList form={form} name="subtotal" />
+        <InvoiceFormInputList form={form} name="lineItems" />
       </Form>
     </FormWrapper>
   )
