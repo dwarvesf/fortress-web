@@ -3,14 +3,13 @@ import { ColumnsType } from 'antd/lib/table'
 import { UserAvatar } from 'components/common/AvatarWithName'
 import { WorkAverageIcon } from 'components/pages/feedbacks/work'
 import { AgreementLevel } from 'constants/agreementLevel'
-import { likertScalesColors } from 'constants/colors'
 import { DomainTypes } from 'constants/feedbackTypes'
+import { workSurveys } from 'constants/workSurveys'
 import {
   ViewBasicEmployeeInfo,
   ViewWorkSurveySummary,
   ViewWorkSurveySummaryEmployee,
 } from 'types/schema'
-import { renderDomainLevels } from 'utils/level'
 
 const columns = (
   domain: DomainTypes,
@@ -40,13 +39,13 @@ const columns = (
                 <div>
                   <WorkAverageIcon
                     backgroundColor={
-                      likertScalesColors[each?.answer as AgreementLevel]
+                      workSurveys[domain][each?.answer as AgreementLevel]
                         .background
                     }
-                    size={28}
+                    size={24}
                   />
                   <span style={{ marginLeft: 8 }}>
-                    {renderDomainLevels(domain)[each?.answer as AgreementLevel]}
+                    {workSurveys[domain][each?.answer as AgreementLevel].name}
                   </span>
                 </div>
               }
@@ -61,8 +60,9 @@ const columns = (
                 }}
               >
                 <WorkAverageIcon
+                  size={24}
                   backgroundColor={
-                    likertScalesColors[each?.answer as AgreementLevel]
+                    workSurveys[domain][each?.answer as AgreementLevel]
                       .background
                   }
                 />

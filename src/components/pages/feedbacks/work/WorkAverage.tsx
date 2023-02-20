@@ -1,6 +1,6 @@
 import { Popover, Button } from 'antd'
-import { likertScalesColors } from 'constants/colors'
 import { DomainTypes } from 'constants/feedbackTypes'
+import { workSurveys } from 'constants/workSurveys'
 import { ViewDomain } from 'types/schema'
 import { mapScoreToLikertScale } from 'utils/score'
 import { capitalizeFirstLetter } from 'utils/string'
@@ -28,11 +28,11 @@ export const WorkAverage = (props: Props) => {
     >
       <WorkAverageIcon
         backgroundColor={`${
-          likertScalesColors[mapScoreToLikertScale(record?.average || 0)]
+          workSurveys[domain][mapScoreToLikertScale(record?.average || 0)]
             .background
         }`}
         textColor={`${
-          likertScalesColors[mapScoreToLikertScale(record?.average || 0)].text
+          workSurveys[domain][mapScoreToLikertScale(record?.average || 0)].text
         }`}
         point={record?.average || 0}
       />

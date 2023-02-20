@@ -1,7 +1,8 @@
 import { Form, Radio, FormItemProps } from 'antd'
 import TextArea from 'antd/lib/input/TextArea'
+import { AgreementLevel } from 'constants/agreementLevel'
 import { DomainTypes, FeedbackQuestionType } from 'constants/feedbackTypes'
-import { renderDomainLevels } from 'utils/level'
+import { workSurveys } from 'constants/workSurveys'
 
 type Props = FormItemProps & {
   type: FeedbackQuestionType
@@ -22,8 +23,6 @@ export const FeedbackFormField = (props: Props) => {
     domain = 'engagement',
     ...rest
   } = props
-
-  const levels = renderDomainLevels(domain)
 
   switch (type) {
     case FeedbackQuestionType.GENERAL: {
@@ -63,10 +62,10 @@ export const FeedbackFormField = (props: Props) => {
                 textAlign: 'center',
               }}
             >
-              {(Object.keys(levels) as Array<keyof typeof levels>).map(
+              {(Object.keys(workSurveys[domain]) as Array<AgreementLevel>).map(
                 (item) => (
                   <Radio.Button value={item} key={item} disabled={done}>
-                    {levels[item]}
+                    {workSurveys[domain][item].name}
                   </Radio.Button>
                 ),
               )}

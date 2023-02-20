@@ -1,28 +1,6 @@
-import {
-  AgreementLevel,
-  agreementLevels,
-  deadlineLevels,
-  learningLevels,
-  workloadLevels,
-} from 'constants/agreementLevel'
-import { DomainTypes } from 'constants/feedbackTypes'
+import { AgreementLevel } from 'constants/agreementLevel'
 import { ModelLikertScaleCount } from 'types/schema'
 import { camelToSnakeCase } from './string'
-
-export const renderDomainLevels = (
-  domain: DomainTypes,
-): Record<AgreementLevel, string> => {
-  if (domain === 'workload') {
-    return workloadLevels
-  }
-  if (domain === 'deadline') {
-    return deadlineLevels
-  }
-  if (domain === 'learning') {
-    return learningLevels
-  }
-  return agreementLevels
-}
 
 // this function is used for getting likert-scale key that has the value !== 0
 // the use case is when getting the specific likert-scale answer from a member

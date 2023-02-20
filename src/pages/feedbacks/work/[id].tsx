@@ -3,7 +3,7 @@ import { ColumnsType } from 'antd/lib/table'
 import { ProjectAvatar, UserAvatar } from 'components/common/AvatarWithName'
 import { PageHeader } from 'components/common/PageHeader'
 import { ROUTES } from 'constants/routes'
-import { likertScalesColors, statusColors } from 'constants/colors'
+import { statusColors } from 'constants/colors'
 import {
   SurveyParticipantStatus,
   surveyParticipantStatuses,
@@ -20,19 +20,19 @@ import { useRouter } from 'next/router'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
 import { ViewDomain, ViewTopic } from 'types/schema'
 import { AgreementLevel } from 'constants/agreementLevel'
-import { getWorkSurveyDetailReview, renderDomainLevels } from 'utils/level'
+import { getWorkSurveyDetailReview } from 'utils/level'
 import { DomainTypes } from 'constants/feedbackTypes'
 import { WorkAverageIcon } from 'components/pages/feedbacks/work'
 import { mapScoreToLikertScale } from 'utils/score'
 import { TotalResultCount } from 'components/common/Table/TotalResultCount'
 import { Permission } from 'constants/permission'
+import { workSurveys } from 'constants/workSurveys'
 
 const renderDomainAverageResult = (
   record: ViewDomain[],
   index: number,
   domain: DomainTypes,
 ) => {
-  const levels = renderDomainLevels(domain)
   const domainAverageResult = getWorkSurveyDetailReview(record[index].count!)
 
   const workAverageRender = (
@@ -47,12 +47,14 @@ const renderDomainAverageResult = (
     >
       <WorkAverageIcon
         backgroundColor={`${
-          likertScalesColors[mapScoreToLikertScale(record[index]?.average || 0)]
-            .background
+          workSurveys[domain][
+            mapScoreToLikertScale(record[index]?.average || 0)
+          ].background
         }`}
         textColor={`${
-          likertScalesColors[mapScoreToLikertScale(record[index]?.average || 0)]
-            .text
+          workSurveys[domain][
+            mapScoreToLikertScale(record[index]?.average || 0)
+          ].text
         }`}
         point={record[index]?.average || 0}
       />
@@ -60,7 +62,9 @@ const renderDomainAverageResult = (
   )
 
   return domainAverageResult ? (
-    <Tooltip title={levels[domainAverageResult as AgreementLevel]}>
+    <Tooltip
+      title={workSurveys[domain][domainAverageResult as AgreementLevel].name}
+    >
       {workAverageRender}
     </Tooltip>
   ) : (
