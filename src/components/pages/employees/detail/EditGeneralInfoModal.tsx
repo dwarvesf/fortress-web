@@ -30,9 +30,8 @@ import { renderOrganizationOption } from 'components/common/Select/renderers/org
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { theme } from 'styles'
 
-type FormValues = Omit<
-  RequestUpdateEmployeeGeneralInfoInput,
-  'joinedDate' | 'leftDate'
+type FormValues = Partial<
+  Omit<RequestUpdateEmployeeGeneralInfoInput, 'joinedDate' | 'leftDate'>
 > & {
   joinedDate?: moment.Moment
   leftDate?: moment.Moment
@@ -51,10 +50,10 @@ export const EditGeneralInfoModal = (props: Props) => {
 
   const [form] = Form.useForm()
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
-  const hasPrefix = initialValues?.phone.includes('+') || false
+  const hasPrefix = initialValues?.phone?.includes('+') || false
 
   const [dialCode, setDialCode] = useState<string>(
-    hasPrefix ? initialValues?.phone.split(' ')[0].slice(1) || '' : '84',
+    hasPrefix ? initialValues?.phone?.split(' ')[0].slice(1) || '' : '84',
   )
 
   const { data: organizationsMetaData } = useFetchWithCache(
@@ -68,13 +67,13 @@ export const EditGeneralInfoModal = (props: Props) => {
 
       await client.updateEmployeeGeneralInfo(employeeID, {
         ...values,
-        phone: values.phone.includes(' ') // need to check this for the case submit without editing
+        phone: values.phone?.includes(' ') // need to check this for the case submit without editing
           ? // in case phone is not edited, the value has the form +84 12345...
             values.phone
           : // otherwise its value is passed from PhoneInput's
             // onChange and has the form of 8412345...
             `+${dialCode} ${removeLeadingZero(
-              values.phone.slice(dialCode.length),
+              (values.phone || '').slice(dialCode.length),
             )}`,
         joinedDate: values.joinedDate
           ? values.joinedDate.format(SERVER_DATE_FORMAT)

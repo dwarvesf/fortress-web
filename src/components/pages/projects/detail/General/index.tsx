@@ -138,7 +138,7 @@ export const General = (props: Props) => {
                       },
                       {
                         label: 'Notion ID',
-                        value: data?.notionID || '-',
+                        value: data?.auditNotionID || '-',
                         permission: Permission.PROJECTS_READ_FULLACCESS,
                       },
                     ]}
@@ -226,7 +226,7 @@ export const General = (props: Props) => {
           ...data,
           startDate: data.startDate ? moment(data.startDate) : undefined,
           stacks: (data.stacks || []).map((stack) => stack.id || ''),
-          countryID: data.country?.id || '',
+          countryID: data.country?.id,
         }}
         onClose={closeEditProjectGeneralInfoDialog}
         onAfterSubmit={mutateProject}
@@ -236,8 +236,8 @@ export const General = (props: Props) => {
         isOpen={isEditProjectContactInfoDialogOpen}
         initialValues={{
           ...data,
-          accountManagerID: data.accountManager?.employeeID || '',
-          deliveryManagerID: data.deliveryManager?.employeeID || '',
+          accountManagerID: data.accountManager?.employeeID,
+          deliveryManagerID: data.deliveryManager?.employeeID,
         }}
         onClose={closeEditProjectContactInfoDialog}
         onAfterSubmit={mutateProject}

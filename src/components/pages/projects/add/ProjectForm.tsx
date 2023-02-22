@@ -182,7 +182,6 @@ export const ProjectForm = (props: Props) => {
                 label: projectTypes[key as keyof typeof projectTypes],
               }))}
               filterOption={searchFilterOption}
-              maxTagCount="responsive"
             />
           </Form.Item>
         </Col>
@@ -206,7 +205,7 @@ export const ProjectForm = (props: Props) => {
         </Col>
 
         <Col span={24} md={{ span: 12 }}>
-          <Form.Item label="Notion ID" name="notionID">
+          <Form.Item label="Notion ID" name="auditNotionID">
             <Input
               placeholder="123e4567-e89b-12d3-a456-426655440000"
               className="bordered"

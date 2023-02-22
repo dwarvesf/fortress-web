@@ -624,18 +624,18 @@ export const General = (props: Props) => {
         onClose={closeEditGeneralInfoDialog}
         isOpen={isEditGeneralInfoDialogOpen}
         initialValues={{
-          email: data.teamEmail || '',
-          fullName: data.fullName || '',
-          displayName: data.displayName || '',
-          lineManagerID: data.lineManager?.id || '',
-          phone: data.phoneNumber || '',
-          discordName: data.discordName || '',
-          githubID: data.githubID || '',
-          notionName: data.notionName || '',
-          linkedInName: data.linkedInName || '',
+          email: data.teamEmail,
+          fullName: data.fullName,
+          displayName: data.displayName,
+          lineManagerID: data.lineManager?.id,
+          phone: data.phoneNumber,
+          discordName: data.discordName,
+          githubID: data.githubID,
+          notionName: data.notionName,
+          linkedInName: data.linkedInName,
           joinedDate: data.joinedDate ? moment(data.joinedDate) : undefined,
           leftDate: data.leftDate ? moment(data.leftDate) : undefined,
-          referredBy: data.referredBy?.id || '',
+          referredBy: data.referredBy?.id,
           organizationIDs: (data.organizations || []).map((d) => d.id || ''),
         }}
         onAfterSubmit={mutateEmployee}
@@ -651,7 +651,7 @@ export const General = (props: Props) => {
             .filter((c) => c.leadID === data.id)
             .map((c) => c.id || ''),
           positions: (data.positions || []).map((p) => p.id || ''),
-          seniority: data.seniority?.id || '',
+          seniority: data.seniority?.id,
           stacks: (data.stacks || []).map((s) => s.id || ''),
         }}
         onAfterSubmit={mutateEmployee}
@@ -663,12 +663,12 @@ export const General = (props: Props) => {
         isOpen={isEditPersonalInfoDialogOpen}
         initialValues={{
           dob: data.birthday ? moment(data.birthday) : moment(),
-          gender: data.gender || '',
-          personalEmail: data.personalEmail || '',
-          address: data.address || '',
-          country: data.country || '',
-          city: data.city || '',
-          placeOfResidence: data.placeOfResidence || '',
+          gender: data.gender,
+          personalEmail: data.personalEmail,
+          address: data.address,
+          country: data.country,
+          city: data.city,
+          placeOfResidence: data.placeOfResidence,
         }}
         onAfterSubmit={mutateEmployee}
       />

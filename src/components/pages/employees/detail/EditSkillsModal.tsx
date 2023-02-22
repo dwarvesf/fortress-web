@@ -14,7 +14,7 @@ import { getErrorMessage } from 'utils/string'
 interface Props {
   employeeID: string
   isOpen: boolean
-  initialValues?: RequestUpdateSkillsInput
+  initialValues?: Partial<RequestUpdateSkillsInput>
   onClose: () => void
   onAfterSubmit: () => void
 }

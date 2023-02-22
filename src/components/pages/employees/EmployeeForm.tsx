@@ -167,7 +167,6 @@ export const EmployeeForm = (props: Props) => {
                 showSearch
                 showArrow
                 filterOption={searchFilterOption}
-                maxTagCount="responsive"
               >
                 {Object.keys(employeeStatuses)
                   .map((key) => ({

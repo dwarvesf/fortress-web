@@ -288,9 +288,9 @@ export const Member = (props: Props) => {
           onClose={closeAddNewMemberDialog}
           onAfterSubmit={reload}
           initialValues={{
-            employeeID: '',
+            employeeID: undefined,
             positions: [],
-            seniorityID: '',
+            seniorityID: undefined,
             deploymentType: DeploymentType.OFFICIAL,
             startDate: moment(),
             endDate: undefined,

@@ -98,6 +98,7 @@ export const ProjectMemberModal = (props: Props) => {
       rate: parseFloat(values.rate?.toString() || '0'),
       seniorityID: values.seniorityID || '',
       status: values.status || '',
+      note: values.note || '',
     }
   }
 

@@ -80,6 +80,14 @@ export const MemberTable = ({
         render: (value) => (value ? format(value, DATE_FORMAT) : '-'),
       },
       {
+        title: 'Notes',
+        key: 'note',
+        dataIndex: 'note',
+        render: (value) => (
+          <div style={{ whiteSpace: 'pre-wrap' }}>{value || '-'}</div>
+        ),
+      },
+      {
         key: 'actions',
         render: (value) => (
           <Actions

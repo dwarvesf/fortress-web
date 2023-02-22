@@ -87,9 +87,9 @@ export interface ModelCompanyInfo {
   deletedAt?: GormDeletedAt
   description?: string
   id?: string
-  info?: number[]
+  info?: PgtypeJSONB
   name?: string
-  registration_number?: string
+  registrationNumber?: string
   updatedAt?: string
 }
 
@@ -315,6 +315,23 @@ export interface ModelInvoice {
   year?: number
 }
 
+export interface ModelIssue {
+  id?: string
+  incident_date?: string
+  name?: string
+  pic?: string
+  priority?: string
+  profile?: string
+  projects?: string[]
+  resolution?: string
+  rootcause?: string
+  scope?: string
+  severity?: string
+  solve_date?: string
+  source?: string
+  status?: string
+}
+
 export interface ModelLikertScaleCount {
   agree?: number
   disagree?: number
@@ -370,6 +387,8 @@ export interface ModelProject {
   heads?: ModelProjectHead[]
   id?: string
   name?: string
+  organization?: ModelOrganization
+  organizationID?: string
   projectEmail?: string
   projectMembers?: ModelProjectMember[]
   projectNotion?: ModelProjectNotion
@@ -405,6 +424,7 @@ export interface ModelProjectMember {
   endDate?: string
   id?: string
   isLead?: boolean
+  note?: string
   positions?: ModelPosition[]
   project?: ModelProject
   projectID?: string
@@ -416,6 +436,7 @@ export interface ModelProjectMember {
   startDate?: string
   status?: string
   updatedAt?: string
+  upsellPerson?: ModelEmployee
   upsellPersonID?: string
 }
 
@@ -440,6 +461,7 @@ export interface ModelProjectNotion {
 }
 
 export interface ModelProjectSize {
+  avatar?: string
   code?: string
   id?: string
   name?: string
@@ -452,6 +474,7 @@ export interface ModelProjectSlot {
   deploymentType?: string
   discount?: number
   id?: string
+  note?: string
   project?: ModelProject
   projectID?: string
   projectMember?: ModelProjectMember
@@ -461,6 +484,7 @@ export interface ModelProjectSlot {
   seniorityID?: string
   status?: string
   updatedAt?: string
+  upsellPerson?: ModelEmployee
   upsellPersonID?: string
 }
 
@@ -487,8 +511,8 @@ export interface ModelProjectStack {
 export interface ModelResourceUtilization {
   available?: number
   date?: string
-  official?: number
-  shadow?: number
+  internal?: number
+  staffed?: number
 }
 
 export interface ModelRole {
@@ -546,6 +570,7 @@ export interface ModelTechRadar {
   name?: string
   quadrant?: string
   ring?: string
+  tags?: string[]
 }
 
 export interface ModelUpdate {
@@ -592,23 +617,48 @@ export interface ModelValuation {
   year?: string
 }
 
+export interface PgtypeJSONB {
+  bytes?: number[]
+  status?: number
+}
+
 export interface RequestAssignMemberInput {
   deploymentType: string
   discount?: number
   employeeID?: string
   endDate?: string
   isLead?: boolean
+  note?: string
   positions: string[]
   rate: number
   seniorityID: string
   startDate?: string
   status: string
+  upsellPersonID?: string
 }
 
 export interface RequestBasicEventQuestionInput {
   answer?: string
   eventQuestionID: string
   note?: string
+}
+
+export interface RequestCreateClientContactInput {
+  emails?: string[]
+  isMainContact?: boolean
+  name?: string
+  role?: string
+}
+
+export interface RequestCreateClientInput {
+  address?: string
+  contacts?: RequestCreateClientContactInput[]
+  country?: string
+  description?: string
+  industry?: string
+  name?: string
+  registrationNumber?: string
+  website?: string
 }
 
 export interface RequestCreateEmployeeInput {
@@ -622,28 +672,6 @@ export interface RequestCreateEmployeeInput {
   seniorityID: string
   status: string
   teamEmail: string
-}
-
-export interface RequestCreateInput {
-  bankID: string
-  conversionAmount?: number
-  conversionRate?: number
-  description?: string
-  discount?: number
-  dueAt?: string
-  email?: string
-  month?: number
-  note?: string
-  number?: string
-  paidAt?: string
-  projectID?: string
-  scheduledDate?: string
-  status?: string
-  subTotal?: number
-  tax?: number
-  threadID?: string
-  total?: number
-  year?: number
 }
 
 export interface RequestCreatePositionInput {
@@ -663,6 +691,7 @@ export interface RequestCreateProjectInput {
   function: string
   members?: RequestAssignMemberInput[]
   name: string
+  organizationID?: string
   projectEmail?: string
   startDate?: string
   status: string
@@ -713,6 +742,36 @@ export interface RequestGetListEmployeeInput {
   workingStatuses?: string[]
 }
 
+export interface RequestSendInvoiceRequest {
+  bankID: string
+  cc?: number[]
+  description?: string
+  /** @min 0 */
+  discount?: number
+  dueDate: string
+  email: string
+  invoiceDate: string
+  /**
+   * @min 0
+   * @max 11
+   */
+  invoiceMonth?: number
+  /** @min 0 */
+  invoiceYear?: number
+  isDraft?: boolean
+  lineItems?: number[]
+  note?: string
+  number?: string
+  projectID: string
+  sentByID?: string
+  /** @min 0 */
+  subtotal?: number
+  /** @min 0 */
+  tax?: number
+  /** @min 0 */
+  total?: number
+}
+
 export interface RequestSendSurveyInput {
   topicIDs?: string[]
   type: string
@@ -721,6 +780,24 @@ export interface RequestSendSurveyInput {
 export interface RequestSubmitBody {
   answers: RequestBasicEventQuestionInput[]
   status: string
+}
+
+export interface RequestUpdateClientContactInput {
+  emails?: string[]
+  isMainContact?: boolean
+  name?: string
+  role?: string
+}
+
+export interface RequestUpdateClientInput {
+  address?: string
+  contacts?: RequestUpdateClientContactInput[]
+  country?: string
+  description?: string
+  industry?: string
+  name?: string
+  registrationNumber?: string
+  website?: string
 }
 
 export interface RequestUpdateContactInfoInput {
@@ -770,6 +847,7 @@ export interface RequestUpdateMemberInput {
   employeeID?: string
   endDate?: string
   isLead?: boolean
+  note?: string
   positions: string[]
   projectMemberID?: string
   projectSlotID: string
@@ -777,6 +855,7 @@ export interface RequestUpdateMemberInput {
   seniorityID: string
   startDate?: string
   status: string
+  upsellPersonID?: string
 }
 
 export interface RequestUpdatePersonalInfoInput {
@@ -801,6 +880,7 @@ export interface RequestUpdateProjectGeneralInfoInput {
   countryID: string
   function: string
   name: string
+  organizationID?: string
   stacks?: string[]
   startDate?: string
 }
@@ -835,6 +915,14 @@ export interface RequestUpdateWorkUnitInput {
   body?: RequestUpdateWorkUnitBody
   projectID?: string
   workUnitID?: string
+}
+
+export interface ViewAPIKeyData {
+  key?: string
+}
+
+export interface ViewAPIKeyResponse {
+  data?: ViewAPIKeyData
 }
 
 export interface ViewAccountRoleResponse {
@@ -946,11 +1034,13 @@ export interface ViewAvailableEmployee {
   projects?: ViewBasicProjectInfo[]
   seniority?: ViewSeniority
   stacks?: ViewStack[]
+  username?: string
 }
 
 export interface ViewAvailableSlot {
   createdAt?: string
   id?: string
+  note?: string
   positions?: ViewPosition[]
   project?: ViewBasicProjectInfo
   seniority?: ViewSeniority
@@ -1067,12 +1157,20 @@ export interface ViewClientContact {
   role?: string
 }
 
+export interface ViewContentData {
+  url?: string
+}
+
+export interface ViewContentDataResponse {
+  data?: ViewContentData
+}
+
 export interface ViewCountriesResponse {
   data?: ModelCountry[]
 }
 
-export interface ViewCreateInvoiceResponse {
-  data?: ModelInvoice
+export interface ViewCreateClientResponse {
+  data?: ModelClient
 }
 
 export interface ViewCreateMemberData {
@@ -1082,11 +1180,13 @@ export interface ViewCreateMemberData {
   employeeID?: string
   fullName?: string
   isLead?: boolean
+  note?: string
   positions?: ViewPosition[]
   projectMemberID?: string
   projectSlotID?: string
   seniority?: ModelSeniority
   status?: string
+  upsellPerson?: ViewBasicEmployeeInfo
   username?: string
 }
 
@@ -1108,6 +1208,7 @@ export interface ViewCreateProjectData {
   id?: string
   members?: ViewCreateMemberData[]
   name?: string
+  organization?: ViewOrganization
   projectEmail?: string
   startDate?: string
   status?: string
@@ -1300,6 +1401,10 @@ export interface ViewGetDashboardResourceUtilizationResponse {
   data?: ModelResourceUtilization[]
 }
 
+export interface ViewGetDetailClientResponse {
+  data?: ModelClient
+}
+
 export interface ViewGetEngagementDashboardDetailResponse {
   data?: ViewEngagementDashboardDetail[]
 }
@@ -1310,6 +1415,10 @@ export interface ViewGetEngagementDashboardResponse {
 
 export interface ViewGetLatestInvoiceResponse {
   data?: ModelInvoice
+}
+
+export interface ViewGetListClientResponse {
+  data?: ModelClient[]
 }
 
 export interface ViewGetQuestionResponse {
@@ -1493,6 +1602,7 @@ export interface ViewProjectData {
   industry?: string
   members?: ViewProjectMember[]
   name?: string
+  organization?: ViewOrganization
   projectEmail?: string
   salePerson?: ViewProjectHead
   stacks?: ViewStack[]
@@ -1528,6 +1638,7 @@ export interface ViewProjectMember {
   endDate?: string
   fullName?: string
   isLead?: boolean
+  note?: string
   positions?: ViewPosition[]
   projectMemberID?: string
   projectSlotID?: string
@@ -1535,6 +1646,7 @@ export interface ViewProjectMember {
   seniority?: ModelSeniority
   startDate?: string
   status?: string
+  upsellPerson?: ViewBasicEmployeeInfo
   username?: string
 }
 
@@ -1784,6 +1896,7 @@ export interface ViewUpdateProjectGeneralInfo {
   country?: ViewBasicCountryInfo
   function?: string
   name?: string
+  organization?: ViewOrganization
   stacks?: ModelStack[]
   startDate?: string
 }
