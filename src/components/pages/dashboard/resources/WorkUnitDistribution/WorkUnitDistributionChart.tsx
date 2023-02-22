@@ -24,7 +24,7 @@ export const WorkUnitDistributionChart = ({ data, summary }: Props) => {
   ]
   const colors = {
     development: chartColors.primary,
-    management: chartColors.blue,
+    management: chartColors.green,
     training: chartColors.yellow,
     learning: chartColors.purple,
   }
