@@ -30,8 +30,19 @@ export const WorkUnitDistributionChart = ({ data, summary }: Props) => {
       .reduce((total, amount) => total + amount)
     return max > currentAmount ? max : currentAmount
   }, 0)
-  const offset = 4 - (maxAmount % 4)
+  // offset is the additional amount to ensure thats maxAmount % 4 === 0
+  const offset = maxAmount % 4 === 0 ? 0 : 4 - (maxAmount % 4)
   const maxDisplay = maxAmount + offset
+  // the points on x axis
+  const points = maxDisplay
+    ? [
+        0,
+        maxDisplay / 4,
+        (maxDisplay / 4) * 2,
+        (maxDisplay / 4) * 3,
+        maxDisplay,
+      ]
+    : [0, 1]
 
   const chartRef = useRef<HTMLDivElement>(null)
   const [chartWidth, setChartWidth] = useState(0)
@@ -40,13 +51,6 @@ export const WorkUnitDistributionChart = ({ data, summary }: Props) => {
   const maxRow = 10
   const rowMargin = 2
   const rowHeight = displayHeight / maxRow - rowMargin
-  const points = [
-    0,
-    maxDisplay / 4,
-    (maxDisplay / 4) * 2,
-    (maxDisplay / 4) * 3,
-    maxDisplay,
-  ]
 
   const chart = chartRef.current
   useEffect(() => {
