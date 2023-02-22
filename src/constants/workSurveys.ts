@@ -95,27 +95,27 @@ export const workSurveys: WorkSurvey = {
   },
   engagement: {
     [AgreementLevel.STRONGLY_DISAGREE]: {
-      name: '-',
+      name: 'Strongly disagree',
       background: '#ff4d4f',
       text: 'white',
     },
     [AgreementLevel.DISAGREE]: {
-      name: '-',
+      name: 'Disagree',
       background: '#ffd666',
       text: 'black',
     },
     [AgreementLevel.MIXED]: {
-      name: '-',
+      name: 'Mixed',
       background: '#788896',
       text: 'white',
     },
     [AgreementLevel.AGREE]: {
-      name: '-',
+      name: 'Agree',
       background: '#597ef7',
       text: 'white',
     },
     [AgreementLevel.STRONGLY_AGREE]: {
-      name: '-',
+      name: 'Strongly agree',
       background: '#1aae9f',
       text: 'white',
     },
