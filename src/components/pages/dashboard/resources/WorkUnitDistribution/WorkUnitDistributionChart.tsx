@@ -16,14 +16,18 @@ interface Props {
 type WorkUnitDistributionKey = keyof Omit<ViewWorkUnitDistribution, 'employee'>
 
 export const WorkUnitDistributionChart = ({ data, summary }: Props) => {
-  const keys = Object.keys(summary) as Array<WorkUnitDistributionKey>
-  const colors = keys.reduce<{ [key in WorkUnitDistributionKey]?: string }>(
-    (prev, key, index) => ({
-      ...prev,
-      [key]: Object.values(chartColors)[index],
-    }),
-    {},
-  )
+  const keys: Array<WorkUnitDistributionKey> = [
+    'development',
+    'management',
+    'training',
+    'learning',
+  ]
+  const colors = {
+    development: chartColors.primary,
+    management: chartColors.blue,
+    training: chartColors.yellow,
+    learning: chartColors.purple,
+  }
   const maxAmount = data.reduce((max, each) => {
     const currentAmount = keys
       .map((key) => each[key]?.total || 0)
