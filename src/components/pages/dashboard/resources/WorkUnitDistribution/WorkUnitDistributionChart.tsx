@@ -1,391 +1,288 @@
-import { Avatar, Card, Col, Row, Space } from 'antd'
+import { Col, Popover, Row, Space } from 'antd'
 import { ProjectAvatar, UserAvatar } from 'components/common/AvatarWithName'
 import { chartColors } from 'constants/colors'
-import { ROUTES } from 'constants/routes'
-import { WorkUnitType, workUnitTypes } from 'constants/workUnitTypes'
-import Link from 'next/link'
-import { useEffect, useRef, useState } from 'react'
-import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  Legend,
-  LegendProps,
-  ResponsiveContainer,
-  Tooltip,
-  TooltipProps,
-  XAxis,
-  YAxis,
-} from 'recharts'
+import { Fragment, useEffect, useRef, useState } from 'react'
 import {
   ViewSummaryWorkUnitDistributionData,
   ViewWorkUnitDistribution,
 } from 'types/schema'
-import {
-  capitalizeFirstLetter,
-  getFirstLetterCapitalized,
-  kebabToPascalCase,
-} from 'utils/string'
-
-const YAxisSize = 150
-const maxDisplayItems = 8
-
-const CustomTooltip = ({
-  active,
-  payload,
-  label,
-  data,
-  tooltip,
-}: TooltipProps<string | number, string> & {
-  data: ViewWorkUnitDistribution[]
-  tooltip: WorkUnitType
-}) => {
-  if (active && payload && payload.length) {
-    const { development, management, learning, training } =
-      data.find((each) => each.employee?.id === label) || {}
-    const item = payload.find((each) => each.dataKey === tooltip)
-
-    return (
-      <Card
-        bordered={false}
-        bodyStyle={{
-          padding: 12,
-          borderRadius: 8,
-          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-        }}
-      >
-        <Row align="middle" gutter={5}>
-          <Col
-            style={{
-              width: 16,
-              height: 16,
-              background: item?.color,
-              marginRight: 5,
-            }}
-          />
-          <Col>{capitalizeFirstLetter(item?.name)}</Col>
-          <Col>({item?.value})</Col>
-        </Row>
-        <Space direction="vertical" style={{ paddingLeft: 21, paddingTop: 10 }}>
-          {tooltip === 'development' &&
-            development?.workUnits?.map((each) => (
-              <div key={`development_${each.project?.id}_${each.workUnitName}`}>
-                <ProjectAvatar
-                  project={each.project!}
-                  renderName={(name) => name}
-                />{' '}
-                - {each.workUnitName}
-              </div>
-            ))}
-          {tooltip === 'management' &&
-            management?.workUnits?.map((each) => (
-              <div
-                key={`management_workUnits_${each.project?.id}_${each.workUnitName}`}
-              >
-                <ProjectAvatar
-                  project={each.project!}
-                  renderName={(name) => name}
-                />{' '}
-                - {each.workUnitName}
-              </div>
-            ))}
-          {tooltip === 'management' &&
-            management?.projectHeads?.map((each) => (
-              <div
-                key={`management_projectHeads_${each.project?.id}_${each.position}`}
-              >
-                <ProjectAvatar
-                  project={each.project!}
-                  renderName={(name) => name}
-                />
-                {' - '}
-                {kebabToPascalCase(each.position || '')}
-              </div>
-            ))}
-          {tooltip === 'learning' &&
-            learning?.workUnits?.map((each) => (
-              <div key={`learning_${each.project?.id}_${each.workUnitName}`}>
-                <ProjectAvatar
-                  project={each.project!}
-                  renderName={(name) => name}
-                />{' '}
-                - {each.workUnitName}
-              </div>
-            ))}
-          {tooltip === 'training' && training?.mentees?.length && (
-            <>
-              <div>Mentor:</div>
-              {training.mentees.map((each) => (
-                <div key={`training_${each.username}`}>
-                  <UserAvatar user={each} isLink={false} />
-                </div>
-              ))}
-            </>
-          )}
-          {tooltip === 'training' && training?.workUnits?.length && (
-            <>
-              <div>Training:</div>
-              <ul style={{ paddingLeft: 30 }}>
-                {training.workUnits.map((each) => (
-                  <li key={`training_${each.workUnitName}`}>
-                    {each.workUnitName}
-                  </li>
-                ))}
-              </ul>
-            </>
-          )}
-        </Space>
-      </Card>
-    )
-  }
-  return null
-}
-
-const CustomLegend = ({
-  payload,
-  summary,
-}: LegendProps & { summary: ViewSummaryWorkUnitDistributionData }) => {
-  return (
-    <Space
-      style={{ width: '100%', justifyContent: 'space-evenly', marginTop: 10 }}
-    >
-      {payload?.map((data) => (
-        <Row key={data.value}>
-          <div
-            style={{
-              width: 16,
-              height: 16,
-              background: data.color,
-              margin: '3px 6px 3px 0',
-            }}
-          />
-          <div>
-            <div style={{ fontWeight: '500' }}>
-              {capitalizeFirstLetter(data.value)}
-            </div>
-            <div>
-              {summary[data.value as keyof ViewSummaryWorkUnitDistributionData]}
-              %
-            </div>
-          </div>
-        </Row>
-      ))}
-    </Space>
-  )
-}
-
-const CustomTick = ({
-  payload,
-  data,
-  chartHeight,
-  verticalAnchor,
-  visibleTicksCount,
-  tickFormatter,
-  ...props
-}: Record<string, any> & {
-  data: ViewWorkUnitDistribution[]
-  chartHeight: number
-}) => {
-  const employee = data.find(
-    (each) => each.employee?.id === payload.value,
-  )?.employee
-
-  if (!employee) {
-    return null
-  }
-
-  if (chartHeight && payload.coordinate > chartHeight) {
-    return null
-  }
-
-  return (
-    <foreignObject
-      x={props.x - YAxisSize}
-      y={props.y - 12}
-      width={YAxisSize}
-      height={24}
-    >
-      <Space
-        align="center"
-        style={{ width: '100%', justifyContent: 'flex-end' }}
-      >
-        <Link href={ROUTES.EMPLOYEE_DETAIL(employee?.username!)}>
-          <a
-            className="styled"
-            style={{
-              whiteSpace: 'nowrap',
-            }}
-          >
-            {employee?.displayName}
-          </a>
-        </Link>
-        <Avatar
-          src={employee?.avatar}
-          size={24}
-          style={{ borderRadius: '50%', objectFit: 'cover' }}
-        >
-          {!employee?.avatar && (
-            <span style={{ fontSize: 16 }}>
-              {getFirstLetterCapitalized(
-                employee?.displayName || employee?.fullName,
-              )}
-            </span>
-          )}
-        </Avatar>
-      </Space>
-    </foreignObject>
-  )
-}
-
-const CustomShape = ({
-  chartHeight,
-  ...props
-}: Record<string, any> & { chartHeight: number }) => {
-  const { fill, x, y, width, height } = props
-  if (chartHeight && y > chartHeight) return null
-  if (y + height < 17) return null
-  if (y + 8 > chartHeight) return null
-  const customHeight = Math.max(
-    y + height > chartHeight + 5 ? chartHeight - y + 5 : height,
-    0,
-  )
-  return <rect {...{ x, y, width, height: customHeight }} fill={fill} />
-}
+import { capitalizeFirstLetter, kebabToPascalCase } from 'utils/string'
 
 interface Props {
   data: ViewWorkUnitDistribution[]
   summary: ViewSummaryWorkUnitDistributionData
 }
 
+type WorkUnitDistributionKey = keyof Omit<ViewWorkUnitDistribution, 'employee'>
+
 export const WorkUnitDistributionChart = ({ data, summary }: Props) => {
-  const wheelTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const [chartSize, setChartSize] = useState({ width: 0, height: 0 })
-  const [padding, setPadding] = useState({ top: 0, bottom: 0 })
-  const [tooltip, setTooltip] = useState<WorkUnitType>()
+  const keys = Object.keys(summary) as Array<WorkUnitDistributionKey>
+  const colors = keys.reduce<{ [key in WorkUnitDistributionKey]?: string }>(
+    (prev, key, index) => ({
+      ...prev,
+      [key]: Object.values(chartColors)[index],
+    }),
+    {},
+  )
+  const maxAmount = data.reduce((max, each) => {
+    const currentAmount = keys
+      .map((key) => each[key]?.total || 0)
+      .reduce((total, amount) => total + amount)
+    return max > currentAmount ? max : currentAmount
+  }, 0)
+  // offset is the additional amount to ensure thats maxAmount % 4 === 0
+  const offset = maxAmount % 4 === 0 ? 0 : 4 - (maxAmount % 4)
+  const maxDisplay = maxAmount + offset
+  // the points on x axis
+  const points = maxDisplay
+    ? [
+        0,
+        maxDisplay / 4,
+        (maxDisplay / 4) * 2,
+        (maxDisplay / 4) * 3,
+        maxDisplay,
+      ]
+    : [0, 1]
 
-  const onWheel = (delta: number) => {
-    const { top, bottom } = padding
-    if (top - delta > 0) {
-      setPadding({
-        top: 0,
-        bottom: bottom + top,
-      })
-    } else if (bottom + delta > 0) {
-      setPadding({
-        top: top + bottom,
-        bottom: 0,
-      })
-    } else {
-      setPadding({
-        top: top - delta,
-        bottom: bottom + delta,
-      })
+  const chartRef = useRef<HTMLDivElement>(null)
+  const [chartWidth, setChartWidth] = useState(0)
+  const titleWidth = 150
+  const displayHeight = 300
+  const maxRow = 10
+  const rowMargin = 2
+  const rowHeight = displayHeight / maxRow - rowMargin
+
+  const chart = chartRef.current
+  useEffect(() => {
+    const handleResize = () => {
+      setChartWidth(chart ? chart.clientWidth - titleWidth : 0)
     }
-  }
+    window.addEventListener('resize', handleResize)
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [chart])
 
   useEffect(() => {
-    const paddingBottom =
-      (chartSize.height / maxDisplayItems) * data.length - chartSize.height
-    if (paddingBottom) {
-      setPadding({ top: 0, bottom: -paddingBottom })
+    if (chart && data.length) {
+      setChartWidth(chart.clientWidth - titleWidth)
     }
-  }, [chartSize.height, data.length])
-
-  useEffect(() => {
-    const cancelWheel = (e: WheelEvent) =>
-      wheelTimeout.current && e.preventDefault()
-    document.body.addEventListener('wheel', cancelWheel, { passive: false })
-    return () => document.body.removeEventListener('wheel', cancelWheel)
-  }, [])
+  }, [chart, data])
 
   return (
-    <div
-      onWheel={(e) => {
-        if (wheelTimeout.current) {
-          clearTimeout(wheelTimeout.current)
-        }
-        // flag indicating to lock page scrolling (setTimeout returns a number)
-        wheelTimeout.current = setTimeout(() => {
-          wheelTimeout.current = null
-        }, 300)
-        onWheel(e.deltaY)
-      }}
-    >
-      <ResponsiveContainer width="100%" height={380} minWidth={450}>
-        <BarChart
-          data={data.map((each) => ({
-            ...each,
-            development: each.development?.total,
-            learning: each.learning?.total,
-            management: each.management?.total,
-            training: each.training?.total,
-          }))}
-          layout="vertical"
+    <div style={{ position: 'relative' }}>
+      <div
+        style={{
+          width: '100%',
+          height: displayHeight,
+          overflowY: 'auto',
+          overflowX: 'hidden',
+          marginBottom: 10,
+        }}
+        ref={chartRef}
+      >
+        <Row
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: displayHeight,
+          }}
         >
-          <CartesianGrid strokeDasharray="3 3" horizontal={false} />
-          <XAxis type="number" tickLine={false} />
-          <YAxis
-            dataKey="employee.id"
-            type="category"
-            tickLine={false}
-            axisLine={false}
-            tick={<CustomTick data={data} chartHeight={chartSize.height} />}
-            width={YAxisSize}
-            padding={padding}
-          />
-          <Tooltip
-            cursor={
-              maxDisplayItems / data.length < 1 ? (
-                <rect
-                  x={YAxisSize + 1 + chartSize.width}
-                  y={
-                    (-padding.top /
-                      ((chartSize.height / maxDisplayItems) * data.length)) *
-                    chartSize.height
-                  }
-                  rx={4}
-                  ry={4}
-                  width={8}
-                  height={(maxDisplayItems / data.length) * chartSize.height}
-                  fill="#ccc"
+          <Col flex={`${titleWidth}px`} />
+          <Col
+            flex={chartWidth ? `${chartWidth}px` : 'auto'}
+            style={{
+              position: 'relative',
+              borderBottom: '2px solid #ccc',
+            }}
+          >
+            {points.map((num) => (
+              <Fragment key={num}>
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    height: '100%',
+                    marginLeft: `${(num / maxDisplay) * 100}%`,
+                    borderLeft: '1px dashed #ccc',
+                  }}
                 />
-              ) : (
-                false
-              )
-            }
-            content={
-              tooltip ? (
-                <CustomTooltip data={data} tooltip={tooltip} />
-              ) : (
-                () => null
-              )
-            }
-          />
-          <Legend content={<CustomLegend summary={summary} />} />
-          {Object.keys(workUnitTypes).map((key, i) => (
-            <Bar
-              key={key}
-              dataKey={key}
-              stackId="a"
-              fill={Object.values(chartColors)[i]}
-              barSize={15}
-              shape={<CustomShape chartHeight={chartSize.height} />}
-              ref={(ref: any) => {
-                const { width, height } = ref?.props || {}
-                if (
-                  width &&
-                  height &&
-                  (chartSize.width !== width || chartSize.height !== height)
-                ) {
-                  setChartSize({ width, height })
-                }
+                <div
+                  style={{
+                    position: 'absolute',
+                    bottom: -25,
+                    left: 0,
+                    transform: `translateX(-50%)`,
+                    marginLeft: `${(num / maxDisplay) * 100}%`,
+                    display: chartWidth ? undefined : 'none',
+                  }}
+                >
+                  {num}
+                </div>
+              </Fragment>
+            ))}
+          </Col>
+        </Row>
+        {data.map((each) => (
+          <Row
+            key={each.employee?.id}
+            style={{
+              marginTop: rowMargin,
+              height: rowHeight,
+            }}
+          >
+            <Col
+              flex={`${titleWidth}px`}
+              style={{
+                overflow: 'hidden',
+                whiteSpace: 'nowrap',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'flex-end',
+                paddingRight: 10,
               }}
-              onMouseOver={() => setTooltip(key as WorkUnitType)}
-              onMouseOut={() => setTooltip(undefined)}
+            >
+              <UserAvatar
+                user={each.employee!}
+                style={{
+                  flexDirection: 'row-reverse',
+                }}
+              />
+            </Col>
+            <Col flex="auto" style={{ display: 'flex', alignItems: 'center' }}>
+              {keys.map((key) => (
+                <Popover
+                  key={key}
+                  placement="bottom"
+                  overlayInnerStyle={{
+                    maxHeight: '50vh',
+                    overflowY: 'auto',
+                    overflowX: 'hidden',
+                  }}
+                  content={
+                    <>
+                      <Row align="middle" gutter={5}>
+                        <Col
+                          style={{
+                            width: 16,
+                            height: 16,
+                            background: colors[key],
+                            marginRight: 5,
+                          }}
+                        />
+                        <Col>{capitalizeFirstLetter(key)}</Col>
+                        <Col>({each[key]?.total || 0})</Col>
+                      </Row>
+                      <Space
+                        direction="vertical"
+                        style={{ paddingLeft: 21, paddingTop: 10 }}
+                      >
+                        {key === 'development' &&
+                          each.development?.workUnits?.map((each) => (
+                            <div
+                              key={`development_${each.project?.id}_${each.workUnitName}`}
+                            >
+                              <ProjectAvatar project={each.project!} />
+                              {' - '}
+                              {each.workUnitName}
+                            </div>
+                          ))}
+                        {key === 'management' &&
+                          each.management?.workUnits?.map((each) => (
+                            <div
+                              key={`management_workUnits_${each.project?.id}_${each.workUnitName}`}
+                            >
+                              <ProjectAvatar project={each.project!} />
+                              {' - '}
+                              {each.workUnitName}
+                            </div>
+                          ))}
+                        {key === 'management' &&
+                          each.management?.projectHeads?.map((each) => (
+                            <div
+                              key={`management_projectHeads_${each.project?.id}_${each.position}`}
+                            >
+                              <ProjectAvatar project={each.project!} />
+                              {' - '}
+                              {kebabToPascalCase(each.position || '')}
+                            </div>
+                          ))}
+                        {key === 'learning' &&
+                          each.learning?.workUnits?.map((each) => (
+                            <div
+                              key={`learning_${each.project?.id}_${each.workUnitName}`}
+                            >
+                              <ProjectAvatar project={each.project!} />
+                              {' - '}
+                              {each.workUnitName}
+                            </div>
+                          ))}
+                        {key === 'training' && each.training?.mentees?.length && (
+                          <>
+                            <div>Mentor:</div>
+                            {each.training.mentees.map((each) => (
+                              <div key={`training_${each.username}`}>
+                                <UserAvatar user={each} />
+                              </div>
+                            ))}
+                          </>
+                        )}
+                        {key === 'training' &&
+                          each.training?.workUnits?.length && (
+                            <>
+                              <div>Training:</div>
+                              <ul style={{ paddingLeft: 30 }}>
+                                {each.training.workUnits.map((each) => (
+                                  <li key={`training_${each.workUnitName}`}>
+                                    {each.workUnitName}
+                                  </li>
+                                ))}
+                              </ul>
+                            </>
+                          )}
+                      </Space>
+                    </>
+                  }
+                >
+                  <div
+                    key={key}
+                    style={{
+                      height: 16,
+                      width: `${((each[key]?.total || 0) * 100) / maxDisplay}%`,
+                      backgroundColor: colors[key],
+                    }}
+                  />
+                </Popover>
+              ))}
+            </Col>
+          </Row>
+        ))}
+      </div>
+      <Space
+        style={{ width: '100%', justifyContent: 'space-evenly', marginTop: 20 }}
+      >
+        {keys.map((key) => (
+          <Row key={key}>
+            <div
+              style={{
+                width: 16,
+                height: 16,
+                background: colors[key],
+                margin: '3px 6px 3px 0',
+              }}
             />
-          ))}
-        </BarChart>
-      </ResponsiveContainer>
+            <div>
+              <div style={{ fontWeight: '500' }}>
+                {capitalizeFirstLetter(key)}
+              </div>
+              <div>{summary[key] || 0}%</div>
+            </div>
+          </Row>
+        ))}
+      </Space>
     </div>
   )
 }
