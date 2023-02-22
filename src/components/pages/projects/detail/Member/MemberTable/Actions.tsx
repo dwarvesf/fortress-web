@@ -107,7 +107,7 @@ export const Actions = ({
               record.positions?.map((position) => position.id || '') || [],
             startDate: record.startDate ? moment(record.startDate) : undefined,
             endDate: record.endDate ? moment(record.endDate) : undefined,
-            seniorityID: record.seniority?.id || '',
+            seniorityID: record.seniority?.id,
           }}
           onAfterSubmit={onAfterAction}
         />

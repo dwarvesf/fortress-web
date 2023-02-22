@@ -19,7 +19,7 @@ import {
 
 interface Props {
   projectID: string
-  initialValues?: RequestCreateWorkUnitBody
+  initialValues?: Partial<RequestCreateWorkUnitBody>
   form: FormInstance<any>
   isEditing?: boolean
   onSubmit: (values: RequestCreateWorkUnitBody) => void
@@ -117,7 +117,6 @@ export const WorkUnitForm = (props: Props) => {
                 label: workUnitTypes[key as WorkUnitType],
               }))}
               filterOption={searchFilterOption}
-              maxTagCount="responsive"
             />
           </Form.Item>
         </Col>
@@ -131,7 +130,6 @@ export const WorkUnitForm = (props: Props) => {
                 showSearch
                 showArrow
                 filterOption={searchFilterOption}
-                maxTagCount="responsive"
               >
                 {Object.keys(projectWorkUnitStatuses)
                   .map((key) => ({

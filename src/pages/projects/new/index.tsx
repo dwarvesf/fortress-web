@@ -116,7 +116,7 @@ const CreateNewProjectPage = () => {
       status: values.status,
       type: values.type,
       function: values.function,
-      notionID: values.notionID || '',
+      auditNotionID: values.auditNotionID || '',
     }
   }
 
@@ -150,6 +150,7 @@ const CreateNewProjectPage = () => {
           memberData.seniorityID,
         ),
         status: memberData.status,
+        note: memberData.note,
       }
     },
     [employeeData, positionsData, senioritiesData],

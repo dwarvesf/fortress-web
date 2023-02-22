@@ -120,7 +120,7 @@ export const Actions = ({
               ? moment(rowData.startDate)
               : undefined,
             endDate: rowData.endDate ? moment(rowData.endDate) : undefined,
-            seniorityID: rowData.seniority?.id || '',
+            seniorityID: rowData.seniority?.id,
           }}
           memberData={memberData}
           setMemberData={setMemberData}

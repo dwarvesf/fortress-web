@@ -21,7 +21,7 @@ import { useFetchWithCache } from 'hooks/useFetchWithCache'
 interface Props {
   employeeID: string
   isOpen: boolean
-  initialValues?: Omit<RequestUpdatePersonalInfoInput, 'dob'> & {
+  initialValues?: Partial<Omit<RequestUpdatePersonalInfoInput, 'dob'>> & {
     dob: moment.Moment
   }
   onClose: () => void
@@ -110,7 +110,6 @@ export const EditPersonalInfoModal = (props: Props) => {
                   label: key,
                 }))}
                 filterOption={searchFilterOption}
-                maxTagCount="responsive"
               />
             </Form.Item>
           </Col>

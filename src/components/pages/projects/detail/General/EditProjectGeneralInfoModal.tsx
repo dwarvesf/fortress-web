@@ -134,7 +134,7 @@ export const EditProjectGeneralInfoModal = (props: Props) => {
             />
           </Form.Item>
 
-          <Form.Item label="Notion ID" name="notionID">
+          <Form.Item label="Notion ID" name="auditNotionID">
             <Input placeholder="Input Notion ID" className="bordered" />
           </Form.Item>
         </Space>

@@ -99,12 +99,12 @@ export const Actions = ({
           projectID={projectID}
           isEditing
           initialValues={{
-            name: record.name || '',
-            type: record.type || '',
+            name: record.name,
+            type: record.type,
             status: record.status || ProjectWorkUnitStatus.ACTIVE,
             members: (record.members || []).map((m) => m.employeeID || ''),
             stacks: (record.stacks || []).map((s) => s.id || ''),
-            url: record.url || '',
+            url: record.url,
           }}
           rowID={record.id || ''}
           isOpen={isEditWorkUnitDialogOpen}

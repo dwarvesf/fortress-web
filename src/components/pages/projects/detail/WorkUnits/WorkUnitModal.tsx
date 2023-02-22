@@ -11,7 +11,7 @@ interface Props {
   isEditing?: boolean
   projectID: string
   rowID?: string
-  initialValues?: RequestCreateWorkUnitBody
+  initialValues?: Partial<RequestCreateWorkUnitBody>
   onClose: () => void
   onAfterSubmit: () => void
 }

@@ -20,6 +20,7 @@ import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { theme } from 'styles'
 import { fullListPagination } from 'types/filters/Pagination'
 import { SELECT_BOX_DATE_FORMAT } from 'constants/date'
+import TextArea from 'antd/lib/input/TextArea'
 
 const today = new Date()
 
@@ -116,7 +117,6 @@ export const MemberForm = (props: Props) => {
               showSearch
               showArrow
               filterOption={searchFilterOption}
-              maxTagCount="responsive"
             >
               {(employeesData?.data || [])
                 .filter(
@@ -146,7 +146,6 @@ export const MemberForm = (props: Props) => {
               showSearch
               showArrow
               filterOption={searchFilterOption}
-              maxTagCount="responsive"
               options={senioritiesData?.data?.map(
                 transformMetadataToSelectOption,
               )}
@@ -290,6 +289,17 @@ export const MemberForm = (props: Props) => {
         <Col span={24} md={{ span: 12 }}>
           <Form.Item label="Role" name="isLead" valuePropName="checked">
             <Checkbox>Is Lead</Checkbox>
+          </Form.Item>
+        </Col>
+        <Col span={24} md={{ span: 12 }}>
+          <Form.Item label="Notes" name="note">
+            <TextArea
+              placeholder="Enter notes"
+              rows={4}
+              bordered
+              className="bordered"
+              style={{ resize: 'none', background: theme.colors.white }}
+            />
           </Form.Item>
         </Col>
       </Row>
