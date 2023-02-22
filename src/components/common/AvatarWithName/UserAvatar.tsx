@@ -1,5 +1,6 @@
 import { ROUTES } from 'constants/routes'
 import Link from 'next/link'
+import { CSSProperties } from 'react'
 import { ViewEmployeeData, ViewProjectMember } from 'types/schema'
 import { AvatarWithName } from './AvatarWithName'
 
@@ -11,10 +12,11 @@ interface Props {
   avatarSize?: number
   fontSize?: number
   isLink?: boolean
+  style?: CSSProperties
 }
 
 export const UserAvatar = (props: Props) => {
-  const { user, avatarSize, fontSize, isLink = true } = props
+  const { user, avatarSize, fontSize, isLink = true, style } = props
 
   return isLink ? (
     <AvatarWithName
@@ -28,14 +30,14 @@ export const UserAvatar = (props: Props) => {
           <a className="styled">{name}</a>
         </Link>
       )}
-      {...{ avatarSize, fontSize }}
+      {...{ avatarSize, fontSize, style }}
     />
   ) : (
     <AvatarWithName
       avatar={user.avatar}
       name={user.displayName || user.fullName}
       renderName={(name) => name}
-      {...{ avatarSize, fontSize }}
+      {...{ avatarSize, fontSize, style }}
     />
   )
 }
