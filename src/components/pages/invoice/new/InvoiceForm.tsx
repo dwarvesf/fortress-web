@@ -1,4 +1,4 @@
-import { Col, DatePicker, Form, Input, Row } from 'antd'
+import { Col, DatePicker, Form, Input, Row, Select } from 'antd'
 import TextArea from 'antd/lib/input/TextArea'
 import { Button } from 'components/common/Button'
 import { FormWrapper } from 'components/common/FormWrapper'
@@ -10,37 +10,12 @@ import { fullListPagination } from 'types/filters/Pagination'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
 import { transformProjectDataToSelectOption } from 'utils/select'
 import { useState } from 'react'
-import { TagInput } from 'components/common/TagsInput'
 import { InvoiceFormInputList } from 'components/pages/invoice/new/InvoiceFormInputList'
 import { useForm } from 'antd/lib/form/Form'
-import styled from 'styled-components'
 import { SummarySection } from './SummarySection'
 
-// style the tag input to have the same focus behavior as antd inputs
-const TagInputWrapper = styled.div`
-  .rti--container {
-    border: 1px solid #d9d9d9 !important;
-    border-radius: 0.25rem !important;
-    --rti-main: #e53e3e33 !important;
-  }
-
-  .rti--container:focus-within {
-    box-shadow: 0 0 0 2px #e53e3e33 !important;
-    transition: all 0.25s ease-out;
-    --rti-main: #e53e3e33 !important;
-  }
-
-  .rti--input::placeholder {
-    color: #bfbfbf;
-  }
-
-  .rti--input {
-    flex: 1 !important;
-  }
-`
-
 export const InvoiceForm = () => {
-  const [ccValues, setCcValues] = useState<string[]>([])
+  const [CCValues, setCCValues] = useState<string[]>([])
   const [form] = useForm()
 
   return (
@@ -54,7 +29,7 @@ export const InvoiceForm = () => {
       <Form
         form={form}
         onFinish={(values) => {
-          console.log({ ...values, cc: ccValues })
+          console.log({ ...values, cc: CCValues })
         }}
       >
         <Row gutter={24} style={{ marginBottom: 36 }}>
@@ -131,13 +106,27 @@ export const InvoiceForm = () => {
 
               <Col span={24}>
                 <Form.Item label="CC" name="cc">
-                  <TagInputWrapper>
-                    <TagInput
-                      values={ccValues}
-                      setValues={setCcValues}
-                      placeholder="Enter CC"
-                    />
-                  </TagInputWrapper>
+                  <Select
+                    mode="tags"
+                    placeholder="Enter CC"
+                    onChange={setCCValues}
+                    dropdownStyle={{ display: 'none' }}
+                    // I check input key since we are using Antd Select component, hitting Enter
+                    // works as deselecting the option that we already inputted, also if we
+                    // type in the keyword that already appears, it acts like we are searching
+                    // for that option and when we hit Enter, the option is deselected.
+                    onInputKeyDown={(event) => {
+                      if (
+                        event.key === 'Enter' &&
+                        // @ts-ignore
+                        (event.target?.value === '' ||
+                          // @ts-ignore
+                          CCValues.includes(event.target?.value))
+                      ) {
+                        event.stopPropagation()
+                      }
+                    }}
+                  />
                 </Form.Item>
               </Col>
             </Row>
