@@ -1,4 +1,5 @@
 import { Avatar, Space as AntSpace, SpaceProps } from 'antd'
+import { CSSProperties } from 'react'
 import styled from 'styled-components'
 import { getFirstLetterCapitalized } from 'utils/string'
 
@@ -8,6 +9,7 @@ interface Props extends SpaceProps {
   avatarSize?: number
   fontSize?: number
   renderName?: (value?: string) => React.ReactNode
+  style?: CSSProperties
 }
 
 const Space = styled(AntSpace)`
