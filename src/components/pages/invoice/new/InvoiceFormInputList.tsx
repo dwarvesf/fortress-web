@@ -68,6 +68,14 @@ const TableWrapper = styled.div`
         background-color: rgb(252, 249, 248);
         cursor: pointer;
       }
+
+      &:first-of-type {
+        padding-left: 0 !important;
+      }
+
+      &:nth-last-of-type(1) {
+        padding-right: 0 !important;
+      }
     }
   }
 `
