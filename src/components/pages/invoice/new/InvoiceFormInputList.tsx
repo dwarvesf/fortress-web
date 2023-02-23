@@ -73,7 +73,7 @@ const TableWrapper = styled.div`
         padding-left: 0 !important;
       }
 
-      &:nth-last-of-type(1) {
+      &:last-of-type {
         padding-right: 0 !important;
       }
     }
