@@ -2,6 +2,7 @@ import { DefaultOptionType } from 'antd/lib/select'
 import {
   ViewEmployeeData,
   ViewOrganization,
+  ViewProjectData,
   ViewProjectMember,
 } from 'types/schema'
 
@@ -23,6 +24,15 @@ export function transformMetadataToFilterOption(metaItem: {
 export function transformEmployeeDataToSelectOption(
   metaItem: ViewEmployeeData,
 ) {
+  const { id } = metaItem
+
+  return {
+    value: id,
+    label: metaItem,
+  }
+}
+
+export function transformProjectDataToSelectOption(metaItem: ViewProjectData) {
   const { id } = metaItem
 
   return {

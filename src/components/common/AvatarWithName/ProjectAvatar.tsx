@@ -6,20 +6,25 @@ import { AvatarWithName } from './AvatarWithName'
 
 interface Props extends ComponentProps<typeof AvatarWithName> {
   project: ViewProjectData
+  isLink?: boolean
 }
 
 export const ProjectAvatar = (props: Props) => {
-  const { project, ...rest } = props
+  const { project, isLink = true, ...rest } = props
 
   return (
     <AvatarWithName
       avatar={project.avatar}
       name={project.name}
-      renderName={(name) => (
-        <Link href={ROUTES.PROJECT_DETAIL(project.code || '')}>
+      renderName={(name) =>
+        isLink ? (
+          <Link href={ROUTES.PROJECT_DETAIL(project.code || '')}>
+            <a className="styled">{name}</a>
+          </Link>
+        ) : (
           <a className="styled">{name}</a>
-        </Link>
-      )}
+        )
+      }
       {...rest}
     />
   )
