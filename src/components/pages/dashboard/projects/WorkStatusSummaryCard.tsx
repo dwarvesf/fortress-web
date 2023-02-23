@@ -60,7 +60,11 @@ const SummaryTdRender = ({
   hasFloatingPoint?: boolean
 }) => (
   <div style={{ display: 'flex', alignItems: 'end' }}>
-    <span>{hasFloatingPoint ? value.value.toFixed(1) : value.value}</span>
+    {hasFloatingPoint ? (
+      <span>{value.value ? value.value.toFixed(1) : '-'}</span>
+    ) : (
+      <span>{value.value}</span>
+    )}
     {getTrendByPercentage(value.trend) && (
       <span
         style={{
