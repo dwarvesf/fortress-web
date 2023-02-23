@@ -42,7 +42,11 @@ export const WorkSurveyDomainCard = (props: Props) => {
     if (dataset.length === 1) {
       return (
         <StatisticBlock
-          stat={(dataset[dataset.length - 1][domain] || 0).toFixed(1)}
+          stat={
+            (dataset[dataset.length - 1][domain] || 0) >= 1
+              ? (dataset[dataset.length - 1][domain] || 1).toFixed(1)
+              : undefined
+          }
           statColor={theme.colors.gray700}
         />
       )
