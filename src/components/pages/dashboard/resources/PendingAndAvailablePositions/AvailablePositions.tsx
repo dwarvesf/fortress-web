@@ -17,6 +17,7 @@ const columns: ColumnsType<ViewAvailableEmployee> = [
     render: (value?: ViewAvailableEmployee) =>
       value ? <UserAvatar user={value} /> : '-',
     fixed: 'left',
+    width: 150,
   },
   {
     title: 'Seniority',

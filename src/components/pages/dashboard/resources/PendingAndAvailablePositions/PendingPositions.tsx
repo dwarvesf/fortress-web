@@ -21,6 +21,7 @@ const columns: ColumnsType<ViewAvailableSlot> = [
       <TagArray value={value || []} maxTag={2} color="blue" />
     ),
     fixed: 'left',
+    width: 150,
   },
   {
     title: 'Seniority',
@@ -42,6 +43,14 @@ const columns: ColumnsType<ViewAvailableSlot> = [
     key: 'type',
     width: 100,
     render: (value: DeploymentType) => deploymentTypes[value],
+  },
+  {
+    title: 'Notes',
+    key: 'note',
+    dataIndex: 'note',
+    render: (value) => (
+      <div style={{ whiteSpace: 'pre-wrap' }}>{value || '-'}</div>
+    ),
   },
   {
     title: 'Created at',

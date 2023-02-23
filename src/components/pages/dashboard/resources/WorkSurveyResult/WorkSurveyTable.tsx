@@ -22,6 +22,7 @@ const columns = (
     render: (value?: ViewBasicEmployeeInfo) =>
       value ? <UserAvatar user={value} /> : '-',
     fixed: 'left',
+    width: 150,
   },
   ...dates.map((date) => ({
     title: date,
