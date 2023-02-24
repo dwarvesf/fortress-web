@@ -13,7 +13,7 @@
     "build:storybook": "build-storybook",
     "lint": "eslint . --ext .ts,.tsx,.js && stylelint '**/*.css'",
     "lint:fix": "eslint . --ext .ts,.tsx,.js --fix && stylelint '**/*.css' --fix",
-    "postinstall": "husky install",
+    "postinstall": "chmod +x ./node_modules/husky/lib/bin.js && husky install",
     "fetch-definitions": "swagger-typescript-api --no-client -p https://develop-api.fortress.d.foundation/swagger/doc.json -o ./src/types -n schema.ts",
     "release": "standard-version -a"
   },
