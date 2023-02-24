@@ -6,16 +6,16 @@ import { useEffect } from 'react'
 
 const HomePage = () => {
   const { replace } = useRouter()
-  const { isAuthenticated, permissions } = useAuthContext()
+  const { permissions } = useAuthContext()
 
   useEffect(() => {
-    if (!isAuthenticated || !permissions.length) return
-    if (permissions.includes(Permission.PROJECTS_READ)) {
+    if (!permissions.length) return
+    if (permissions.includes(Permission.DASHBOARDS_READ)) {
       replace(ROUTES.DASHBOARD)
     } else {
       replace(ROUTES.PROJECTS)
     }
-  }, [isAuthenticated, permissions, replace])
+  }, [permissions, replace])
 
   return null
 }
