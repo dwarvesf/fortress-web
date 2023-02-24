@@ -6,9 +6,36 @@ import Projects from 'components/pages/dashboard/projects/Projects'
 import { useTabWithQuery } from 'hooks/useTabWithQuery'
 import Resources from 'components/pages/dashboard/resources/Resources'
 import Engagement from 'components/pages/dashboard/engagement/Engagement'
+import { useMemo } from 'react'
+import { Permission } from 'constants/permission'
+import { useAuthContext } from 'context/auth'
 
 const DashboardPage = () => {
+  const { permissions } = useAuthContext()
   const { tabKey = 'projects', setTabKey } = useTabWithQuery()
+
+  const tabs = useMemo(() => {
+    return [
+      {
+        key: 'projects',
+        label: `Projects`,
+        children: <Projects />,
+        permission: Permission.DASHBOARDS_PROJECTS_READ,
+      },
+      {
+        key: 'resources',
+        label: `Resources`,
+        children: <Resources />,
+        permission: Permission.DASHBOARDS_RESOURCES_READ,
+      },
+      {
+        key: 'engagement',
+        label: `Engagement`,
+        children: <Engagement />,
+        permission: Permission.DASHBOARDS_ENGAGEMENT_READ,
+      },
+    ].filter((i) => permissions.includes(i.permission))
+  }, [permissions])
 
   return (
     <>
@@ -28,23 +55,7 @@ const DashboardPage = () => {
         <Tabs
           defaultActiveKey={tabKey}
           onTabClick={(t) => setTabKey(t)}
-          items={[
-            {
-              key: 'projects',
-              label: `Projects`,
-              children: <Projects />,
-            },
-            {
-              key: 'resources',
-              label: `Resources`,
-              children: <Resources />,
-            },
-            {
-              key: 'engagement',
-              label: `Engagement`,
-              children: <Engagement />,
-            },
-          ]}
+          items={tabs}
         />
       </Space>
     </>

@@ -54,6 +54,9 @@ export enum Permission {
   SURVEYS_EDIT = 'surveys.edit',
   SURVEYS_READ = 'surveys.read',
   DASHBOARDS_READ = 'dashboards.read',
+  DASHBOARDS_PROJECTS_READ = 'dashboards.projects.read',
+  DASHBOARDS_RESOURCES_READ = 'dashboards.resources.read',
+  DASHBOARDS_ENGAGEMENT_READ = 'dashboards.engagement.read',
 }
 
 // the permission that needs to access to a certain page
