@@ -211,7 +211,9 @@ export const WorkUnitDistributionChart = ({ data, summary }: Props) => {
                             >
                               <ProjectAvatar project={each.project!} />
                               {' - '}
-                              {kebabToPascalCase(each.position || '')}
+                              {each.position === 'technical-lead'
+                                ? 'Lead'
+                                : kebabToPascalCase(each.position || '')}
                             </div>
                           ))}
                         {key === 'learning' &&
