@@ -76,7 +76,7 @@ export const FeedbackFormField = (props: Props) => {
               {/* @ts-ignore */}
               <TextArea
                 rows={4}
-                bordered
+                className="bordered"
                 placeholder="Tell us more about this"
                 readOnly={done}
                 {...rest}
