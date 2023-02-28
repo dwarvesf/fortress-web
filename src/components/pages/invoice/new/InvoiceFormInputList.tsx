@@ -1,19 +1,25 @@
 import { Icon } from '@iconify/react'
-import { Form, FormInstance, Input, InputProps } from 'antd'
-import { Rule } from 'antd/lib/form'
+import { Form, FormInstance, Input } from 'antd'
 import TextArea from 'antd/lib/input/TextArea'
-import { HTMLAttributes, useEffect } from 'react'
+import { Dispatch, SetStateAction, useEffect } from 'react'
 import styled from 'styled-components'
+import { NumericFormat } from 'react-number-format'
+import { ViewCurrency } from 'types/schema'
 import { Button } from '../../../common/Button'
+import { formatCurrency } from '../../../../utils/currency'
+
+interface Summary {
+  subtotal: number
+  total: number
+  discount: number
+}
 
 interface Props {
   form: FormInstance
-  name: string | number | (string | number)[]
-  label?: string
-  rules?: Rule[]
-  removeButtonProps?: HTMLAttributes<HTMLButtonElement>
-  addButtonProps?: HTMLAttributes<HTMLButtonElement>
-  inputProps?: InputProps
+  name: string
+  currency?: ViewCurrency
+  summary: Summary
+  setSummary: Dispatch<SetStateAction<Summary>>
 }
 
 const TableWrapper = styled.div`
@@ -81,32 +87,34 @@ const TableWrapper = styled.div`
 `
 
 export const InvoiceFormInputList = (props: Props) => {
-  const {
-    form,
-    name,
-    rules,
-    removeButtonProps: _removeButtonProps = {},
-    addButtonProps: _addButtonProps = {},
-    inputProps,
-  } = props
-  const {
-    onClick: onRemove,
-    style: removeButtonStyle,
-    ...removeButtonProps
-  } = _removeButtonProps
-  const {
-    onClick: onAdd,
-    children: addButtonChildren = 'Add',
-    style: addButtonStyle,
-    ...addButtonProps
-  } = _addButtonProps
-  const { getFieldValue, setFieldValue } = form
+  const { form, name, currency, summary, setSummary } = props
 
+  const values = Form.useWatch(name, form) as Array<{
+    description?: string
+    quantity?: number
+    unitCost?: number
+    discount?: number
+    cost?: number
+  }>
   useEffect(() => {
-    if (!getFieldValue(name)?.length) {
-      setFieldValue(name, [''])
-    }
-  }, [getFieldValue, name, setFieldValue])
+    if (!values?.length) return
+    const newValues = values.map((each) => ({
+      ...each,
+      cost:
+        each?.quantity && each?.unitCost
+          ? each.quantity * each.unitCost
+          : undefined,
+    }))
+    form.setFieldValue(name, newValues)
+    const { total, subtotal } = newValues.reduce(
+      (prev, curr) => ({
+        total: prev.total + (curr.cost || 0),
+        subtotal: prev.subtotal + (curr.cost || 0),
+      }),
+      { total: 0, subtotal: 0 },
+    )
+    setSummary({ total, subtotal, discount: 0 })
+  }, [form, name, setSummary, values])
 
   return (
     <>
@@ -117,23 +125,37 @@ export const InvoiceFormInputList = (props: Props) => {
       >
         <Form.List name={name}>
           {(fields, { add, remove }) => (
-            <>
-              <TableWrapper>
-                <table>
+            <TableWrapper>
+              <table>
+                <thead>
                   <tr>
                     <th>Description</th>
                     <th>Quantity</th>
                     <th>Unit price</th>
                     <th>Discount</th>
                     <th>Cost</th>
+                    <th style={{ width: 48 }}>
+                      <Button
+                        type="text-primary"
+                        size="small"
+                        icon={<Icon icon="icon-park-outline:plus" width={20} />}
+                        onClick={() => add()}
+                      />
+                    </th>
                   </tr>
+                </thead>
+                <tbody>
                   {fields.map((field, index) => (
                     <tr key={field.key}>
                       <td style={{ verticalAlign: 'center' }}>
                         <Form.Item
                           name={[index, 'description']}
-                          rules={rules}
-                          style={{}}
+                          rules={[
+                            {
+                              required: true,
+                              message: 'Required',
+                            },
+                          ]}
                         >
                           <TextArea
                             className="bordered"
@@ -146,30 +168,56 @@ export const InvoiceFormInputList = (props: Props) => {
                       <td>
                         <Form.Item
                           name={[index, 'quantity']}
-                          rules={rules}
-                          style={{}}
+                          rules={[
+                            {
+                              type: 'number',
+                              required: true,
+                              min: 1,
+                              message: 'Greater than 1',
+                            },
+                          ]}
+                          normalize={(value) =>
+                            value
+                              ? Number(value.replace(/[^\d.]/g, ''))
+                              : undefined
+                          }
                         >
-                          <Input
+                          <NumericFormat
                             className="bordered"
-                            type="number"
                             placeholder="Enter quantity"
-                            {...inputProps}
+                            thousandSeparator=","
+                            allowNegative={false}
+                            decimalScale={0}
+                            style={{ textAlign: 'right' }}
+                            customInput={Input}
                           />
                         </Form.Item>
                       </td>
 
                       <td>
                         <Form.Item
-                          name={[index, 'unit-price']}
-                          rules={rules}
-                          style={{}}
+                          name={[index, 'unitCost']}
+                          rules={[
+                            {
+                              required: true,
+                              message: 'Required',
+                            },
+                          ]}
+                          normalize={(value) =>
+                            value
+                              ? Number(value.replace(/[^\d.]/g, ''))
+                              : undefined
+                          }
                         >
-                          <Input
+                          <NumericFormat
                             className="bordered"
-                            type="number"
                             placeholder="Enter unit price"
-                            prefix="$"
-                            {...inputProps}
+                            thousandSeparator=","
+                            allowNegative={false}
+                            decimalScale={3}
+                            suffix={currency?.symbol}
+                            style={{ textAlign: 'right' }}
+                            customInput={Input}
                           />
                         </Form.Item>
                       </td>
@@ -177,78 +225,78 @@ export const InvoiceFormInputList = (props: Props) => {
                       <td>
                         <Form.Item
                           name={[index, 'discount']}
-                          rules={rules}
-                          style={{}}
+                          normalize={(value) =>
+                            value
+                              ? Number(value.replace(/[^\d.]/g, ''))
+                              : undefined
+                          }
                         >
-                          <Input
+                          <NumericFormat
                             className="bordered"
-                            type="number"
                             placeholder="Enter discount"
-                            prefix="%"
-                            style={{}}
-                            {...inputProps}
+                            thousandSeparator=","
+                            allowNegative={false}
+                            decimalScale={3}
+                            suffix="%"
+                            style={{ textAlign: 'right' }}
+                            customInput={Input}
                           />
                         </Form.Item>
                       </td>
 
                       <td>
-                        <Form.Item
-                          name={[index, 'cost']}
-                          rules={rules}
-                          style={{}}
-                        >
-                          <Input
-                            className="bordered"
-                            type="number"
-                            placeholder="Enter cost"
-                            {...inputProps}
+                        <Form.Item name={[index, 'cost']}>
+                          <NumericFormat
+                            className="bordered disabled"
+                            thousandSeparator=","
+                            allowNegative={false}
+                            suffix={currency?.symbol}
+                            style={{ textAlign: 'right' }}
+                            readOnly
+                            customInput={Input}
                           />
                         </Form.Item>
                       </td>
-                      {fields.length > 1 && (
-                        <td>
-                          <Button
-                            type="text-primary"
-                            size="small"
-                            icon={
-                              <Icon
-                                icon="icon-park-outline:delete-one"
-                                width={20}
-                              />
-                            }
-                            onClick={() => remove(index)}
-                            {...removeButtonProps}
-                            style={removeButtonStyle}
-                          />
-                        </td>
-                      )}
+                      <td>
+                        <Button
+                          type="text-primary"
+                          size="small"
+                          icon={
+                            <Icon
+                              icon="icon-park-outline:delete-one"
+                              width={20}
+                            />
+                          }
+                          onClick={() => remove(index)}
+                        />
+                      </td>
                     </tr>
                   ))}
-                </table>
-              </TableWrapper>
-              <Button
-                block
-                type="ghost"
-                onClick={() => add()}
-                icon={<Icon icon="icon-park-outline:plus" width={20} />}
-                style={{
-                  marginBottom: 24,
-                  position: 'sticky',
-                  left: 0,
-                  width: 'max-content',
-                  ...addButtonStyle,
-                }}
-                {...addButtonProps}
-              >
-                {addButtonChildren}
-              </Button>
-            </>
+                </tbody>
+              </table>
+            </TableWrapper>
           )}
         </Form.List>
       </div>
       <div style={{ textAlign: 'right' }}>
-        <div>Subtotal: $ 8,000</div>
-        <div>Total: $ 8,000</div>
+        <div>
+          Subtotal:{' '}
+          {currency && summary.subtotal
+            ? formatCurrency(summary.subtotal, {
+                currency: currency.name,
+                locale: currency.locale,
+              })
+            : '-'}
+        </div>
+        <div>
+          Total:{' '}
+          {currency && summary.total
+            ? formatCurrency(summary.total, {
+                currency: currency.name,
+                locale: currency.locale,
+              })
+            : '-'}
+        </div>
       </div>
     </>
   )
