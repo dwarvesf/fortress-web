@@ -61,6 +61,11 @@ export const InvoiceForm = () => {
 
   const onProjectIDChange = async (projectID: string) => {
     try {
+      if (!projectID) {
+        setInvoice(null)
+        form.resetFields()
+        return
+      }
       setLoading(true)
       const invoiceData = await client.getInvoiceTemplate(projectID)
       const invoice = invoiceData.data
@@ -162,7 +167,7 @@ export const InvoiceForm = () => {
         </Button>
       }
     >
-      <Form form={form} onFinish={onSubmit} initialValues={{ total: 100 }}>
+      <Form form={form} onFinish={onSubmit}>
         <Row gutter={24} style={{ marginBottom: 36 }}>
           <Col span={24} lg={{ span: 8 }}>
             <Row gutter={24}>

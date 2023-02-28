@@ -98,13 +98,18 @@ export const InvoiceFormInputList = (props: Props) => {
   }>
   useEffect(() => {
     if (!values?.length) return
-    const newValues = values.map((each) => ({
-      ...each,
-      cost:
-        each?.quantity && each?.unitCost
-          ? each.quantity * each.unitCost
-          : undefined,
-    }))
+    const newValues = values
+      .filter(
+        (each) =>
+          each.description || each.quantity || each.unitCost || each.discount,
+      )
+      .map((each) => ({
+        ...each,
+        cost:
+          each?.quantity && each?.unitCost
+            ? each.quantity * each.unitCost
+            : undefined,
+      }))
     form.setFieldValue(name, newValues)
     const { total, subtotal } = newValues.reduce(
       (prev, curr) => ({
