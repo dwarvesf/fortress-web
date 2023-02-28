@@ -57,6 +57,8 @@ export enum Permission {
   DASHBOARDS_PROJECTS_READ = 'dashboards.projects.read',
   DASHBOARDS_RESOURCES_READ = 'dashboards.resources.read',
   DASHBOARDS_ENGAGEMENT_READ = 'dashboards.engagement.read',
+  INVOICES_READ = 'invoices.read',
+  INVOICES_CREATE = 'invoices.create',
 }
 
 // the permission that needs to access to a certain page
@@ -77,4 +79,5 @@ export const pagePermissions = {
   [ROUTES.WORK]: Permission.SURVEYS_READ,
   [ROUTES.WORK_DETAIL('[id]')]: Permission.SURVEYS_READ,
   [ROUTES.DASHBOARD]: Permission.DASHBOARDS_READ,
+  [ROUTES.INVOICES]: Permission.INVOICES_READ,
 }

@@ -144,13 +144,13 @@ export const AuthenticatedLayout = (props: Props) => {
       // },
       {
         content: getItem(
-          'Invoice',
-          ROUTES.INVOICE,
+          'Invoices',
+          ROUTES.INVOICES,
           <Icon icon="nimbus:invoice" width={20} />,
           [
             {
-              content: getItem('Create invoice', ROUTES.ADD_INVOICE),
-              permission: Permission.EMPLOYEES_READ_FULLACCESS,
+              content: getItem('Create Invoice', ROUTES.ADD_INVOICE),
+              permission: Permission.INVOICES_CREATE,
             },
           ],
         ),
