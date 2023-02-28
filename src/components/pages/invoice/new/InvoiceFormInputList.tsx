@@ -1,25 +1,16 @@
 import { Icon } from '@iconify/react'
-import { Form, FormInstance, Input } from 'antd'
+import { Form, Input } from 'antd'
 import TextArea from 'antd/lib/input/TextArea'
-import { Dispatch, SetStateAction, useEffect } from 'react'
 import styled from 'styled-components'
 import { NumericFormat } from 'react-number-format'
 import { ViewCurrency } from 'types/schema'
 import { Button } from '../../../common/Button'
 import { formatCurrency } from '../../../../utils/currency'
 
-interface Summary {
-  subtotal: number
-  total: number
-  discount: number
-}
-
 interface Props {
-  form: FormInstance
   name: string
   currency?: ViewCurrency
-  summary: Summary
-  setSummary: Dispatch<SetStateAction<Summary>>
+  summary: { subtotal: number; total: number; discount: number }
 }
 
 const TableWrapper = styled.div`
@@ -87,39 +78,7 @@ const TableWrapper = styled.div`
 `
 
 export const InvoiceFormInputList = (props: Props) => {
-  const { form, name, currency, summary, setSummary } = props
-
-  const values = Form.useWatch(name, form) as Array<{
-    description?: string
-    quantity?: number
-    unitCost?: number
-    discount?: number
-    cost?: number
-  }>
-  useEffect(() => {
-    if (!values?.length) return
-    const newValues = values
-      .filter(
-        (each) =>
-          each.description || each.quantity || each.unitCost || each.discount,
-      )
-      .map((each) => ({
-        ...each,
-        cost:
-          each?.quantity && each?.unitCost
-            ? each.quantity * each.unitCost
-            : undefined,
-      }))
-    form.setFieldValue(name, newValues)
-    const { total, subtotal } = newValues.reduce(
-      (prev, curr) => ({
-        total: prev.total + (curr.cost || 0),
-        subtotal: prev.subtotal + (curr.cost || 0),
-      }),
-      { total: 0, subtotal: 0 },
-    )
-    setSummary({ total, subtotal, discount: 0 })
-  }, [form, name, setSummary, values])
+  const { name, currency, summary } = props
 
   return (
     <>

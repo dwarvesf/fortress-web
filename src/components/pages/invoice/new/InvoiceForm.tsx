@@ -46,9 +46,6 @@ interface FormValues {
   description?: string
   note?: string
   lineItems?: ModelInvoiceItem[]
-  // subtotal?: number
-  // total?: number
-  // discount?: number
 }
 
 export const InvoiceForm = () => {
@@ -154,6 +151,25 @@ export const InvoiceForm = () => {
     }
   }
 
+  const onLineItemsChange = (values: ModelInvoiceItem[]) => {
+    const newValues = values.map((each) => ({
+      ...each,
+      cost:
+        each?.quantity && each?.unitCost
+          ? each.quantity * each.unitCost
+          : undefined,
+    }))
+    form.setFieldValue('lineItems', newValues)
+    const { total, subtotal } = newValues.reduce(
+      (prev, curr) => ({
+        total: prev.total + (curr.cost || 0),
+        subtotal: prev.subtotal + (curr.cost || 0),
+      }),
+      { total: 0, subtotal: 0 },
+    )
+    setSummary({ total, subtotal, discount: 0 })
+  }
+
   return (
     <FormWrapper
       footer={
@@ -167,7 +183,15 @@ export const InvoiceForm = () => {
         </Button>
       }
     >
-      <Form form={form} onFinish={onSubmit}>
+      <Form
+        form={form}
+        onFinish={onSubmit}
+        onValuesChange={(changedValues, allFields) => {
+          if (changedValues.lineItems && allFields.lineItems) {
+            onLineItemsChange(allFields.lineItems)
+          }
+        }}
+      >
         <Row gutter={24} style={{ marginBottom: 36 }}>
           <Col span={24} lg={{ span: 8 }}>
             <Row gutter={24}>
@@ -361,10 +385,9 @@ export const InvoiceForm = () => {
         </Row>
 
         <InvoiceFormInputList
-          form={form}
           name="lineItems"
           currency={invoice?.bankAccount?.currency}
-          {...{ summary, setSummary }}
+          summary={summary}
         />
 
         <SummarySection invoice={invoice} style={{ marginTop: 40 }} />
