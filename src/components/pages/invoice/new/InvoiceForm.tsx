@@ -60,6 +60,7 @@ export const InvoiceForm = () => {
     try {
       if (!projectID) {
         setInvoice(null)
+        setSummary({ total: 0, subtotal: 0, discount: 0 })
         form.resetFields()
         return
       }
@@ -96,6 +97,7 @@ export const InvoiceForm = () => {
       })
     } catch (error: any) {
       setInvoice(null)
+      setSummary({ total: 0, subtotal: 0, discount: 0 })
       form.resetFields()
       notification.error({
         message: getErrorMessage(error, 'Could not fetch invoice template'),
@@ -156,7 +158,7 @@ export const InvoiceForm = () => {
       ...each,
       cost:
         each?.quantity && each?.unitCost
-          ? each.quantity * each.unitCost
+          ? each.quantity * each.unitCost * (1 - (each?.discount || 0) / 100)
           : undefined,
     }))
     form.setFieldValue('lineItems', newValues)

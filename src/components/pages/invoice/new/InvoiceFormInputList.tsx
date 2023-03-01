@@ -189,6 +189,14 @@ export const InvoiceFormInputList = (props: Props) => {
                       <td>
                         <Form.Item
                           name={[index, 'discount']}
+                          rules={[
+                            {
+                              type: 'number',
+                              required: true,
+                              max: 100,
+                              message: 'Less than 100',
+                            },
+                          ]}
                           normalize={(value) =>
                             value
                               ? Number(value.replace(/[^\d.]/g, ''))
@@ -213,7 +221,6 @@ export const InvoiceFormInputList = (props: Props) => {
                           <NumericFormat
                             className="bordered disabled"
                             thousandSeparator=","
-                            allowNegative={false}
                             suffix={currency?.symbol}
                             style={{ textAlign: 'right' }}
                             readOnly

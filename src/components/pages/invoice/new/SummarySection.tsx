@@ -32,14 +32,22 @@ export const SummarySection = (props: Props) => {
             value: invoice?.bankAccount?.ownerName || '-',
           },
           { label: 'Address', value: invoice?.bankAccount?.address || '-' },
-          {
-            label: 'SWIFT code',
-            value: invoice?.bankAccount?.swiftCode || '-',
-          },
-          {
-            label: 'Routing no.',
-            value: invoice?.bankAccount?.routingNumber || '-',
-          },
+          ...(invoice?.bankAccount?.swiftCode
+            ? [
+                {
+                  label: 'SWIFT code',
+                  value: invoice.bankAccount.swiftCode,
+                },
+              ]
+            : []),
+          ...(invoice?.bankAccount?.routingNumber
+            ? [
+                {
+                  label: 'Routing no.',
+                  value: invoice.bankAccount.routingNumber,
+                },
+              ]
+            : []),
         ]}
       />
 
