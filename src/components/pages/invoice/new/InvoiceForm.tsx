@@ -186,6 +186,7 @@ export const InvoiceForm = () => {
               type="primary"
               htmlType="submit"
               disabled={loading}
+              loading={loading}
               onClick={form.submit}
             >
               Submit
@@ -195,9 +196,14 @@ export const InvoiceForm = () => {
           <Form
             form={form}
             onFinish={onSubmit}
-            onValuesChange={(changedValues, allFields) => {
-              if (changedValues.lineItems && allFields.lineItems) {
-                onLineItemsChange(allFields.lineItems)
+            onFieldsChange={(changedFields) => {
+              if (
+                changedFields.length === 1 &&
+                Array.isArray(changedFields[0].name) &&
+                changedFields[0].name[0] === 'lineItems' &&
+                !!changedFields[0].name[2]
+              ) {
+                onLineItemsChange(form.getFieldValue('lineItems'))
               }
             }}
           >

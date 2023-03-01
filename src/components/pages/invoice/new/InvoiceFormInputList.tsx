@@ -192,7 +192,6 @@ export const InvoiceFormInputList = (props: Props) => {
                           rules={[
                             {
                               type: 'number',
-                              required: true,
                               max: 100,
                               message: 'Less than 100',
                             },
