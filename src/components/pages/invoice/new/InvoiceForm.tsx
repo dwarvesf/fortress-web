@@ -178,220 +178,228 @@ export const InvoiceForm = () => {
   }
 
   return (
-    <FormWrapper
-      footer={
-        <Button
-          type="primary"
-          htmlType="submit"
-          disabled={loading}
-          onClick={form.submit}
-        >
-          Submit
-        </Button>
-      }
-    >
-      <Form
-        form={form}
-        onFinish={onSubmit}
-        onValuesChange={(changedValues, allFields) => {
-          if (changedValues.lineItems && allFields.lineItems) {
-            onLineItemsChange(allFields.lineItems)
+    <Row>
+      <Col span={24} lg={{ span: 16 }}>
+        <FormWrapper
+          footer={
+            <Button
+              type="primary"
+              htmlType="submit"
+              disabled={loading}
+              onClick={form.submit}
+            >
+              Submit
+            </Button>
           }
-        }}
-      >
-        <Row gutter={24} style={{ marginBottom: 36 }}>
-          <Col span={24} lg={{ span: 8 }}>
-            <Row gutter={24}>
-              <Col span={24}>
-                <Form.Item
-                  label="Project"
-                  name="projectID"
-                  rules={[{ required: true, message: 'Required' }]}
-                >
-                  <Select
-                    placeholder="Select project"
-                    onChange={onProjectIDChange}
-                    allowClear
-                  >
-                    {projectData?.data
-                      ?.map(transformProjectDataToSelectOption)
-                      .map(renderProjectOption)}
-                  </Select>
-                </Form.Item>
+        >
+          <Form
+            form={form}
+            onFinish={onSubmit}
+            onValuesChange={(changedValues, allFields) => {
+              if (changedValues.lineItems && allFields.lineItems) {
+                onLineItemsChange(allFields.lineItems)
+              }
+            }}
+          >
+            <Row gutter={24} style={{ marginBottom: 36 }}>
+              <Col span={24} lg={{ span: 8 }}>
+                <Row gutter={24}>
+                  <Col span={24}>
+                    <Form.Item
+                      label="Project"
+                      name="projectID"
+                      rules={[{ required: true, message: 'Required' }]}
+                    >
+                      <Select
+                        placeholder="Select project"
+                        onChange={onProjectIDChange}
+                        allowClear
+                      >
+                        {projectData?.data
+                          ?.map(transformProjectDataToSelectOption)
+                          .map(renderProjectOption)}
+                      </Select>
+                    </Form.Item>
+                  </Col>
+
+                  <Col span={24}>
+                    <Form.Item
+                      label="Company"
+                      name="company"
+                      rules={[{ required: true, message: 'Required' }]}
+                    >
+                      <Input
+                        className="bordered disabled"
+                        type="text"
+                        placeholder="Enter company name"
+                        readOnly
+                      />
+                    </Form.Item>
+                  </Col>
+
+                  <Col span={24}>
+                    <Form.Item
+                      label="Address"
+                      name="address"
+                      rules={[{ required: true, message: 'Required' }]}
+                    >
+                      <Input
+                        className="bordered disabled"
+                        type="text"
+                        placeholder="Enter address"
+                        readOnly
+                      />
+                    </Form.Item>
+                  </Col>
+
+                  <Col span={24}>
+                    <Form.Item
+                      label="Email"
+                      name="email"
+                      rules={[
+                        { required: true, message: 'Required' },
+                        { type: 'email', message: 'Wrong email format' },
+                      ]}
+                    >
+                      <Input
+                        className="bordered"
+                        type="email"
+                        placeholder="Enter email"
+                      />
+                    </Form.Item>
+                  </Col>
+
+                  <Col span={24}>
+                    <Form.Item
+                      label="CC"
+                      name="cc"
+                      rules={[
+                        {
+                          type: 'array',
+                          defaultField: {
+                            type: 'email',
+                            message: 'Wrong email format',
+                          },
+                        },
+                      ]}
+                    >
+                      <Select
+                        mode="tags"
+                        placeholder="Select CC"
+                        options={invoice?.lastInvoice?.cc
+                          ?.filter(Boolean)
+                          .map((value) => ({ value, label: value }))}
+                      />
+                    </Form.Item>
+                  </Col>
+                </Row>
               </Col>
 
-              <Col span={24}>
-                <Form.Item
-                  label="Company"
-                  name="company"
-                  rules={[{ required: true, message: 'Required' }]}
-                >
-                  <Input
-                    className="bordered disabled"
-                    type="text"
-                    placeholder="Enter company name"
-                    readOnly
-                  />
-                </Form.Item>
-              </Col>
+              <Col span={24} lg={{ span: 16 }}>
+                <Row gutter={24}>
+                  <Col span={24} lg={{ span: 12 }}>
+                    <Form.Item
+                      label="Invoice Number"
+                      name="invoiceNumber"
+                      rules={[{ required: true, message: 'Required' }]}
+                    >
+                      <Input
+                        className="bordered disabled"
+                        type="text"
+                        placeholder="Enter invoice number"
+                        readOnly
+                      />
+                    </Form.Item>
+                  </Col>
 
-              <Col span={24}>
-                <Form.Item
-                  label="Address"
-                  name="address"
-                  rules={[{ required: true, message: 'Required' }]}
-                >
-                  <Input
-                    className="bordered disabled"
-                    type="text"
-                    placeholder="Enter address"
-                    readOnly
-                  />
-                </Form.Item>
-              </Col>
+                  <Col span={24} lg={{ span: 12 }}>
+                    <Form.Item
+                      label="Invoice Month"
+                      name="invoiceMonth"
+                      rules={[{ required: true, message: 'Required' }]}
+                      getValueProps={(value) => ({
+                        value: value ? value.format(MONTH_YEAR_FORMAT) : '',
+                      })}
+                    >
+                      <Input
+                        className="bordered disabled"
+                        type="text"
+                        placeholder="Select invoice month"
+                        readOnly
+                      />
+                    </Form.Item>
+                  </Col>
 
-              <Col span={24}>
-                <Form.Item
-                  label="Email"
-                  name="email"
-                  rules={[
-                    { required: true, message: 'Required' },
-                    { type: 'email', message: 'Wrong email format' },
-                  ]}
-                >
-                  <Input
-                    className="bordered"
-                    type="email"
-                    placeholder="Enter email"
-                  />
-                </Form.Item>
-              </Col>
+                  <Col span={24} lg={{ span: 12 }}>
+                    <Form.Item
+                      label="Invoice Date"
+                      name="invoiceDate"
+                      rules={[{ required: true, message: 'Required' }]}
+                      getValueProps={(value) => ({
+                        value: value
+                          ? value.format(SELECT_BOX_DATE_FORMAT)
+                          : '',
+                      })}
+                    >
+                      <Input
+                        className="bordered disabled"
+                        type="text"
+                        placeholder="Select invoice date"
+                        readOnly
+                      />
+                    </Form.Item>
+                  </Col>
 
-              <Col span={24}>
-                <Form.Item
-                  label="CC"
-                  name="cc"
-                  rules={[
-                    {
-                      type: 'array',
-                      defaultField: {
-                        type: 'email',
-                        message: 'Wrong email format',
-                      },
-                    },
-                  ]}
-                >
-                  <Select
-                    mode="tags"
-                    placeholder="Select CC"
-                    options={invoice?.lastInvoice?.cc
-                      ?.filter(Boolean)
-                      .map((value) => ({ value, label: value }))}
-                  />
-                </Form.Item>
+                  <Col span={24} lg={{ span: 12 }}>
+                    <Form.Item
+                      label="Due Date"
+                      name="dueDate"
+                      rules={[{ required: true, message: 'Required' }]}
+                      getValueProps={(value) => ({
+                        value: value
+                          ? value.format(SELECT_BOX_DATE_FORMAT)
+                          : '',
+                      })}
+                    >
+                      <Input
+                        className="bordered disabled"
+                        type="text"
+                        placeholder="Select due date"
+                        readOnly
+                      />
+                    </Form.Item>
+                  </Col>
+
+                  <Col span={24}>
+                    <Form.Item label="Description" name="description">
+                      <TextArea
+                        className="bordered"
+                        rows={4}
+                        bordered
+                        placeholder="Tell us more about this"
+                      />
+                    </Form.Item>
+                  </Col>
+
+                  <Col span={24}>
+                    <Form.Item label="Note" name="note">
+                      <TextArea className="bordered" rows={3} bordered />
+                    </Form.Item>
+                  </Col>
+                </Row>
               </Col>
             </Row>
-          </Col>
 
-          <Col span={24} lg={{ span: 16 }}>
-            <Row gutter={24}>
-              <Col span={24} lg={{ span: 12 }}>
-                <Form.Item
-                  label="Invoice Number"
-                  name="invoiceNumber"
-                  rules={[{ required: true, message: 'Required' }]}
-                >
-                  <Input
-                    className="bordered disabled"
-                    type="text"
-                    placeholder="Enter invoice number"
-                    readOnly
-                  />
-                </Form.Item>
-              </Col>
+            <InvoiceFormInputList
+              name="lineItems"
+              currency={invoice?.bankAccount?.currency}
+              summary={summary}
+            />
 
-              <Col span={24} lg={{ span: 12 }}>
-                <Form.Item
-                  label="Invoice Month"
-                  name="invoiceMonth"
-                  rules={[{ required: true, message: 'Required' }]}
-                  getValueProps={(value) => ({
-                    value: value ? value.format(MONTH_YEAR_FORMAT) : '',
-                  })}
-                >
-                  <Input
-                    className="bordered disabled"
-                    type="text"
-                    placeholder="Select invoice month"
-                    readOnly
-                  />
-                </Form.Item>
-              </Col>
-
-              <Col span={24} lg={{ span: 12 }}>
-                <Form.Item
-                  label="Invoice Date"
-                  name="invoiceDate"
-                  rules={[{ required: true, message: 'Required' }]}
-                  getValueProps={(value) => ({
-                    value: value ? value.format(SELECT_BOX_DATE_FORMAT) : '',
-                  })}
-                >
-                  <Input
-                    className="bordered disabled"
-                    type="text"
-                    placeholder="Select invoice date"
-                    readOnly
-                  />
-                </Form.Item>
-              </Col>
-
-              <Col span={24} lg={{ span: 12 }}>
-                <Form.Item
-                  label="Due Date"
-                  name="dueDate"
-                  rules={[{ required: true, message: 'Required' }]}
-                  getValueProps={(value) => ({
-                    value: value ? value.format(SELECT_BOX_DATE_FORMAT) : '',
-                  })}
-                >
-                  <Input
-                    className="bordered disabled"
-                    type="text"
-                    placeholder="Select due date"
-                    readOnly
-                  />
-                </Form.Item>
-              </Col>
-
-              <Col span={24}>
-                <Form.Item label="Description" name="description">
-                  <TextArea
-                    className="bordered"
-                    rows={4}
-                    bordered
-                    placeholder="Tell us more about this"
-                  />
-                </Form.Item>
-              </Col>
-
-              <Col span={24}>
-                <Form.Item label="Note" name="note">
-                  <TextArea className="bordered" rows={3} bordered />
-                </Form.Item>
-              </Col>
-            </Row>
-          </Col>
-        </Row>
-
-        <InvoiceFormInputList
-          name="lineItems"
-          currency={invoice?.bankAccount?.currency}
-          summary={summary}
-        />
-
-        <SummarySection invoice={invoice} style={{ marginTop: 40 }} />
-      </Form>
-    </FormWrapper>
+            <SummarySection invoice={invoice} style={{ marginTop: 40 }} />
+          </Form>
+        </FormWrapper>
+      </Col>
+    </Row>
   )
 }
