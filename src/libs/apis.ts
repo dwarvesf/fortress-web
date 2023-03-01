@@ -64,6 +64,8 @@ import {
   ViewWorkSurveySummaryResponse,
   ViewWorkUnitDistributionsResponse,
   ViewSummaryWorkUnitDistributionResponse,
+  ViewInvoiceTemplateResponse,
+  RequestSendInvoiceRequest,
 } from 'types/schema'
 import { EmployeeListFilter } from 'types/filters/EmployeeListFilter'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
@@ -125,6 +127,7 @@ export const GET_PATHS = {
     '/dashboards/resources/work-unit-distribution',
   getResourceWorkUnitDistributionSummary:
     '/dashboards/resources/work-unit-distribution-summary',
+  getInvoiceTemplate: '/invoices/template',
 }
 export interface Meta {
   page?: number
@@ -967,6 +970,27 @@ class Client {
         headers: { ...this.privateHeaders },
       },
     )
+  }
+
+  public getInvoiceTemplate(projectID: string) {
+    const queryString = qs.stringify({ projectID })
+
+    return fetcher<ViewInvoiceTemplateResponse>(
+      `${BASE_URL}/invoices/template?${queryString}`,
+      {
+        headers: { ...this.privateHeaders },
+      },
+    )
+  }
+
+  public createInvoice(data: RequestSendInvoiceRequest) {
+    return fetcher<ViewMessageResponse>(`${BASE_URL}/invoices/send`, {
+      method: 'POST',
+      headers: {
+        ...this.privateHeaders,
+      },
+      body: JSON.stringify(data),
+    })
   }
 }
 
