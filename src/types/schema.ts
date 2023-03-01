@@ -82,6 +82,11 @@ export interface ModelClientContact {
   updatedAt?: string
 }
 
+export interface ModelCompanyContactInfo {
+  address?: string
+  phone?: string
+}
+
 export interface ModelCompanyInfo {
   createdAt?: string
   deletedAt?: GormDeletedAt
@@ -162,6 +167,7 @@ export interface ModelEmployee {
   gender?: string
   githubID?: string
   gitlabID?: string
+  heads?: ModelProjectHead[]
   horoscope?: string
   id?: string
   identityCardPhotoBack?: string
@@ -204,6 +210,7 @@ export interface ModelEmployee {
   wiseRecipientEmail?: string
   wiseRecipientID?: string
   wiseRecipientName?: string
+  workUnitMembers?: ModelWorkUnitMember[]
   /** working info */
   workingStatus?: string
 }
@@ -315,6 +322,15 @@ export interface ModelInvoice {
   year?: number
 }
 
+export interface ModelInvoiceItem {
+  cost?: number
+  description?: string
+  discount?: number
+  isExternal?: boolean
+  quantity?: number
+  unitCost?: number
+}
+
 export interface ModelIssue {
   id?: string
   incident_date?: string
@@ -409,6 +425,7 @@ export interface ModelProjectHead {
   endDate?: string
   id?: string
   position?: string
+  project?: ModelProject
   projectID?: string
   startDate?: string
   updatedAt?: string
@@ -617,6 +634,47 @@ export interface ModelValuation {
   year?: string
 }
 
+export interface ModelWorkUnit {
+  createdAt?: string
+  deletedAt?: GormDeletedAt
+  id?: string
+  name?: string
+  project?: ModelProject
+  projectID?: string
+  sourceMetadata?: number[]
+  sourceURL?: string
+  status?: string
+  type?: string
+  updatedAt?: string
+  workUnitMembers?: ModelWorkUnitMember[]
+  workUnitStacks?: ModelWorkUnitStack[]
+}
+
+export interface ModelWorkUnitMember {
+  createdAt?: string
+  deletedAt?: GormDeletedAt
+  employee?: ModelEmployee
+  employeeID?: string
+  endDate?: string
+  id?: string
+  projectID?: string
+  startDate?: string
+  status?: string
+  updatedAt?: string
+  workUnit?: ModelWorkUnit
+  workUnitID?: string
+}
+
+export interface ModelWorkUnitStack {
+  createdAt?: string
+  deletedAt?: GormDeletedAt
+  id?: string
+  stack?: ModelStack
+  stackID?: string
+  updatedAt?: string
+  workUnitID?: string
+}
+
 export interface PgtypeJSONB {
   bytes?: number[]
   status?: number
@@ -744,7 +802,7 @@ export interface RequestGetListEmployeeInput {
 
 export interface RequestSendInvoiceRequest {
   bankID: string
-  cc?: number[]
+  cc?: string[]
   description?: string
   /** @min 0 */
   discount?: number
@@ -759,7 +817,7 @@ export interface RequestSendInvoiceRequest {
   /** @min 0 */
   invoiceYear?: number
   isDraft?: boolean
-  lineItems?: number[]
+  lineItems?: ModelInvoiceItem[]
   note?: string
   number?: string
   projectID: string
@@ -1157,6 +1215,27 @@ export interface ViewClientContact {
   role?: string
 }
 
+export interface ViewClientContactInfo {
+  emails?: string[]
+  id?: string
+  isMainContact?: boolean
+  name?: string
+}
+
+export interface ViewClientInfo {
+  clientAddress?: string
+  clientCompany?: string
+  contacts?: ViewClientContactInfo[]
+}
+
+export interface ViewCompanyInfo {
+  description?: string
+  id?: string
+  info?: Record<string, ModelCompanyContactInfo>
+  name?: string
+  registrationNumber?: string
+}
+
 export interface ViewContentData {
   url?: string
 }
@@ -1458,6 +1537,39 @@ export interface ViewHiringResponse {
   data?: ModelHiringPosition[]
 }
 
+export interface ViewInvoice {
+  bankID?: string
+  cc?: string[]
+  conversionAmount?: number
+  conversionRate?: number
+  description?: string
+  discount?: number
+  dueAt?: string
+  email?: string
+  errorInvoiceID?: string
+  failedAt?: string
+  invoiceFileURL?: string
+  invoicedAt?: string
+  lineItems?: ModelInvoiceItem[]
+  month?: number
+  note?: string
+  number?: string
+  paidAt?: string
+  projectID?: string
+  scheduledDate?: string
+  sentBy?: string
+  status?: string
+  subTotal?: number
+  tax?: number
+  threadID?: string
+  total?: number
+  year?: number
+}
+
+export interface ViewInvoiceTemplateResponse {
+  data?: ViewProjectInvoiceTemplate
+}
+
 export interface ViewItemValue {
   trend?: number
   value?: number
@@ -1623,6 +1735,16 @@ export interface ViewProjectHead {
   employeeID?: string
   fullName?: string
   username?: string
+}
+
+export interface ViewProjectInvoiceTemplate {
+  bankAccount?: ViewBankAccount
+  client?: ViewClientInfo
+  companyInfo?: ViewCompanyInfo
+  id?: string
+  invoiceNumber?: string
+  lastInvoice?: ViewInvoice
+  name?: string
 }
 
 export interface ViewProjectListDataResponse {
