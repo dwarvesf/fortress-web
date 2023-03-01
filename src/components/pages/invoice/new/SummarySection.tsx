@@ -2,26 +2,60 @@ import { Divider, Typography } from 'antd'
 import { DataRows } from 'components/common/DataRows'
 import { CSSProperties } from 'react'
 import { theme } from 'styles'
+import { ViewProjectInvoiceTemplate } from 'types/schema'
 
 interface Props {
+  invoice?: ViewProjectInvoiceTemplate | null
   style?: CSSProperties
 }
 
 export const SummarySection = (props: Props) => {
-  const { style } = props
+  const { invoice, style } = props
+
   return (
     <div style={style}>
       <Typography.Title level={4}>Bank Info</Typography.Title>
       <Divider />
       <DataRows
         data={[
-          { label: 'Bank name', value: 'ACB' },
-          { label: 'Currency', value: 'VND' },
-          { label: 'Account no.', value: '0999999888' },
-          { label: 'Account holder', value: 'Dwarves Foundation' },
-          { label: 'Address', value: 'Hado Centrosa' },
-          { label: 'SWIFT code', value: 'AVBWFPW' },
-          { label: 'Routing no.', value: '-' },
+          { label: 'Bank Name', value: invoice?.bankAccount?.bankName || '-' },
+          {
+            label: 'Currency',
+            value: invoice?.bankAccount?.currency?.name || '-',
+          },
+          {
+            label: 'Account Number',
+            value: invoice?.bankAccount?.accountNumber || '-',
+          },
+          {
+            label: 'Account Holder',
+            value: invoice?.bankAccount?.ownerName || '-',
+          },
+          { label: 'Address', value: invoice?.bankAccount?.address || '-' },
+          ...(invoice?.bankAccount?.swiftCode
+            ? [
+                {
+                  label: 'SWIFT Code',
+                  value: invoice.bankAccount.swiftCode,
+                },
+              ]
+            : []),
+          ...(invoice?.bankAccount?.routingNumber
+            ? [
+                {
+                  label: 'Routing Number',
+                  value: invoice.bankAccount.routingNumber,
+                },
+              ]
+            : []),
+          ...(invoice?.bankAccount?.ukSortCode
+            ? [
+                {
+                  label: 'UK Sort Code',
+                  value: invoice.bankAccount.ukSortCode,
+                },
+              ]
+            : []),
         ]}
       />
 
