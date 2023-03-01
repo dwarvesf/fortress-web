@@ -27,6 +27,7 @@ import { mapScoreToLikertScale } from 'utils/score'
 import { TotalResultCount } from 'components/common/Table/TotalResultCount'
 import { Permission } from 'constants/permission'
 import { workSurveys } from 'constants/workSurveys'
+import { fullListPagination } from 'types/filters/Pagination'
 
 const renderDomainAverageResult = (
   record: ViewDomain[],
@@ -72,10 +73,25 @@ const renderDomainAverageResult = (
   )
 }
 
-const EmployeePeerReviewsPage = () => {
+const Default = () => {
+  const { query } = useRouter()
+  const workSurveyId = query.id as string
+  const queryFilter = query.filter ? JSON.parse(query.filter as string) : {}
+
+  const { filter, setFilter } = useFilter(
+    new SurveyDetailFilter({
+      ...queryFilter,
+    }),
+  )
+  const { data, loading } = useFetchWithCache(
+    [GET_PATHS.getSurveyDetail(workSurveyId), workSurveyId, filter],
+    () => client.getSurveyDetail(workSurveyId, filter),
+  )
+
   const { data: projectsData } = useFetchWithCache(
     [GET_PATHS.getProjects],
-    () => client.getProjects(new ProjectListFilter()),
+    () =>
+      client.getProjects({ ...new ProjectListFilter(), ...fullListPagination }),
   )
 
   const columns: ColumnsType<ViewTopic> = [
@@ -101,14 +117,14 @@ const EmployeePeerReviewsPage = () => {
     },
     {
       title: 'Project',
-      key: 'project',
+      key: 'projects',
       dataIndex: 'project',
       filterSearch: true,
+      filteredValue: filter.projects,
       filters: (projectsData?.data || []).map((p) => ({
-        value: p.id!,
         text: p.name,
+        value: p.code!,
       })),
-      onFilter: (value, record) => value === record?.project?.id,
       render: (value) => <ProjectAvatar project={value} />,
     },
     {
@@ -139,7 +155,7 @@ const EmployeePeerReviewsPage = () => {
         value: s,
         text: <Tag color={statusColors[s]}>{surveyParticipantStatuses[s]}</Tag>,
       })),
-      onFilter: (value, record) => value === record.status,
+      filteredValue: filter.status ? [filter.status] : [],
       render: (value: SurveyParticipantStatus) =>
         value ? (
           <Tag color={statusColors[value]}>
@@ -152,7 +168,7 @@ const EmployeePeerReviewsPage = () => {
     {
       title: 'Comments',
       key: 'comments',
-      sorter: (a, b) => a.comments! - b.comments!,
+      sorter: true,
       render: (value) => value.comments,
     },
     {
@@ -161,16 +177,6 @@ const EmployeePeerReviewsPage = () => {
       fixed: 'right',
     },
   ]
-
-  const { query } = useRouter()
-
-  const workSurveyId = query.id as string
-
-  const { filter, setFilter } = useFilter(new SurveyDetailFilter())
-  const { data, loading } = useFetchWithCache(
-    [GET_PATHS.getSurveyDetail(workSurveyId), workSurveyId, filter],
-    () => client.getSurveyDetail(workSurveyId, filter),
-  )
 
   return (
     <>
@@ -207,6 +213,17 @@ const EmployeePeerReviewsPage = () => {
             pagination={false}
             scroll={{ x: 'max-content' }}
             loading={loading}
+            onChange={(_, filters, sorter: any) => {
+              setFilter({
+                ...filters,
+                status: (filters.status?.[0] as string) || '',
+                sort: sorter.order
+                  ? `${sorter.order === 'ascend' ? '+' : '-'}${
+                      sorter.columnKey
+                    }`
+                  : null,
+              })
+            }}
           />
         </div>
 
@@ -225,4 +242,4 @@ const EmployeePeerReviewsPage = () => {
   )
 }
 
-export default EmployeePeerReviewsPage
+export default Default

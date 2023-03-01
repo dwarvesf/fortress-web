@@ -643,7 +643,10 @@ class Client {
   }
 
   public getSurveyDetail(id: string, filter: SurveyDetailFilter) {
-    const queryString = qs.stringify(filter)
+    const queryString = qs.stringify(filter, {
+      encode: false,
+      arrayFormat: 'repeat',
+    })
 
     return fetcher<ViewListSurveyDetailResponse & Meta>(
       `${BASE_URL}/surveys/${id}?${queryString}`,
