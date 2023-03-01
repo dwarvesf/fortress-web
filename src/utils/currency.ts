@@ -14,15 +14,9 @@ const formatCash = (n: number) => {
 
 export const formatCurrency = (
   val = 0,
-  {
-    currency = 'VND',
-    locale = 'vi-VN',
-    showSymbol = true,
-    truncate = false,
-    ...opt
-  } = {},
+  { currency = 'VND', showSymbol = true, truncate = false, ...opt } = {},
 ) => {
-  const { symbol, string } = Intl.NumberFormat(locale || 'vi-VN', {
+  const { symbol, string } = Intl.NumberFormat(undefined, {
     style: 'currency',
     currency: currency || 'VND',
     minimumFractionDigits: 0,

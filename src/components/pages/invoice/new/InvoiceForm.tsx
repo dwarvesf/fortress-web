@@ -2,7 +2,6 @@ import { Col, Form, Input, notification, Row, Select } from 'antd'
 import TextArea from 'antd/lib/input/TextArea'
 import { Button } from 'components/common/Button'
 import { FormWrapper } from 'components/common/FormWrapper'
-import { AsyncSelect } from 'components/common/Select'
 import { renderProjectOption } from 'components/common/Select/renderers/projectOption'
 import { MONTH_YEAR_FORMAT, SELECT_BOX_DATE_FORMAT } from 'constants/date'
 import { client, GET_PATHS } from 'libs/apis'
@@ -12,9 +11,9 @@ import { transformProjectDataToSelectOption } from 'utils/select'
 import { useState } from 'react'
 import { InvoiceFormInputList } from 'components/pages/invoice/new/InvoiceFormInputList'
 import { useForm } from 'antd/lib/form/Form'
-import { getErrorMessage } from 'utils/string'
 import moment, { Moment } from 'moment'
 import { ModelInvoiceItem, ViewProjectInvoiceTemplate } from 'types/schema'
+import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { SummarySection } from './SummarySection'
 
 const getDescription = (projectName: string, date: Moment) => {
@@ -55,6 +54,12 @@ export const InvoiceForm = () => {
   )
   const [summary, setSummary] = useState({ total: 0, subtotal: 0, discount: 0 })
   const [loading, setLoading] = useState(false)
+  const { data: projectData } = useFetchWithCache(GET_PATHS.getProjects, () =>
+    client.getProjects({
+      ...new ProjectListFilter(),
+      ...fullListPagination,
+    }),
+  )
 
   const onProjectIDChange = async (projectID: string) => {
     try {
@@ -71,8 +76,7 @@ export const InvoiceForm = () => {
         throw new Error('Invoice not found')
       }
       setInvoice(invoice)
-      const invoiceMonth = (form.getFieldValue('invoiceMonth') ||
-        moment()) as Moment
+      const invoiceMonth = moment()
       form.setFieldsValue({
         company: invoice.client?.clientCompany,
         address: invoice.client?.clientAddress,
@@ -98,9 +102,10 @@ export const InvoiceForm = () => {
     } catch (error: any) {
       setInvoice(null)
       setSummary({ total: 0, subtotal: 0, discount: 0 })
-      form.resetFields()
+      const { projectID, ...rest } = form.getFieldsValue()
+      form.resetFields(Object.keys(rest))
       notification.error({
-        message: getErrorMessage(error, 'Could not fetch invoice template'),
+        message: 'Could not fetch invoice template',
       })
     } finally {
       setLoading(false)
@@ -146,7 +151,7 @@ export const InvoiceForm = () => {
       })
     } catch (error: any) {
       notification.error({
-        message: getErrorMessage(error, 'Could not fetch invoice template'),
+        message: 'Could not create invoice template',
       })
     } finally {
       setLoading(false)
@@ -203,22 +208,15 @@ export const InvoiceForm = () => {
                   name="projectID"
                   rules={[{ required: true, message: 'Required' }]}
                 >
-                  <AsyncSelect
-                    optionGetter={async () => {
-                      const { data } = await client.getProjects({
-                        ...new ProjectListFilter(),
-                        ...fullListPagination,
-                      })
-
-                      return (data || []).map(
-                        transformProjectDataToSelectOption,
-                      )
-                    }}
-                    swrKeys={GET_PATHS.getProjects}
+                  <Select
                     placeholder="Select project"
-                    customOptionRenderer={renderProjectOption}
                     onChange={onProjectIDChange}
-                  />
+                    allowClear
+                  >
+                    {projectData?.data
+                      ?.map(transformProjectDataToSelectOption)
+                      .map(renderProjectOption)}
+                  </Select>
                 </Form.Item>
               </Col>
 

@@ -18,24 +18,24 @@ export const SummarySection = (props: Props) => {
       <Divider />
       <DataRows
         data={[
-          { label: 'Bank name', value: invoice?.bankAccount?.bankName || '-' },
+          { label: 'Bank Name', value: invoice?.bankAccount?.bankName || '-' },
           {
             label: 'Currency',
             value: invoice?.bankAccount?.currency?.name || '-',
           },
           {
-            label: 'Account no.',
+            label: 'Account Number',
             value: invoice?.bankAccount?.accountNumber || '-',
           },
           {
-            label: 'Account holder',
+            label: 'Account Holder',
             value: invoice?.bankAccount?.ownerName || '-',
           },
           { label: 'Address', value: invoice?.bankAccount?.address || '-' },
           ...(invoice?.bankAccount?.swiftCode
             ? [
                 {
-                  label: 'SWIFT code',
+                  label: 'SWIFT Code',
                   value: invoice.bankAccount.swiftCode,
                 },
               ]
@@ -43,8 +43,16 @@ export const SummarySection = (props: Props) => {
           ...(invoice?.bankAccount?.routingNumber
             ? [
                 {
-                  label: 'Routing no.',
+                  label: 'Routing Number',
                   value: invoice.bankAccount.routingNumber,
+                },
+              ]
+            : []),
+          ...(invoice?.bankAccount?.ukSortCode
+            ? [
+                {
+                  label: 'UK Sort Code',
+                  value: invoice.bankAccount.ukSortCode,
                 },
               ]
             : []),

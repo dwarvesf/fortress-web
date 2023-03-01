@@ -255,7 +255,6 @@ export const InvoiceFormInputList = (props: Props) => {
           {currency && summary.subtotal
             ? formatCurrency(summary.subtotal, {
                 currency: currency.name,
-                locale: currency.locale,
               })
             : '-'}
         </div>
@@ -264,7 +263,6 @@ export const InvoiceFormInputList = (props: Props) => {
           {currency && summary.total
             ? formatCurrency(summary.total, {
                 currency: currency.name,
-                locale: currency.locale,
               })
             : '-'}
         </div>
