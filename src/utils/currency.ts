@@ -43,5 +43,5 @@ export const formatCurrency = (
   ]
     .filter(Boolean)
     .map((v) => v?.trim())
-    .join(' ')
+    .join('')
 }

@@ -200,8 +200,7 @@ export const InvoiceForm = () => {
               if (
                 changedFields.length === 1 &&
                 Array.isArray(changedFields[0].name) &&
-                changedFields[0].name[0] === 'lineItems' &&
-                !!changedFields[0].name[2]
+                changedFields[0].name[0] === 'lineItems'
               ) {
                 onLineItemsChange(form.getFieldValue('lineItems'))
               }
