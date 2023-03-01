@@ -125,6 +125,7 @@ export const InvoiceFormInputList = (props: Props) => {
                             className="bordered"
                             placeholder="Enter description"
                             rows={1}
+                            style={{ minWidth: 200 }}
                           />
                         </Form.Item>
                       </td>
@@ -152,7 +153,7 @@ export const InvoiceFormInputList = (props: Props) => {
                             thousandSeparator=","
                             allowNegative={false}
                             decimalScale={0}
-                            style={{ textAlign: 'right' }}
+                            style={{ textAlign: 'right', minWidth: 120 }}
                             customInput={Input}
                           />
                         </Form.Item>
@@ -180,7 +181,7 @@ export const InvoiceFormInputList = (props: Props) => {
                             allowNegative={false}
                             decimalScale={3}
                             suffix={currency?.symbol}
-                            style={{ textAlign: 'right' }}
+                            style={{ textAlign: 'right', minWidth: 120 }}
                             customInput={Input}
                           />
                         </Form.Item>
@@ -209,7 +210,7 @@ export const InvoiceFormInputList = (props: Props) => {
                             allowNegative={false}
                             decimalScale={3}
                             suffix="%"
-                            style={{ textAlign: 'right' }}
+                            style={{ textAlign: 'right', minWidth: 120 }}
                             customInput={Input}
                           />
                         </Form.Item>
@@ -221,7 +222,7 @@ export const InvoiceFormInputList = (props: Props) => {
                             className="bordered disabled"
                             thousandSeparator=","
                             suffix={currency?.symbol}
-                            style={{ textAlign: 'right' }}
+                            style={{ textAlign: 'right', minWidth: 120 }}
                             readOnly
                             customInput={Input}
                           />
