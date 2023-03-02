@@ -154,6 +154,7 @@ export const AuthenticatedLayout = (props: Props) => {
             },
           ],
         ),
+        permission: Permission.INVOICES_READ,
       },
     ]
   }, [])
