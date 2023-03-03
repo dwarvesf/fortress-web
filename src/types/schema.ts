@@ -322,15 +322,6 @@ export interface ModelInvoice {
   year?: number
 }
 
-export interface ModelInvoiceItem {
-  cost?: number
-  description?: string
-  discount?: number
-  isExternal?: boolean
-  quantity?: number
-  unitCost?: number
-}
-
 export interface ModelIssue {
   id?: string
   incident_date?: string
@@ -725,7 +716,7 @@ export interface RequestCreateEmployeeInput {
   personalEmail: string
   positions: string[]
   referredBy?: string
-  roleID: string
+  roles: string[]
   salary: number
   seniorityID: string
   status: string
@@ -800,6 +791,15 @@ export interface RequestGetListEmployeeInput {
   workingStatuses?: string[]
 }
 
+export interface RequestInvoiceItem {
+  cost?: number
+  description?: string
+  discount?: number
+  isExternal?: boolean
+  quantity?: number
+  unitCost?: number
+}
+
 export interface RequestSendInvoiceRequest {
   bankID: string
   cc?: string[]
@@ -817,7 +817,7 @@ export interface RequestSendInvoiceRequest {
   /** @min 0 */
   invoiceYear?: number
   isDraft?: boolean
-  lineItems?: ModelInvoiceItem[]
+  lineItems?: RequestInvoiceItem[]
   note?: string
   number?: string
   projectID: string
@@ -1550,7 +1550,7 @@ export interface ViewInvoice {
   failedAt?: string
   invoiceFileURL?: string
   invoicedAt?: string
-  lineItems?: ModelInvoiceItem[]
+  lineItems?: ViewInvoiceItem[]
   month?: number
   note?: string
   number?: string
@@ -1564,6 +1564,15 @@ export interface ViewInvoice {
   threadID?: string
   total?: number
   year?: number
+}
+
+export interface ViewInvoiceItem {
+  cost?: number
+  description?: string
+  discount?: number
+  isExternal?: boolean
+  quantity?: number
+  unitCost?: number
 }
 
 export interface ViewInvoiceTemplateResponse {
@@ -1678,6 +1687,7 @@ export interface ViewProfileData {
   personalEmail?: string
   phoneNumber?: string
   placeOfResidence?: string
+  roles?: ViewRole[]
   teamEmail?: string
   username?: string
 }

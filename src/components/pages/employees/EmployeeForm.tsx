@@ -77,7 +77,7 @@ export const EmployeeForm = (props: Props) => {
       displayName: values.displayName,
       personalEmail: values.personalEmail,
       positions: values.positions,
-      roleID: values.roleID,
+      roles: values.roles,
       salary: parseFloat(values.salary),
       seniorityID: values.seniorityID,
       status: values.status,
@@ -265,17 +265,18 @@ export const EmployeeForm = (props: Props) => {
 
           <Col span={24} md={{ span: 12 }}>
             <Form.Item
-              label="Account Role"
-              name="roleID"
+              label="Account Roles"
+              name="roles"
               rules={[{ required: true, message: 'Required' }]}
             >
               <AsyncSelect
+                mode="multiple"
                 optionGetter={async () => {
                   const { data } = await client.getAccountRolesMetadata()
                   return data?.map(transformMetadataToSelectOption) || []
                 }}
                 swrKeys={GET_PATHS.getAccountRoleMetadata}
-                placeholder="Select account role"
+                placeholder="Select account roles"
               />
             </Form.Item>
           </Col>
