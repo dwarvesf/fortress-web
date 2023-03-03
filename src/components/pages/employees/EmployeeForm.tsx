@@ -265,7 +265,7 @@ export const EmployeeForm = (props: Props) => {
 
           <Col span={24} md={{ span: 12 }}>
             <Form.Item
-              label="Account Roles"
+              label="Roles"
               name="roles"
               rules={[{ required: true, message: 'Required' }]}
             >
@@ -275,7 +275,7 @@ export const EmployeeForm = (props: Props) => {
                   const { data } = await client.getAccountRolesMetadata()
                   return data?.map(transformMetadataToSelectOption) || []
                 }}
-                swrKeys={GET_PATHS.getAccountRoleMetadata}
+                swrKeys={GET_PATHS.getRoleMetadata}
                 placeholder="Select account roles"
               />
             </Form.Item>

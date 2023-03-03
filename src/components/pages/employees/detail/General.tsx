@@ -411,7 +411,7 @@ export const General = (props: Props) => {
                               data?.map(transformMetadataToSelectOption) || []
                             )
                           }}
-                          swrKeys={GET_PATHS.getAccountRoleMetadata}
+                          swrKeys={GET_PATHS.getRoleMetadata}
                           placeholder="Select account roles"
                           style={{ width: '100%' }}
                           value={data.roles?.map((r) => r.id)}
