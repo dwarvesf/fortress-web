@@ -97,7 +97,7 @@ export const GET_PATHS = {
   getUnreadFeedbacks: '/feedbacks/unreads',
   getAccountStatusMetadata: '/metadata/account-statuses',
   getPositionMetadata: '/metadata/positions',
-  getAccountRoleMetadata: '/metadata/account-roles',
+  getRoleMetadata: '/metadata/roles',
   getSeniorityMetadata: '/metadata/seniorities',
   getProjectStatusMetadata: '/metadata/project-statuses',
   getStackMetadata: '/metadata/stacks',
@@ -275,12 +275,9 @@ class Client {
   }
 
   public getAccountRolesMetadata() {
-    return fetcher<ViewAccountRoleResponse>(
-      `${BASE_URL}/metadata/account-roles`,
-      {
-        headers: { ...this.privateHeaders },
-      },
-    )
+    return fetcher<ViewAccountRoleResponse>(`${BASE_URL}/metadata/roles`, {
+      headers: { ...this.privateHeaders },
+    })
   }
 
   public getProjectStatusMetadata = () => {
