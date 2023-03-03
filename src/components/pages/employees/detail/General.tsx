@@ -192,7 +192,7 @@ export const General = (props: Props) => {
     }
   }
 
-  const onChangeRole = async (value: string) => {
+  const onChangeRole = async (value: string[]) => {
     try {
       setIsLoading(true)
 
@@ -380,13 +380,14 @@ export const General = (props: Props) => {
             <Col span={24} lg={{ span: 16 }}>
               <Card title="Permissions">
                 <DataRows
+                  valueColProps={{ xxl: { span: 8 } }}
                   data={[
                     {
                       label: 'Status',
                       value: (
                         <Select
                           loading={isLoading}
-                          style={{ width: '100%', maxWidth: 300 }}
+                          style={{ width: '100%' }}
                           value={data.status}
                           onChange={onChangeStatus}
                           options={Object.keys(employeeStatuses).map((key) => {
@@ -399,9 +400,10 @@ export const General = (props: Props) => {
                       ),
                     },
                     {
-                      label: 'Role',
+                      label: 'Roles',
                       value: (
                         <AsyncSelect
+                          mode="multiple"
                           optionGetter={async () => {
                             const { data } =
                               await client.getAccountRolesMetadata()
@@ -410,12 +412,9 @@ export const General = (props: Props) => {
                             )
                           }}
                           swrKeys={GET_PATHS.getAccountRoleMetadata}
-                          placeholder="Select account role"
-                          style={{
-                            width: '100%',
-                            maxWidth: 300,
-                          }}
-                          value={data.roles?.[0]?.id}
+                          placeholder="Select account roles"
+                          style={{ width: '100%' }}
+                          value={data.roles?.map((r) => r.id)}
                           onChange={onChangeRole}
                         />
                       ),
