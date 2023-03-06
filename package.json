@@ -1,5 +1,5 @@
 {
-  "name": "nextjs-boilerplate",
+  "name": "fortress",
   "version": "1.0.1",
   "scripts": {
     "dev": "next",
