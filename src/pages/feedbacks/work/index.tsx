@@ -154,9 +154,18 @@ const WorkPage = () => {
             loading={loading}
             pagination={false}
             onRow={(record) => ({
-              onClick: (e) => {
+              onMouseDown: (e) => {
                 if (e.defaultPrevented) return
-                push(ROUTES.WORK_DETAIL(record.id!))
+                if (e.button === 1 || e.ctrlKey || e.metaKey) {
+                  window.open(
+                    `${window.location.origin}${ROUTES.WORK_DETAIL(
+                      record.id!,
+                    )}`,
+                    '_blank',
+                  )
+                } else {
+                  push(ROUTES.WORK_DETAIL(record.id!))
+                }
               },
             })}
           />

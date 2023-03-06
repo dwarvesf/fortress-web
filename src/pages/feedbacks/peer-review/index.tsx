@@ -119,9 +119,18 @@ const PeerReviewPage = () => {
             pagination={false}
             scroll={{ x: 'max-content' }}
             onRow={(record) => ({
-              onClick: (e) => {
+              onMouseDown: (e) => {
                 if (e.defaultPrevented) return
-                push(ROUTES.PEER_REVIEW_EVENT_DETAIL(record.id!))
+                if (e.button === 1 || e.ctrlKey || e.metaKey) {
+                  window.open(
+                    `${window.location.origin}${ROUTES.PEER_REVIEW_EVENT_DETAIL(
+                      record.id!,
+                    )}`,
+                    '_blank',
+                  )
+                } else {
+                  push(ROUTES.PEER_REVIEW_EVENT_DETAIL(record.id!))
+                }
               },
             })}
           />

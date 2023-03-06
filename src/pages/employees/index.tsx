@@ -475,9 +475,18 @@ const Default = () => {
               setFilter(filters)
             }}
             onRow={(record) => ({
-              onClick: (e) => {
+              onMouseDown: (e) => {
                 if (e.defaultPrevented) return
-                push(ROUTES.EMPLOYEE_DETAIL(record.username!))
+                if (e.button === 1 || e.ctrlKey || e.metaKey) {
+                  window.open(
+                    `${window.location.origin}${ROUTES.EMPLOYEE_DETAIL(
+                      record.username!,
+                    )}`,
+                    '_blank',
+                  )
+                } else {
+                  push(ROUTES.EMPLOYEE_DETAIL(record.username!))
+                }
               },
             })}
           />

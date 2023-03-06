@@ -113,9 +113,18 @@ const EmployeeEngagementPage = () => {
             pagination={false}
             scroll={{ x: 'max-content' }}
             onRow={(record) => ({
-              onClick: (e) => {
+              onMouseDown: (e) => {
                 if (e.defaultPrevented) return
-                push(ROUTES.EMPLOYEE_ENGAGEMENT_DETAIL(record.id!))
+                if (e.button === 1 || e.ctrlKey || e.metaKey) {
+                  window.open(
+                    `${
+                      window.location.origin
+                    }${ROUTES.EMPLOYEE_ENGAGEMENT_DETAIL(record.id!)}`,
+                    '_blank',
+                  )
+                } else {
+                  push(ROUTES.EMPLOYEE_ENGAGEMENT_DETAIL(record.id!))
+                }
               },
             })}
           />
