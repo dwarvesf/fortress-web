@@ -2,9 +2,9 @@ import { Nullable } from 'types/common'
 import { Pagination } from './Pagination'
 
 interface RequestGetListProjectInput {
-  status?: string
+  status?: string | string[]
   name?: string
-  type?: string
+  type?: string | string[]
   sort?: string
 }
 

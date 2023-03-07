@@ -277,6 +277,13 @@ const Default = () => {
         ],
       },
       {
+        title: 'Referred By',
+        key: 'referredBy',
+        dataIndex: 'referredBy',
+        render: (value?: ViewBasicEmployeeInfo) =>
+          value ? <UserAvatar user={value} /> : '-',
+      },
+      {
         title: 'Seniority',
         key: 'seniorities',
         dataIndex: 'seniority',
