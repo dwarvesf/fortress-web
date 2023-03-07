@@ -16,6 +16,8 @@ import { getErrorMessage, getFirstLetterCapitalized } from 'utils/string'
 import { v4 as uuid4 } from 'uuid'
 import { Icon } from '@iconify/react'
 
+const maxFileSize = 2000000
+
 const title = {
   profile: 'Edit Profile Avatar',
   employee: 'Edit Employee Avatar',
@@ -143,7 +145,7 @@ export const EditAvatarModal = (props: Props) => {
             onSubmit(options.file as File)
           }}
           beforeUpload={(file) => {
-            if (file.size > 2000000) {
+            if (file.size > maxFileSize) {
               notification.error({
                 message: `Could not update ${type} avatar`,
                 description: 'Image size must less than 2MB',
