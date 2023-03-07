@@ -19,8 +19,8 @@ import { SEO } from 'components/common/SEO'
 import { ROUTES } from 'constants/routes'
 import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
 import { Permission } from 'constants/permission'
-import { useRouter } from 'next/router'
 import { TotalResultCount } from 'components/common/Table/TotalResultCount'
+import { useMouseDown } from 'hooks/useMouseDown'
 
 interface ColumnProps {
   onAfterDelete: () => void
@@ -59,7 +59,7 @@ const columns = ({ onAfterDelete }: ColumnProps): ColumnsType<ViewSurvey> => [
 ]
 
 const PeerReviewPage = () => {
-  const { push } = useRouter()
+  const { openLink } = useMouseDown()
 
   const {
     isOpen: isCreatePeerReviewModalOpen,
@@ -119,19 +119,9 @@ const PeerReviewPage = () => {
             pagination={false}
             scroll={{ x: 'max-content' }}
             onRow={(record) => ({
-              onMouseDown: (e) => {
-                if (e.defaultPrevented) return
-                if (e.button === 1 || e.ctrlKey || e.metaKey) {
-                  window.open(
-                    `${window.location.origin}${ROUTES.PEER_REVIEW_EVENT_DETAIL(
-                      record.id!,
-                    )}`,
-                    '_blank',
-                  )
-                } else {
-                  push(ROUTES.PEER_REVIEW_EVENT_DETAIL(record.id!))
-                }
-              },
+              onMouseDown: openLink(
+                ROUTES.PEER_REVIEW_EVENT_DETAIL(record.id!),
+              ),
             })}
           />
         </div>

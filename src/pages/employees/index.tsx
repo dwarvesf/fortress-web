@@ -42,9 +42,11 @@ import { useAuthContext } from 'context/auth'
 import { TotalResultCount } from 'components/common/Table/TotalResultCount'
 import { format } from 'utils/date'
 import { DATE_FORMAT } from 'constants/date'
+import { useMouseDown } from 'hooks/useMouseDown'
 
 const Default = () => {
-  const { query, push } = useRouter()
+  const { query } = useRouter()
+  const { openLink } = useMouseDown()
   const queryFilter = query.filter ? JSON.parse(query.filter as string) : {}
 
   const { permissions } = useAuthContext()
@@ -482,19 +484,7 @@ const Default = () => {
               setFilter(filters)
             }}
             onRow={(record) => ({
-              onMouseDown: (e) => {
-                if (e.defaultPrevented) return
-                if (e.button === 1 || e.ctrlKey || e.metaKey) {
-                  window.open(
-                    `${window.location.origin}${ROUTES.EMPLOYEE_DETAIL(
-                      record.username!,
-                    )}`,
-                    '_blank',
-                  )
-                } else {
-                  push(ROUTES.EMPLOYEE_DETAIL(record.username!))
-                }
-              },
+              onMouseDown: openLink(ROUTES.EMPLOYEE_DETAIL(record.username!)),
             })}
           />
         </div>
