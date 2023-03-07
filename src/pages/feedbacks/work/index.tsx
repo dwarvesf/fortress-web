@@ -20,8 +20,8 @@ import { ROUTES } from 'constants/routes'
 import { ViewSurvey } from 'types/schema'
 import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
 import { Permission } from 'constants/permission'
-import { useRouter } from 'next/router'
 import { TotalResultCount } from 'components/common/Table/TotalResultCount'
+import { useMouseDown } from 'hooks/useMouseDown'
 
 const columns: ColumnsType<ViewSurvey> = [
   {
@@ -70,7 +70,7 @@ const columns: ColumnsType<ViewSurvey> = [
 ]
 
 const WorkPage = () => {
-  const { push } = useRouter()
+  const { openLink } = useMouseDown()
 
   const {
     isOpen: isToggleSendSurveyDialogOpen,
@@ -154,10 +154,7 @@ const WorkPage = () => {
             loading={loading}
             pagination={false}
             onRow={(record) => ({
-              onClick: (e) => {
-                if (e.defaultPrevented) return
-                push(ROUTES.WORK_DETAIL(record.id!))
-              },
+              onMouseDown: openLink(ROUTES.WORK_DETAIL(record.id!)),
             })}
           />
         </div>

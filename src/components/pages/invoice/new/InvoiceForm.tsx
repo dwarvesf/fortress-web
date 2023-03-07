@@ -12,8 +12,11 @@ import { useState } from 'react'
 import { InvoiceFormInputList } from 'components/pages/invoice/new/InvoiceFormInputList'
 import { useForm } from 'antd/lib/form/Form'
 import moment, { Moment } from 'moment'
-import { ModelInvoiceItem, ViewProjectInvoiceTemplate } from 'types/schema'
+import { ViewInvoiceItem, ViewProjectInvoiceTemplate } from 'types/schema'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
+import { useRouter } from 'next/router'
+import { ProjectStatus } from 'constants/status'
+import { ProjectType } from 'constants/projectTypes'
 import { SummarySection } from './SummarySection'
 
 const getDescription = (projectName: string, date: Moment) => {
@@ -44,10 +47,11 @@ interface FormValues {
   dueDate?: Moment
   description?: string
   note?: string
-  lineItems?: ModelInvoiceItem[]
+  lineItems?: ViewInvoiceItem[]
 }
 
 export const InvoiceForm = () => {
+  const { push } = useRouter()
   const [form] = useForm<FormValues>()
   const [invoice, setInvoice] = useState<ViewProjectInvoiceTemplate | null>(
     null,
@@ -56,7 +60,10 @@ export const InvoiceForm = () => {
   const [loading, setLoading] = useState(false)
   const { data: projectData } = useFetchWithCache(GET_PATHS.getProjects, () =>
     client.getProjects({
-      ...new ProjectListFilter(),
+      ...new ProjectListFilter({
+        status: ProjectStatus.ACTIVE,
+        type: [ProjectType.FIXED_COST, ProjectType.TIME_MATERIAL],
+      }),
       ...fullListPagination,
     }),
   )
@@ -87,7 +94,7 @@ export const InvoiceForm = () => {
         cc: invoice.lastInvoice?.cc?.filter(Boolean) || [],
         invoiceNumber: invoice.invoiceNumber,
         invoiceMonth,
-        invoiceDate: invoiceMonth,
+        invoiceDate: invoiceMonth.clone(),
         dueDate: invoiceMonth.clone().add(7, 'days'),
         description: invoice.name
           ? getDescription(invoice.name, invoiceMonth)
@@ -149,6 +156,7 @@ export const InvoiceForm = () => {
       notification.success({
         message: 'Invoice created successfully',
       })
+      push('/')
     } catch (error: any) {
       notification.error({
         message: 'Could not create invoice template',
@@ -158,7 +166,7 @@ export const InvoiceForm = () => {
     }
   }
 
-  const onLineItemsChange = (values: ModelInvoiceItem[]) => {
+  const onLineItemsChange = (values: ViewInvoiceItem[]) => {
     const newValues = values.map((each) => ({
       ...each,
       cost:

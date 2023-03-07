@@ -42,9 +42,11 @@ import { useAuthContext } from 'context/auth'
 import { TotalResultCount } from 'components/common/Table/TotalResultCount'
 import { format } from 'utils/date'
 import { DATE_FORMAT } from 'constants/date'
+import { useMouseDown } from 'hooks/useMouseDown'
 
 const Default = () => {
-  const { query, push } = useRouter()
+  const { query } = useRouter()
+  const { openLink } = useMouseDown()
   const queryFilter = query.filter ? JSON.parse(query.filter as string) : {}
 
   const { permissions } = useAuthContext()
@@ -277,6 +279,13 @@ const Default = () => {
         ],
       },
       {
+        title: 'Referred By',
+        key: 'referredBy',
+        dataIndex: 'referredBy',
+        render: (value?: ViewBasicEmployeeInfo) =>
+          value ? <UserAvatar user={value} /> : '-',
+      },
+      {
         title: 'Seniority',
         key: 'seniorities',
         dataIndex: 'seniority',
@@ -475,10 +484,7 @@ const Default = () => {
               setFilter(filters)
             }}
             onRow={(record) => ({
-              onClick: (e) => {
-                if (e.defaultPrevented) return
-                push(ROUTES.EMPLOYEE_DETAIL(record.username!))
-              },
+              onMouseDown: openLink(ROUTES.EMPLOYEE_DETAIL(record.username!)),
             })}
           />
         </div>

@@ -1,4 +1,4 @@
-import { Col, ColProps, Row, Space } from 'antd'
+import { Col, ColProps, Row, Space, SpaceProps } from 'antd'
 import { Permission } from 'constants/permission'
 import { useAuthContext } from 'context/auth'
 import { theme } from 'styles'
@@ -11,14 +11,15 @@ interface Props {
   }[]
   labelColProps?: ColProps
   valueColProps?: ColProps
+  wrapperProps?: SpaceProps
 }
 
 export const DataRows = (props: Props) => {
-  const { data, labelColProps, valueColProps } = props
+  const { data, labelColProps, valueColProps, wrapperProps } = props
   const { permissions } = useAuthContext()
 
   return (
-    <Space direction="vertical" style={{ width: '100%' }}>
+    <Space direction="vertical" style={{ width: '100%' }} {...wrapperProps}>
       {data
         .filter(
           ({ permission }) => !permission || permissions.includes(permission),

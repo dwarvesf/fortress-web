@@ -125,7 +125,7 @@ export const InvoiceFormInputList = (props: Props) => {
                             className="bordered"
                             placeholder="Enter description"
                             rows={1}
-                            style={{ minWidth: 200 }}
+                            style={{ minWidth: 250 }}
                           />
                         </Form.Item>
                       </td>

@@ -38,6 +38,7 @@ import { FeedbackSubtype } from 'constants/feedbackTypes'
 import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
 import { Permission } from 'constants/permission'
 import { TotalResultCount } from 'components/common/Table/TotalResultCount'
+import { useMouseDown } from 'hooks/useMouseDown'
 
 interface ColumnProps {
   eventStatus?: SurveyEventStatus
@@ -89,10 +90,10 @@ const columns = ({
 
 const Default = () => {
   const {
-    push,
     query: { id },
   } = useRouter()
   const peerReviewId = id as string
+  const { openLink } = useMouseDown()
   const { filter, setFilter } = useFilter(new SurveyDetailFilter())
   const {
     data,
@@ -352,10 +353,9 @@ const Default = () => {
             pagination={false}
             scroll={{ x: 'max-content' }}
             onRow={(record) => ({
-              onClick: (e) => {
-                if (e.defaultPrevented) return
-                push(ROUTES.EMPLOYEE_PEER_REVIEWS(record.eventID!, record.id!))
-              },
+              onMouseDown: openLink(
+                ROUTES.EMPLOYEE_PEER_REVIEWS(record.eventID!, record.id!),
+              ),
             })}
           />
         </div>

@@ -19,8 +19,8 @@ import { ViewSurvey } from 'types/schema'
 import { ROUTES } from 'constants/routes'
 import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
 import { Permission } from 'constants/permission'
-import { useRouter } from 'next/router'
 import { TotalResultCount } from 'components/common/Table/TotalResultCount'
+import { useMouseDown } from 'hooks/useMouseDown'
 
 const columns: ColumnsType<ViewSurvey> = [
   {
@@ -53,7 +53,7 @@ const columns: ColumnsType<ViewSurvey> = [
 ]
 
 const EmployeeEngagementPage = () => {
-  const { push } = useRouter()
+  const { openLink } = useMouseDown()
 
   const {
     isOpen: isCreateEngagementSurveyModalOpen,
@@ -113,10 +113,9 @@ const EmployeeEngagementPage = () => {
             pagination={false}
             scroll={{ x: 'max-content' }}
             onRow={(record) => ({
-              onClick: (e) => {
-                if (e.defaultPrevented) return
-                push(ROUTES.EMPLOYEE_ENGAGEMENT_DETAIL(record.id!))
-              },
+              onMouseDown: openLink(
+                ROUTES.EMPLOYEE_ENGAGEMENT_DETAIL(record.id!),
+              ),
             })}
           />
         </div>

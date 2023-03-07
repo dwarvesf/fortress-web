@@ -23,6 +23,7 @@ import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
 import { Permission } from 'constants/permission'
 import { TotalResultCount } from 'components/common/Table/TotalResultCount'
 import { useAuthContext } from 'context/auth'
+import { useMouseDown } from 'hooks/useMouseDown'
 
 interface ColumnProps {
   filter: ProjectListFilter
@@ -46,7 +47,7 @@ const columns = ({
     dataIndex: 'status',
     filterSearch: true,
     filterMultiple: false,
-    filteredValue: filter.status ? [filter.status] : [],
+    filteredValue: filter.status ? [filter.status].flat() : [],
     filters: projectStatusData
       .map(transformMetadataToFilterOption)
       .map(({ text, value = '' }) => ({
@@ -121,8 +122,9 @@ const columns = ({
 
 const Default = () => {
   const { permissions } = useAuthContext()
-  const { query, push } = useRouter()
+  const { query } = useRouter()
   const queryFilter = query.filter ? JSON.parse(query.filter as string) : {}
+  const { openLink } = useMouseDown()
 
   const { filter, setFilter } = useFilter(
     new ProjectListFilter({ status: ProjectStatus.ACTIVE, ...queryFilter }),
@@ -208,10 +210,7 @@ const Default = () => {
               })
             }}
             onRow={(record) => ({
-              onClick: (e) => {
-                if (e.defaultPrevented) return
-                push(ROUTES.PROJECT_DETAIL(record.code!))
-              },
+              onMouseDown: openLink(ROUTES.PROJECT_DETAIL(record.code!)),
             })}
             className="shadowed"
           />
