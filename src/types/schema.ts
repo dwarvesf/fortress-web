@@ -1759,6 +1759,7 @@ export interface ViewProjectListDataResponse {
 
 export interface ViewProjectMember {
   avatar?: string
+  currency?: ViewCurrency
   deploymentType?: string
   discount?: number
   displayName?: string

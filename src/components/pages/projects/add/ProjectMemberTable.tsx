@@ -17,6 +17,7 @@ import {
 } from 'types/schema'
 import { ProjectMemberStatus, projectMemberStatuses } from 'constants/status'
 import { DeploymentType, deploymentTypes } from 'constants/deploymentTypes'
+import { formatCurrency } from 'utils/currency'
 import { Actions } from './Actions'
 
 export const ProjectMemberTable = ({
@@ -96,6 +97,17 @@ export const ProjectMemberTable = ({
         key: 'endDate',
         dataIndex: 'endDate',
         render: (value) => (value ? format(value, DATE_FORMAT) : '-'),
+      },
+      {
+        title: 'Rate',
+        key: 'rate',
+        dataIndex: 'rate',
+        render: (value, record) =>
+          value
+            ? formatCurrency(value, {
+                currency: record.currency?.name,
+              })
+            : '-',
       },
       {
         title: 'Notes',

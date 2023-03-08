@@ -11,6 +11,7 @@ import {
   ViewProjectMember,
 } from 'types/schema'
 import { capitalizeFirstLetter } from 'utils/string'
+import { formatCurrency } from 'utils/currency'
 import { Actions } from './Actions'
 
 export const MemberTable = ({
@@ -83,7 +84,12 @@ export const MemberTable = ({
         title: 'Rate',
         key: 'rate',
         dataIndex: 'rate',
-        render: (value) => value || '-',
+        render: (value, record) =>
+          value
+            ? formatCurrency(value, {
+                currency: record.currency?.name,
+              })
+            : '-',
       },
       {
         title: 'Notes',
