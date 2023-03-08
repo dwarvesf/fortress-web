@@ -983,10 +983,6 @@ export interface ViewAPIKeyResponse {
   data?: ViewAPIKeyData
 }
 
-export interface ViewAccountRoleResponse {
-  data?: ModelRole[]
-}
-
 export interface ViewActionItemReportResponse {
   data?: ViewAuditActionItemReport[]
 }
@@ -1822,6 +1818,10 @@ export interface ViewRole {
   code?: string
   id?: string
   name?: string
+}
+
+export interface ViewRolesResponse {
+  data?: ModelRole[]
 }
 
 export interface ViewSeniority {

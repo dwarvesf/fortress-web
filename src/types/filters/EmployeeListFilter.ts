@@ -37,5 +37,6 @@ export class EmployeeListFilter
     this.workingStatuses = workingStatuses
     this.lineManagers = lineManagers
     this.organizations = organizations
+    this.size = 50
   }
 }

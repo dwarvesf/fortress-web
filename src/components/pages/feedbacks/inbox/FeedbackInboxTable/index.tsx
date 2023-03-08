@@ -9,9 +9,9 @@ import { useMemo } from 'react'
 import { ViewFeedback } from 'types/schema'
 import { DATETIME_FORMAT } from 'constants/date'
 import { ROUTES } from 'constants/routes'
-import { useRouter } from 'next/router'
 import { TotalResultCount } from 'components/common/Table/TotalResultCount'
 import { Permission } from 'constants/permission'
+import { useMouseDown } from 'hooks/useMouseDown'
 import { Actions } from './Actions'
 
 export const FeedbackInputTable = ({
@@ -23,7 +23,7 @@ export const FeedbackInputTable = ({
   isLoading?: boolean
   onAfterAction?: () => void
 }) => {
-  const { push } = useRouter()
+  const { openLink } = useMouseDown()
 
   const columns = useMemo(() => {
     return [
@@ -93,14 +93,11 @@ export const FeedbackInputTable = ({
         pagination={false}
         scroll={{ x: 'max-content' }}
         onRow={(record) => ({
-          onClick: (e) => {
-            if (e.defaultPrevented) return
-            push(
-              `${ROUTES.FEEDBACK_INBOX_DETAIL(record.topicID!)}?type=${
-                record.type
-              }&subtype=${record.subtype}&eventID=${record.eventID}`,
-            )
-          },
+          onMouseDown: openLink(
+            `${ROUTES.FEEDBACK_INBOX_DETAIL(record.topicID!)}?type=${
+              record.type
+            }&subtype=${record.subtype}&eventID=${record.eventID}`,
+          ),
         })}
       />
     </>

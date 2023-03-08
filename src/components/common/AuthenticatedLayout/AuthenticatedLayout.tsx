@@ -5,6 +5,7 @@ import { FEATURES } from 'constants/features'
 import { pagePermissions, Permission } from 'constants/permission'
 import { ROUTES } from 'constants/routes'
 import { LOGIN_REDIRECTION_KEY, useAuthContext } from 'context/auth'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useEffect, useMemo } from 'react'
 import { WithChildren } from 'types/common'
@@ -36,7 +37,13 @@ function getItem(
     key,
     icon,
     children,
-    label,
+    label: children ? (
+      label
+    ) : (
+      <Link href={key.toString()} target="_blank">
+        {label}
+      </Link>
+    ),
   }
 }
 
@@ -213,7 +220,11 @@ export const AuthenticatedLayout = (props: Props) => {
         <Menu
           mode="inline"
           items={filterItems(items, permissions)}
-          onClick={({ key }) => push(key)}
+          onClick={(e) => {
+            if (!e.domEvent.ctrlKey && !e.domEvent.metaKey) {
+              push(e.key)
+            }
+          }}
           selectedKeys={activeMenuKeys}
           defaultOpenKeys={activeMenuKeys}
         />

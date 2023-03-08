@@ -17,6 +17,7 @@ export const SummarySection = (props: Props) => {
       <Typography.Title level={4}>Bank Info</Typography.Title>
       <Divider />
       <DataRows
+        wrapperProps={{ size: 5 }}
         data={[
           { label: 'Bank Name', value: invoice?.bankAccount?.bankName || '-' },
           {
