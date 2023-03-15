@@ -88,6 +88,7 @@ export const MemberTable = ({
           value
             ? formatCurrency(value, {
                 currency: record.currency?.name,
+                showSymbol: !!record.currency?.name,
               })
             : '-',
       },
