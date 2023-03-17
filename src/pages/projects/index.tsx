@@ -4,12 +4,12 @@ import { PageHeader } from 'components/common/PageHeader'
 import Table, { ColumnType } from 'antd/lib/table'
 import Link from 'next/link'
 import { AvatarArray } from 'components/common/AvatarArray'
-import { ProjectAvatar, UserAvatar } from 'components/common/AvatarWithName'
+import { ProjectAvatar } from 'components/common/AvatarWithName'
 import { Button } from 'components/common/Button'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { client, GET_PATHS } from 'libs/apis'
-import { ViewMetaData, ViewProjectData } from 'types/schema'
+import { ViewMetaData, ViewProjectData, ViewProjectHead } from 'types/schema'
 import { useFilter } from 'hooks/useFilter'
 import debounce from 'lodash.debounce'
 import { transformMetadataToFilterOption } from 'utils/select'
@@ -77,16 +77,25 @@ const columns = ({
       value && value.length ? <AvatarArray data={value} /> : '-',
   },
   {
-    title: 'Delivery Manager',
-    key: 'deliveryManager',
-    dataIndex: 'deliveryManager',
-    render: (value) => (value ? <UserAvatar user={value} /> : 'TBD'),
+    title: 'Delivery Managers',
+    key: 'deliveryManagers',
+    dataIndex: 'deliveryManagers',
+    render: (value?: ViewProjectHead[]) =>
+      value ? <AvatarArray data={value} /> : 'TBD',
   },
   {
-    title: 'Account Manager',
-    key: 'accountManager',
-    dataIndex: 'accountManager',
-    render: (value) => (value ? <UserAvatar user={value} /> : 'TBD'),
+    title: 'Account Managers',
+    key: 'accountManagers',
+    dataIndex: 'accountManagers',
+    render: (value?: ViewProjectHead[]) =>
+      value ? <AvatarArray data={value} /> : 'TBD',
+  },
+  {
+    title: 'Sale Persons',
+    key: 'salePersons',
+    dataIndex: 'salePersons',
+    render: (value?: ViewProjectHead[]) =>
+      value ? <AvatarArray data={value} /> : 'TBD',
   },
   {
     title: '',

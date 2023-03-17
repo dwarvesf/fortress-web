@@ -1,14 +1,11 @@
 import { Form, Input, Modal, notification, Space } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
-import { client, GET_PATHS } from 'libs/apis'
+import { client } from 'libs/apis'
 import { useState } from 'react'
 import { RequestUpdateContactInfoInput } from 'types/schema'
-import { AsyncSelect } from 'components/common/Select'
-import { renderEmployeeOption } from 'components/common/Select/renderers/employeeOption'
-import { transformEmployeeDataToSelectOption } from 'utils/select'
 import { getErrorMessage } from 'utils/string'
-import { fullListPagination } from 'types/filters/Pagination'
 import { FormInputList } from 'components/common/FormInputList'
+import { FormAccountWithRateList } from 'components/common/FormAccountWithRateList'
 
 type ProjectContactInfoFormValues = Partial<RequestUpdateContactInfoInput>
 
@@ -30,7 +27,11 @@ export const EditProjectContactInfoModal = (props: Props) => {
     try {
       setIsSubmitting(true)
 
-      await client.updateProjectContactInfo(projectID, values)
+      const formattedValues: RequestUpdateContactInfoInput = {
+        ...values,
+        salePersons: values.salePersons?.filter((each) => !!each.employeeID),
+      }
+      await client.updateProjectContactInfo(projectID, formattedValues)
 
       notification.success({
         message: "Project's contact info updated successfully!",
@@ -48,13 +49,6 @@ export const EditProjectContactInfoModal = (props: Props) => {
     } finally {
       setIsSubmitting(false)
     }
-  }
-
-  const employeeOptionGetter = async () => {
-    const { data } = await client.getEmployees({
-      ...fullListPagination,
-    })
-    return (data || []).map(transformEmployeeDataToSelectOption)
   }
 
   return (
@@ -92,26 +86,26 @@ export const EditProjectContactInfoModal = (props: Props) => {
           >
             <Input placeholder="Enter project email" className="bordered" />
           </Form.Item>
-          <Form.Item
-            label="Account Manager"
-            name="accountManagerID"
+          <FormAccountWithRateList
+            form={form}
+            name="accountManagers"
+            label="Account Managers"
             rules={[{ required: true, message: 'Required' }]}
-          >
-            <AsyncSelect
-              placeholder="Select project's account manager"
-              swrKeys={GET_PATHS.getEmployees}
-              optionGetter={employeeOptionGetter}
-              customOptionRenderer={renderEmployeeOption}
-            />
-          </Form.Item>
-          <Form.Item label="Delivery Manager" name="deliveryManagerID">
-            <AsyncSelect
-              placeholder="Select project's delivery manager"
-              swrKeys={GET_PATHS.getEmployees}
-              optionGetter={employeeOptionGetter}
-              customOptionRenderer={renderEmployeeOption}
-            />
-          </Form.Item>
+            selectProps={{ placeholder: "Select project's account manager" }}
+          />
+          <FormAccountWithRateList
+            form={form}
+            name="deliveryManagers"
+            label="Delivery Managers"
+            rules={[{ required: true, message: 'Required' }]}
+            selectProps={{ placeholder: "Select project's delivery manager" }}
+          />
+          <FormAccountWithRateList
+            form={form}
+            name="salePersons"
+            label="Sale Persons"
+            selectProps={{ placeholder: "Select project's sale person" }}
+          />
         </Space>
       </Form>
     </Modal>

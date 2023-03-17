@@ -1,7 +1,7 @@
 import { Checkbox, Col, DatePicker, Form, Input, Row, Select } from 'antd'
 import { client, GET_PATHS, Meta } from 'libs/apis'
 import {
-  RequestAssignMemberInput,
+  RequestUpdateMemberInput,
   ViewEmployeeListDataResponse,
   ViewPositionResponse,
   ViewSeniorityResponse,
@@ -21,11 +21,14 @@ import { theme } from 'styles'
 import { fullListPagination } from 'types/filters/Pagination'
 import { SELECT_BOX_DATE_FORMAT } from 'constants/date'
 import TextArea from 'antd/lib/input/TextArea'
+import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
+import { Permission } from 'constants/permission'
+import { NumericFormat } from 'react-number-format'
 
 const today = new Date()
 
 export type MemberFormValues = Partial<
-  Omit<RequestAssignMemberInput, 'startDate' | 'endDate'>
+  Omit<RequestUpdateMemberInput, 'startDate' | 'endDate'>
 > & { startDate?: moment.Moment; endDate?: moment.Moment }
 
 interface Props {
@@ -41,6 +44,10 @@ interface Props {
   ) => void
 }
 
+const CustomInput = (props: any) => (
+  <Input {...props} className="bordered" suffix="%" />
+)
+
 export const MemberForm = (props: Props) => {
   const {
     isAssigning = false,
@@ -53,6 +60,7 @@ export const MemberForm = (props: Props) => {
 
   const employeeID = Form.useWatch('employeeID', form)
   const status: ProjectMemberStatus = Form.useWatch('status', form)
+  const isLead: boolean = Form.useWatch('isLead', form)
 
   const { data: employeesData, loading: isEmployeesDataLoading } =
     useFetchWithCache(
@@ -287,11 +295,74 @@ export const MemberForm = (props: Props) => {
           </Form.Item>
         </Col>
         <Col span={24} md={{ span: 12 }}>
+          <Form.Item label="Upsell Person" name="upsellPersonID">
+            <Select
+              style={{
+                background: theme.colors.white,
+              }}
+              placeholder={
+                isEmployeesDataLoading ? 'Fetching data' : 'Select a member'
+              }
+              loading={isEmployeesDataLoading}
+              disabled={isEmployeesDataLoading}
+              showSearch
+              showArrow
+              filterOption={searchFilterOption}
+            >
+              {(employeesData?.data || [])
+                .map(transformEmployeeDataToSelectOption)
+                .map(renderEmployeeOption)}
+            </Select>
+          </Form.Item>
+        </Col>
+        <AuthenticatedContent
+          permission={Permission.PROJECTS_COMMISSIONRATE_EDIT}
+        >
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item
+              label="Upsell Commission Rate"
+              name="upsellCommissionRate"
+            >
+              <NumericFormat
+                placeholder="Enter rate"
+                allowNegative={false}
+                decimalScale={0}
+                customInput={CustomInput}
+                isAllowed={(values) =>
+                  values.floatValue === undefined ||
+                  (values.floatValue >= 0 && values.floatValue <= 100)
+                }
+              />
+            </Form.Item>
+          </Col>
+        </AuthenticatedContent>
+        <Col span={24} md={{ span: 12 }}>
           <Form.Item label="Role" name="isLead" valuePropName="checked">
             <Checkbox>Is Lead</Checkbox>
           </Form.Item>
         </Col>
-        <Col span={24} md={{ span: 12 }}>
+
+        {isLead && (
+          <Col span={24} md={{ span: 12 }}>
+            <AuthenticatedContent
+              permission={Permission.PROJECTS_COMMISSIONRATE_EDIT}
+            >
+              <Form.Item label="Lead Commission Rate" name="leadCommissionRate">
+                <NumericFormat
+                  placeholder="Enter rate"
+                  allowNegative={false}
+                  decimalScale={0}
+                  customInput={CustomInput}
+                  isAllowed={(values) =>
+                    values.floatValue === undefined ||
+                    (values.floatValue >= 0 && values.floatValue <= 100)
+                  }
+                />
+              </Form.Item>
+            </AuthenticatedContent>
+          </Col>
+        )}
+        <Col span={24}>
           <Form.Item label="Notes" name="note">
             <TextArea
               placeholder="Enter notes"

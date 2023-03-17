@@ -59,6 +59,8 @@ export enum Permission {
   DASHBOARDS_ENGAGEMENT_READ = 'dashboards.engagement.read',
   INVOICES_READ = 'invoices.read',
   INVOICES_CREATE = 'invoices.create',
+  PROJECTS_COMMISSIONRATE_READ = 'projects.commissionRate.read',
+  PROJECTS_COMMISSIONRATE_EDIT = 'projects.commissionRate.edit',
 }
 
 // the permission that needs to access to a certain page
