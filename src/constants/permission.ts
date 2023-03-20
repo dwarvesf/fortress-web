@@ -61,6 +61,8 @@ export enum Permission {
   INVOICES_CREATE = 'invoices.create',
   PROJECTS_COMMISSIONRATE_READ = 'projects.commissionRate.read',
   PROJECTS_COMMISSIONRATE_EDIT = 'projects.commissionRate.edit',
+  PROJECTMEMBERS_RATE_READ = 'projectMembers.rate.read',
+  PROJECTMEMBERS_RATE_EDIT = 'projectMembers.rate.edit',
 }
 
 // the permission that needs to access to a certain page

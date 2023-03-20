@@ -27,7 +27,7 @@ const employeeOptionGetter = async () => {
   return (data || []).map(transformEmployeeDataToSelectOption)
 }
 
-const CustomInput = (props: any) => (
+const RateInput = (props: any) => (
   <Input {...props} className="bordered" suffix="%" />
 )
 
@@ -79,10 +79,10 @@ export const FormAccountWithRateList = (props: Props) => {
                 style={{ marginBottom: 0, width: 120, marginLeft: 10 }}
               >
                 <NumericFormat
-                  placeholder="Enter rate"
+                  placeholder="0"
                   allowNegative={false}
                   decimalScale={0}
-                  customInput={CustomInput}
+                  customInput={RateInput}
                   isAllowed={(values) =>
                     values.floatValue === undefined ||
                     (values.floatValue >= 0 && values.floatValue <= 100)

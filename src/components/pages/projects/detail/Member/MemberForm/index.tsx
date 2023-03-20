@@ -44,7 +44,7 @@ interface Props {
   ) => void
 }
 
-const CustomInput = (props: any) => (
+const RateInput = (props: any) => (
   <Input {...props} className="bordered" suffix="%" />
 )
 
@@ -243,28 +243,32 @@ export const MemberForm = (props: Props) => {
             />
           </Form.Item>
         </Col>
-        <Col span={24} md={{ span: 12 }}>
-          <Form.Item
-            label="Rate"
-            name="rate"
-            rules={[{ required: true, message: 'Required' }]}
-          >
-            <Input
-              type="number"
-              placeholder="Enter rate"
-              className="bordered"
-            />
-          </Form.Item>
-        </Col>
-        <Col span={24} md={{ span: 12 }}>
-          <Form.Item label="Discount" name="discount">
-            <Input
-              type="number"
-              placeholder="Enter discount"
-              className="bordered"
-            />
-          </Form.Item>
-        </Col>
+        <AuthenticatedContent permission={Permission.PROJECTMEMBERS_RATE_EDIT}>
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item
+              label="Rate"
+              name="rate"
+              rules={[{ required: true, message: 'Required' }]}
+            >
+              <Input
+                type="number"
+                placeholder="Enter rate"
+                className="bordered"
+              />
+            </Form.Item>
+          </Col>
+        </AuthenticatedContent>
+        <AuthenticatedContent permission={Permission.PROJECTMEMBERS_RATE_EDIT}>
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item label="Discount" name="discount">
+              <Input
+                type="number"
+                placeholder="Enter discount"
+                className="bordered"
+              />
+            </Form.Item>
+          </Col>
+        </AuthenticatedContent>
         <Col span={24} md={{ span: 12 }}>
           <Form.Item
             label="Status"
@@ -324,10 +328,10 @@ export const MemberForm = (props: Props) => {
               name="upsellCommissionRate"
             >
               <NumericFormat
-                placeholder="Enter rate"
+                placeholder="0"
                 allowNegative={false}
                 decimalScale={0}
-                customInput={CustomInput}
+                customInput={RateInput}
                 isAllowed={(values) =>
                   values.floatValue === undefined ||
                   (values.floatValue >= 0 && values.floatValue <= 100)
@@ -349,10 +353,10 @@ export const MemberForm = (props: Props) => {
             >
               <Form.Item label="Lead Commission Rate" name="leadCommissionRate">
                 <NumericFormat
-                  placeholder="Enter rate"
+                  placeholder="0"
                   allowNegative={false}
                   decimalScale={0}
-                  customInput={CustomInput}
+                  customInput={RateInput}
                   isAllowed={(values) =>
                     values.floatValue === undefined ||
                     (values.floatValue >= 0 && values.floatValue <= 100)

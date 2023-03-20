@@ -254,11 +254,7 @@ export const General = (props: Props) => {
       <EditProjectContactInfoModal
         projectID={data.id || ''}
         isOpen={isEditProjectContactInfoDialogOpen}
-        initialValues={{
-          ...data,
-          // accountManagerID: data.accountManager?.employeeID,
-          // deliveryManagerID: data.deliveryManager?.employeeID,
-        }}
+        initialValues={{ ...data }}
         onClose={closeEditProjectContactInfoDialog}
         onAfterSubmit={mutateProject}
       />
