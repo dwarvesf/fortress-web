@@ -206,6 +206,35 @@ export const MemberForm = (props: Props) => {
         </Col>
         <Col span={24} md={{ span: 12 }}>
           <Form.Item
+            label="Status"
+            name="status"
+            rules={[{ required: isAssigning, message: 'Required' }]}
+          >
+            <Select
+              placeholder="Select status"
+              options={Object.keys(projectMemberStatuses)
+                .filter((status) => {
+                  if (isAssigning && status === ProjectMemberStatus.INACTIVE) {
+                    return false
+                  }
+
+                  if (employeeID && status === ProjectMemberStatus.PENDING) {
+                    return false
+                  }
+
+                  return true
+                })
+                .map((status) => {
+                  return {
+                    label: projectMemberStatuses[status as ProjectMemberStatus],
+                    value: status,
+                  }
+                })}
+            />
+          </Form.Item>
+        </Col>
+        <Col span={24} md={{ span: 12 }}>
+          <Form.Item
             label="Start Date"
             name="startDate"
             rules={[
@@ -269,35 +298,6 @@ export const MemberForm = (props: Props) => {
             </Form.Item>
           </Col>
         </AuthenticatedContent>
-        <Col span={24} md={{ span: 12 }}>
-          <Form.Item
-            label="Status"
-            name="status"
-            rules={[{ required: isAssigning, message: 'Required' }]}
-          >
-            <Select
-              placeholder="Select status"
-              options={Object.keys(projectMemberStatuses)
-                .filter((status) => {
-                  if (isAssigning && status === ProjectMemberStatus.INACTIVE) {
-                    return false
-                  }
-
-                  if (employeeID && status === ProjectMemberStatus.PENDING) {
-                    return false
-                  }
-
-                  return true
-                })
-                .map((status) => {
-                  return {
-                    label: projectMemberStatuses[status as ProjectMemberStatus],
-                    value: status,
-                  }
-                })}
-            />
-          </Form.Item>
-        </Col>
         <Col span={24} md={{ span: 12 }}>
           <Form.Item label="Upsell Person" name="upsellPersonID">
             <Select
