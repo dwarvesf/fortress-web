@@ -105,10 +105,8 @@ const CreateNewProjectPage = () => {
     values: ProjectFormValues,
   ): RequestCreateProjectInput => {
     return {
-      accountManagerID: values.accountManagerID,
       clientEmail: values.clientEmail,
       countryID: values.countryID,
-      deliveryManagerID: values.deliveryManagerID || '',
       members: memberData,
       name: values.name,
       projectEmail: values.projectEmail,
@@ -117,6 +115,9 @@ const CreateNewProjectPage = () => {
       type: values.type,
       function: values.function,
       auditNotionID: values.auditNotionID || '',
+      accountManagers: values.accountManagers,
+      deliveryManagers: values.deliveryManagers,
+      salePersons: values.salePersons?.filter((each) => !!each.employeeID),
     }
   }
 

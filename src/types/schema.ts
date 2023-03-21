@@ -430,6 +430,7 @@ export interface ModelProjectMember {
   employee?: ModelEmployee
   employeeID?: string
   endDate?: string
+  head?: ModelProjectHead
   id?: string
   isLead?: boolean
   note?: string
@@ -444,6 +445,7 @@ export interface ModelProjectMember {
   startDate?: string
   status?: string
   updatedAt?: string
+  upsellCommissionRate?: number
   upsellPerson?: ModelEmployee
   upsellPersonID?: string
 }
@@ -677,6 +679,7 @@ export interface RequestAssignMemberInput {
   employeeID?: string
   endDate?: string
   isLead?: boolean
+  leadCommissionRate?: number
   note?: string
   positions: string[]
   rate: number
@@ -729,19 +732,20 @@ export interface RequestCreatePositionInput {
 }
 
 export interface RequestCreateProjectInput {
-  accountManagerID: string
+  accountManagers?: RequestProjectHeadInput[]
   auditNotionID?: string
   bankAccountID?: string
   clientEmail?: string[]
   clientID?: string
   code?: string
   countryID: string
-  deliveryManagerID?: string
+  deliveryManagers?: RequestProjectHeadInput[]
   function: string
   members?: RequestAssignMemberInput[]
   name: string
   organizationID?: string
   projectEmail?: string
+  salePersons?: RequestProjectHeadInput[]
   startDate?: string
   status: string
   type?: string
@@ -798,6 +802,11 @@ export interface RequestInvoiceItem {
   isExternal?: boolean
   quantity?: number
   unitCost?: number
+}
+
+export interface RequestProjectHeadInput {
+  commissionRate?: number
+  employeeID?: string
 }
 
 export interface RequestSendInvoiceRequest {
@@ -859,10 +868,11 @@ export interface RequestUpdateClientInput {
 }
 
 export interface RequestUpdateContactInfoInput {
-  accountManagerID: string
+  accountManagers?: RequestProjectHeadInput[]
   clientEmail?: string[]
-  deliveryManagerID?: string
+  deliveryManagers?: RequestProjectHeadInput[]
   projectEmail?: string
+  salePersons?: RequestProjectHeadInput[]
 }
 
 export interface RequestUpdateEmployeeGeneralInfoInput {
@@ -905,6 +915,7 @@ export interface RequestUpdateMemberInput {
   employeeID?: string
   endDate?: string
   isLead?: boolean
+  leadCommissionRate?: number
   note?: string
   positions: string[]
   projectMemberID?: string
@@ -913,6 +924,7 @@ export interface RequestUpdateMemberInput {
   seniorityID: string
   startDate?: string
   status: string
+  upsellCommissionRate?: number
   upsellPersonID?: string
 }
 
@@ -1160,6 +1172,7 @@ export interface ViewBasicMember {
 
 export interface ViewBasicProjectHeadInfo {
   avatar?: string
+  commissionRate?: number
   displayName?: string
   employeeID?: string
   fullName?: string
@@ -1251,16 +1264,20 @@ export interface ViewCreateClientResponse {
 export interface ViewCreateMemberData {
   avatar?: string
   deploymentType?: string
+  discount?: number
   displayName?: string
   employeeID?: string
   fullName?: string
   isLead?: boolean
+  leadCommissionRate?: number
   note?: string
   positions?: ViewPosition[]
   projectMemberID?: string
   projectSlotID?: string
+  rate?: number
   seniority?: ModelSeniority
   status?: string
+  upsellCommissionRate?: number
   upsellPerson?: ViewBasicEmployeeInfo
   username?: string
 }
@@ -1270,7 +1287,7 @@ export interface ViewCreateMemberDataResponse {
 }
 
 export interface ViewCreateProjectData {
-  accountManager?: ViewProjectHead
+  accountManagers?: ViewProjectHead[]
   bankAccount?: ViewBasicBankAccountInfo
   client?: ViewClient
   clientEmail?: string[]
@@ -1278,13 +1295,14 @@ export interface ViewCreateProjectData {
   country?: ViewBasicCountryInfo
   createdAt?: string
   deletedAt?: GormDeletedAt
-  deliveryManager?: ViewProjectHead
+  deliveryManagers?: ViewProjectHead[]
   function?: string
   id?: string
   members?: ViewCreateMemberData[]
   name?: string
   organization?: ViewOrganization
   projectEmail?: string
+  salePersons?: ViewProjectHead[]
   startDate?: string
   status?: string
   type?: string
@@ -1701,7 +1719,7 @@ export interface ViewProjectContentDataResponse {
 }
 
 export interface ViewProjectData {
-  accountManager?: ViewProjectHead
+  accountManagers?: ViewProjectHead[]
   allowsSendingSurvey?: boolean
   auditNotionID?: string
   avatar?: string
@@ -1713,7 +1731,7 @@ export interface ViewProjectData {
   country?: ViewBasicCountryInfo
   createdAt?: string
   deletedAt?: GormDeletedAt
-  deliveryManager?: ViewProjectHead
+  deliveryManagers?: ViewProjectHead[]
   endDate?: string
   function?: string
   id?: string
@@ -1722,7 +1740,7 @@ export interface ViewProjectData {
   name?: string
   organization?: ViewOrganization
   projectEmail?: string
-  salePerson?: ViewProjectHead
+  salePersons?: ViewProjectHead[]
   stacks?: ViewStack[]
   startDate?: string
   status?: string
@@ -1737,6 +1755,7 @@ export interface ViewProjectDataResponse {
 
 export interface ViewProjectHead {
   avatar?: string
+  commissionRate?: number
   displayName?: string
   employeeID?: string
   fullName?: string
@@ -1767,6 +1786,7 @@ export interface ViewProjectMember {
   endDate?: string
   fullName?: string
   isLead?: boolean
+  leadCommissionRate?: number
   note?: string
   positions?: ViewPosition[]
   projectMemberID?: string
@@ -1775,6 +1795,7 @@ export interface ViewProjectMember {
   seniority?: ModelSeniority
   startDate?: string
   status?: string
+  upsellCommissionRate?: number
   upsellPerson?: ViewBasicEmployeeInfo
   username?: string
 }
