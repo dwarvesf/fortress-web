@@ -1,8 +1,8 @@
 import { Form, Row, Col, Input, DatePicker, Select } from 'antd'
 import { FormInstance } from 'antd/es/form/Form'
+import { FormAccountWithRateList } from 'components/common/FormAccountWithRateList'
 import { FormInputList } from 'components/common/FormInputList'
 import { AsyncSelect } from 'components/common/Select'
-import { renderEmployeeOption } from 'components/common/Select/renderers/employeeOption'
 import { renderStatusOption } from 'components/common/Select/renderers/statusOption'
 import { SELECT_BOX_DATE_FORMAT } from 'constants/date'
 import {
@@ -12,11 +12,9 @@ import {
 } from 'constants/projectTypes'
 import { GET_PATHS, client } from 'libs/apis'
 import { theme } from 'styles'
-import { fullListPagination } from 'types/filters/Pagination'
 import { RequestCreateProjectInput } from 'types/schema'
 import {
   searchFilterOption,
-  transformEmployeeDataToSelectOption,
   transformMetadataToSelectOption,
 } from 'utils/select'
 
@@ -32,13 +30,6 @@ interface Props {
 
 export const ProjectForm = (props: Props) => {
   const { form, initialValues, onSubmit } = props
-
-  const employeeOptionGetter = async () => {
-    const { data } = await client.getEmployees({
-      ...fullListPagination,
-    })
-    return (data || []).map(transformEmployeeDataToSelectOption)
-  }
 
   return (
     <Form form={form} onFinish={onSubmit} initialValues={initialValues}>
@@ -82,16 +73,13 @@ export const ProjectForm = (props: Props) => {
         </Col>
 
         <Col span={24} md={{ span: 12 }}>
-          <Form.Item
-            label="Account Manager"
-            name="accountManagerID"
-            rules={[{ required: true, message: 'Required' }]}
-          >
-            <AsyncSelect
-              optionGetter={employeeOptionGetter}
-              swrKeys={GET_PATHS.getEmployees}
-              placeholder="Select account manager"
-              customOptionRenderer={renderEmployeeOption}
+          <Form.Item label="Start Date" name="startDate">
+            <DatePicker
+              bordered
+              className="bg-white bordered"
+              format={SELECT_BOX_DATE_FORMAT}
+              style={{ width: '100%', borderColor: theme.colors.white }}
+              placeholder="Select start date"
             />
           </Form.Item>
         </Col>
@@ -112,27 +100,34 @@ export const ProjectForm = (props: Props) => {
             />
           </Form.Item>
         </Col>
-        <Col span={24} md={{ span: 12 }}>
-          <Form.Item label="Delivery Manager" name="deliveryManagerID">
-            <AsyncSelect
-              optionGetter={employeeOptionGetter}
-              swrKeys={GET_PATHS.getEmployees}
-              placeholder="Select delivery manager"
-              customOptionRenderer={renderEmployeeOption}
-            />
-          </Form.Item>
+
+        <Col span={24} md={{ span: 24 }}>
+          <FormAccountWithRateList
+            form={form}
+            name="accountManagers"
+            label="Account Managers"
+            rules={[{ required: true, message: 'Required' }]}
+            selectProps={{ placeholder: "Select project's account manager" }}
+          />
         </Col>
 
-        <Col span={24} md={{ span: 12 }}>
-          <Form.Item label="Start Date" name="startDate">
-            <DatePicker
-              bordered
-              className="bg-white bordered"
-              format={SELECT_BOX_DATE_FORMAT}
-              style={{ width: '100%', borderColor: theme.colors.white }}
-              placeholder="Select start date"
-            />
-          </Form.Item>
+        <Col span={24} md={{ span: 24 }}>
+          <FormAccountWithRateList
+            form={form}
+            name="deliveryManagers"
+            label="Delivery Managers"
+            rules={[{ required: true, message: 'Required' }]}
+            selectProps={{ placeholder: "Select project's delivery manager" }}
+          />
+        </Col>
+
+        <Col span={24} md={{ span: 24 }}>
+          <FormAccountWithRateList
+            form={form}
+            name="salePersons"
+            label="Sale Persons"
+            selectProps={{ placeholder: "Select project's sale person" }}
+          />
         </Col>
 
         <Col span={24} md={{ span: 24 }}>

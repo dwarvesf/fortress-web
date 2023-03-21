@@ -108,6 +108,7 @@ export const Actions = ({
             startDate: record.startDate ? moment(record.startDate) : undefined,
             endDate: record.endDate ? moment(record.endDate) : undefined,
             seniorityID: record.seniority?.id,
+            upsellPersonID: record.upsellPerson?.id,
           }}
           onAfterSubmit={onAfterAction}
         />

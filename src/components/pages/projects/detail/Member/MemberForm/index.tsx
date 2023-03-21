@@ -1,7 +1,7 @@
 import { Checkbox, Col, DatePicker, Form, Input, Row, Select } from 'antd'
 import { client, GET_PATHS, Meta } from 'libs/apis'
 import {
-  RequestAssignMemberInput,
+  RequestUpdateMemberInput,
   ViewEmployeeListDataResponse,
   ViewPositionResponse,
   ViewSeniorityResponse,
@@ -21,11 +21,14 @@ import { theme } from 'styles'
 import { fullListPagination } from 'types/filters/Pagination'
 import { SELECT_BOX_DATE_FORMAT } from 'constants/date'
 import TextArea from 'antd/lib/input/TextArea'
+import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
+import { Permission } from 'constants/permission'
+import { NumericFormat } from 'react-number-format'
 
 const today = new Date()
 
 export type MemberFormValues = Partial<
-  Omit<RequestAssignMemberInput, 'startDate' | 'endDate'>
+  Omit<RequestUpdateMemberInput, 'startDate' | 'endDate'>
 > & { startDate?: moment.Moment; endDate?: moment.Moment }
 
 interface Props {
@@ -41,6 +44,10 @@ interface Props {
   ) => void
 }
 
+const RateInput = (props: any) => (
+  <Input {...props} className="bordered" suffix="%" />
+)
+
 export const MemberForm = (props: Props) => {
   const {
     isAssigning = false,
@@ -53,6 +60,7 @@ export const MemberForm = (props: Props) => {
 
   const employeeID = Form.useWatch('employeeID', form)
   const status: ProjectMemberStatus = Form.useWatch('status', form)
+  const isLead: boolean = Form.useWatch('isLead', form)
 
   const { data: employeesData, loading: isEmployeesDataLoading } =
     useFetchWithCache(
@@ -198,6 +206,35 @@ export const MemberForm = (props: Props) => {
         </Col>
         <Col span={24} md={{ span: 12 }}>
           <Form.Item
+            label="Status"
+            name="status"
+            rules={[{ required: isAssigning, message: 'Required' }]}
+          >
+            <Select
+              placeholder="Select status"
+              options={Object.keys(projectMemberStatuses)
+                .filter((status) => {
+                  if (isAssigning && status === ProjectMemberStatus.INACTIVE) {
+                    return false
+                  }
+
+                  if (employeeID && status === ProjectMemberStatus.PENDING) {
+                    return false
+                  }
+
+                  return true
+                })
+                .map((status) => {
+                  return {
+                    label: projectMemberStatuses[status as ProjectMemberStatus],
+                    value: status,
+                  }
+                })}
+            />
+          </Form.Item>
+        </Col>
+        <Col span={24} md={{ span: 12 }}>
+          <Form.Item
             label="Start Date"
             name="startDate"
             rules={[
@@ -235,63 +272,101 @@ export const MemberForm = (props: Props) => {
             />
           </Form.Item>
         </Col>
+        <AuthenticatedContent permission={Permission.PROJECTMEMBERS_RATE_EDIT}>
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item
+              label="Rate"
+              name="rate"
+              rules={[{ required: true, message: 'Required' }]}
+            >
+              <Input
+                type="number"
+                placeholder="Enter rate"
+                className="bordered"
+              />
+            </Form.Item>
+          </Col>
+        </AuthenticatedContent>
+        <AuthenticatedContent permission={Permission.PROJECTMEMBERS_RATE_EDIT}>
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item label="Discount" name="discount">
+              <Input
+                type="number"
+                placeholder="Enter discount"
+                className="bordered"
+              />
+            </Form.Item>
+          </Col>
+        </AuthenticatedContent>
         <Col span={24} md={{ span: 12 }}>
-          <Form.Item
-            label="Rate"
-            name="rate"
-            rules={[{ required: true, message: 'Required' }]}
-          >
-            <Input
-              type="number"
-              placeholder="Enter rate"
-              className="bordered"
-            />
-          </Form.Item>
-        </Col>
-        <Col span={24} md={{ span: 12 }}>
-          <Form.Item label="Discount" name="discount">
-            <Input
-              type="number"
-              placeholder="Enter discount"
-              className="bordered"
-            />
-          </Form.Item>
-        </Col>
-        <Col span={24} md={{ span: 12 }}>
-          <Form.Item
-            label="Status"
-            name="status"
-            rules={[{ required: isAssigning, message: 'Required' }]}
-          >
+          <Form.Item label="Upsell Person" name="upsellPersonID">
             <Select
-              placeholder="Select status"
-              options={Object.keys(projectMemberStatuses)
-                .filter((status) => {
-                  if (isAssigning && status === ProjectMemberStatus.INACTIVE) {
-                    return false
-                  }
-
-                  if (employeeID && status === ProjectMemberStatus.PENDING) {
-                    return false
-                  }
-
-                  return true
-                })
-                .map((status) => {
-                  return {
-                    label: projectMemberStatuses[status as ProjectMemberStatus],
-                    value: status,
-                  }
-                })}
-            />
+              style={{
+                background: theme.colors.white,
+              }}
+              placeholder={
+                isEmployeesDataLoading ? 'Fetching data' : 'Select a member'
+              }
+              loading={isEmployeesDataLoading}
+              disabled={isEmployeesDataLoading}
+              showSearch
+              showArrow
+              filterOption={searchFilterOption}
+            >
+              {(employeesData?.data || [])
+                .map(transformEmployeeDataToSelectOption)
+                .map(renderEmployeeOption)}
+            </Select>
           </Form.Item>
         </Col>
+        <AuthenticatedContent
+          permission={Permission.PROJECTS_COMMISSIONRATE_EDIT}
+        >
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item
+              label="Upsell Commission Rate"
+              name="upsellCommissionRate"
+            >
+              <NumericFormat
+                placeholder="0"
+                allowNegative={false}
+                decimalScale={0}
+                customInput={RateInput}
+                isAllowed={(values) =>
+                  values.floatValue === undefined ||
+                  (values.floatValue >= 0 && values.floatValue <= 100)
+                }
+              />
+            </Form.Item>
+          </Col>
+        </AuthenticatedContent>
         <Col span={24} md={{ span: 12 }}>
           <Form.Item label="Role" name="isLead" valuePropName="checked">
             <Checkbox>Is Lead</Checkbox>
           </Form.Item>
         </Col>
-        <Col span={24} md={{ span: 12 }}>
+
+        {isLead && (
+          <Col span={24} md={{ span: 12 }}>
+            <AuthenticatedContent
+              permission={Permission.PROJECTS_COMMISSIONRATE_EDIT}
+            >
+              <Form.Item label="Lead Commission Rate" name="leadCommissionRate">
+                <NumericFormat
+                  placeholder="0"
+                  allowNegative={false}
+                  decimalScale={0}
+                  customInput={RateInput}
+                  isAllowed={(values) =>
+                    values.floatValue === undefined ||
+                    (values.floatValue >= 0 && values.floatValue <= 100)
+                  }
+                />
+              </Form.Item>
+            </AuthenticatedContent>
+          </Col>
+        )}
+        <Col span={24}>
           <Form.Item label="Notes" name="note">
             <TextArea
               placeholder="Enter notes"

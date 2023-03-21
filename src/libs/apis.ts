@@ -5,7 +5,7 @@ import {
   ViewProjectListDataResponse,
   ViewMetaData,
   ViewEmployeeData,
-  ViewAccountRoleResponse,
+  ViewRolesResponse,
   ViewPositionResponse,
   ViewSeniorityResponse,
   RequestCreateEmployeeInput,
@@ -275,7 +275,7 @@ class Client {
   }
 
   public getAccountRolesMetadata() {
-    return fetcher<ViewAccountRoleResponse>(`${BASE_URL}/metadata/roles`, {
+    return fetcher<ViewRolesResponse>(`${BASE_URL}/metadata/roles`, {
       headers: { ...this.privateHeaders },
     })
   }

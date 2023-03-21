@@ -1,5 +1,5 @@
 import { Space, Table, Tag } from 'antd'
-import { ColumnsType } from 'antd/lib/table'
+import { ColumnsType, ColumnType } from 'antd/lib/table'
 import { UserAvatar } from 'components/common/AvatarWithName'
 import { DATE_FORMAT } from 'constants/date'
 import { format } from 'utils/date'
@@ -12,6 +12,8 @@ import {
 } from 'types/schema'
 import { capitalizeFirstLetter } from 'utils/string'
 import { formatCurrency } from 'utils/currency'
+import { useAuthContext } from 'context/auth'
+import { Permission } from 'constants/permission'
 import { Actions } from './Actions'
 
 export const MemberTable = ({
@@ -25,7 +27,10 @@ export const MemberTable = ({
   isLoading: boolean
   onAfterAction: () => void
 }) => {
-  const columns = useMemo(() => {
+  const { permissions } = useAuthContext()
+  const columns: (ColumnType<ViewProjectMember> & {
+    permission?: string
+  })[] = useMemo(() => {
     return [
       {
         title: 'Name',
@@ -91,6 +96,7 @@ export const MemberTable = ({
                 showSymbol: !!record.currency?.name,
               })
             : '-',
+        permission: Permission.PROJECTMEMBERS_RATE_READ,
       },
       {
         title: 'Notes',
@@ -118,7 +124,9 @@ export const MemberTable = ({
     <Table
       loading={isLoading}
       rowKey={(row) => row.projectSlotID || '-'}
-      columns={columns}
+      columns={columns.flatMap(({ permission, ...col }) =>
+        permission && !permissions.includes(permission) ? [] : [col],
+      )}
       dataSource={data}
       pagination={false}
       scroll={{ x: 'max-content' }}

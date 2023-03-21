@@ -188,19 +188,39 @@ export const General = (props: Props) => {
                     ),
                   },
                   {
-                    label: 'Account Manager',
-                    value: data.accountManager ? (
-                      <UserAvatar user={data.accountManager} />
+                    label: 'Account Managers',
+                    value: data.accountManagers?.length ? (
+                      <Space direction="vertical">
+                        {data.accountManagers.map((each) => (
+                          <UserAvatar key={each.employeeID} user={each} />
+                        ))}
+                      </Space>
                     ) : (
-                      ''
+                      '-'
                     ),
                   },
                   {
-                    label: 'Delivery Manager',
-                    value: data.deliveryManager ? (
-                      <UserAvatar user={data.deliveryManager} />
+                    label: 'Delivery Managers',
+                    value: data.deliveryManagers?.length ? (
+                      <Space direction="vertical">
+                        {data.deliveryManagers.map((each) => (
+                          <UserAvatar key={each.employeeID} user={each} />
+                        ))}
+                      </Space>
                     ) : (
-                      ''
+                      '-'
+                    ),
+                  },
+                  {
+                    label: 'Sale Persons',
+                    value: data.salePersons?.length ? (
+                      <Space direction="vertical">
+                        {data.salePersons.map((each) => (
+                          <UserAvatar key={each.employeeID} user={each} />
+                        ))}
+                      </Space>
+                    ) : (
+                      '-'
                     ),
                   },
                 ]}
@@ -234,11 +254,7 @@ export const General = (props: Props) => {
       <EditProjectContactInfoModal
         projectID={data.id || ''}
         isOpen={isEditProjectContactInfoDialogOpen}
-        initialValues={{
-          ...data,
-          accountManagerID: data.accountManager?.employeeID,
-          deliveryManagerID: data.deliveryManager?.employeeID,
-        }}
+        initialValues={{ ...data }}
         onClose={closeEditProjectContactInfoDialog}
         onAfterSubmit={mutateProject}
       />
