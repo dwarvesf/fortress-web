@@ -1,22 +1,22 @@
-import { Col, Form, Input, notification, Row, Select } from 'antd'
+import { Col, DatePicker, Form, Input, notification, Row, Select } from 'antd'
+import { useForm } from 'antd/lib/form/Form'
 import TextArea from 'antd/lib/input/TextArea'
 import { Button } from 'components/common/Button'
 import { FormWrapper } from 'components/common/FormWrapper'
 import { renderProjectOption } from 'components/common/Select/renderers/projectOption'
-import { MONTH_YEAR_FORMAT, SELECT_BOX_DATE_FORMAT } from 'constants/date'
+import { InvoiceFormInputList } from 'components/pages/invoice/new/InvoiceFormInputList'
+import { MONTH_YEAR_FORMAT } from 'constants/date'
+import { ProjectType } from 'constants/projectTypes'
+import { ProjectStatus } from 'constants/status'
+import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { client, GET_PATHS } from 'libs/apis'
+import moment, { Moment } from 'moment'
+import { useRouter } from 'next/router'
+import { useState } from 'react'
 import { fullListPagination } from 'types/filters/Pagination'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
-import { transformProjectDataToSelectOption } from 'utils/select'
-import { useState } from 'react'
-import { InvoiceFormInputList } from 'components/pages/invoice/new/InvoiceFormInputList'
-import { useForm } from 'antd/lib/form/Form'
-import moment, { Moment } from 'moment'
 import { ViewInvoiceItem, ViewProjectInvoiceTemplate } from 'types/schema'
-import { useFetchWithCache } from 'hooks/useFetchWithCache'
-import { useRouter } from 'next/router'
-import { ProjectStatus } from 'constants/status'
-import { ProjectType } from 'constants/projectTypes'
+import { transformProjectDataToSelectOption } from 'utils/select'
 import { SummarySection } from './SummarySection'
 
 const getDescription = (projectName: string, date: Moment) => {
@@ -119,11 +119,19 @@ export const InvoiceForm = () => {
     }
   }
 
+  const onInvoiceMonthChange = (value: moment.Moment) => {
+    form.setFieldValue('invoiceMonth', value)
+    if (invoice?.name) {
+      form.setFieldValue('description', getDescription(invoice?.name, value))
+    }
+  }
+
   const onSubmit = async (values: FormValues) => {
     try {
       if (!invoice?.bankAccount?.id || !values.projectID) {
         return
       }
+
       setLoading(true)
       await client.createInvoice({
         bankID: invoice?.bankAccount?.id,
@@ -149,9 +157,6 @@ export const InvoiceForm = () => {
         total: summary.total,
         subtotal: summary.subtotal,
         discount: summary.discount,
-        // number: values.invoiceNumber,
-        // sentByID: 'string',
-        // tax: 0,
       })
       notification.success({
         message: 'Invoice created successfully',
@@ -330,15 +335,13 @@ export const InvoiceForm = () => {
                       label="Invoice Month"
                       name="invoiceMonth"
                       rules={[{ required: true, message: 'Required' }]}
-                      getValueProps={(value) => ({
-                        value: value ? value.format(MONTH_YEAR_FORMAT) : '',
-                      })}
                     >
-                      <Input
-                        className="bordered disabled"
-                        type="text"
+                      <DatePicker
+                        format={MONTH_YEAR_FORMAT}
                         placeholder="Select invoice month"
-                        readOnly
+                        style={{ width: '100%' }}
+                        picker="month"
+                        onChange={onInvoiceMonthChange}
                       />
                     </Form.Item>
                   </Col>
@@ -348,11 +351,6 @@ export const InvoiceForm = () => {
                       label="Invoice Date"
                       name="invoiceDate"
                       rules={[{ required: true, message: 'Required' }]}
-                      getValueProps={(value) => ({
-                        value: value
-                          ? value.format(SELECT_BOX_DATE_FORMAT)
-                          : '',
-                      })}
                     >
                       <Input
                         className="bordered disabled"
@@ -368,11 +366,6 @@ export const InvoiceForm = () => {
                       label="Due Date"
                       name="dueDate"
                       rules={[{ required: true, message: 'Required' }]}
-                      getValueProps={(value) => ({
-                        value: value
-                          ? value.format(SELECT_BOX_DATE_FORMAT)
-                          : '',
-                      })}
                     >
                       <Input
                         className="bordered disabled"

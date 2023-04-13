@@ -57,6 +57,22 @@ export const SummarySection = (props: Props) => {
                 },
               ]
             : []),
+          ...(invoice?.bankAccount?.intermediaryBankName
+            ? [
+                {
+                  label: 'Intermediary Bank Name',
+                  value: invoice.bankAccount.intermediaryBankName,
+                },
+              ]
+            : []),
+          ...(invoice?.bankAccount?.intermediaryBankAddress
+            ? [
+                {
+                  label: 'Intermediary Bank Address',
+                  value: invoice.bankAccount.intermediaryBankAddress,
+                },
+              ]
+            : []),
         ]}
       />
 
