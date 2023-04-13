@@ -37,11 +37,32 @@ export interface ModelBankAccount {
   currencyID?: string
   deletedAt?: GormDeletedAt
   id?: string
+  intermediaryBankAddress?: string
+  intermediaryBankName?: string
   name?: string
   ownerName?: string
   routingNumber?: string
   swiftCode?: string
   uksortCode?: string
+  updatedAt?: string
+}
+
+export interface ModelBaseSalary {
+  batch?: number
+  category?: string
+  company_account_amount?: number
+  contract_amount?: number
+  createdAt?: string
+  currency?: ModelCurrency
+  currency_id?: string
+  deletedAt?: GormDeletedAt
+  effective_date?: string
+  employee?: ModelEmployee
+  employee_id?: string
+  id?: string
+  insurance_amount?: number
+  personal_account_amount?: number
+  type?: string
   updatedAt?: string
 }
 
@@ -80,6 +101,17 @@ export interface ModelClientContact {
   name?: string
   role?: string
   updatedAt?: string
+}
+
+export interface ModelCommissionExplain {
+  amount?: number
+  bucket_id?: number
+  formatted_amount?: string
+  id?: string
+  month?: number
+  name?: string
+  todo_id?: number
+  year?: number
 }
 
 export interface ModelCompanyContactInfo {
@@ -146,9 +178,10 @@ export interface ModelEarn {
 export interface ModelEmployee {
   address?: string
   avatar?: string
+  base_salary?: ModelBaseSalary
   basecampAttachableSGID?: string
   /** social services */
-  basecampID?: string
+  basecampID?: number
   city?: string
   country?: string
   createdAt?: string
@@ -162,6 +195,7 @@ export interface ModelEmployee {
   employeePositions?: ModelEmployeePosition[]
   employeeRoles?: ModelEmployeeRole[]
   employeeStacks?: ModelEmployeeStack[]
+  employee_salary?: ModelEmployeeSalary
   /** basic info */
   fullName?: string
   gender?: string
@@ -253,6 +287,22 @@ export interface ModelEmployeeRole {
   role?: ModelRole
   roleID?: string
   updatedAt?: string
+}
+
+export interface ModelEmployeeSalary {
+  actual_pay_day?: number
+  bonus_amount?: number
+  bonus_detail?: number[]
+  commission_amount?: number
+  commission_detail?: number[]
+  employee_id?: string
+  is_done?: boolean
+  month?: number
+  plan_pay_day?: number
+  reimbursement_amount?: number
+  reimbursement_detail?: number[]
+  total_amount?: number
+  year?: number
 }
 
 export interface ModelEmployeeStack {
@@ -365,6 +415,37 @@ export interface ModelOrganization {
   updatedAt?: string
 }
 
+export interface ModelPayroll {
+  base_salary_amount?: number
+  commission_amount?: number
+  commission_explain?: number[]
+  /** CommissionExplains is commission explains in email template */
+  commission_explains?: ModelCommissionExplain[]
+  contract_amount?: number
+  conversion_amount?: number
+  due_date?: string
+  employee?: ModelEmployee
+  employee_id?: string
+  id?: string
+  is_paid?: boolean
+  month?: number
+  project_bonus?: number
+  project_bonus_explain?: number[]
+  /** ProjectBonusExplains is project bonus explains in email template */
+  project_bonus_explains?: ModelProjectBonusExplain[]
+  total?: number
+  /** TotalAllowance is amount of allowance in email template */
+  total_allowance?: number
+  total_explain?: number[]
+  /** TotalAllowance is amount of allowance in email template */
+  twAmount?: number
+  twFee?: number
+  /** TWRate is rate of allowance in email template */
+  twRate?: number
+  user_rank_snapshot?: number[]
+  year?: number
+}
+
 export interface ModelPosition {
   code?: string
   createdAt?: string
@@ -405,6 +486,17 @@ export interface ModelProject {
   status?: string
   type?: string
   updatedAt?: string
+}
+
+export interface ModelProjectBonusExplain {
+  amount?: number
+  bucket_id?: number
+  description?: string
+  formatted_amount?: string
+  month?: number
+  name?: string
+  todo_id?: number
+  year?: number
 }
 
 export interface ModelProjectHead {
@@ -686,6 +778,7 @@ export interface RequestAssignMemberInput {
   seniorityID: string
   startDate?: string
   status: string
+  upsellCommissionRate?: number
   upsellPersonID?: string
 }
 
@@ -1120,6 +1213,8 @@ export interface ViewBankAccount {
   currency?: ViewCurrency
   currencyID?: string
   id?: string
+  intermediaryBankAddress?: string
+  intermediaryBankName?: string
   name?: string
   ownerName?: string
   routingNumber?: string
