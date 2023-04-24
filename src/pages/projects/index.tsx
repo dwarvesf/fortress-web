@@ -24,6 +24,7 @@ import { Permission } from 'constants/permission'
 import { TotalResultCount } from 'components/common/Table/TotalResultCount'
 import { useAuthContext } from 'context/auth'
 import { useMouseDown } from 'hooks/useMouseDown'
+import { formatCurrency } from 'utils/currency'
 
 interface ColumnProps {
   filter: ProjectListFilter
@@ -61,6 +62,14 @@ const columns = ({
         '-'
       ),
     permission: Permission.PROJECTS_READ_FULLACCESS,
+  },
+  {
+    title: 'Monthly Revenue',
+    key: 'monthlyChargeRate',
+    dataIndex: 'monthlyChargeRate',
+    render: (value, record) =>
+      // @ts-ignore
+      value ? formatCurrency(value, record.currency || undefined) : '-',
   },
   {
     title: 'Lead',

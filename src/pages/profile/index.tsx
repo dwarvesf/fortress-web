@@ -120,6 +120,26 @@ const Default = () => {
                         label: 'Place of Residence',
                         value: user?.placeOfResidence,
                       },
+                      {
+                        label: 'Wise Account Number',
+                        value: user?.wiseAccountNumber || '-',
+                      },
+                      {
+                        label: 'Wise Currency',
+                        value: user?.wiseCurrency || '-',
+                      },
+                      {
+                        label: 'Wise Recipient Email',
+                        value: user?.wiseRecipientEmail || '-',
+                      },
+                      {
+                        label: 'Wise Recipient ID',
+                        value: user?.wiseRecipientID || '-',
+                      },
+                      {
+                        label: 'Wise Recipient Name',
+                        value: user?.wiseRecipientName || '-',
+                      },
                     ]}
                   />
                 </Col>

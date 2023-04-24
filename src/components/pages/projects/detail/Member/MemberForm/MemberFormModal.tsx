@@ -11,6 +11,7 @@ import {
   RequestUpdateMemberInput,
 } from 'types/schema'
 import { getErrorMessage } from 'utils/string'
+import { EmployeeFormMeta } from 'types/form/misc'
 import { MemberForm, MemberFormValues } from '.'
 
 interface Props {
@@ -20,6 +21,7 @@ interface Props {
   projectID: string
   projectSlotID?: string
   projectMemberID?: string
+  meta?: EmployeeFormMeta
   onClose: () => void
   onAfterSubmit: () => void
 }
@@ -32,6 +34,7 @@ export const MemberFormModal = (props: Props) => {
     projectID,
     projectSlotID = '',
     projectMemberID = '',
+    meta,
     onClose,
     onAfterSubmit,
   } = props
@@ -132,6 +135,7 @@ export const MemberFormModal = (props: Props) => {
         form={form}
         initialValues={initialValues}
         excludedEmployeeIds={excludedEmployeeIds}
+        meta={meta}
         onSubmit={onSubmit}
       />
     </Modal>

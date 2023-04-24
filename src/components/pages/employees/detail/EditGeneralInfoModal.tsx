@@ -296,6 +296,60 @@ export const EditGeneralInfoModal = (props: Props) => {
               </Select>
             </Form.Item>
           </Col>
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item label="Wise Account Number" name="wiseAccountNumber">
+              <Input
+                placeholder="Enter Wise Account Number"
+                className="bordered"
+              />
+            </Form.Item>
+          </Col>
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item label="Wise Currency" name="wiseCurrency">
+              <AsyncSelect
+                swrKeys={[GET_PATHS.getCurrencyMetadata]}
+                placeholder="Select Wise Currency"
+                optionGetter={async () => {
+                  return ((await client.getCurrencyMetadata()).data || []).map(
+                    (c) => ({
+                      label: c.name,
+                      value: c.name,
+                    }),
+                  )
+                }}
+                allowClear
+              />
+            </Form.Item>
+          </Col>
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item
+              label="Wise Recipient Email"
+              name="wiseRecipientEmail"
+              rules={[{ type: 'email', message: 'Wrong email format' }]}
+            >
+              <Input
+                type="email"
+                placeholder="Enter Wise Recipient Email"
+                className="bordered"
+              />
+            </Form.Item>
+          </Col>
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item label="Wise Recipient ID" name="wiseRecipientID">
+              <Input
+                placeholder="Enter Wise Recipient ID"
+                className="bordered"
+              />
+            </Form.Item>
+          </Col>
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item label="Wise Recipient Name" name="wiseRecipientName">
+              <Input
+                placeholder="Enter Wise Recipient Name"
+                className="bordered"
+              />
+            </Form.Item>
+          </Col>
         </Row>
       </Form>
     </Modal>

@@ -53,9 +53,12 @@ import { AsyncSelect } from 'components/common/Select'
 import { transformMetadataToSelectOption } from 'utils/select'
 import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
 import { TotalResultCount } from 'components/common/Table/TotalResultCount'
+import { formatCurrency } from 'utils/currency'
+import { DEFAULT_CURRENCY_SYMBOL } from 'constants/currency'
 import { EditPersonalInfoModal } from './EditPersonalInfoModal'
 import { EditSkillsModal } from './EditSkillsModal'
 import { EditGeneralInfoModal } from './EditGeneralInfoModal'
+import { EditBaseSalaryModal } from './EditBaseSalaryModal'
 
 const projectColumns: (ColumnType<ViewEmployeeProjectData> & {
   permission?: string
@@ -228,6 +231,12 @@ export const General = (props: Props) => {
     onClose: closeEditPersonalInfoDialog,
   } = useDisclosure()
 
+  const {
+    isOpen: isEditBaseSalaryDialogOpen,
+    onOpen: openEditBaseSalaryDialog,
+    onClose: closeEditBaseSalaryDialog,
+  } = useDisclosure()
+
   return (
     <>
       <Space direction="vertical" size={24} style={{ width: '100%' }}>
@@ -370,6 +379,26 @@ export const General = (props: Props) => {
                           '-'
                         ),
                       },
+                      {
+                        label: 'Wise Account Number',
+                        value: data.wiseAccountNumber || '-',
+                      },
+                      {
+                        label: 'Wise Currency',
+                        value: data.wiseCurrency || '-',
+                      },
+                      {
+                        label: 'Wise Recipient Email',
+                        value: data.wiseRecipientEmail || '-',
+                      },
+                      {
+                        label: 'Wise Recipient ID',
+                        value: data.wiseRecipientID || '-',
+                      },
+                      {
+                        label: 'Wise Recipient Name',
+                        value: data.wiseRecipientName || '-',
+                      },
                     ]}
                   />
                 </Col>
@@ -422,6 +451,34 @@ export const General = (props: Props) => {
                   ]}
                 />
               </Card>
+            </Col>
+          </AuthenticatedContent>
+          <AuthenticatedContent
+            permission={Permission.EMPLOYEES_BASESALARY_READ}
+          >
+            <Col span={24} lg={{ span: 16 }}>
+              <EditableDetailSectionCard
+                title="Salary"
+                permission={Permission.EMPLOYEES_BASESALARY_EDIT}
+                onEdit={openEditBaseSalaryDialog}
+              >
+                <DataRows
+                  valueColProps={{ xxl: { span: 8 } }}
+                  data={[
+                    {
+                      label: 'Base Salary',
+                      value: data.baseSalary
+                        ? formatCurrency(
+                            (data.baseSalary.personal_account_amount || 0) +
+                              (data.baseSalary.company_account_amount || 0),
+                            // @ts-ignore
+                            data.baseSalary.currency,
+                          )
+                        : '-',
+                    },
+                  ]}
+                />
+              </EditableDetailSectionCard>
             </Col>
           </AuthenticatedContent>
           <Col span={24} lg={{ span: 16 }}>
@@ -636,6 +693,11 @@ export const General = (props: Props) => {
           leftDate: data.leftDate ? moment(data.leftDate) : undefined,
           referredBy: data.referredBy?.id,
           organizationIDs: (data.organizations || []).map((d) => d.id || ''),
+          wiseAccountNumber: data.wiseAccountNumber,
+          wiseCurrency: data.wiseCurrency,
+          wiseRecipientEmail: data.wiseRecipientEmail,
+          wiseRecipientID: data.wiseRecipientID,
+          wiseRecipientName: data.wiseRecipientName,
         }}
         onAfterSubmit={mutateEmployee}
       />
@@ -670,6 +732,24 @@ export const General = (props: Props) => {
           placeOfResidence: data.placeOfResidence,
         }}
         onAfterSubmit={mutateEmployee}
+      />
+
+      <EditBaseSalaryModal
+        employeeID={data.id || ''}
+        meta={{
+          currency:
+            data.baseSalary?.currency?.symbol || DEFAULT_CURRENCY_SYMBOL,
+        }}
+        isOpen={isEditBaseSalaryDialogOpen}
+        onClose={closeEditBaseSalaryDialog}
+        onAfterSubmit={mutateEmployee}
+        initialValues={{
+          batch: data.baseSalary?.batch || 0,
+          contractAmount: data.baseSalary?.contract_amount || 0,
+          currencyCode: data.baseSalary?.currency?.name || 'VND',
+          personalAccountAmount: data.baseSalary?.personal_account_amount || 0,
+          companyAccountAmount: data.baseSalary?.company_account_amount || 0,
+        }}
       />
     </>
   )
