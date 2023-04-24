@@ -10,6 +10,7 @@ import {
   ViewSeniorityResponse,
 } from 'types/schema'
 import { getErrorMessage } from 'utils/string'
+import { EmployeeFormMeta } from 'types/form/misc'
 import { MemberForm, MemberFormValues } from '../detail/Member/MemberForm'
 
 interface Props {
@@ -17,8 +18,9 @@ interface Props {
   isEditing?: boolean
   rowIndex?: number
   initialValues?: MemberFormValues
-  onClose: () => void
   memberData: RequestAssignMemberInput[]
+  meta?: EmployeeFormMeta
+  onClose: () => void
   setMemberData: Dispatch<SetStateAction<RequestAssignMemberInput[]>>
   getDataOnSubmit?: (
     e: ViewEmployeeListDataResponse & Meta,
@@ -37,8 +39,9 @@ export const ProjectMemberModal = (props: Props) => {
     isEditing = false,
     rowIndex,
     initialValues,
-    onClose,
     memberData,
+    meta,
+    onClose,
     setMemberData,
     getDataOnSubmit,
   } = props
@@ -118,6 +121,7 @@ export const ProjectMemberModal = (props: Props) => {
         isAssigning
         form={form}
         initialValues={initialValues}
+        meta={meta}
         onSubmit={onSubmit}
         getDataOnSubmit={getDataOnSubmit}
       />

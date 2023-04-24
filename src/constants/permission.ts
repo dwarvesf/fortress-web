@@ -25,6 +25,8 @@ export enum Permission {
   EMPLOYEES_READ_PERSONALINFO_FULLACCESS = 'employees.read.personalInfo.fullAccess',
   EMPLOYEES_READ_PROJECTS_FULLACCESS = 'employees.read.projects.fullAccess',
   EMPLOYEES_READ_PROJECTS_READACTIVE = 'employees.read.projects.readActive',
+  EMPLOYEES_BASESALARY_READ = 'employees.baseSalary.read',
+  EMPLOYEES_BASESALARY_EDIT = 'employees.baseSalary.edit',
   FEEDBACKS_CREATE = 'feedbacks.create',
   FEEDBACKS_DELETE = 'feedbacks.delete',
   FEEDBACKS_EDIT = 'feedbacks.edit',

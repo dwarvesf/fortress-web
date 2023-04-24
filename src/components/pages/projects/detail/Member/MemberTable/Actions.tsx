@@ -9,6 +9,7 @@ import { client } from 'libs/apis'
 import { useState } from 'react'
 import { ViewProjectMember } from 'types/schema'
 import { getErrorMessage } from 'utils/string'
+import { DEFAULT_CURRENCY_SYMBOL } from 'constants/currency'
 import { MemberFormModal } from '../MemberForm/MemberFormModal'
 
 export const Actions = ({
@@ -109,6 +110,9 @@ export const Actions = ({
             endDate: record.endDate ? moment(record.endDate) : undefined,
             seniorityID: record.seniority?.id,
             upsellPersonID: record.upsellPerson?.id,
+          }}
+          meta={{
+            currency: record.currency?.symbol || DEFAULT_CURRENCY_SYMBOL,
           }}
           onAfterSubmit={onAfterAction}
         />

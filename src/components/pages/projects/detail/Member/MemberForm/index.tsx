@@ -24,6 +24,7 @@ import TextArea from 'antd/lib/input/TextArea'
 import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
 import { Permission } from 'constants/permission'
 import { NumericFormat } from 'react-number-format'
+import { EmployeeFormMeta } from 'types/form/misc'
 
 const today = new Date()
 
@@ -36,6 +37,7 @@ interface Props {
   form: FormInstance<any>
   initialValues?: MemberFormValues
   excludedEmployeeIds?: string[]
+  meta?: EmployeeFormMeta
   onSubmit: (values: MemberFormValues) => void
   getDataOnSubmit?: (
     e: ViewEmployeeListDataResponse & Meta,
@@ -54,6 +56,7 @@ export const MemberForm = (props: Props) => {
     form,
     initialValues,
     excludedEmployeeIds = [],
+    meta,
     onSubmit,
     getDataOnSubmit,
   } = props
@@ -280,6 +283,7 @@ export const MemberForm = (props: Props) => {
               rules={[{ required: true, message: 'Required' }]}
             >
               <Input
+                suffix={meta?.currency}
                 type="number"
                 placeholder="Enter rate"
                 className="bordered"

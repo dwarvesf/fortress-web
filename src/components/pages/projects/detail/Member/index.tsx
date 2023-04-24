@@ -14,6 +14,7 @@ import { client, GET_PATHS } from 'libs/apis'
 import { useMemo } from 'react'
 import { ProjectMemberListFilter } from 'types/filters/ProjectMemberListFilter'
 import { ViewProjectData } from 'types/schema'
+import { DEFAULT_CURRENCY_SYMBOL } from 'constants/currency'
 import { MemberFormModal } from './MemberForm/MemberFormModal'
 import { MemberTable } from './MemberTable'
 
@@ -298,6 +299,9 @@ export const Member = (props: Props) => {
             discount: 0,
             status: tabKey || ProjectMemberStatus.PENDING,
             isLead: false,
+          }}
+          meta={{
+            currency: DEFAULT_CURRENCY_SYMBOL,
           }}
         />
       )}

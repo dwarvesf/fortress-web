@@ -66,6 +66,9 @@ import {
   ViewSummaryWorkUnitDistributionResponse,
   ViewInvoiceTemplateResponse,
   RequestSendInvoiceRequest,
+  RequestUpdateBaseSalaryInput,
+  ViewUpdateBaseSalaryResponse,
+  ViewGetCurrenciesResponse,
 } from 'types/schema'
 import { EmployeeListFilter } from 'types/filters/EmployeeListFilter'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
@@ -104,6 +107,7 @@ export const GET_PATHS = {
   getCountryMetadata: '/metadata/countries',
   getChapterMetadata: '/metadata/chapters',
   getOrganizationMetadata: '/metadata/organizations',
+  getCurrencyMetadata: '/metadata/currency',
   getSurveys: '/surveys',
   getSurveyDetail: (id: string) => `/surveys/${id}`,
   getSurveyTopic: (id: string, topicId: string) =>
@@ -344,6 +348,15 @@ class Client {
     )
   }
 
+  public getCurrencyMetadata = () => {
+    return fetcher<ViewGetCurrenciesResponse>(
+      `${BASE_URL}/metadata/currencies`,
+      {
+        headers: { ...this.privateHeaders },
+      },
+    )
+  }
+
   public createNewEmployee(data: RequestCreateEmployeeInput) {
     return fetcher<Response<ViewEmployeeData>>(`${BASE_URL}/employees`, {
       method: 'POST',
@@ -389,6 +402,22 @@ class Client {
   ) {
     return fetcher<ViewUpdatePersonalEmployeeResponse>(
       `${BASE_URL}/employees/${id}/personal-info`,
+      {
+        method: 'PUT',
+        headers: {
+          ...this.privateHeaders,
+        },
+        body: JSON.stringify(data),
+      },
+    )
+  }
+
+  public updateEmployeeBaseSalary(
+    id: string,
+    data: RequestUpdateBaseSalaryInput,
+  ) {
+    return fetcher<ViewUpdateBaseSalaryResponse>(
+      `${BASE_URL}/employees/${id}/base-salary`,
       {
         method: 'PUT',
         headers: {

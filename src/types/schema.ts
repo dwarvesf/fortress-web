@@ -20,14 +20,6 @@ export interface ModelAccountingItem {
   name?: string
 }
 
-export interface ModelAudience {
-  created_at?: string
-  email?: string
-  full_name?: string
-  id?: string
-  source?: string[]
-}
-
 export interface ModelBankAccount {
   accountNumber?: string
   address?: string
@@ -149,30 +141,6 @@ export interface ModelCurrency {
   symbol?: string
   type?: string
   updatedAt?: string
-}
-
-export interface ModelDateTime {
-  has_time?: boolean
-  time?: string
-}
-
-export interface ModelDigest {
-  created_at?: string
-  id?: string
-  name?: string
-}
-
-export interface ModelEarn {
-  due_date?: string
-  function?: string[]
-  id?: string
-  name?: string
-  pics?: ModelEmployee[]
-  priority?: string
-  progress?: number
-  reward?: number
-  status?: string
-  tags?: string[]
 }
 
 export interface ModelEmployee {
@@ -315,22 +283,6 @@ export interface ModelEmployeeStack {
   updatedAt?: string
 }
 
-export interface ModelEvent {
-  activity_type?: string
-  created_at?: string
-  date?: ModelDateTime
-  id?: string
-  name?: string
-}
-
-export interface ModelHiringPosition {
-  created_at?: string
-  id?: string
-  name?: string
-  project?: string[]
-  status?: string
-}
-
 export interface ModelInvoice {
   bank?: ModelBankAccount
   bankID?: string
@@ -372,23 +324,6 @@ export interface ModelInvoice {
   year?: number
 }
 
-export interface ModelIssue {
-  id?: string
-  incident_date?: string
-  name?: string
-  pic?: string
-  priority?: string
-  profile?: string
-  projects?: string[]
-  resolution?: string
-  rootcause?: string
-  scope?: string
-  severity?: string
-  solve_date?: string
-  source?: string
-  status?: string
-}
-
 export interface ModelLikertScaleCount {
   agree?: number
   disagree?: number
@@ -397,11 +332,13 @@ export interface ModelLikertScaleCount {
   stronglyDisagree?: number
 }
 
-export interface ModelMemo {
-  author?: string
-  created_at?: string
+export interface ModelNotionTechRadar {
+  assign?: string
+  categories?: string[]
   id?: string
   name?: string
+  quadrant?: string
+  ring?: string
   tags?: string[]
 }
 
@@ -657,29 +594,6 @@ export interface ModelStack {
   id?: string
   name?: string
   updatedAt?: string
-}
-
-export interface ModelStaffingDemand {
-  id?: string
-  name?: string
-  request?: string
-}
-
-export interface ModelTechRadar {
-  assign?: string
-  categories?: string[]
-  id?: string
-  name?: string
-  quadrant?: string
-  ring?: string
-  tags?: string[]
-}
-
-export interface ModelUpdate {
-  audience?: string
-  created_at?: string
-  id?: string
-  name?: string
 }
 
 export interface ModelValuation {
@@ -942,6 +856,18 @@ export interface RequestSubmitBody {
   status: string
 }
 
+export interface RequestUpdateBaseSalaryInput {
+  batch: number
+  /** @min 0 */
+  companyAccountAmount?: number
+  /** @min 0 */
+  contractAmount?: number
+  currencyCode: string
+  effectiveDate?: string
+  /** @min 0 */
+  personalAccountAmount?: number
+}
+
 export interface RequestUpdateClientContactInput {
   emails?: string[]
   isMainContact?: boolean
@@ -985,6 +911,11 @@ export interface RequestUpdateEmployeeGeneralInfoInput {
   organizationIDs?: string[]
   phone: string
   referredBy?: string
+  wiseAccountNumber?: string
+  wiseCurrency?: string
+  wiseRecipientEmail?: string
+  wiseRecipientID?: string
+  wiseRecipientName?: string
 }
 
 export interface RequestUpdateInfoInput {
@@ -1000,6 +931,11 @@ export interface RequestUpdateInfoInput {
   personalEmail: string
   phoneNumber: string
   placeOfResidence: string
+  wiseAccountNumber?: string
+  wiseCurrency?: string
+  wiseRecipientEmail?: string
+  wiseRecipientID?: string
+  wiseRecipientName?: string
 }
 
 export interface RequestUpdateMemberInput {
@@ -1222,6 +1158,21 @@ export interface ViewBankAccount {
   ukSortCode?: string
 }
 
+export interface ViewBaseSalary {
+  batch?: number
+  category?: string
+  company_account_amount?: number
+  contract_amount?: number
+  currency?: ViewCurrency
+  currency_id?: string
+  effective_date?: string
+  employee_id?: string
+  id?: string
+  insurance_amount?: number
+  personal_account_amount?: number
+  type?: string
+}
+
 export interface ViewBasicBankAccountInfo {
   accountNumber?: string
   bankName?: string
@@ -1429,6 +1380,7 @@ export interface ViewEmployeeContentDataResponse {
 export interface ViewEmployeeData {
   address?: string
   avatar?: string
+  baseSalary?: ViewBaseSalary
   birthday?: string
   chapters?: ViewChapter[]
   city?: string
@@ -1467,6 +1419,11 @@ export interface ViewEmployeeData {
   teamEmail?: string
   updatedAt?: string
   username?: string
+  wiseAccountNumber?: string
+  wiseCurrency?: string
+  wiseRecipientEmail?: string
+  wiseRecipientID?: string
+  wiseRecipientName?: string
 }
 
 export interface ViewEmployeeListDataResponse {
@@ -1585,6 +1542,10 @@ export interface ViewFeedbackReviewDetailResponse {
   data?: ViewFeedBackReviewDetail
 }
 
+export interface ViewGetCurrenciesResponse {
+  data?: ViewCurrency[]
+}
+
 export interface ViewGetDashboardResourceUtilizationResponse {
   data?: ModelResourceUtilization[]
 }
@@ -1640,10 +1601,6 @@ export interface ViewGroupEngineeringHealth {
   quality?: number
   quarter?: string
   trend?: ViewEngineeringHealthTrend
-}
-
-export interface ViewHiringResponse {
-  data?: ModelHiringPosition[]
 }
 
 export interface ViewInvoice {
@@ -1799,6 +1756,11 @@ export interface ViewProfileData {
   roles?: ViewRole[]
   teamEmail?: string
   username?: string
+  wiseAccountNumber?: string
+  wiseCurrency?: string
+  wiseRecipientEmail?: string
+  wiseRecipientID?: string
+  wiseRecipientName?: string
 }
 
 export interface ViewProfileDataResponse {
@@ -1825,6 +1787,7 @@ export interface ViewProjectData {
   companyInfo?: ViewBasicCompanyInfo
   country?: ViewBasicCountryInfo
   createdAt?: string
+  currency?: ViewCurrency
   deletedAt?: GormDeletedAt
   deliveryManagers?: ViewProjectHead[]
   endDate?: string
@@ -1832,6 +1795,7 @@ export interface ViewProjectData {
   id?: string
   industry?: string
   members?: ViewProjectMember[]
+  monthlyChargeRate?: number
   name?: string
   organization?: ViewOrganization
   projectEmail?: string
@@ -2054,6 +2018,10 @@ export interface ViewUnreadFeedbackCountResponse {
   data?: ViewUnreadFeedbackCountData
 }
 
+export interface ViewUpdateBaseSalaryResponse {
+  data?: ViewBaseSalary
+}
+
 export interface ViewUpdateEmployeeStatusResponse {
   data?: ViewEmployeeData
 }
@@ -2122,6 +2090,11 @@ export interface ViewUpdateProfileInfoData {
   teamEmail?: string
   updatedAt?: string
   username?: string
+  wiseAccountNumber?: string
+  wiseCurrency?: string
+  wiseRecipientEmail?: string
+  wiseRecipientID?: string
+  wiseRecipientName?: string
 }
 
 export interface ViewUpdateProfileInfoResponse {
