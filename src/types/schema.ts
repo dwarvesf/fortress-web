@@ -283,47 +283,6 @@ export interface ModelEmployeeStack {
   updatedAt?: string
 }
 
-export interface ModelInvoice {
-  bank?: ModelBankAccount
-  bankID?: string
-  cc?: number[]
-  conversionAmount?: number
-  conversionRate?: number
-  createdAt?: string
-  deletedAt?: GormDeletedAt
-  description?: string
-  discount?: number
-  dueAt?: string
-  email?: string
-  errorInvoiceID?: string
-  failedAt?: string
-  id?: string
-  /** we not store this in db */
-  invoiceFileContent?: number[]
-  invoiceFileURL?: string
-  invoicedAt?: string
-  lineItems?: number[]
-  messageID?: string
-  month?: number
-  note?: string
-  number?: string
-  paidAt?: string
-  project?: ModelProject
-  projectID?: string
-  references?: string
-  scheduledDate?: string
-  sender?: ModelEmployee
-  sentBy?: string
-  status?: string
-  subTotal?: number
-  tax?: number
-  threadID?: string
-  todoAttachment?: string
-  total?: number
-  updatedAt?: string
-  year?: number
-}
-
 export interface ModelLikertScaleCount {
   agree?: number
   disagree?: number
@@ -1562,10 +1521,6 @@ export interface ViewGetEngagementDashboardResponse {
   data?: ViewEngagementDashboard[]
 }
 
-export interface ViewGetLatestInvoiceResponse {
-  data?: ModelInvoice
-}
-
 export interface ViewGetListClientResponse {
   data?: ModelClient[]
 }
@@ -1632,6 +1587,39 @@ export interface ViewInvoice {
   year?: number
 }
 
+export interface ViewInvoiceData {
+  bankAccount?: ViewBankAccount
+  bankID?: string
+  cc?: string[]
+  client?: ViewClientInfo
+  companyInfo?: ViewCompanyInfo
+  conversionAmount?: number
+  conversionRate?: number
+  description?: string
+  discount?: number
+  dueAt?: string
+  email?: string
+  errorInvoiceID?: string
+  failedAt?: string
+  invoiceFileURL?: string
+  invoicedAt?: string
+  lineItems?: ViewInvoiceItem[]
+  month?: number
+  note?: string
+  number?: string
+  paidAt?: string
+  projectID?: string
+  projectName?: string
+  scheduledDate?: string
+  sentBy?: string
+  status?: string
+  subTotal?: number
+  tax?: number
+  threadID?: string
+  total?: number
+  year?: number
+}
+
 export interface ViewInvoiceItem {
   cost?: number
   description?: string
@@ -1639,6 +1627,10 @@ export interface ViewInvoiceItem {
   isExternal?: boolean
   quantity?: number
   unitCost?: number
+}
+
+export interface ViewInvoiceListResponse {
+  data?: ViewInvoiceData[]
 }
 
 export interface ViewInvoiceTemplateResponse {

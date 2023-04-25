@@ -43,6 +43,7 @@ import { TotalResultCount } from 'components/common/Table/TotalResultCount'
 import { format } from 'utils/date'
 import { DATE_FORMAT } from 'constants/date'
 import { useMouseDown } from 'hooks/useMouseDown'
+import { formatCurrency } from 'utils/currency'
 
 const Default = () => {
   const { query } = useRouter()
@@ -148,6 +149,20 @@ const Default = () => {
               value: key,
             }
           }),
+      },
+      {
+        title: 'Salary',
+        key: 'baseSalary',
+        dataIndex: 'baseSalary',
+        render: (value) =>
+          value
+            ? formatCurrency(
+                (value.personal_account_amount || 0) +
+                  (value.company_account_amount || 0),
+                { currency: value.currency?.name },
+              )
+            : '-',
+        permission: Permission.EMPLOYEES_READ_GENERALINFO_FULLACCESS,
       },
       {
         title: 'Positions',
