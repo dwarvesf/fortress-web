@@ -20,6 +20,7 @@ export const formatCurrency = (
     style: 'currency',
     currency: currency || 'VND',
     minimumFractionDigits: 0,
+    currencyDisplay: 'narrowSymbol',
     ...opt,
   })
     .formatToParts(val)

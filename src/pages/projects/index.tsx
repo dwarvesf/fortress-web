@@ -68,8 +68,7 @@ const columns = ({
     key: 'monthlyChargeRate',
     dataIndex: 'monthlyChargeRate',
     render: (value, record) =>
-      // @ts-ignore
-      value ? formatCurrency(value, record.currency || undefined) : '-',
+      value ? formatCurrency(value, { currency: record.currency?.name }) : '-',
   },
   {
     title: 'Lead',
