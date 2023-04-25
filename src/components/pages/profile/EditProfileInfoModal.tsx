@@ -261,14 +261,6 @@ export const EditProfileInfoModal = (props: Props) => {
             </Form.Item>
           </Col>
           <Col span={24} md={{ span: 12 }}>
-            <Form.Item label="Wise Recipient ID" name="wiseRecipientID">
-              <Input
-                placeholder="Enter Wise Recipient ID"
-                className="bordered"
-              />
-            </Form.Item>
-          </Col>
-          <Col span={24} md={{ span: 12 }}>
             <Form.Item label="Wise Recipient Name" name="wiseRecipientName">
               <Input
                 placeholder="Enter Wise Recipient Name"

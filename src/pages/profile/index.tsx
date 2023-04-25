@@ -133,10 +133,6 @@ const Default = () => {
                         value: user?.wiseRecipientEmail || '-',
                       },
                       {
-                        label: 'Wise Recipient ID',
-                        value: user?.wiseRecipientID || '-',
-                      },
-                      {
                         label: 'Wise Recipient Name',
                         value: user?.wiseRecipientName || '-',
                       },
