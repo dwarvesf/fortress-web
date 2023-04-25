@@ -392,10 +392,6 @@ export const General = (props: Props) => {
                         value: data.wiseRecipientEmail || '-',
                       },
                       {
-                        label: 'Wise Recipient ID',
-                        value: data.wiseRecipientID || '-',
-                      },
-                      {
                         label: 'Wise Recipient Name',
                         value: data.wiseRecipientName || '-',
                       },
@@ -696,7 +692,6 @@ export const General = (props: Props) => {
           wiseAccountNumber: data.wiseAccountNumber,
           wiseCurrency: data.wiseCurrency,
           wiseRecipientEmail: data.wiseRecipientEmail,
-          wiseRecipientID: data.wiseRecipientID,
           wiseRecipientName: data.wiseRecipientName,
         }}
         onAfterSubmit={mutateEmployee}
