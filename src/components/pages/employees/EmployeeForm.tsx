@@ -8,6 +8,7 @@ import { employeeStatuses } from 'constants/status'
 import { client, GET_PATHS } from 'libs/apis'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
+import { NumericFormat } from 'react-number-format'
 import { theme } from 'styles'
 import { fullListPagination } from 'types/filters/Pagination'
 import { RequestCreateEmployeeInput } from 'types/schema'
@@ -253,12 +254,17 @@ export const EmployeeForm = (props: Props) => {
               label="Salary"
               name="salary"
               rules={[{ required: true, message: 'Required' }]}
+              normalize={(value) =>
+                value ? Number(value.replace(/[^\d.]/g, '')) : undefined
+              }
             >
-              <Input
+              <NumericFormat
                 className="bordered"
-                type="number"
                 placeholder="Enter salary"
-                min={0}
+                thousandSeparator=","
+                allowNegative={false}
+                decimalScale={3}
+                customInput={Input}
               />
             </Form.Item>
           </Col>

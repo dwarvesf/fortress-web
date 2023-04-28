@@ -1,6 +1,7 @@
 import { Col, Form, Input, Modal, notification, Row } from 'antd'
 import { client } from 'libs/apis'
 import { useState } from 'react'
+import { NumericFormat } from 'react-number-format'
 import { EmployeeFormMeta } from 'types/form/misc'
 import { RequestUpdateBaseSalaryInput } from 'types/schema'
 import { getErrorMessage } from 'utils/string'
@@ -67,12 +68,18 @@ export const EditBaseSalaryModal = (props: Props) => {
               label="Personal Account Amount"
               name="personalAccountAmount"
               rules={[{ required: true, message: 'Required' }]}
+              normalize={(value) =>
+                value ? Number(value.replace(/[^\d.]/g, '')) : undefined
+              }
             >
-              <Input
-                suffix={meta?.currency}
+              <NumericFormat
                 className="bordered"
-                type="number"
                 placeholder="Enter personal account amount"
+                thousandSeparator=","
+                allowNegative={false}
+                decimalScale={3}
+                suffix={meta?.currency}
+                customInput={Input}
               />
             </Form.Item>
           </Col>
@@ -81,12 +88,18 @@ export const EditBaseSalaryModal = (props: Props) => {
               label="Company Account Amount"
               name="companyAccountAmount"
               rules={[{ required: true, message: 'Required' }]}
+              normalize={(value) =>
+                value ? Number(value.replace(/[^\d.]/g, '')) : undefined
+              }
             >
-              <Input
-                suffix={meta?.currency}
+              <NumericFormat
                 className="bordered"
-                type="number"
                 placeholder="Enter company account amount"
+                thousandSeparator=","
+                allowNegative={false}
+                decimalScale={3}
+                suffix={meta?.currency}
+                customInput={Input}
               />
             </Form.Item>
           </Col>

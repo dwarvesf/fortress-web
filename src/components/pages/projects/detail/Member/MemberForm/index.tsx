@@ -281,23 +281,38 @@ export const MemberForm = (props: Props) => {
               label="Rate"
               name="rate"
               rules={[{ required: true, message: 'Required' }]}
+              normalize={(value) =>
+                value ? Number(value.replace(/[^\d.]/g, '')) : undefined
+              }
             >
-              <Input
-                suffix={meta?.currency}
-                type="number"
-                placeholder="Enter rate"
+              <NumericFormat
                 className="bordered"
+                placeholder="Enter rate"
+                thousandSeparator=","
+                allowNegative={false}
+                decimalScale={3}
+                suffix={meta?.currency}
+                customInput={Input}
               />
             </Form.Item>
           </Col>
         </AuthenticatedContent>
         <AuthenticatedContent permission={Permission.PROJECTMEMBERS_RATE_EDIT}>
           <Col span={24} md={{ span: 12 }}>
-            <Form.Item label="Discount" name="discount">
-              <Input
-                type="number"
-                placeholder="Enter discount"
+            <Form.Item
+              label="Discount"
+              name="discount"
+              normalize={(value) =>
+                value ? Number(value.replace(/[^\d.]/g, '')) : undefined
+              }
+            >
+              <NumericFormat
                 className="bordered"
+                placeholder="Enter discount"
+                thousandSeparator=","
+                allowNegative={false}
+                decimalScale={3}
+                customInput={Input}
               />
             </Form.Item>
           </Col>
