@@ -133,14 +133,6 @@ export const InvoiceFormInputList = (props: Props) => {
                       <td>
                         <Form.Item
                           name={[index, 'quantity']}
-                          rules={[
-                            {
-                              type: 'number',
-                              required: true,
-                              min: 1,
-                              message: 'Greater than 1',
-                            },
-                          ]}
                           normalize={(value) =>
                             value
                               ? Number(value.replace(/[^\d.]/g, ''))
@@ -152,7 +144,7 @@ export const InvoiceFormInputList = (props: Props) => {
                             placeholder="Enter quantity"
                             thousandSeparator=","
                             allowNegative={false}
-                            decimalScale={0}
+                            decimalScale={1}
                             style={{ textAlign: 'right', minWidth: 120 }}
                             customInput={Input}
                           />

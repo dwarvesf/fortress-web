@@ -341,6 +341,7 @@ export const InvoiceForm = () => {
                         placeholder="Select invoice month"
                         style={{ width: '100%' }}
                         picker="month"
+                        // @ts-ignore
                         onChange={onInvoiceMonthChange}
                       />
                     </Form.Item>
