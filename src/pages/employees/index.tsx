@@ -129,6 +129,20 @@ const Default = () => {
         render: (value) => (value ? <UserAvatar user={value} /> : 'TBD'),
       },
       {
+        title: 'Salary',
+        key: 'baseSalary',
+        dataIndex: 'baseSalary',
+        render: (value) =>
+          value
+            ? formatCurrency(
+                (value.personal_account_amount || 0) +
+                  (value.company_account_amount || 0),
+                { currency: value.currency?.name },
+              )
+            : '-',
+        permission: Permission.EMPLOYEES_READ_GENERALINFO_FULLACCESS,
+      },
+      {
         title: 'Status',
         key: 'workingStatuses',
         dataIndex: 'status',
@@ -149,20 +163,6 @@ const Default = () => {
               value: key,
             }
           }),
-      },
-      {
-        title: 'Salary',
-        key: 'baseSalary',
-        dataIndex: 'baseSalary',
-        render: (value) =>
-          value
-            ? formatCurrency(
-                (value.personal_account_amount || 0) +
-                  (value.company_account_amount || 0),
-                { currency: value.currency?.name },
-              )
-            : '-',
-        permission: Permission.EMPLOYEES_READ_GENERALINFO_FULLACCESS,
       },
       {
         title: 'Positions',
