@@ -140,7 +140,7 @@ const Default = () => {
                 { currency: value.currency?.name },
               )
             : '-',
-        permission: Permission.EMPLOYEES_READ_GENERALINFO_FULLACCESS,
+        permission: Permission.EMPLOYEES_BASESALARY_READ,
       },
       {
         title: 'Status',
