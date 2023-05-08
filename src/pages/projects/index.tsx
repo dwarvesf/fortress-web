@@ -43,6 +43,14 @@ const columns = ({
     fixed: 'left',
   },
   {
+    title: 'Monthly Revenue',
+    key: 'monthlyChargeRate',
+    dataIndex: 'monthlyChargeRate',
+    render: (value, record) =>
+      value ? formatCurrency(value, { currency: record.currency?.name }) : '-',
+    permission: Permission.PROJECTS_READ_FULLACCESS,
+  },
+  {
     title: 'Status',
     key: 'status',
     dataIndex: 'status',
@@ -62,13 +70,6 @@ const columns = ({
         '-'
       ),
     permission: Permission.PROJECTS_READ_FULLACCESS,
-  },
-  {
-    title: 'Monthly Revenue',
-    key: 'monthlyChargeRate',
-    dataIndex: 'monthlyChargeRate',
-    render: (value, record) =>
-      value ? formatCurrency(value, { currency: record.currency?.name }) : '-',
   },
   {
     title: 'Lead',
