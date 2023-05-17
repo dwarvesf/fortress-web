@@ -173,10 +173,7 @@ export const EditGeneralInfoModal = (props: Props) => {
             <Form.Item
               label="Team Email"
               name="email"
-              rules={[
-                { required: true, message: 'Required' },
-                { type: 'email', message: 'Wrong email format' },
-              ]}
+              rules={[{ type: 'email', message: 'Wrong email format' }]}
             >
               <Input
                 className="bordered"
