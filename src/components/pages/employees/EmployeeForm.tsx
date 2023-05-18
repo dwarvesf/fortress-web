@@ -212,10 +212,7 @@ export const EmployeeForm = (props: Props) => {
             <Form.Item
               label="Team Email"
               name="teamEmail"
-              rules={[
-                { required: true, message: 'Required' },
-                { type: 'email', message: 'Wrong email format' },
-              ]}
+              rules={[{ type: 'email', message: 'Wrong email format' }]}
             >
               <Input
                 className="bordered"
