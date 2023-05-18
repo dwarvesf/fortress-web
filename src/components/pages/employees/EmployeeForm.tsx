@@ -12,7 +12,7 @@ import { FormWrapper } from 'components/common/FormWrapper'
 import { AsyncSelect } from 'components/common/Select'
 import { renderEmployeeOption } from 'components/common/Select/renderers/employeeOption'
 import { renderStatusOption } from 'components/common/Select/renderers/statusOption'
-import { SELECT_BOX_DATE_FORMAT } from 'constants/date'
+import { SELECT_BOX_DATE_FORMAT, SERVER_DATE_FORMAT } from 'constants/date'
 import { ROUTES } from 'constants/routes'
 import { employeeStatuses } from 'constants/status'
 import { client, GET_PATHS } from 'libs/apis'
@@ -94,7 +94,9 @@ export const EmployeeForm = (props: Props) => {
       status: values.status,
       teamEmail: values.teamEmail,
       referredBy: values.referredBy,
-      joinDate: values.joinDate,
+      joinedDate: values.joinedDate
+        ? values.joinedDate.format(SERVER_DATE_FORMAT)
+        : '',
     }
   }
 
