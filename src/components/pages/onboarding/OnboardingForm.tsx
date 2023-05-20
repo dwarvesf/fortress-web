@@ -13,7 +13,8 @@ import { InfoCircleOutlined } from '@ant-design/icons'
 import { RcFile } from 'antd/lib/upload'
 import { FormWrapper } from 'components/common/FormWrapper'
 import { AsyncSelect } from 'components/common/Select'
-import { SELECT_BOX_DATE_FORMAT, SERVER_DATE_FORMAT } from 'constants/date'
+import { SELECT_BOX_DATE_FORMAT } from 'constants/date'
+import { horoscopeList } from 'constants/horoscopes'
 import { ROUTES } from 'constants/routes'
 import { client, GET_PATHS } from 'libs/apis'
 import { useRouter } from 'next/router'
@@ -47,12 +48,13 @@ export const OnboardingForm = () => {
   }, {})
   const { push, query } = useRouter()
   const [form] = Form.useForm()
+  const { setFieldValue } = form
 
   const onCreateSubmit = async (values: RequestSubmitOnboardingFormRequest) => {
     try {
       setIsSubmitting(true)
 
-      const assets = (await uploadAssets(values)) || {}
+      const assets = await uploadAssets(values)
       await client.submitOnboardingForm(
         {
           ...transformDataToSend(values),
@@ -84,12 +86,10 @@ export const OnboardingForm = () => {
       'passportPhotoBack',
     ]
     if (
-      !values.identityCardPhotoFront &&
-      !values.identityCardPhotoBack &&
-      !values.passportPhotoFront &&
-      !values.passportPhotoBack
+      (!values.identityCardPhotoFront || !values.identityCardPhotoBack) &&
+      (!values.passportPhotoFront || !values.passportPhotoBack)
     ) {
-      return
+      throw new Error('Missing ID/Passport documents')
     }
     const uploadResult = await Promise.allSettled(
       keys.map((key) => {
@@ -119,9 +119,7 @@ export const OnboardingForm = () => {
       address: values.address,
       city: values.city,
       country: values.country,
-      dateOfBirth: values.dateOfBirth
-        ? values.dateOfBirth.format(SERVER_DATE_FORMAT)
-        : '',
+      dateOfBirth: values.dateOfBirth,
       discordName: values.discordName,
       gender: values.gender,
       githubID: values.githubID,
@@ -156,8 +154,8 @@ export const OnboardingForm = () => {
 
   const country = Form.useWatch('country', form)
   useEffect(() => {
-    form.setFieldValue('city', undefined)
-  }, [country, form])
+    setFieldValue('city', undefined)
+  }, [country, setFieldValue])
 
   return (
     <FormWrapper
@@ -176,6 +174,14 @@ export const OnboardingForm = () => {
         form={form}
         onFinish={(values) => {
           onCreateSubmit(values as RequestSubmitOnboardingFormRequest)
+        }}
+        scrollToFirstError={{
+          behavior: (actions) => {
+            actions.forEach(({ el, top }) => {
+              const offsetTop = el.scrollTop > top ? -50 : 200
+              el.scrollTop = top + offsetTop
+            })
+          },
         }}
       >
         <Row gutter={24}>
@@ -223,15 +229,6 @@ export const OnboardingForm = () => {
           </Col>
           <Col span={24} md={{ span: 12 }}>
             <Form.Item
-              label="Phone Number"
-              name="phoneNumber"
-              rules={[{ required: true, message: 'Required' }]}
-            >
-              <Input className="bordered" placeholder="Enter phone number" />
-            </Form.Item>
-          </Col>
-          <Col span={24} md={{ span: 12 }}>
-            <Form.Item
               label="Address"
               name="address"
               rules={[{ required: true, message: 'Required' }]}
@@ -248,18 +245,6 @@ export const OnboardingForm = () => {
               <Input
                 className="bordered"
                 placeholder="Enter place of residence"
-              />
-            </Form.Item>
-          </Col>
-          <Col span={24} md={{ span: 12 }}>
-            <Form.Item
-              label="Local Branch Name"
-              name="localBranchName"
-              rules={[{ required: true, message: 'Required' }]}
-            >
-              <Input
-                className="bordered"
-                placeholder="Enter local branch name"
               />
             </Form.Item>
           </Col>
@@ -298,6 +283,15 @@ export const OnboardingForm = () => {
               </Select>
             </Form.Item>
           </Col>
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item
+              label="Phone Number"
+              name="phoneNumber"
+              rules={[{ required: true, message: 'Required' }]}
+            >
+              <Input className="bordered" placeholder="Enter phone number" />
+            </Form.Item>
+          </Col>
           <Col
             span={24}
             style={{
@@ -323,7 +317,6 @@ export const OnboardingForm = () => {
               />
             </Form.Item>
           </Col>
-          {/* select */}
           <Col span={24} md={{ span: 12 }}>
             <Form.Item
               label="Horoscope"
@@ -331,20 +324,7 @@ export const OnboardingForm = () => {
               rules={[{ required: true, message: 'Required' }]}
             >
               <Select placeholder="Select horoscope" showSearch allowClear>
-                {[
-                  'Aries',
-                  'Taurus',
-                  'Gemini',
-                  'Cancer',
-                  'Leo',
-                  'Virgo',
-                  'Libra',
-                  'Scorpio',
-                  'Sagittarius',
-                  'Capricorn',
-                  'Aquarius',
-                  'Pisces',
-                ].map((key) => (
+                {horoscopeList.map((key) => (
                   <Select.Option key={key} value={key} label={key}>
                     {key}
                   </Select.Option>
@@ -397,16 +377,24 @@ export const OnboardingForm = () => {
               <Input className="bordered" placeholder="Enter MBTI" />
             </Form.Item>
           </Col>
+          <Col
+            span={24}
+            style={{
+              fontSize: 18,
+              fontWeight: 600,
+              marginBottom: 20,
+              marginTop: 20,
+            }}
+          >
+            Bank Information
+          </Col>
           <Col span={24} md={{ span: 12 }}>
             <Form.Item
-              label="Bank Recipient Name"
-              name="localBankRecipientName"
+              label="Bank Name"
+              name="localBranchName"
               rules={[{ required: true, message: 'Required' }]}
             >
-              <Input
-                className="bordered"
-                placeholder="Enter bank recipient name"
-              />
+              <Input className="bordered" placeholder="Enter bank name" />
             </Form.Item>
           </Col>
           <Col span={24} md={{ span: 12 }}>
@@ -420,11 +408,20 @@ export const OnboardingForm = () => {
           </Col>
           <Col span={24} md={{ span: 12 }}>
             <Form.Item
-              label="Bank Number"
+              label="Account Name"
+              name="localBankRecipientName"
+              rules={[{ required: true, message: 'Required' }]}
+            >
+              <Input className="bordered" placeholder="Enter account name" />
+            </Form.Item>
+          </Col>
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item
+              label="Account Number"
               name="localBankNumber"
               rules={[{ required: true, message: 'Required' }]}
             >
-              <Input className="bordered" placeholder="Enter bank number" />
+              <Input className="bordered" placeholder="Enter account number" />
             </Form.Item>
           </Col>
           <Col span={24} md={{ span: 12 }}>
