@@ -99,11 +99,10 @@ export const EditProjectGeneralInfoModal = (props: Props) => {
             <AsyncSelect
               placeholder="Select project's country"
               swrKeys={GET_PATHS.getCountryMetadata}
-              optionGetter={async () =>
-                (await client.getCountryMetadata()).data.map(
-                  transformMetadataToSelectOption,
-                )
-              }
+              optionGetter={async () => {
+                const { data } = await client.getCountryMetadata()
+                return data?.map(transformMetadataToSelectOption) || []
+              }}
             />
           </Form.Item>
           <Form.Item label="Stacks" name="stacks">

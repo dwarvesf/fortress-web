@@ -24,4 +24,5 @@ export const ROUTES = {
     `/feedbacks/peer-review/${id}/${topicId}`,
   FEEDBACK_INBOX_DETAIL: (id: string) => `/feedbacks/inbox/${id}`,
   EMPLOYEE_ENGAGEMENT_DETAIL: (id: string) => `/feedbacks/engagement/${id}`,
+  ONBOARDING: '/onboarding',
 }

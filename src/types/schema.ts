@@ -680,8 +680,9 @@ export interface RequestCreateClientInput {
 }
 
 export interface RequestCreateEmployeeInput {
-  displayName?: string
+  displayName: string
   fullName: string
+  joinedDate: string
   personalEmail: string
   positions: string[]
   referredBy?: string
@@ -689,8 +690,7 @@ export interface RequestCreateEmployeeInput {
   salary: number
   seniorityID: string
   status: string
-  teamEmail?: string
-  joinedDate: string
+  teamEmail: string
 }
 
 export interface RequestCreatePositionInput {
@@ -814,6 +814,31 @@ export interface RequestSendSurveyInput {
 export interface RequestSubmitBody {
   answers: RequestBasicEventQuestionInput[]
   status: string
+}
+
+export interface RequestSubmitOnboardingFormRequest {
+  address: string
+  city: string
+  country: string
+  dateOfBirth: string
+  discordName: string
+  gender: string
+  githubID?: string
+  horoscope: string
+  identityCardPhotoBack?: string
+  identityCardPhotoFront?: string
+  linkedInName?: string
+  localBankBranch: string
+  localBankCurrency: string
+  localBankNumber: string
+  localBankRecipientName: string
+  localBranchName: string
+  mbti: string
+  notionName?: string
+  passportPhotoBack?: string
+  passportPhotoFront?: string
+  phoneNumber: string
+  placeOfResidence: string
 }
 
 export interface RequestUpdateBaseSalaryInput {

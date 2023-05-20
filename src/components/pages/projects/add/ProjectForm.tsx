@@ -93,7 +93,7 @@ export const ProjectForm = (props: Props) => {
             <AsyncSelect
               optionGetter={async () => {
                 const { data } = await client.getCountryMetadata()
-                return data.map(transformMetadataToSelectOption)
+                return data?.map(transformMetadataToSelectOption) || []
               }}
               swrKeys={GET_PATHS.getCountryMetadata}
               placeholder="Select project country"
