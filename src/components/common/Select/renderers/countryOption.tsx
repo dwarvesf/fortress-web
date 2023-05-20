@@ -7,8 +7,8 @@ export const renderCountryOption = (
   option: Omit<DefaultOptionType, 'label'> & { label: any },
 ) => (
   <Option
-    key={option.label.code}
-    value={option.label.code}
+    key={option.label.name}
+    value={option.label.name}
     label={option.label.name}
   >
     {option.label.name}
