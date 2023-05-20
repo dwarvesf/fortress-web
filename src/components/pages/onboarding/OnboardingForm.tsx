@@ -274,7 +274,7 @@ export const OnboardingForm = () => {
             >
               <Select placeholder="Select city" showSearch allowClear>
                 {countries
-                  .find((each) => each.id === country)
+                  .find((each) => each.code === country)
                   ?.cities?.map((key) => (
                     <Select.Option key={key} value={key} label={key}>
                       {key}
