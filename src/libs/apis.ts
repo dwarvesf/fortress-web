@@ -72,6 +72,7 @@ import {
   ViewCountriesResponse,
   RequestSubmitOnboardingFormRequest,
   ViewContentDataResponse,
+  ViewEmployeeInvitationResponse,
 } from 'types/schema'
 import { EmployeeListFilter } from 'types/filters/EmployeeListFilter'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
@@ -1044,6 +1045,15 @@ class Client {
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
       },
       body: formData,
+    })
+  }
+
+  public getInviteState(token?: string) {
+    return fetcher<ViewEmployeeInvitationResponse>(`${BASE_URL}/invite`, {
+      headers: {
+        ...this.privateHeaders,
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
     })
   }
 }

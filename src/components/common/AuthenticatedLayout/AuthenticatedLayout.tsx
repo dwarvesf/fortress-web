@@ -213,7 +213,11 @@ export const AuthenticatedLayout = (props: Props) => {
     return <PageSpinner />
   }
 
-  if (!isAuthenticated || pathname === ROUTES.LOGIN) {
+  if (
+    !isAuthenticated ||
+    pathname === ROUTES.LOGIN ||
+    pathname === ROUTES.ONBOARDING
+  ) {
     return <Layout>{children}</Layout>
   }
 

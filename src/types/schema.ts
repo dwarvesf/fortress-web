@@ -1411,6 +1411,21 @@ export interface ViewEmployeeData {
   wiseRecipientName?: string
 }
 
+export interface ViewEmployeeInvitationData {
+  employeeID?: string
+  id?: string
+  invitedBy?: string
+  isBasecampAccountCreated?: boolean
+  isCompleted?: boolean
+  isDiscordRoleAssigned?: boolean
+  isInfoUpdated?: boolean
+  isTeamEmailCreated?: boolean
+}
+
+export interface ViewEmployeeInvitationResponse {
+  data?: ViewEmployeeInvitationData
+}
+
 export interface ViewEmployeeListDataResponse {
   data?: ViewEmployeeData[]
 }

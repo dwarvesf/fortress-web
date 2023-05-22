@@ -67,7 +67,6 @@ export const OnboardingForm = () => {
         message: 'Onboarding form successfully submitted!',
       })
 
-      // Redirect to employee list page if create successfully
       setTimeout(() => push(ROUTES.HOME))
     } catch (error: any) {
       notification.error({
