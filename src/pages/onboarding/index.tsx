@@ -15,6 +15,7 @@ const Default = () => {
 
   useEffect(() => {
     const getInviteState = async () => {
+      if (!query.code) return
       if (!init.current) return
       init.current = false
       try {
