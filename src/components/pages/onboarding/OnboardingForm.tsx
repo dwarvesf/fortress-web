@@ -175,9 +175,6 @@ export const OnboardingForm = ({ employee }: Props) => {
         onFinish={(values) => {
           onCreateSubmit(values as RequestSubmitOnboardingFormRequest)
         }}
-        onFinishFailed={(values) => {
-          console.log(values.values)
-        }}
         scrollToFirstError={{
           behavior: (actions) => {
             actions.forEach(({ el, top }) => {

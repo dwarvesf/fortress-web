@@ -53,13 +53,7 @@ const Default = () => {
                 {isSubmittable && (
                   <Row>
                     <Col span={24} lg={{ span: 16 }}>
-                      <OnboardingForm
-                        employee={{
-                          ...employee,
-                          avatar:
-                            'https://storage.googleapis.com/fortress-dev/employees/02c7c4d7-a4f6-47cd-8111-570e4a4a4fb7/images/02000f98-c984-4f35-8f45-1bf8a49c0e05.png',
-                        }}
-                      />
+                      <OnboardingForm employee={employee} />
                     </Col>
                   </Row>
                 )}
