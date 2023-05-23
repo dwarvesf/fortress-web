@@ -175,8 +175,7 @@ export const EditPersonalInfoModal = (props: Props) => {
                 options={
                   countries
                     .find((c) => c.name === country)
-                    // @ts-ignore
-                    ?.cities.map((city) => {
+                    ?.cities?.map((city) => {
                       return {
                         label: city,
                         value: city,

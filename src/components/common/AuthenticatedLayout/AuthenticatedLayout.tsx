@@ -171,7 +171,9 @@ export const AuthenticatedLayout = (props: Props) => {
       if (!window.location.href.includes(ROUTES.LOGIN)) {
         window.localStorage.setItem(LOGIN_REDIRECTION_KEY, window.location.href)
       }
-
+      if (pathname === ROUTES.ONBOARDING) {
+        return
+      }
       if (pathname !== ROUTES.LOGIN) {
         replace(ROUTES.LOGIN)
       }
@@ -204,12 +206,18 @@ export const AuthenticatedLayout = (props: Props) => {
     // Is authenticating
     isAuthenticating ||
     // Not authenticated yet & pathname is not login (meaning we are loading the authentication, e.g. from cookie)
-    (!isAuthenticated && pathname !== ROUTES.LOGIN)
+    (!isAuthenticated &&
+      pathname !== ROUTES.LOGIN &&
+      pathname !== ROUTES.ONBOARDING)
   ) {
     return <PageSpinner />
   }
 
-  if (!isAuthenticated || pathname === ROUTES.LOGIN) {
+  if (
+    !isAuthenticated ||
+    pathname === ROUTES.LOGIN ||
+    pathname === ROUTES.ONBOARDING
+  ) {
     return <Layout>{children}</Layout>
   }
 
