@@ -486,13 +486,29 @@ export const OnboardingForm = ({ employee }: Props) => {
             <Form.Item
               label="Discord"
               name="discordName"
-              rules={[{ required: true, message: 'Required' }]}
+              rules={[
+                { required: true, message: 'Required' },
+                {
+                  pattern:
+                    /^(?!(discordtag|here|everyone)).[^@#:]{2,32}#[\d]{4}$/,
+                  message: 'Incorrect format',
+                },
+              ]}
             >
               <Input placeholder="johndoe#xxxx" className="bordered" />
             </Form.Item>
           </Col>
           <Col span={24} md={{ span: 12 }}>
-            <Form.Item label="Github" name="githubID">
+            <Form.Item
+              label="Github"
+              name="githubID"
+              rules={[
+                {
+                  pattern: /^\w(-\w|\w\w|\w){0,19}$/,
+                  message: 'Incorrect format',
+                },
+              ]}
+            >
               <Input placeholder="johndoe" className="bordered" />
             </Form.Item>
           </Col>
