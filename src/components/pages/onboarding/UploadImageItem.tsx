@@ -72,6 +72,11 @@ export const UploadImageItem = ({
             'custom-upload-circle': name === 'avatar',
           })}
           fileList={value?.fileList || []}
+          customRequest={({ onSuccess }) => {
+            setTimeout(() => {
+              onSuccess?.('ok')
+            }, 0)
+          }}
         >
           <Avatar
             src={
