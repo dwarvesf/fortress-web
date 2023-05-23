@@ -818,6 +818,7 @@ export interface RequestSubmitBody {
 
 export interface RequestSubmitOnboardingFormRequest {
   address: string
+  avatar?: string
   city: string
   country: string
   dateOfBirth: string
@@ -1412,6 +1413,7 @@ export interface ViewEmployeeData {
 }
 
 export interface ViewEmployeeInvitationData {
+  employee?: ViewInvitedEmployeeInfo
   employeeID?: string
   id?: string
   invitedBy?: string
@@ -1597,6 +1599,16 @@ export interface ViewGroupEngineeringHealth {
   quality?: number
   quarter?: string
   trend?: ViewEngineeringHealthTrend
+}
+
+export interface ViewInvitedEmployeeInfo {
+  avatar?: string
+  displayName?: string
+  fullName?: string
+  id?: string
+  personalEmail?: string
+  teamEmail?: string
+  username?: string
 }
 
 export interface ViewInvoice {

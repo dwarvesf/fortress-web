@@ -19,26 +19,22 @@ import { ROUTES } from 'constants/routes'
 import { client, GET_PATHS } from 'libs/apis'
 import { useRouter } from 'next/router'
 import { useEffect, useReducer, useState } from 'react'
-import { ModelCountry, RequestSubmitOnboardingFormRequest } from 'types/schema'
+import {
+  ModelCountry,
+  RequestSubmitOnboardingFormRequest,
+  ViewInvitedEmployeeInfo,
+} from 'types/schema'
 import { getErrorMessage } from 'utils/string'
 import { getBase64 } from 'utils/uploadFile'
 import { renderCountryOption } from 'components/common/Select/renderers/countryOption'
 import { v4 as uuid4 } from 'uuid'
-import { UploadImageItem } from './UploadImageItem'
+import { UploadFiles, UploadImageItem } from './UploadImageItem'
 
-interface UploadStatus {
-  uploading?: boolean
-  url?: string
+interface Props {
+  employee?: ViewInvitedEmployeeInfo
 }
 
-interface UploadFiles {
-  identityCardPhotoFront?: UploadStatus
-  identityCardPhotoBack?: UploadStatus
-  passportPhotoFront?: UploadStatus
-  passportPhotoBack?: UploadStatus
-}
-
-export const OnboardingForm = () => {
+export const OnboardingForm = ({ employee }: Props) => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [countries, setCountries] = useState<ModelCountry[]>([])
   const [uploadFiles, setUploadFiles] = useReducer<
@@ -59,6 +55,7 @@ export const OnboardingForm = () => {
         {
           ...transformDataToSend(values),
           ...assets,
+          avatar: assets.avatar || employee?.avatar,
         },
         query.code as string,
       )
@@ -83,6 +80,7 @@ export const OnboardingForm = () => {
       'identityCardPhotoBack',
       'passportPhotoFront',
       'passportPhotoBack',
+      'avatar',
     ]
     if (
       (!values.identityCardPhotoFront || !values.identityCardPhotoBack) &&
@@ -115,6 +113,7 @@ export const OnboardingForm = () => {
     values: Required<Record<string, any>>,
   ): RequestSubmitOnboardingFormRequest => {
     return {
+      avatar: values.avatar,
       address: values.address,
       city: values.city,
       country: values.country,
@@ -138,6 +137,7 @@ export const OnboardingForm = () => {
 
   const handleUpload: (key: keyof UploadFiles) => UploadProps['onChange'] =
     (key) => (info) => {
+      setFieldValue(key, info)
       if (info.file.status === 'uploading') {
         setUploadFiles({
           [key]: { uploading: true },
@@ -171,8 +171,12 @@ export const OnboardingForm = () => {
     >
       <Form
         form={form}
+        initialValues={{ ...employee, avatar: undefined }}
         onFinish={(values) => {
           onCreateSubmit(values as RequestSubmitOnboardingFormRequest)
+        }}
+        onFinishFailed={(values) => {
+          console.log(values.values)
         }}
         scrollToFirstError={{
           behavior: (actions) => {
@@ -193,6 +197,36 @@ export const OnboardingForm = () => {
             }}
           >
             Basic Information
+          </Col>
+          <Col span={24}>
+            <UploadImageItem
+              label="Avatar"
+              name="avatar"
+              uploadStatus={uploadFiles.avatar}
+              handleUpload={handleUpload}
+              defaultValue={employee?.avatar}
+              form={form}
+            />
+          </Col>
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item label="Display Name" name="displayName">
+              <Input className="bordered" readOnly />
+            </Form.Item>
+          </Col>
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item label="Full Name" name="fullName">
+              <Input className="bordered" readOnly />
+            </Form.Item>
+          </Col>
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item label="Personal Email" name="personalEmail">
+              <Input className="bordered" readOnly />
+            </Form.Item>
+          </Col>
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item label="Team Email" name="teamEmail">
+              <Input className="bordered" readOnly />
+            </Form.Item>
           </Col>
           <Col span={24} md={{ span: 12 }}>
             <UploadImageItem

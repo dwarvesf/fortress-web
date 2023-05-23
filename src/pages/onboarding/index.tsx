@@ -6,22 +6,22 @@ import { OnboardingForm } from 'components/pages/onboarding/OnboardingForm'
 import { ROUTES } from 'constants/routes'
 import { client } from 'libs/apis'
 import { useRouter } from 'next/router'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
+import { ViewInvitedEmployeeInfo } from 'types/schema'
 
 const Default = () => {
   const { push, query } = useRouter()
   const [isSubmittable, setIsSubmittable] = useState<boolean | null>(null)
-  const init = useRef(true)
+  const [employee, setEmployee] = useState<ViewInvitedEmployeeInfo>()
 
   useEffect(() => {
     const getInviteState = async () => {
       if (!query.code) return
-      if (!init.current) return
-      init.current = false
       try {
         const result = await client.getInviteState(query.code as string)
         if (result.data?.isCompleted === false) {
           setIsSubmittable(true)
+          setEmployee(result.data.employee)
         } else {
           throw new Error(
             result.data?.isCompleted === true
@@ -53,7 +53,13 @@ const Default = () => {
                 {isSubmittable && (
                   <Row>
                     <Col span={24} lg={{ span: 16 }}>
-                      <OnboardingForm />
+                      <OnboardingForm
+                        employee={{
+                          ...employee,
+                          avatar:
+                            'https://storage.googleapis.com/fortress-dev/employees/02c7c4d7-a4f6-47cd-8111-570e4a4a4fb7/images/02000f98-c984-4f35-8f45-1bf8a49c0e05.png',
+                        }}
+                      />
                     </Col>
                   </Row>
                 )}
