@@ -23,10 +23,11 @@ import {
   RequestSubmitOnboardingFormRequest,
   ViewInvitedEmployeeInfo,
 } from 'types/schema'
-import { getErrorMessage } from 'utils/string'
+import { getErrorMessage, removeLeadingZero } from 'utils/string'
 import { getBase64 } from 'utils/uploadFile'
 import { renderCountryOption } from 'components/common/Select/renderers/countryOption'
 import { v4 as uuid4 } from 'uuid'
+import PhoneInput from 'react-phone-input-2'
 import { UploadFiles, UploadImageItem } from './UploadImageItem'
 
 interface Props {
@@ -36,6 +37,7 @@ interface Props {
 export const OnboardingForm = ({ employee }: Props) => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [countries, setCountries] = useState<ModelCountry[]>([])
+  const [dialCode, setDialCode] = useState<string>('84')
   const [uploadFiles, setUploadFiles] = useReducer<
     (prev: UploadFiles, next: UploadFiles) => UploadFiles
   >((prev, next) => {
@@ -129,8 +131,15 @@ export const OnboardingForm = ({ employee }: Props) => {
       localBranchName: values.localBranchName,
       mbti: values.mbti,
       notionName: values.notionName,
-      phoneNumber: values.phoneNumber,
       placeOfResidence: values.placeOfResidence,
+      phoneNumber: values.phoneNumber?.includes(' ') // need to check this for the case submit without editing
+        ? // in case phone is not edited, the value has the form +84 12345...
+          values.phoneNumber
+        : // otherwise its value is passed from PhoneInput's
+          // onChange and has the form of 8412345...
+          `+${dialCode} ${removeLeadingZero(
+            (values.phoneNumber || '').slice(dialCode.length),
+          )}`,
     }
   }
 
@@ -313,7 +322,20 @@ export const OnboardingForm = ({ employee }: Props) => {
               name="phoneNumber"
               rules={[{ required: true, message: 'Required' }]}
             >
-              <Input className="bordered" placeholder="Enter phone number" />
+              {/* <Input className="bordered" placeholder="Enter phone number" /> */}
+              <PhoneInput
+                country="vn"
+                onChange={(value, data) => {
+                  // store dial code and phone number individually
+                  form.setFieldValue('phone', value)
+                  if ('dialCode' in data) {
+                    setDialCode(data.dialCode)
+                  }
+                }}
+                inputStyle={{ width: '100%', height: 40 }}
+                enableSearch
+                disableSearchIcon
+              />
             </Form.Item>
           </Col>
           <Col
