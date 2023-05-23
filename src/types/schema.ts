@@ -690,8 +690,7 @@ export interface RequestCreateEmployeeInput {
   salary: number
   seniorityID: string
   status: string
-  teamEmail?: string
-  joinedDate: string
+  teamEmail: string
 }
 
 export interface RequestCreatePositionInput {
