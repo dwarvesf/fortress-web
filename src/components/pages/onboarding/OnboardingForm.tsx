@@ -9,7 +9,6 @@ import {
   DatePicker,
   UploadProps,
 } from 'antd'
-import { InfoCircleOutlined } from '@ant-design/icons'
 import { RcFile } from 'antd/lib/upload'
 import { FormWrapper } from 'components/common/FormWrapper'
 import { AsyncSelect } from 'components/common/Select'
@@ -205,12 +204,7 @@ export const OnboardingForm = ({ employee }: Props) => {
               form={form}
             />
           </Col>
-          <Col span={24} md={{ span: 12 }}>
-            <Form.Item label="Display Name" name="displayName">
-              <Input className="bordered" readOnly />
-            </Form.Item>
-          </Col>
-          <Col span={24} md={{ span: 12 }}>
+          <Col span={24}>
             <Form.Item label="Full Name" name="fullName">
               <Input className="bordered" readOnly />
             </Form.Item>
@@ -380,29 +374,21 @@ export const OnboardingForm = ({ employee }: Props) => {
           <Col span={24} md={{ span: 12 }}>
             <Form.Item
               label="MBTI"
+              extra={
+                <div style={{ marginTop: 10 }}>
+                  Take your test{' '}
+                  <a
+                    href="https://www.16personalities.com/free-personality-test"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="styled"
+                  >
+                    here
+                  </a>
+                </div>
+              }
               name="mbti"
               rules={[{ required: true, message: 'Required' }]}
-              tooltip={{
-                title: (
-                  <span>
-                    Take your test{' '}
-                    <a
-                      href="https://www.16personalities.com/free-personality-test"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="styled"
-                      style={{ color: 'white' }}
-                    >
-                      here
-                    </a>
-                  </span>
-                ),
-                icon: (
-                  <span>
-                    <InfoCircleOutlined />
-                  </span>
-                ),
-              }}
             >
               <Input className="bordered" placeholder="Enter MBTI" />
             </Form.Item>
