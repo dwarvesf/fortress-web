@@ -680,8 +680,9 @@ export interface RequestCreateClientInput {
 }
 
 export interface RequestCreateEmployeeInput {
-  displayName?: string
+  displayName: string
   fullName: string
+  joinedDate: string
   personalEmail: string
   positions: string[]
   referredBy?: string
@@ -813,6 +814,32 @@ export interface RequestSendSurveyInput {
 export interface RequestSubmitBody {
   answers: RequestBasicEventQuestionInput[]
   status: string
+}
+
+export interface RequestSubmitOnboardingFormRequest {
+  address: string
+  avatar?: string
+  city: string
+  country: string
+  dateOfBirth: string
+  discordName: string
+  gender: string
+  githubID?: string
+  horoscope: string
+  identityCardPhotoBack?: string
+  identityCardPhotoFront?: string
+  linkedInName?: string
+  localBankBranch: string
+  localBankCurrency: string
+  localBankNumber: string
+  localBankRecipientName: string
+  localBranchName: string
+  mbti: string
+  notionName?: string
+  passportPhotoBack?: string
+  passportPhotoFront?: string
+  phoneNumber: string
+  placeOfResidence: string
 }
 
 export interface RequestUpdateBaseSalaryInput {
@@ -1385,6 +1412,22 @@ export interface ViewEmployeeData {
   wiseRecipientName?: string
 }
 
+export interface ViewEmployeeInvitationData {
+  employee?: ViewInvitedEmployeeInfo
+  employeeID?: string
+  id?: string
+  invitedBy?: string
+  isBasecampAccountCreated?: boolean
+  isCompleted?: boolean
+  isDiscordRoleAssigned?: boolean
+  isInfoUpdated?: boolean
+  isTeamEmailCreated?: boolean
+}
+
+export interface ViewEmployeeInvitationResponse {
+  data?: ViewEmployeeInvitationData
+}
+
 export interface ViewEmployeeListDataResponse {
   data?: ViewEmployeeData[]
 }
@@ -1556,6 +1599,16 @@ export interface ViewGroupEngineeringHealth {
   quality?: number
   quarter?: string
   trend?: ViewEngineeringHealthTrend
+}
+
+export interface ViewInvitedEmployeeInfo {
+  avatar?: string
+  displayName?: string
+  fullName?: string
+  id?: string
+  personalEmail?: string
+  teamEmail?: string
+  username?: string
 }
 
 export interface ViewInvoice {

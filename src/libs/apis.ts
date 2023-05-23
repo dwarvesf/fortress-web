@@ -69,6 +69,10 @@ import {
   RequestUpdateBaseSalaryInput,
   ViewUpdateBaseSalaryResponse,
   ViewGetCurrenciesResponse,
+  ViewCountriesResponse,
+  RequestSubmitOnboardingFormRequest,
+  ViewContentDataResponse,
+  ViewEmployeeInvitationResponse,
 } from 'types/schema'
 import { EmployeeListFilter } from 'types/filters/EmployeeListFilter'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
@@ -334,7 +338,7 @@ class Client {
   }
 
   public getCountryMetadata = () => {
-    return fetcher<Response<ViewMetaData[]>>(`${BASE_URL}/metadata/countries`, {
+    return fetcher<ViewCountriesResponse>(`${BASE_URL}/metadata/countries`, {
       headers: { ...this.privateHeaders },
     })
   }
@@ -1016,6 +1020,40 @@ class Client {
         ...this.privateHeaders,
       },
       body: JSON.stringify(data),
+    })
+  }
+
+  public submitOnboardingForm(
+    data: RequestSubmitOnboardingFormRequest,
+    token: string,
+  ) {
+    return fetcher<ViewMessageResponse>(`${BASE_URL}/invite/submit`, {
+      method: 'PUT',
+      headers: {
+        ...this.privateHeaders,
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      body: JSON.stringify(data),
+    })
+  }
+
+  public uploadAsset(formData: FormData, token?: string) {
+    return fetcher<ViewContentDataResponse>(`${BASE_URL}/assets/upload`, {
+      method: 'POST',
+      headers: {
+        ...this.formDataHeaders,
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      body: formData,
+    })
+  }
+
+  public getInviteState(token?: string) {
+    return fetcher<ViewEmployeeInvitationResponse>(`${BASE_URL}/invite`, {
+      headers: {
+        ...this.privateHeaders,
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
     })
   }
 }

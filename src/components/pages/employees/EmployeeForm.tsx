@@ -1,8 +1,18 @@
-import { Form, Row, Col, Input, Button, notification, Select } from 'antd'
+import {
+  Form,
+  Row,
+  Col,
+  Input,
+  Button,
+  notification,
+  Select,
+  DatePicker,
+} from 'antd'
 import { FormWrapper } from 'components/common/FormWrapper'
 import { AsyncSelect } from 'components/common/Select'
 import { renderEmployeeOption } from 'components/common/Select/renderers/employeeOption'
 import { renderStatusOption } from 'components/common/Select/renderers/statusOption'
+import { SELECT_BOX_DATE_FORMAT, SERVER_DATE_FORMAT } from 'constants/date'
 import { ROUTES } from 'constants/routes'
 import { employeeStatuses } from 'constants/status'
 import { client, GET_PATHS } from 'libs/apis'
@@ -84,6 +94,9 @@ export const EmployeeForm = (props: Props) => {
       status: values.status,
       teamEmail: values.teamEmail,
       referredBy: values.referredBy,
+      joinedDate: values.joinedDate
+        ? values.joinedDate.format(SERVER_DATE_FORMAT)
+        : '',
     }
   }
 
@@ -177,6 +190,21 @@ export const EmployeeForm = (props: Props) => {
                   }))
                   .map(renderStatusOption)}
               </Select>
+            </Form.Item>
+          </Col>
+
+          <Col span={24} md={{ span: 12 }}>
+            <Form.Item
+              label="Joined Date"
+              name="joinedDate"
+              rules={[{ required: true, message: 'Required' }]}
+            >
+              <DatePicker
+                format={SELECT_BOX_DATE_FORMAT}
+                style={{ width: '100%' }}
+                placeholder="Select joined date"
+                className="bordered"
+              />
             </Form.Item>
           </Col>
 
