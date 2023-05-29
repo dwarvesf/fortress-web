@@ -144,7 +144,7 @@ export const InvoiceFormInputList = (props: Props) => {
                             placeholder="Enter quantity"
                             thousandSeparator=","
                             allowNegative={false}
-                            decimalScale={1}
+                            decimalScale={5}
                             style={{ textAlign: 'right', minWidth: 120 }}
                             customInput={Input}
                           />
