@@ -141,7 +141,7 @@ export const InvoiceForm = () => {
         dueDate: values.dueDate?.format('YYYY-MM-DD') || '',
         invoiceDate: values.invoiceDate?.format('YYYY-MM-DD') || '',
         invoiceMonth: values.invoiceMonth
-          ? values.invoiceMonth.month() + 1
+          ? values.invoiceMonth.month()
           : undefined,
         invoiceYear: values.invoiceMonth
           ? values.invoiceMonth.year()
