@@ -363,6 +363,8 @@ export const General = (props: Props) => {
                         ) : (
                           '-'
                         ),
+                        permission:
+                          Permission.EMPLOYEES_READ_GENERALINFO_FULLACCESS,
                       },
                       {
                         label: 'Organizations',
@@ -382,18 +384,26 @@ export const General = (props: Props) => {
                       {
                         label: 'Wise Account Number',
                         value: data.wiseAccountNumber || '-',
+                        permission:
+                          Permission.EMPLOYEES_READ_GENERALINFO_FULLACCESS,
                       },
                       {
                         label: 'Wise Currency',
                         value: data.wiseCurrency || '-',
+                        permission:
+                          Permission.EMPLOYEES_READ_GENERALINFO_FULLACCESS,
                       },
                       {
                         label: 'Wise Recipient Email',
                         value: data.wiseRecipientEmail || '-',
+                        permission:
+                          Permission.EMPLOYEES_READ_GENERALINFO_FULLACCESS,
                       },
                       {
                         label: 'Wise Recipient Name',
                         value: data.wiseRecipientName || '-',
+                        permission:
+                          Permission.EMPLOYEES_READ_GENERALINFO_FULLACCESS,
                       },
                     ]}
                   />
