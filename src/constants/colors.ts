@@ -26,6 +26,11 @@ export const statusColors: Record<string, TagProps['color']> = {
   'strongly-agree': 'green',
   sent: 'gray',
   new: 'red',
+  high: 'red',
+  low: 'green',
+  medium: 'orange',
+  'medium-': 'gold',
+  'medium+': 'volcano',
 }
 
 export const likertScalesColors = {

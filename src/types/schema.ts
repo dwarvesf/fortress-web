@@ -155,8 +155,6 @@ export interface ModelEmployee {
   createdAt?: string
   dateOfBirth?: string
   deletedAt?: GormDeletedAt
-  discordID?: string
-  discordName?: string
   displayName?: string
   employeeChapters?: ModelEmployeeChapter[]
   employeeOrganizations?: ModelEmployeeOrganization[]
@@ -167,8 +165,6 @@ export interface ModelEmployee {
   /** basic info */
   fullName?: string
   gender?: string
-  githubID?: string
-  gitlabID?: string
   heads?: ModelProjectHead[]
   horoscope?: string
   id?: string
@@ -178,7 +174,6 @@ export interface ModelEmployee {
   leftDate?: string
   lineManager?: ModelEmployee
   lineManagerID?: string
-  linkedInName?: string
   localBankBranch?: string
   localBankCurrency?: string
   localBankNumber?: string
@@ -186,9 +181,6 @@ export interface ModelEmployee {
   localBranchName?: string
   mbti?: string
   mentees?: ModelEmployee[]
-  notionEmail?: string
-  notionID?: string
-  notionName?: string
   organizations?: ModelOrganization[]
   passportPhotoBack?: string
   passportPhotoFront?: string
@@ -352,6 +344,7 @@ export interface ModelPosition {
 }
 
 export interface ModelProject {
+  accountRating?: number
   allowsSendingSurvey?: boolean
   avatar?: string
   bankAccount?: ModelBankAccount
@@ -360,16 +353,20 @@ export interface ModelProject {
   clientEmail?: string
   clientID?: string
   code?: string
+  commissionConfigs?: ModelProjectCommissionConfig[]
   companyInfo?: ModelCompanyInfo
   companyInfoID?: string
   country?: ModelCountry
   countryID?: string
   createdAt?: string
   deletedAt?: GormDeletedAt
+  deliveryRating?: number
   endDate?: string
   function?: string
   heads?: ModelProjectHead[]
   id?: string
+  importantLevel?: string
+  leadRating?: number
   name?: string
   organization?: ModelOrganization
   organizationID?: string
@@ -393,6 +390,16 @@ export interface ModelProjectBonusExplain {
   name?: string
   todo_id?: number
   year?: number
+}
+
+export interface ModelProjectCommissionConfig {
+  commissionRate?: number
+  createdAt?: string
+  deletedAt?: GormDeletedAt
+  id?: string
+  position?: string
+  projectID?: string
+  updatedAt?: string
 }
 
 export interface ModelProjectHead {
@@ -515,9 +522,11 @@ export interface ModelResourceUtilization {
 
 export interface ModelRole {
   code?: string
+  color?: string
   createdAt?: string
   deletedAt?: GormDeletedAt
   id?: string
+  isShow?: boolean
   level?: number
   name?: string
   updatedAt?: string
@@ -959,11 +968,27 @@ export interface RequestUpdatePositionBody {
 }
 
 export interface RequestUpdateProjectGeneralInfoInput {
+  /**
+   * @min 1
+   * @max 5
+   */
+  accountRating: number
   auditNotionID?: string
   bankAccountID?: string
   clientID?: string
   countryID: string
+  /**
+   * @min 1
+   * @max 5
+   */
+  deliveryRating: number
   function: string
+  importantLevel: string
+  /**
+   * @min 1
+   * @max 5
+   */
+  leadRating: number
   name: string
   organizationID?: string
   stacks?: string[]
@@ -1000,6 +1025,15 @@ export interface RequestUpdateWorkUnitInput {
   body?: RequestUpdateWorkUnitBody
   projectID?: string
   workUnitID?: string
+}
+
+export interface RequestUpsertRollupRequest {
+  categoryID: string
+  channelID: string
+  discordUserID: string
+  lastMessageID: string
+  messageCount?: number
+  reactionCount?: number
 }
 
 export interface ViewAPIKeyData {
@@ -1822,6 +1856,7 @@ export interface ViewProjectContentDataResponse {
 
 export interface ViewProjectData {
   accountManagers?: ViewProjectHead[]
+  accountRating?: number
   allowsSendingSurvey?: boolean
   auditNotionID?: string
   avatar?: string
@@ -1835,10 +1870,13 @@ export interface ViewProjectData {
   currency?: ViewCurrency
   deletedAt?: GormDeletedAt
   deliveryManagers?: ViewProjectHead[]
+  deliveryRating?: number
   endDate?: string
   function?: string
   id?: string
+  importantLevel?: string
   industry?: string
+  leadRating?: number
   members?: ViewProjectMember[]
   monthlyChargeRate?: number
   name?: string
@@ -1862,6 +1900,7 @@ export interface ViewProjectHead {
   commissionRate?: number
   displayName?: string
   employeeID?: string
+  finalCommissionRate?: number
   fullName?: string
   username?: string
 }

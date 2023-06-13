@@ -43,6 +43,7 @@ export enum Permission {
   PROJECTS_EDIT = 'projects.edit',
   PROJECTS_READ = 'projects.read',
   PROJECTS_READ_FULLACCESS = 'projects.read.fullAccess',
+  PROJECTS_READ_MONTHLYREVENUE = 'projects.read.monthlyRevenue',
   PROJECTWORKUNITS_CREATE = 'projectWorkUnits.create',
   PROJECTWORKUNITS_CREATE_FULLACCESS = 'projectWorkUnits.create.fullAccess',
   PROJECTWORKUNITS_DELETE = 'projectWorkUnits.delete',
