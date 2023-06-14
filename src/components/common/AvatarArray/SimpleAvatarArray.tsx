@@ -1,4 +1,5 @@
 import { Avatar, Space, Tooltip } from 'antd'
+import { CSSProperties } from 'react'
 import { theme } from 'styles'
 import { ViewEmployeeData, ViewProjectMember } from 'types/schema'
 import { getFirstLetterCapitalized } from 'utils/string'
@@ -8,16 +9,23 @@ interface Props {
   data?: (ViewEmployeeData & ViewProjectMember)[]
   numOfVisibleAvatar?: number
   tooltip?: JSX.Element
+  wrapperStyle?: CSSProperties
 }
 
 export const SimpleAvatarArray = (props: Props) => {
-  const { size = 24, data = [], numOfVisibleAvatar = 3, tooltip } = props
+  const {
+    size = 24,
+    data = [],
+    numOfVisibleAvatar = 3,
+    tooltip,
+    wrapperStyle,
+  } = props
 
   const offset = -size / 3
 
   return (
     <Tooltip title={tooltip} color="white">
-      <Space direction="horizontal" size={0}>
+      <Space direction="horizontal" size={0} style={wrapperStyle}>
         {data.slice(0, numOfVisibleAvatar).map((user, index: number) => (
           <span
             key={user.id || user.employeeID}

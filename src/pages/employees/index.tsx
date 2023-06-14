@@ -197,6 +197,7 @@ const Default = () => {
                 avatarSize={20}
                 project={project}
                 style={{ marginLeft: -7 }}
+                onMouseDown={(e) => e.preventDefault()}
               />
             )}
             maxTag={2}
