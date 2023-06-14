@@ -27,7 +27,6 @@ import { useMouseDown } from 'hooks/useMouseDown'
 import { formatCurrency } from 'utils/currency'
 import { ProjectImportance, projectImportances } from 'constants/project'
 import { theme } from 'styles'
-import { StarTwoTone } from '@ant-design/icons'
 
 interface ColumnProps {
   filter: ProjectListFilter
@@ -199,7 +198,7 @@ const columns = ({
               {value.map((each) => (
                 <Space key={each.employeeID}>
                   <UserAvatar user={each} />
-                  {each.isLead && <StarTwoTone twoToneColor="orange" />}
+                  {each.isLead && '⭐'}
                 </Space>
               ))}
             </Space>
