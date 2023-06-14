@@ -161,7 +161,7 @@ const columns = ({
                             <UserAvatar user={each} />
                             <AuthenticatedContent
                               permission={
-                                Permission.MODEL_PERMISSIONPROJECTSCOMMISSIONRATEREAD
+                                Permission.PROJECTS_COMMISSIONRATE_READ
                               }
                             >
                               {`- ${each.finalCommissionRate}%`}
