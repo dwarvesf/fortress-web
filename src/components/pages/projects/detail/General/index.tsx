@@ -16,7 +16,12 @@ import { EditableAvatar } from 'components/common/EditableAvatar'
 import { getErrorMessage } from 'utils/string'
 import { Permission } from 'constants/permission'
 import { useAuthContext } from 'context/auth'
-import { ProjectFunction, projectFunctions } from 'constants/projectTypes'
+import {
+  ProjectFunction,
+  ProjectImportance,
+  projectFunctions,
+  projectImportances,
+} from 'constants/project'
 import { TotalResultCount } from 'components/common/Table/TotalResultCount'
 import { EditProjectContactInfoModal } from './EditProjectContactInfoModal'
 import { EditProjectGeneralInfoModal } from './EditProjectGeneralInfoModal'
@@ -139,6 +144,29 @@ export const General = (props: Props) => {
                       {
                         label: 'Notion ID',
                         value: data?.auditNotionID || '-',
+                        permission: Permission.PROJECTS_READ_FULLACCESS,
+                      },
+                      {
+                        label: 'Important',
+                        value:
+                          projectImportances[
+                            data?.importantLevel as ProjectImportance
+                          ] || '-',
+                        permission: Permission.PROJECTS_READ_FULLACCESS,
+                      },
+                      {
+                        label: 'Lead Rating',
+                        value: data?.leadRating || '-',
+                        permission: Permission.PROJECTS_READ_FULLACCESS,
+                      },
+                      {
+                        label: 'Account Rating',
+                        value: data?.accountRating || '-',
+                        permission: Permission.PROJECTS_READ_FULLACCESS,
+                      },
+                      {
+                        label: 'Delivery Rating',
+                        value: data?.deliveryRating || '-',
                         permission: Permission.PROJECTS_READ_FULLACCESS,
                       },
                     ]}
