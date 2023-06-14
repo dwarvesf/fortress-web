@@ -66,6 +66,7 @@ export enum Permission {
   PROJECTS_COMMISSIONRATE_EDIT = 'projects.commissionRate.edit',
   PROJECTMEMBERS_RATE_READ = 'projectMembers.rate.read',
   PROJECTMEMBERS_RATE_EDIT = 'projectMembers.rate.edit',
+  MODEL_PERMISSIONPROJECTSCOMMISSIONRATEREAD = 'model.PermissionProjectsCommissionRateRead',
 }
 
 // the permission that needs to access to a certain page
