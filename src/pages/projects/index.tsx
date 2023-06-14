@@ -64,6 +64,7 @@ const columns = ({
         '-'
       ),
     width: 110,
+    sorter: true,
     permission: Permission.PROJECTS_READ_FULLACCESS,
   },
   {
@@ -93,6 +94,7 @@ const columns = ({
   {
     title: 'PICs',
     key: 'pics',
+    className: 'no-padding-td',
     render: (value?: ViewProjectData) => {
       const pics = Object.values(
         [
@@ -111,6 +113,7 @@ const columns = ({
       return pics.length ? (
         <SimpleAvatarArray
           data={pics}
+          wrapperStyle={{ width: '100%', padding: 16 }}
           tooltip={
             <Space
               direction="vertical"
@@ -156,7 +159,13 @@ const columns = ({
                         {data.map((each) => (
                           <Space key={`t${label}_${each.employeeID}`}>
                             <UserAvatar user={each} />
-                            {`- ${each.finalCommissionRate}%`}
+                            <AuthenticatedContent
+                              permission={
+                                Permission.PROJECTS_COMMISSIONRATE_READ
+                              }
+                            >
+                              {`- ${each.finalCommissionRate}%`}
+                            </AuthenticatedContent>
                           </Space>
                         ))}
                       </Space>
@@ -167,7 +176,7 @@ const columns = ({
           }
         />
       ) : (
-        'TBD'
+        <div style={{ padding: 16 }}>TBD</div>
       )
     },
   },
@@ -175,23 +184,28 @@ const columns = ({
     title: 'Members',
     key: 'members',
     dataIndex: 'members',
+    className: 'no-padding-td',
     render: (value?: ViewProjectMember[]) =>
       value?.length ? (
         <SimpleAvatarArray
           data={value}
+          wrapperStyle={{ width: '100%', padding: 16 }}
           tooltip={
             <Space
               direction="vertical"
               style={{ color: theme.colors.black, padding: '10px 20px' }}
             >
               {value.map((each) => (
-                <UserAvatar key={each.employeeID} user={each} />
+                <Space key={each.employeeID}>
+                  <UserAvatar user={each} />
+                  {each.isLead && '⭐'}
+                </Space>
               ))}
             </Space>
           }
         />
       ) : (
-        '-'
+        <div style={{ padding: 16 }}>-</div>
       ),
   },
   {
@@ -332,17 +346,17 @@ const Default = () => {
             pagination={false}
             scroll={{ x: 'max-content' }}
             onChange={(_, filters, sorter) => {
-              const sort = Array.isArray(sorter) ? sorter[0] : sorter
-              const monthlyChargeRateSort =
-                sort.columnKey === 'monthlyChargeRate' && sort.order
+              const sorterResult = Array.isArray(sorter) ? sorter[0] : sorter
+              const sort =
+                sorterResult.columnKey && sorterResult.order
                   ? {
-                      ascend: 'monthlyChargeRate',
-                      descend: '-monthlyChargeRate',
-                    }[sort.order]
+                      ascend: `${sorterResult.columnKey}`,
+                      descend: `-${sorterResult.columnKey}`,
+                    }[sorterResult.order]
                   : undefined
               setFilter({
                 status: (filters.status?.[0] as string) || '',
-                sort: monthlyChargeRateSort,
+                sort,
               })
             }}
             onRow={(record) => ({
