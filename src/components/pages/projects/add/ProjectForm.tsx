@@ -9,7 +9,7 @@ import {
   ProjectFunction,
   projectFunctions,
   projectTypes,
-} from 'constants/projectTypes'
+} from 'constants/project'
 import { GET_PATHS, client } from 'libs/apis'
 import { theme } from 'styles'
 import { RequestCreateProjectInput } from 'types/schema'

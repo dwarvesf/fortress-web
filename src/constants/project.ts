@@ -24,3 +24,19 @@ export const projectFunctions: Record<ProjectFunction, string> = {
   [ProjectFunction.TRAINING]: 'Training',
   [ProjectFunction.MANAGEMENT]: 'Management',
 }
+
+export enum ProjectImportance {
+  LOW = 'low',
+  UNDER_MEDIUM = 'medium-',
+  MEDIUM = 'medium',
+  ABOVE_MEDIUM = 'medium+',
+  HIGH = 'high',
+}
+
+export const projectImportances: Record<ProjectImportance, string> = {
+  [ProjectImportance.LOW]: 'Low',
+  [ProjectImportance.UNDER_MEDIUM]: 'Medium-',
+  [ProjectImportance.MEDIUM]: 'Medium',
+  [ProjectImportance.ABOVE_MEDIUM]: 'Medium+',
+  [ProjectImportance.HIGH]: 'High',
+}

@@ -3,13 +3,13 @@ import { ROUTES } from 'constants/routes'
 import { PageHeader } from 'components/common/PageHeader'
 import Table, { ColumnType } from 'antd/lib/table'
 import Link from 'next/link'
-import { AvatarArray } from 'components/common/AvatarArray'
-import { ProjectAvatar } from 'components/common/AvatarWithName'
+import { SimpleAvatarArray } from 'components/common/AvatarArray'
+import { ProjectAvatar, UserAvatar } from 'components/common/AvatarWithName'
 import { Button } from 'components/common/Button'
 import { ProjectListFilter } from 'types/filters/ProjectListFilter'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { client, GET_PATHS } from 'libs/apis'
-import { ViewMetaData, ViewProjectData, ViewProjectHead } from 'types/schema'
+import { ViewMetaData, ViewProjectData, ViewProjectMember } from 'types/schema'
 import { useFilter } from 'hooks/useFilter'
 import debounce from 'lodash.debounce'
 import { transformMetadataToFilterOption } from 'utils/select'
@@ -25,6 +25,8 @@ import { TotalResultCount } from 'components/common/Table/TotalResultCount'
 import { useAuthContext } from 'context/auth'
 import { useMouseDown } from 'hooks/useMouseDown'
 import { formatCurrency } from 'utils/currency'
+import { ProjectImportance, projectImportances } from 'constants/project'
+import { theme } from 'styles'
 
 interface ColumnProps {
   filter: ProjectListFilter
@@ -48,7 +50,149 @@ const columns = ({
     dataIndex: 'monthlyChargeRate',
     render: (value, record) =>
       value ? formatCurrency(value, { currency: record.currency?.name }) : '-',
+    sorter: true,
+    permission: Permission.PROJECTS_READ_MONTHLYREVENUE,
+  },
+  {
+    title: 'Important',
+    key: 'importantLevel',
+    dataIndex: 'importantLevel',
+    render: (value?: ProjectImportance) =>
+      value ? (
+        <Tag color={statusColors[value]}>{projectImportances[value]}</Tag>
+      ) : (
+        '-'
+      ),
+    width: 110,
     permission: Permission.PROJECTS_READ_FULLACCESS,
+  },
+  {
+    title: 'Lead Rating',
+    key: 'leadRating',
+    dataIndex: 'leadRating',
+    render: (value) => value || '-',
+    width: 107,
+    permission: Permission.PROJECTS_READ_FULLACCESS,
+  },
+  {
+    title: 'Account Rating',
+    key: 'accountRating',
+    dataIndex: 'accountRating',
+    render: (value) => value || '-',
+    width: 135,
+    permission: Permission.PROJECTS_READ_FULLACCESS,
+  },
+  {
+    title: 'Delivery Rating',
+    key: 'deliveryRating',
+    dataIndex: 'deliveryRating',
+    render: (value) => value || '-',
+    width: 132,
+    permission: Permission.PROJECTS_READ_FULLACCESS,
+  },
+  {
+    title: 'PICs',
+    key: 'pics',
+    render: (value?: ViewProjectData) => {
+      const pics = Object.values(
+        [
+          ...(value?.technicalLeads || []),
+          ...(value?.deliveryManagers || []),
+          ...(value?.accountManagers || []),
+          ...(value?.salePersons || []),
+        ].reduce(
+          (prev, curr) => ({
+            ...prev,
+            [String(curr.employeeID)]: curr,
+          }),
+          {},
+        ),
+      )
+      return pics.length ? (
+        <SimpleAvatarArray
+          data={pics}
+          tooltip={
+            <Space
+              direction="vertical"
+              size="large"
+              style={{
+                color: theme.colors.black,
+                padding: 10,
+              }}
+            >
+              {[
+                {
+                  label: 'Lead',
+                  data: value?.technicalLeads || [],
+                },
+                {
+                  label: 'Delivery Managers',
+                  data: value?.deliveryManagers || [],
+                },
+                {
+                  label: 'Account Managers',
+                  data: value?.accountManagers || [],
+                },
+                {
+                  label: 'Sale Persons',
+                  data: value?.salePersons || [],
+                },
+              ].map(
+                ({ label, data }) =>
+                  !!data.length && (
+                    <div key={label}>
+                      <div
+                        style={{
+                          color: '#8f8f8f',
+                          fontSize: '80%',
+                          fontWeight: 'bold',
+                          textTransform: 'uppercase',
+                          marginBottom: 7,
+                        }}
+                      >
+                        {label}
+                      </div>
+                      <Space direction="vertical" style={{ padding: '0 10px' }}>
+                        {data.map((each) => (
+                          <Space key={`t${label}_${each.employeeID}`}>
+                            <UserAvatar user={each} />
+                            {`- ${each.finalCommissionRate}%`}
+                          </Space>
+                        ))}
+                      </Space>
+                    </div>
+                  ),
+              )}
+            </Space>
+          }
+        />
+      ) : (
+        'TBD'
+      )
+    },
+  },
+  {
+    title: 'Members',
+    key: 'members',
+    dataIndex: 'members',
+    render: (value?: ViewProjectMember[]) =>
+      value?.length ? (
+        <SimpleAvatarArray
+          data={value}
+          tooltip={
+            <Space
+              direction="vertical"
+              style={{ color: theme.colors.black, padding: '10px 20px' }}
+            >
+              {value.map((each) => (
+                <UserAvatar key={each.employeeID} user={each} />
+              ))}
+            </Space>
+          }
+        />
+      ) : (
+        '-'
+      ),
   },
   {
     title: 'Status',
@@ -70,41 +214,6 @@ const columns = ({
         '-'
       ),
     permission: Permission.PROJECTS_READ_FULLACCESS,
-  },
-  {
-    title: 'Lead',
-    key: 'technicalLeads',
-    dataIndex: 'technicalLeads',
-    render: (value) =>
-      value && value.length ? <AvatarArray data={value} /> : '-',
-  },
-  {
-    title: 'Members',
-    key: 'members',
-    dataIndex: 'members',
-    render: (value) =>
-      value && value.length ? <AvatarArray data={value} /> : '-',
-  },
-  {
-    title: 'Delivery Managers',
-    key: 'deliveryManagers',
-    dataIndex: 'deliveryManagers',
-    render: (value?: ViewProjectHead[]) =>
-      value ? <AvatarArray data={value} /> : 'TBD',
-  },
-  {
-    title: 'Account Managers',
-    key: 'accountManagers',
-    dataIndex: 'accountManagers',
-    render: (value?: ViewProjectHead[]) =>
-      value ? <AvatarArray data={value} /> : 'TBD',
-  },
-  {
-    title: 'Sale Persons',
-    key: 'salePersons',
-    dataIndex: 'salePersons',
-    render: (value?: ViewProjectHead[]) =>
-      value ? <AvatarArray data={value} /> : 'TBD',
   },
   {
     title: '',
@@ -222,9 +331,18 @@ const Default = () => {
             rowKey={(row) => row.id || ''}
             pagination={false}
             scroll={{ x: 'max-content' }}
-            onChange={(_, filters) => {
+            onChange={(_, filters, sorter) => {
+              const sort = Array.isArray(sorter) ? sorter[0] : sorter
+              const monthlyChargeRateSort =
+                sort.columnKey === 'monthlyChargeRate' && sort.order
+                  ? {
+                      ascend: 'monthlyChargeRate',
+                      descend: '-monthlyChargeRate',
+                    }[sort.order]
+                  : undefined
               setFilter({
                 status: (filters.status?.[0] as string) || '',
+                sort: monthlyChargeRateSort,
               })
             }}
             onRow={(record) => ({

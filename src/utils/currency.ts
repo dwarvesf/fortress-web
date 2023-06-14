@@ -16,17 +16,11 @@ export const formatCurrency = (
   val = 0,
   { currency = 'VND', showSymbol = true, truncate = false, ...opt } = {},
 ) => {
-  let currencyDisplay = 'symbol'
-
-  if (currency !== 'SGD') {
-    currencyDisplay = 'narrowSymbol'
-  }
-
   const { symbol, string } = Intl.NumberFormat(undefined, {
     style: 'currency',
     currency: currency || 'VND',
     minimumFractionDigits: 0,
-    currencyDisplay,
+    currencyDisplay: 'narrowSymbol',
     ...opt,
   })
     .formatToParts(val)
@@ -50,5 +44,6 @@ export const formatCurrency = (
   ]
     .filter(Boolean)
     .map((v) => v?.trim())
+    .concat(...(showSymbol && currency === 'SGD' ? [' ', currency] : []))
     .join('')
 }
