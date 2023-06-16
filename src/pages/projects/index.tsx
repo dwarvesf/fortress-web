@@ -50,7 +50,7 @@ const columns = ({
     dataIndex: 'monthlyChargeRate',
     render: (value, record) =>
       value ? formatCurrency(value, { currency: record.currency?.name }) : '-',
-    sorter: true,
+    sorter: { multiple: 1 },
     permission: Permission.PROJECTS_READ_MONTHLYREVENUE,
   },
   {
@@ -64,7 +64,7 @@ const columns = ({
         '-'
       ),
     width: 110,
-    sorter: true,
+    sorter: { multiple: 2 },
     permission: Permission.PROJECTS_READ_FULLACCESS,
   },
   {
@@ -346,14 +346,19 @@ const Default = () => {
             pagination={false}
             scroll={{ x: 'max-content' }}
             onChange={(_, filters, sorter) => {
-              const sorterResult = Array.isArray(sorter) ? sorter[0] : sorter
-              const sort =
-                sorterResult.columnKey && sorterResult.order
-                  ? {
-                      ascend: `${sorterResult.columnKey}`,
-                      descend: `-${sorterResult.columnKey}`,
-                    }[sorterResult.order]
-                  : undefined
+              const sorterResults = Array.isArray(sorter) ? sorter : [sorter]
+              const sort = sorterResults
+                .flatMap((each) =>
+                  each.columnKey && each.order
+                    ? [
+                        {
+                          ascend: `${each.columnKey}`,
+                          descend: `-${each.columnKey}`,
+                        }[each.order],
+                      ]
+                    : [],
+                )
+                .join(',')
               setFilter({
                 status: (filters.status?.[0] as string) || '',
                 sort,
