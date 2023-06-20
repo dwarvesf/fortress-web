@@ -486,14 +486,7 @@ export const OnboardingForm = ({ employee }: Props) => {
             <Form.Item
               label="Discord"
               name="discordName"
-              rules={[
-                { required: true, message: 'Required' },
-                {
-                  pattern:
-                    /^(?!(discordtag|here|everyone)).[^@#:]{2,32}#[\d]{4}$/,
-                  message: 'Incorrect format',
-                },
-              ]}
+              rules={[{ required: true, message: 'Required' }]}
             >
               <Input placeholder="johndoe#xxxx" className="bordered" />
             </Form.Item>

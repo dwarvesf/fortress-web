@@ -143,6 +143,15 @@ export interface ModelCurrency {
   updatedAt?: string
 }
 
+export interface ModelDiscordAccount {
+  createdAt?: string
+  deletedAt?: GormDeletedAt
+  discordID?: string
+  id?: string
+  updatedAt?: string
+  username?: string
+}
+
 export interface ModelEmployee {
   address?: string
   avatar?: string
@@ -155,6 +164,8 @@ export interface ModelEmployee {
   createdAt?: string
   dateOfBirth?: string
   deletedAt?: GormDeletedAt
+  discordAccount?: ModelDiscordAccount
+  discordAccountID?: string
   displayName?: string
   employeeChapters?: ModelEmployeeChapter[]
   employeeOrganizations?: ModelEmployeeOrganization[]
@@ -1029,7 +1040,7 @@ export interface RequestUpdateWorkUnitInput {
 
 export interface RequestUpsertRollupRequest {
   categoryID: string
-  channelID: string
+  channelID?: string
   discordUserID: string
   lastMessageID: string
   messageCount?: number
