@@ -1,4 +1,4 @@
-import { Col, Form, Input, Modal, notification, Row } from 'antd'
+import { Col, Form, Input, Modal, notification, Row, Select } from 'antd'
 import { client } from 'libs/apis'
 import { useState } from 'react'
 import { NumericFormat } from 'react-number-format'
@@ -32,6 +32,7 @@ export const EditBaseSalaryModal = (props: Props) => {
         ...initialValues,
         personalAccountAmount: Number(values.personalAccountAmount),
         companyAccountAmount: Number(values.companyAccountAmount),
+        batch: values.batch,
       } as RequestUpdateBaseSalaryInput)
 
       notification.success({
@@ -101,6 +102,21 @@ export const EditBaseSalaryModal = (props: Props) => {
                 suffix={meta?.currency}
                 customInput={Input}
               />
+            </Form.Item>
+          </Col>
+          <Col span={24}>
+            <Form.Item
+              label="Batch"
+              name="batch"
+              rules={[{ required: true, message: 'Required' }]}
+            >
+              <Select placeholder="Select batch">
+                {[1, 15].map((key) => (
+                  <Select.Option key={key} value={key} label={key}>
+                    {key}
+                  </Select.Option>
+                ))}
+              </Select>
             </Form.Item>
           </Col>
         </Row>
