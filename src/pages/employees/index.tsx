@@ -280,7 +280,11 @@ const Default = () => {
         key: 'lineManagers',
         dataIndex: 'lineManager',
         render: (value?: ViewBasicEmployeeInfo) =>
-          value ? <UserAvatar user={value} /> : '-',
+          value ? (
+            <UserAvatar user={value} onMouseDown={(e) => e.preventDefault()} />
+          ) : (
+            '-'
+          ),
         filterSearch: true,
         filteredValue: filter.lineManagers,
         filters: [
