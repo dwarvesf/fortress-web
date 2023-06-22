@@ -19,8 +19,8 @@ import { client, GET_PATHS } from 'libs/apis'
 import { useRouter } from 'next/router'
 import { useEffect, useReducer, useState } from 'react'
 import {
-  ModelCountry,
   RequestSubmitOnboardingFormRequest,
+  ViewCountry,
   ViewInvitedEmployeeInfo,
 } from 'types/schema'
 import { getErrorMessage, removeLeadingZero } from 'utils/string'
@@ -36,7 +36,7 @@ interface Props {
 
 export const OnboardingForm = ({ employee }: Props) => {
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [countries, setCountries] = useState<ModelCountry[]>([])
+  const [countries, setCountries] = useState<ViewCountry[]>([])
   const [dialCode, setDialCode] = useState<string>('84')
   const [uploadFiles, setUploadFiles] = useReducer<
     (prev: UploadFiles, next: UploadFiles) => UploadFiles
@@ -308,9 +308,13 @@ export const OnboardingForm = ({ employee }: Props) => {
               <Select placeholder="Select city" showSearch allowClear>
                 {countries
                   .find((each) => each.name === country)
-                  ?.cities?.map((key) => (
-                    <Select.Option key={key} value={key} label={key}>
-                      {key}
+                  ?.cities?.map((city) => (
+                    <Select.Option
+                      key={city.name}
+                      value={city.name}
+                      label={city.name}
+                    >
+                      {city.name}
                     </Select.Option>
                   ))}
               </Select>

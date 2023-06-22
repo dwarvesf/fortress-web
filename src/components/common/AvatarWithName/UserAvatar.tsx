@@ -1,10 +1,10 @@
 import { ROUTES } from 'constants/routes'
 import Link from 'next/link'
-import { CSSProperties } from 'react'
+import { CSSProperties, ComponentProps } from 'react'
 import { ViewEmployeeData, ViewProjectMember } from 'types/schema'
 import { AvatarWithName } from './AvatarWithName'
 
-interface Props {
+interface Props extends ComponentProps<typeof AvatarWithName> {
   user: Pick<
     ViewEmployeeData & ViewProjectMember,
     'id' | 'employeeID' | 'avatar' | 'displayName' | 'fullName' | 'username'
@@ -16,7 +16,7 @@ interface Props {
 }
 
 export const UserAvatar = (props: Props) => {
-  const { user, avatarSize, fontSize, isLink = true, style } = props
+  const { user, avatarSize, fontSize, isLink = true, style, ...rest } = props
 
   return isLink ? (
     <AvatarWithName
@@ -31,6 +31,7 @@ export const UserAvatar = (props: Props) => {
         </Link>
       )}
       {...{ avatarSize, fontSize, style }}
+      {...rest}
     />
   ) : (
     <AvatarWithName
@@ -38,6 +39,7 @@ export const UserAvatar = (props: Props) => {
       name={user.displayName || user.fullName}
       renderName={(name) => name}
       {...{ avatarSize, fontSize, style }}
+      {...rest}
     />
   )
 }
