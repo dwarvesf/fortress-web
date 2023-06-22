@@ -174,7 +174,11 @@ export const EditProfileInfoModal = (props: Props) => {
             </Form.Item>
           </Col>
           <Col span={24} md={{ span: 12 }}>
-            <Form.Item label="Country" name="country">
+            <Form.Item
+              label="Country"
+              name="country"
+              rules={[{ required: true, message: 'Required' }]}
+            >
               <Select
                 showSearch
                 loading={isCountryLoading}
@@ -190,7 +194,11 @@ export const EditProfileInfoModal = (props: Props) => {
             </Form.Item>
           </Col>
           <Col span={24} md={{ span: 12 }}>
-            <Form.Item label="City" name="city">
+            <Form.Item
+              label="City"
+              name="city"
+              rules={[{ required: true, message: 'Required' }]}
+            >
               <Select
                 showSearch
                 loading={isCountryLoading}
@@ -198,12 +206,10 @@ export const EditProfileInfoModal = (props: Props) => {
                 options={
                   countries
                     .find((c) => c.name === country)
-                    ?.cities?.map((city) => {
-                      return {
-                        label: city,
-                        value: city,
-                      }
-                    }) || []
+                    ?.cities?.map((city) => ({
+                      label: city.name,
+                      value: city.name,
+                    })) || []
                 }
                 allowClear
               />

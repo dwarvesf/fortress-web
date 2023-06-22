@@ -123,7 +123,7 @@ export interface ModelCompanyInfo {
 }
 
 export interface ModelCountry {
-  cities?: string[]
+  cities?: number[]
   code?: string
   createdAt?: string
   deletedAt?: GormDeletedAt
@@ -182,6 +182,7 @@ export interface ModelEmployee {
   identityCardPhotoBack?: string
   identityCardPhotoFront?: string
   joinedDate?: string
+  lat?: string
   leftDate?: string
   lineManager?: ModelEmployee
   lineManagerID?: string
@@ -190,6 +191,7 @@ export interface ModelEmployee {
   localBankNumber?: string
   localBankRecipientName?: string
   localBranchName?: string
+  long?: string
   mbti?: string
   mentees?: ModelEmployee[]
   organizations?: ModelOrganization[]
@@ -848,12 +850,14 @@ export interface RequestSubmitOnboardingFormRequest {
   horoscope: string
   identityCardPhotoBack?: string
   identityCardPhotoFront?: string
+  lat?: string
   linkedInName?: string
   localBankBranch: string
   localBankCurrency: string
   localBankNumber: string
   localBankRecipientName: string
   localBranchName: string
+  long?: string
   mbti: string
   notionName?: string
   passportPhotoBack?: string
@@ -926,11 +930,13 @@ export interface RequestUpdateEmployeeGeneralInfoInput {
 
 export interface RequestUpdateInfoInput {
   address?: string
-  city?: string
-  country?: string
+  city: string
+  country: string
   discordName?: string
   githubID?: string
+  lat?: string
   linkedInName?: string
+  long?: string
   notionEmail?: string
   notionID?: string
   notionName?: string
@@ -965,8 +971,8 @@ export interface RequestUpdateMemberInput {
 
 export interface RequestUpdatePersonalInfoInput {
   address: string
-  city?: string
-  country?: string
+  city: string
+  country: string
   dob: string
   gender: string
   personalEmail: string
@@ -1039,8 +1045,8 @@ export interface RequestUpdateWorkUnitInput {
 }
 
 export interface RequestUpsertRollupRequest {
-  categoryID: string
-  channelID?: string
+  categoryID?: string
+  channelID: string
   discordUserID: string
   lastMessageID: string
   messageCount?: number
@@ -1281,6 +1287,12 @@ export interface ViewCitiesResponse {
   data?: string[]
 }
 
+export interface ViewCity {
+  lat?: string
+  long?: string
+  name?: string
+}
+
 export interface ViewClient {
   address?: string
   contacts?: ViewClientContact[]
@@ -1331,7 +1343,14 @@ export interface ViewContentDataResponse {
 }
 
 export interface ViewCountriesResponse {
-  data?: ModelCountry[]
+  data?: ViewCountry[]
+}
+
+export interface ViewCountry {
+  cities?: ViewCity[]
+  code?: string
+  id?: string
+  name?: string
 }
 
 export interface ViewCreateClientResponse {
