@@ -1,17 +1,37 @@
+import { Icon } from '@iconify/react'
 import { Col, Input, Pagination, Row, Space, Tag, Tooltip } from 'antd'
-import { ROUTES } from 'constants/routes'
-import { PageHeader } from 'components/common/PageHeader'
 import Table, { ColumnType } from 'antd/lib/table'
-import Link from 'next/link'
+import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
 import {
   AvatarWithName,
   ProjectAvatar,
   UserAvatar,
 } from 'components/common/AvatarWithName'
 import { Button } from 'components/common/Button'
-import { EmployeeListFilter } from 'types/filters/EmployeeListFilter'
+import { Breadcrumb } from 'components/common/Header/Breadcrumb'
+import { LinkWithIcon } from 'components/common/LinkWithIcon'
+import { PageHeader } from 'components/common/PageHeader'
+import { SEO } from 'components/common/SEO'
+import { TotalResultCount } from 'components/common/Table/TotalResultCount'
+import { TagArray } from 'components/common/TagArray'
+import { statusColors } from 'constants/colors'
+import { DATE_FORMAT } from 'constants/date'
+import { Permission } from 'constants/permission'
+import { ROUTES } from 'constants/routes'
+import { EmployeeStatus, employeeStatuses } from 'constants/status'
+import { useAuthContext } from 'context/auth'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
-import { client, GET_PATHS } from 'libs/apis'
+import { useFilter } from 'hooks/useFilter'
+import { useMouseDown } from 'hooks/useMouseDown'
+import { GET_PATHS, client } from 'libs/apis'
+import debounce from 'lodash.debounce'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { useMemo } from 'react'
+import { theme } from 'styles'
+import { EmployeeListFilter } from 'types/filters/EmployeeListFilter'
+import { fullListPagination } from 'types/filters/Pagination'
+import { ProjectListFilter } from 'types/filters/ProjectListFilter'
 import {
   ModelSeniority,
   ViewBasicEmployeeInfo,
@@ -22,28 +42,8 @@ import {
   ViewPosition,
   ViewStack,
 } from 'types/schema'
-import { useFilter } from 'hooks/useFilter'
-import debounce from 'lodash.debounce'
-import { theme } from 'styles'
-import { TagArray } from 'components/common/TagArray'
-import { useRouter } from 'next/router'
-import { useCallback, useMemo, useState } from 'react'
-import { ProjectListFilter } from 'types/filters/ProjectListFilter'
-import { Breadcrumb } from 'components/common/Header/Breadcrumb'
-import { SEO } from 'components/common/SEO'
-import { Icon } from '@iconify/react'
-import { LinkWithIcon } from 'components/common/LinkWithIcon'
-import { fullListPagination } from 'types/filters/Pagination'
-import { Permission } from 'constants/permission'
-import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
-import { employeeStatuses, EmployeeStatus } from 'constants/status'
-import { statusColors } from 'constants/colors'
-import { useAuthContext } from 'context/auth'
-import { TotalResultCount } from 'components/common/Table/TotalResultCount'
-import { format } from 'utils/date'
-import { DATE_FORMAT } from 'constants/date'
-import { useMouseDown } from 'hooks/useMouseDown'
 import { formatCurrency } from 'utils/currency'
+import { format } from 'utils/date'
 
 const Default = () => {
   const { query } = useRouter()
@@ -54,7 +54,7 @@ const Default = () => {
   const canFilterStatus = permissions.includes(
     Permission.EMPLOYEES_READ_FILTERBYALLSTATUSES,
   )
-  const [value, setValue] = useState((query.keyword || '') as string)
+
   const { filter, setFilter } = useFilter(
     new EmployeeListFilter({
       ...queryFilter,
@@ -68,6 +68,10 @@ const Default = () => {
     {
       shouldUpdateToQuery: true,
     },
+  )
+  const debouncedSetFilter = useMemo(
+    () => debounce(setFilter, 300),
+    [setFilter],
   )
 
   const { data, loading } = useFetchWithCache(
@@ -439,14 +443,6 @@ const Default = () => {
     permissions,
   ])
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const searchEmployees = useCallback(
-    debounce((keyword: string) => {
-      setFilter({ keyword })
-    }, 1000),
-    [],
-  )
-
   return (
     <>
       <SEO title="Employees" />
@@ -468,10 +464,9 @@ const Default = () => {
                 <Input
                   placeholder="Search employees"
                   bordered
-                  value={value}
+                  defaultValue={filter.keyword || ''}
                   onChange={(e) => {
-                    setValue(e.target.value)
-                    searchEmployees(e.target.value)
+                    debouncedSetFilter({ keyword: e.target.value })
                   }}
                 />
               </Col>

@@ -1,32 +1,33 @@
+import { Icon } from '@iconify/react'
 import { Col, Input, Pagination, Row, Space, Tag, Tooltip } from 'antd'
-import { ROUTES } from 'constants/routes'
-import { PageHeader } from 'components/common/PageHeader'
 import Table, { ColumnType } from 'antd/lib/table'
-import Link from 'next/link'
+import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
 import { SimpleAvatarArray } from 'components/common/AvatarArray'
 import { ProjectAvatar, UserAvatar } from 'components/common/AvatarWithName'
 import { Button } from 'components/common/Button'
-import { ProjectListFilter } from 'types/filters/ProjectListFilter'
-import { useFetchWithCache } from 'hooks/useFetchWithCache'
-import { client, GET_PATHS } from 'libs/apis'
-import { ViewMetaData, ViewProjectData, ViewProjectMember } from 'types/schema'
-import { useFilter } from 'hooks/useFilter'
-import debounce from 'lodash.debounce'
-import { transformMetadataToFilterOption } from 'utils/select'
-import { statusColors } from 'constants/colors'
 import { Breadcrumb } from 'components/common/Header/Breadcrumb'
-import { Icon } from '@iconify/react'
+import { PageHeader } from 'components/common/PageHeader'
 import { SEO } from 'components/common/SEO'
-import { ProjectStatus, projectStatuses } from 'constants/status'
-import { useRouter } from 'next/router'
-import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
-import { Permission } from 'constants/permission'
 import { TotalResultCount } from 'components/common/Table/TotalResultCount'
-import { useAuthContext } from 'context/auth'
-import { useMouseDown } from 'hooks/useMouseDown'
-import { formatCurrency } from 'utils/currency'
+import { statusColors } from 'constants/colors'
+import { Permission } from 'constants/permission'
 import { ProjectImportance, projectImportances } from 'constants/project'
+import { ROUTES } from 'constants/routes'
+import { ProjectStatus, projectStatuses } from 'constants/status'
+import { useAuthContext } from 'context/auth'
+import { useFetchWithCache } from 'hooks/useFetchWithCache'
+import { useFilter } from 'hooks/useFilter'
+import { useMouseDown } from 'hooks/useMouseDown'
+import { GET_PATHS, client } from 'libs/apis'
+import debounce from 'lodash.debounce'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { useMemo } from 'react'
 import { theme } from 'styles'
+import { ProjectListFilter } from 'types/filters/ProjectListFilter'
+import { ViewMetaData, ViewProjectData, ViewProjectMember } from 'types/schema'
+import { formatCurrency } from 'utils/currency'
+import { transformMetadataToFilterOption } from 'utils/select'
 
 interface ColumnProps {
   filter: ProjectListFilter
@@ -268,8 +269,15 @@ const Default = () => {
   const { openLink } = useMouseDown()
 
   const { filter, setFilter } = useFilter(
-    new ProjectListFilter({ status: ProjectStatus.ACTIVE, ...queryFilter }),
+    new ProjectListFilter({
+      status: ProjectStatus.ACTIVE,
+      ...queryFilter,
+    }),
     { shouldUpdateToQuery: true },
+  )
+  const debouncedSetFilter = useMemo(
+    () => debounce(setFilter, 300),
+    [setFilter],
   )
 
   const { data, loading } = useFetchWithCache(
@@ -308,13 +316,10 @@ const Default = () => {
                 <Input
                   placeholder="Search projects"
                   bordered
-                  onChange={debounce(
-                    (event) =>
-                      setFilter({
-                        name: event.target.value,
-                      }),
-                    300,
-                  )}
+                  defaultValue={filter.name || ''}
+                  onChange={(event) =>
+                    debouncedSetFilter({ name: event.target.value })
+                  }
                 />
               </Col>
               <AuthenticatedContent
