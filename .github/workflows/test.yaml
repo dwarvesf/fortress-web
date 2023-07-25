@@ -12,11 +12,14 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v2
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 6.0.2
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.8.0
         with:
           access_token: ${{ github.token }}
       - name: Jest run
         run: |
-          pnpm
+          pnpm i
           pnpm test:ci
