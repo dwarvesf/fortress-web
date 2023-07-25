@@ -8,13 +8,13 @@ shipped with TypeScript, SWR, Antd, Jest, testing-library and Storybook.
 ```bash
 git clone --depth=1 git@github.com:dwarvesf/fortress-web.git
 cd fortress-web
-yarn install
+pnpm install
 ```
 
 Then, you can run locally in development mode with live reload:
 
 ```bash
-yarn dev
+pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your favorite browser

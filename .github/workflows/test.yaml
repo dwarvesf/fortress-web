@@ -18,5 +18,5 @@ jobs:
           access_token: ${{ github.token }}
       - name: Jest run
         run: |
-          yarn
-          yarn test:ci
+          pnpm
+          pnpm test:ci

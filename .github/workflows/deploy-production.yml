@@ -28,10 +28,10 @@ jobs:
           path: |
             **/node_modules
             ${{ github.workspace }}/apps/admin/.next/cache
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/pnpm-lock.yaml') }}
 
       - name: Install dependencies
-        run: yarn
+        run: pnpm i
 
       # Build & deploy the app
       - name: Build & Deploy
