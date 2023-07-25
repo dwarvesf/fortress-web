@@ -21,6 +21,10 @@ jobs:
         with:
           access_token: ${{ github.token }}
 
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 6.0.2
+
       # Cache node modules and next folder
       - name: Caching
         uses: actions/cache@v2
