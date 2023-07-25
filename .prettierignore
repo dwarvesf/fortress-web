@@ -6,6 +6,7 @@ storybook-static/
 package-lock.json
 yarn.lock
 package.json
+pnpm-lock.yaml
 # next.js
 /.next/
 /out/

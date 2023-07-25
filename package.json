@@ -2,9 +2,10 @@
   "name": "fortress",
   "version": "1.0.1",
   "scripts": {
+    "preinstall": "npx only-allow pnpm", 
     "dev": "next",
     "build": "next build",
-    "analyze": "ANALYZE=true yarn build",
+    "analyze": "ANALYZE=true pnpm build",
     "start": "next start",
     "test": "jest",
     "test:ci": "jest --env=jsdom --coverage --watchAll=false --maxWorkers=2",
