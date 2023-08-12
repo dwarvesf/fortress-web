@@ -353,7 +353,10 @@ const Default = () => {
             pagination={false}
             scroll={{ x: 'max-content' }}
             onRow={(record) => ({
-              onMouseDown: openLink(
+              onClick: openLink(
+                ROUTES.EMPLOYEE_PEER_REVIEWS(record.eventID!, record.id!),
+              ),
+              onAuxClick: openLink(
                 ROUTES.EMPLOYEE_PEER_REVIEWS(record.eventID!, record.id!),
               ),
             })}

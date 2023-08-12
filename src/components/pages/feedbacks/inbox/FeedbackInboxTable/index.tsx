@@ -93,7 +93,12 @@ export const FeedbackInputTable = ({
         pagination={false}
         scroll={{ x: 'max-content' }}
         onRow={(record) => ({
-          onMouseDown: openLink(
+          onClick: openLink(
+            `${ROUTES.FEEDBACK_INBOX_DETAIL(record.topicID!)}?type=${
+              record.type
+            }&subtype=${record.subtype}&eventID=${record.eventID}`,
+          ),
+          onAuxClick: openLink(
             `${ROUTES.FEEDBACK_INBOX_DETAIL(record.topicID!)}?type=${
               record.type
             }&subtype=${record.subtype}&eventID=${record.eventID}`,

@@ -113,7 +113,8 @@ const EmployeeEngagementPage = () => {
             pagination={false}
             scroll={{ x: 'max-content' }}
             onRow={(record) => ({
-              onMouseDown: openLink(
+              onClick: openLink(ROUTES.EMPLOYEE_ENGAGEMENT_DETAIL(record.id!)),
+              onAuxClick: openLink(
                 ROUTES.EMPLOYEE_ENGAGEMENT_DETAIL(record.id!),
               ),
             })}

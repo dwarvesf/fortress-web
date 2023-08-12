@@ -119,9 +119,8 @@ const PeerReviewPage = () => {
             pagination={false}
             scroll={{ x: 'max-content' }}
             onRow={(record) => ({
-              onMouseDown: openLink(
-                ROUTES.PEER_REVIEW_EVENT_DETAIL(record.id!),
-              ),
+              onClick: openLink(ROUTES.PEER_REVIEW_EVENT_DETAIL(record.id!)),
+              onAuxClick: openLink(ROUTES.PEER_REVIEW_EVENT_DETAIL(record.id!)),
             })}
           />
         </div>
