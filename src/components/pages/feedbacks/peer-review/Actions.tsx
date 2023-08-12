@@ -59,13 +59,7 @@ export const Actions = (props: Props) => {
   }
 
   return (
-    <Row
-      justify="end"
-      gutter={[8, 8]}
-      onClick={(event) => {
-        event.stopPropagation()
-      }}
-    >
+    <Row justify="end" gutter={[8, 8]}>
       <Col>
         <Link href={ROUTES.PEER_REVIEW_EVENT_DETAIL(record.id || '')}>
           <a>
@@ -85,6 +79,7 @@ export const Actions = (props: Props) => {
             type="text-primary"
             size="small"
             icon={<Icon icon="icon-park-outline:delete" width={20} />}
+            onMouseDown={(e) => e.preventDefault()}
             onClick={confirmDelete}
             disabled={record.status !== SurveyEventStatus.DRAFT}
           />

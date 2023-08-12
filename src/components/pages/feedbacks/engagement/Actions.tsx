@@ -7,13 +7,7 @@ import { ViewSurvey } from 'types/schema'
 
 export const Actions = ({ record }: { record: ViewSurvey }) => {
   return (
-    <Row
-      justify="end"
-      gutter={[8, 8]}
-      onClick={(event) => {
-        event.stopPropagation()
-      }}
-    >
+    <Row justify="end" gutter={[8, 8]}>
       <Col>
         <Link href={ROUTES.EMPLOYEE_ENGAGEMENT_DETAIL(record.id || '')}>
           <a>
