@@ -197,7 +197,7 @@ const Default = () => {
                 avatarSize={20}
                 project={project}
                 style={{ marginLeft: -7 }}
-                onMouseDown={(e) => e.preventDefault()}
+                onClick={(e) => e.preventDefault()}
               />
             )}
             maxTag={2}
@@ -281,7 +281,7 @@ const Default = () => {
         dataIndex: 'lineManager',
         render: (value?: ViewBasicEmployeeInfo) =>
           value ? (
-            <UserAvatar user={value} onMouseDown={(e) => e.preventDefault()} />
+            <UserAvatar user={value} onClick={(e) => e.preventDefault()} />
           ) : (
             '-'
           ),
@@ -504,7 +504,8 @@ const Default = () => {
               setFilter(filters)
             }}
             onRow={(record) => ({
-              onMouseDown: openLink(ROUTES.EMPLOYEE_DETAIL(record.username!)),
+              onClick: openLink(ROUTES.EMPLOYEE_DETAIL(record.username!)),
+              onAuxClick: openLink(ROUTES.EMPLOYEE_DETAIL(record.username!)),
             })}
           />
         </div>

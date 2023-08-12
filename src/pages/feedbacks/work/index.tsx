@@ -154,7 +154,8 @@ const WorkPage = () => {
             loading={loading}
             pagination={false}
             onRow={(record) => ({
-              onMouseDown: openLink(ROUTES.WORK_DETAIL(record.id!)),
+              onClick: openLink(ROUTES.WORK_DETAIL(record.id!)),
+              onAuxClick: openLink(ROUTES.WORK_DETAIL(record.id!)),
             })}
           />
         </div>
