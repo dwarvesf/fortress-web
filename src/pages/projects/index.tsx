@@ -370,7 +370,8 @@ const Default = () => {
               })
             }}
             onRow={(record) => ({
-              onMouseDown: openLink(ROUTES.PROJECT_DETAIL(record.code!)),
+              onClick: openLink(ROUTES.PROJECT_DETAIL(record.code!)),
+              onAuxClick: openLink(ROUTES.PROJECT_DETAIL(record.code!)),
             })}
             className="shadowed"
           />
