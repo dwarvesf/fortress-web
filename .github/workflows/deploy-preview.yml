@@ -45,7 +45,7 @@ jobs:
           ref: ${{ github.head_ref }}
 
       - name: Install dependencies
-        run: pnpm i
+        run: pnpm i --shamefully-hoist
 
       # Build & deploy the app
       - name: Build & Deploy
