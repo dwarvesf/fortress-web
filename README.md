@@ -1,7 +1,6 @@
 # Fortress Web V2
 
-An opinionated production-ready frontend boilerplate built on top of NextJS,
-shipped with TypeScript, SWR, Antd, Jest, testing-library and Storybook.
+Web dashboard application for managing resources and measuring performance at https://dwarves.foundation/.
 
 ## Quick Start
 
@@ -25,7 +24,7 @@ to see your project.
 | Name        | Link                                      |
 | ----------- | ----------------------------------------- |
 | Development | https://develop--fortress-v2.netlify.app/ |
-| Production  | https://fortress-v2.netlify.app/          |
+| Production  | https://fortress.d.foundation/            |
 
 ## References
 
