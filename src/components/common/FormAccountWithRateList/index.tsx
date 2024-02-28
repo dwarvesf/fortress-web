@@ -2,7 +2,8 @@ import { Icon } from '@iconify/react'
 import { Form, FormInstance, Input, SelectProps } from 'antd'
 import { Rule } from 'antd/lib/form'
 import { Permission } from 'constants/permission'
-import { client, GET_PATHS } from 'libs/apis'
+import { EmployeeStatus } from 'constants/status'
+import { GET_PATHS, client } from 'libs/apis'
 import { useEffect } from 'react'
 import { NumericFormat } from 'react-number-format'
 import { fullListPagination } from 'types/filters/Pagination'
@@ -23,6 +24,10 @@ interface Props {
 const employeeOptionGetter = async () => {
   const { data } = await client.getEmployees({
     ...fullListPagination,
+    // Only get active employees
+    workingStatuses: Object.values(EmployeeStatus).filter(
+      (status) => status !== EmployeeStatus.LEFT,
+    ),
   })
   return (data || []).map(transformEmployeeDataToSelectOption)
 }

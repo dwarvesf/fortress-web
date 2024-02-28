@@ -29,6 +29,7 @@ import { SELECT_BOX_DATE_FORMAT, SERVER_DATE_FORMAT } from 'constants/date'
 import { renderOrganizationOption } from 'components/common/Select/renderers/organizationOption'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
 import { theme } from 'styles'
+import { EmployeeStatus } from 'constants/status'
 
 type FormValues = Partial<
   Omit<RequestUpdateEmployeeGeneralInfoInput, 'joinedDate' | 'leftDate'>
@@ -212,6 +213,10 @@ export const EditGeneralInfoModal = (props: Props) => {
                 optionGetter={async () => {
                   const { data } = await client.getEmployees({
                     ...fullListPagination,
+                    // Only get active employees
+                    workingStatuses: Object.values(EmployeeStatus).filter(
+                      (status) => status !== EmployeeStatus.LEFT,
+                    ),
                   })
                   return (data || []).map(transformEmployeeDataToSelectOption)
                 }}
@@ -267,6 +272,10 @@ export const EditGeneralInfoModal = (props: Props) => {
                 optionGetter={async () => {
                   const { data } = await client.getEmployees({
                     ...fullListPagination,
+                    // Only get active employees
+                    workingStatuses: Object.values(EmployeeStatus).filter(
+                      (status) => status !== EmployeeStatus.LEFT,
+                    ),
                   })
                   return data?.map(transformEmployeeDataToSelectOption) || []
                 }}

@@ -12,7 +12,11 @@ import {
   transformMetadataToSelectOption,
 } from 'utils/select'
 import { DeploymentType, deploymentTypes } from 'constants/deploymentTypes'
-import { ProjectMemberStatus, projectMemberStatuses } from 'constants/status'
+import {
+  EmployeeStatus,
+  ProjectMemberStatus,
+  projectMemberStatuses,
+} from 'constants/status'
 import { renderEmployeeOption } from 'components/common/Select/renderers/employeeOption'
 import { FormInstance } from 'antd/es/form/Form'
 import { useEffect } from 'react'
@@ -71,6 +75,10 @@ export const MemberForm = (props: Props) => {
       () =>
         client.getEmployees({
           ...fullListPagination,
+          // Only get active employees
+          workingStatuses: Object.values(EmployeeStatus).filter(
+            (status) => status !== EmployeeStatus.LEFT,
+          ),
         }),
     )
 
