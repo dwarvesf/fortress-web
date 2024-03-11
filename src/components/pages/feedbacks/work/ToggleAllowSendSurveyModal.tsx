@@ -9,15 +9,16 @@ import {
   Switch,
   Typography,
 } from 'antd'
-import { useCallback, useMemo, useState } from 'react'
-import debounce from 'lodash.debounce'
+import { ProjectStatus } from 'constants/status'
 import { useFetchWithCache } from 'hooks/useFetchWithCache'
-import { GET_PATHS, client } from 'libs/apis'
-import { ProjectListFilter } from 'types/filters/ProjectListFilter'
 import { useFilter } from 'hooks/useFilter'
+import { client, GET_PATHS } from 'libs/apis'
+import debounce from 'lodash.debounce'
+import { useCallback, useMemo, useState } from 'react'
+import { theme } from 'styles'
+import { ProjectListFilter } from 'types/filters/ProjectListFilter'
 import { ViewProjectData } from 'types/schema'
 import { getErrorMessage } from 'utils/string'
-import { theme } from 'styles'
 
 interface Props {
   isOpen: boolean
@@ -27,7 +28,10 @@ interface Props {
 export const ToggleAllowSendSurveyModal = (props: Props) => {
   const { isOpen, onClose } = props
   const { filter } = useFilter(
-    new ProjectListFilter({ sort: '-start_date, -name', status: 'active' }),
+    new ProjectListFilter({
+      sort: '-start_date, -name',
+      status: [ProjectStatus.ACTIVE],
+    }),
   )
 
   const { data: projectsData, mutate } = useFetchWithCache(

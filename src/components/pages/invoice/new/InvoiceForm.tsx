@@ -61,7 +61,7 @@ export const InvoiceForm = () => {
   const { data: projectData } = useFetchWithCache(GET_PATHS.getProjects, () =>
     client.getProjects({
       ...new ProjectListFilter({
-        status: ProjectStatus.ACTIVE,
+        status: [ProjectStatus.ACTIVE],
         type: [ProjectType.FIXED_COST, ProjectType.TIME_MATERIAL],
       }),
       ...fullListPagination,
