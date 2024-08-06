@@ -51,7 +51,7 @@ const Default = () => {
   const queryFilter = query.filter ? JSON.parse(query.filter as string) : {}
 
   const { permissions } = useAuthContext()
-  const canFilterStatus = permissions.includes(
+  const canFilterAllStatuses = permissions.includes(
     Permission.EMPLOYEES_READ_FILTERBYALLSTATUSES,
   )
 
@@ -159,7 +159,9 @@ const Default = () => {
         filteredValue: filter.workingStatuses,
         filters: Object.keys(employeeStatuses)
           .filter(
-            (key) => canFilterStatus || (!canFilterStatus && key !== 'left'),
+            (key) =>
+              canFilterAllStatuses ||
+              (!canFilterAllStatuses && key !== EmployeeStatus.LEFT),
           )
           .map((key) => {
             return {
@@ -431,7 +433,7 @@ const Default = () => {
       permission && !permissions.includes(permission) ? [] : [col],
     )
   }, [
-    canFilterStatus,
+    canFilterAllStatuses,
     filter,
     positions,
     projects,

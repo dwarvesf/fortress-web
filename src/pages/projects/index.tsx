@@ -214,8 +214,8 @@ const columns = ({
     key: 'status',
     dataIndex: 'status',
     filterSearch: true,
-    filterMultiple: false,
-    filteredValue: filter.status ? [filter.status].flat() : [],
+    filterMultiple: true,
+    filteredValue: filter.status,
     filters: projectStatusData
       .map(transformMetadataToFilterOption)
       .map(({ text, value = '' }) => ({
@@ -270,7 +270,7 @@ const Default = () => {
 
   const { filter, setFilter } = useFilter(
     new ProjectListFilter({
-      status: ProjectStatus.ACTIVE,
+      status: [ProjectStatus.ONBOARDING, ProjectStatus.ACTIVE],
       ...queryFilter,
     }),
     { shouldUpdateToQuery: true },
@@ -365,7 +365,7 @@ const Default = () => {
                 )
                 .join(',')
               setFilter({
-                status: (filters.status?.[0] as string) || '',
+                status: (filters.status as string[]) || [],
                 sort,
               })
             }}

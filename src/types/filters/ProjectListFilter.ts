@@ -2,7 +2,7 @@ import { Nullable } from 'types/common'
 import { Pagination } from './Pagination'
 
 interface RequestGetListProjectInput {
-  status?: string | string[]
+  status?: string[]
   name?: string
   type?: string | string[]
   sort?: string
@@ -18,7 +18,7 @@ export class ProjectListFilter
   sort
 
   constructor({
-    status = null,
+    status = [],
     name = null,
     type = null,
     sort = null,

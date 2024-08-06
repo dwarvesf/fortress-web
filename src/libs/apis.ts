@@ -227,7 +227,9 @@ class Client {
   }
 
   public getProjects(filter: ProjectListFilter) {
-    const queryString = qs.stringify(filter)
+    const queryString = qs.stringify(filter, {
+      arrayFormat: 'repeat',
+    })
 
     return fetcher<ViewProjectListDataResponse & Meta>(
       `${BASE_URL}/projects?${queryString}`,

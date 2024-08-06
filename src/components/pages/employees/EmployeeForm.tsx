@@ -14,7 +14,7 @@ import { renderEmployeeOption } from 'components/common/Select/renderers/employe
 import { renderStatusOption } from 'components/common/Select/renderers/statusOption'
 import { SELECT_BOX_DATE_FORMAT, SERVER_DATE_FORMAT } from 'constants/date'
 import { ROUTES } from 'constants/routes'
-import { employeeStatuses } from 'constants/status'
+import { EmployeeStatus, employeeStatuses } from 'constants/status'
 import { client, GET_PATHS } from 'libs/apis'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
@@ -320,6 +320,10 @@ export const EmployeeForm = (props: Props) => {
                 optionGetter={async () => {
                   const { data } = await client.getEmployees({
                     ...fullListPagination,
+                    // Only get active employees
+                    workingStatuses: Object.values(EmployeeStatus).filter(
+                      (status) => status !== EmployeeStatus.LEFT,
+                    ),
                   })
                   return data?.map(transformEmployeeDataToSelectOption) || []
                 }}
