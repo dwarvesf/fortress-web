@@ -1,11 +1,10 @@
 import { Form, Input, Modal, notification, Space } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
+import { FormAccountWithRateList } from 'components/common/FormAccountWithRateList'
 import { client } from 'libs/apis'
 import { useState } from 'react'
 import { RequestUpdateContactInfoInput } from 'types/schema'
 import { getErrorMessage } from 'utils/string'
-import { FormInputList } from 'components/common/FormInputList'
-import { FormAccountWithRateList } from 'components/common/FormAccountWithRateList'
 
 type ProjectContactInfoFormValues = Partial<RequestUpdateContactInfoInput>
 
@@ -65,7 +64,7 @@ export const EditProjectContactInfoModal = (props: Props) => {
     >
       <Form form={form} onFinish={onSubmit} initialValues={initialValues}>
         <Space direction="vertical" style={{ width: '100%' }}>
-          <FormInputList
+          {/* <FormInputList
             form={form}
             name="clientEmail"
             label="Client Email"
@@ -75,7 +74,7 @@ export const EditProjectContactInfoModal = (props: Props) => {
             ]}
             addButtonProps={{ children: 'Add email' }}
             inputProps={{ type: 'email', placeholder: 'Enter client email' }}
-          />
+          /> */}
           <Form.Item
             label="Project Email"
             name="projectEmail"
@@ -97,7 +96,6 @@ export const EditProjectContactInfoModal = (props: Props) => {
             form={form}
             name="deliveryManagers"
             label="Delivery Managers"
-            rules={[{ required: true, message: 'Required' }]}
             selectProps={{ placeholder: "Select project's delivery manager" }}
           />
           <FormAccountWithRateList

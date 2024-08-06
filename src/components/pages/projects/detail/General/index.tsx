@@ -1,31 +1,34 @@
 import { useDisclosure } from '@dwarvesf/react-hooks'
-import { Space, Col, Row, notification, Card } from 'antd'
+import { Card, Col, Row, Space, notification } from 'antd'
 import { AvatarArray } from 'components/common/AvatarArray'
 import { UserAvatar } from 'components/common/AvatarWithName'
 import { DataRows } from 'components/common/DataRows'
+import { EditableAvatar } from 'components/common/EditableAvatar'
 import { EditableDetailSectionCard } from 'components/common/EditableDetailSectionCard'
 import { AsyncSelect } from 'components/common/Select'
+import { TotalResultCount } from 'components/common/Table/TotalResultCount'
 import { DATE_FORMAT } from 'constants/date'
-import { format } from 'utils/date'
-import { mutate } from 'swr'
-import moment from 'moment'
-import { client, GET_PATHS } from 'libs/apis'
-import { ViewProjectData } from 'types/schema'
-import { transformMetadataToSelectOption } from 'utils/select'
-import { EditableAvatar } from 'components/common/EditableAvatar'
-import { getErrorMessage } from 'utils/string'
 import { Permission } from 'constants/permission'
-import { useAuthContext } from 'context/auth'
 import {
   ProjectFunction,
   ProjectImportance,
   projectFunctions,
   projectImportances,
 } from 'constants/project'
-import { TotalResultCount } from 'components/common/Table/TotalResultCount'
+import { useAuthContext } from 'context/auth'
+import { GET_PATHS, client } from 'libs/apis'
+import moment from 'moment'
+import { mutate } from 'swr'
+import { ViewProjectData } from 'types/schema'
+import { format } from 'utils/date'
+import { transformMetadataToSelectOption } from 'utils/select'
+import { getErrorMessage } from 'utils/string'
+import { EditProjectBankAccountModal } from './EditProjectBankAccountModal'
+import { EditProjectCompanyInfoModal } from './EditProjectCompanyInfoModal'
 import { EditProjectContactInfoModal } from './EditProjectContactInfoModal'
 import { EditProjectGeneralInfoModal } from './EditProjectGeneralInfoModal'
 import { MemberTable } from './MemberTable'
+import { EditProjectClientModal } from './EditProjectClientModal'
 
 interface Props {
   data: ViewProjectData
@@ -47,6 +50,24 @@ export const General = (props: Props) => {
     isOpen: isEditProjectContactInfoDialogOpen,
     onOpen: openEditProjectContactInfoDialog,
     onClose: closeEditProjectContactInfoDialog,
+  } = useDisclosure()
+
+  const {
+    isOpen: isEditProjectBankAccountDialogOpen,
+    onOpen: openEditProjectBankAccountDialog,
+    onClose: closeEditProjectBankAccountDialog,
+  } = useDisclosure()
+
+  const {
+    isOpen: isEditProjectCompanyInfoDialogOpen,
+    onOpen: openEditProjectCompanyInfoDialog,
+    onClose: closeEditProjectCompanyInfoDialog,
+  } = useDisclosure()
+
+  const {
+    isOpen: isEditProjectClientDialogOpen,
+    onOpen: openEditProjectClientDialog,
+    onClose: closeEditProjectClientDialog,
   } = useDisclosure()
 
   const mutateProject = () => {
@@ -184,25 +205,6 @@ export const General = (props: Props) => {
               <DataRows
                 data={[
                   {
-                    label: 'Client Email',
-                    value: (data.clientEmail || []).length ? (
-                      <Space direction="vertical">
-                        {(data.clientEmail || []).map((mail) => (
-                          <a
-                            href={`mailto:${mail}`}
-                            key={mail}
-                            className="styled"
-                          >
-                            {mail}
-                          </a>
-                        ))}
-                      </Space>
-                    ) : (
-                      '-'
-                    ),
-                    permission: Permission.PROJECTS_READ_FULLACCESS,
-                  },
-                  {
                     label: 'Project Email',
                     value: data.projectEmail ? (
                       <a
@@ -256,6 +258,94 @@ export const General = (props: Props) => {
             </EditableDetailSectionCard>
           </Col>
           <Col span={24} lg={{ span: 16 }}>
+            <EditableDetailSectionCard
+              title="Bank Account"
+              onEdit={openEditProjectBankAccountDialog}
+              permission={Permission.PROJECTS_EDIT}
+            >
+              <DataRows
+                data={[
+                  {
+                    label: 'Owner Name',
+                    value: data.bankAccount ? (
+                      <Space direction="vertical">
+                        {data.bankAccount.ownerName}
+                      </Space>
+                    ) : (
+                      '-'
+                    ),
+                  },
+                ]}
+              />
+            </EditableDetailSectionCard>
+          </Col>
+          <Col span={24} lg={{ span: 16 }}>
+            <EditableDetailSectionCard
+              title="Company Info"
+              onEdit={openEditProjectCompanyInfoDialog}
+              permission={Permission.PROJECTS_EDIT}
+            >
+              <DataRows
+                data={[
+                  {
+                    label: 'Name',
+                    value: data.companyInfo ? (
+                      <Space direction="vertical">
+                        {data.companyInfo.name}
+                      </Space>
+                    ) : (
+                      '-'
+                    ),
+                  },
+                ]}
+              />
+            </EditableDetailSectionCard>
+          </Col>
+          <Col span={24} lg={{ span: 16 }}>
+            <EditableDetailSectionCard
+              title="Client"
+              onEdit={openEditProjectClientDialog}
+              permission={Permission.PROJECTS_EDIT}
+            >
+              <DataRows
+                data={[
+                  {
+                    label: 'Name',
+                    value: data.client ? (
+                      <Space direction="vertical">{data.client.name}</Space>
+                    ) : (
+                      '-'
+                    ),
+                  },
+                  {
+                    label: 'Address',
+                    value: data.client ? (
+                      <Space direction="vertical">
+                        {/* TODO: Types */}
+                        {/* @ts-ignore */}
+                        {data.client.address}
+                      </Space>
+                    ) : (
+                      '-'
+                    ),
+                  },
+                  {
+                    label: 'Country',
+                    value: data.client ? (
+                      <Space direction="vertical">
+                        {/* TODO: Types */}
+                        {/* @ts-ignore */}
+                        {data.client.country}
+                      </Space>
+                    ) : (
+                      '-'
+                    ),
+                  },
+                ]}
+              />
+            </EditableDetailSectionCard>
+          </Col>
+          <Col span={24} lg={{ span: 16 }}>
             <TotalResultCount
               count={(data.members || []).length}
               permission={Permission.PROJECTS_CREATE}
@@ -284,6 +374,27 @@ export const General = (props: Props) => {
         isOpen={isEditProjectContactInfoDialogOpen}
         initialValues={{ ...data }}
         onClose={closeEditProjectContactInfoDialog}
+        onAfterSubmit={mutateProject}
+      />
+      <EditProjectBankAccountModal
+        projectID={data.id || ''}
+        isOpen={isEditProjectBankAccountDialogOpen}
+        initialValues={{ ...data, bankAccountID: data.bankAccount?.id }}
+        onClose={closeEditProjectBankAccountDialog}
+        onAfterSubmit={mutateProject}
+      />
+      <EditProjectCompanyInfoModal
+        projectID={data.id || ''}
+        isOpen={isEditProjectCompanyInfoDialogOpen}
+        initialValues={{ ...data, companyInfoID: data.companyInfo?.id }}
+        onClose={closeEditProjectCompanyInfoDialog}
+        onAfterSubmit={mutateProject}
+      />
+      <EditProjectClientModal
+        projectID={data.id || ''}
+        isOpen={isEditProjectClientDialogOpen}
+        initialValues={{ ...data, clientID: data.client?.id }}
+        onClose={closeEditProjectClientDialog}
         onAfterSubmit={mutateProject}
       />
     </>

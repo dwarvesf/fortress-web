@@ -136,6 +136,9 @@ export const GET_PATHS = {
   getResourceWorkUnitDistributionSummary:
     '/dashboards/resources/work-unit-distribution-summary',
   getInvoiceTemplate: '/invoices/template',
+  getBankAccounts: '/bank-accounts',
+  getCompanyInfos: '/company-infos',
+  getClients: '/clients',
 }
 export interface Meta {
   page?: number
@@ -1055,6 +1058,33 @@ class Client {
       headers: {
         ...this.privateHeaders,
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+    })
+  }
+
+  public getBankAccounts() {
+    // TODO: Types
+    return fetcher<any>(`${BASE_URL}/bank-accounts`, {
+      headers: {
+        ...this.privateHeaders,
+      },
+    })
+  }
+
+  public getCompanyInfos() {
+    // TODO: Types
+    return fetcher<any>(`${BASE_URL}/company-infos`, {
+      headers: {
+        ...this.privateHeaders,
+      },
+    })
+  }
+
+  public getClients() {
+    // TODO: Types
+    return fetcher<any>(`${BASE_URL}/clients`, {
+      headers: {
+        ...this.privateHeaders,
       },
     })
   }

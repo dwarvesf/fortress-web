@@ -63,6 +63,36 @@ export function transformOrganizationMetaDataToSelectOption(
   }
 }
 
+// TODO: Types
+export function transformBankAccountDataToSelectOption(metaItem: any) {
+  const { id, ownerName } = metaItem
+
+  return {
+    value: id,
+    label: ownerName,
+  }
+}
+
+// TODO: Types
+export function transformCompanyInfoDataToSelectOption(metaItem: any) {
+  const { id, name } = metaItem
+
+  return {
+    value: id,
+    label: name,
+  }
+}
+
+// TODO: Types
+export function transformClientDataToSelectOption(metaItem: any) {
+  const { id, name } = metaItem
+
+  return {
+    value: id,
+    label: name,
+  }
+}
+
 export const searchFilterOption = (
   input: string,
   option?: DefaultOptionType,
