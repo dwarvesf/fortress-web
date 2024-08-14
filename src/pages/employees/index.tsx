@@ -63,7 +63,7 @@ const Default = () => {
       ),
       // Only show DF employees by default
       // FIXME: Should not hardcode. Maybe need BE to provide this somewhere?
-      organizations: ['dwarves-foundation'],
+      organizations: ['dwarves-foundation', 'console-labs'],
     }),
     {
       shouldUpdateToQuery: true,
