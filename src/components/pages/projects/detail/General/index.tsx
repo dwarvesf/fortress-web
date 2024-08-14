@@ -266,10 +266,10 @@ export const General = (props: Props) => {
               <DataRows
                 data={[
                   {
-                    label: 'Owner Name',
+                    label: 'Bank Name',
                     value: data.bankAccount ? (
                       <Space direction="vertical">
-                        {data.bankAccount.ownerName}
+                        {data.bankAccount.bankName}
                       </Space>
                     ) : (
                       '-'
