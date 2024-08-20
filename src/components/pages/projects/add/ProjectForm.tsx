@@ -106,7 +106,6 @@ export const ProjectForm = (props: Props) => {
             form={form}
             name="accountManagers"
             label="Account Managers"
-            rules={[{ required: true, message: 'Required' }]}
             selectProps={{ placeholder: "Select project's account manager" }}
           />
         </Col>
