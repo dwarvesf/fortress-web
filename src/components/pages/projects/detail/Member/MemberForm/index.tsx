@@ -357,7 +357,7 @@ export const MemberForm = (props: Props) => {
               <NumericFormat
                 placeholder="0"
                 allowNegative={false}
-                decimalScale={0}
+                decimalScale={3}
                 customInput={RateInput}
                 isAllowed={(values) =>
                   values.floatValue === undefined ||
@@ -382,7 +382,7 @@ export const MemberForm = (props: Props) => {
                 <NumericFormat
                   placeholder="0"
                   allowNegative={false}
-                  decimalScale={0}
+                  decimalScale={3}
                   customInput={RateInput}
                   isAllowed={(values) =>
                     values.floatValue === undefined ||
