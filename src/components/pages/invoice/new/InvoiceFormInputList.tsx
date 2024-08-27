@@ -216,6 +216,7 @@ export const InvoiceFormInputList = (props: Props) => {
                             suffix={currency?.symbol}
                             style={{ textAlign: 'right', minWidth: 120 }}
                             readOnly
+                            decimalScale={2}
                             customInput={Input}
                           />
                         </Form.Item>
