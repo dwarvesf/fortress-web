@@ -184,7 +184,7 @@ export const General = (props: Props) => {
     if (value === EmployeeStatus.LEFT) {
       const modalRef = Modal.confirm({
         title: 'Confirm Employee Status Change',
-        content: () => {
+        content: (props: any) => {
           return (
             <div>
               <p>Are you sure you want to change the status to "Left"?</p>
