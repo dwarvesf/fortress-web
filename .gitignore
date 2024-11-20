@@ -38,3 +38,5 @@ storybook-static
 
 # netlify
 .netlify
+.aider*
+.env
