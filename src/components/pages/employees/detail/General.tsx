@@ -187,14 +187,17 @@ export const General = (props: Props) => {
         content: (
           <div>
             <p>Are you sure you want to change the status to "Left"?</p>
-            <label>
+            <div>
               <input
                 type="checkbox"
+                id="keepForwardEmailCheckbox"
                 checked={isKeepFwdEmail}
                 onChange={(e) => setIsKeepFwdEmail(e.target.checked)}
               />
-              Keep Forward Email
-            </label>
+              <label htmlFor="keepForwardEmailCheckbox" style={{ marginLeft: '8px' }}>
+                Keep Forward Email
+              </label>
+            </div>
           </div>
         ),
         onOk() {
