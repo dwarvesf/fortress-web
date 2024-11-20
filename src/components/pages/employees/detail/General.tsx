@@ -55,6 +55,7 @@ import { AuthenticatedContent } from 'components/common/AuthenticatedContent'
 import { TotalResultCount } from 'components/common/Table/TotalResultCount'
 import { formatCurrency } from 'utils/currency'
 import { DEFAULT_CURRENCY_SYMBOL } from 'constants/currency'
+import { Modal } from 'antd'
 import { EditPersonalInfoModal } from './EditPersonalInfoModal'
 import { EditSkillsModal } from './EditSkillsModal'
 import { EditGeneralInfoModal } from './EditGeneralInfoModal'
@@ -180,6 +181,34 @@ export const General = (props: Props) => {
   const [isKeepFwdEmail, setIsKeepFwdEmail] = useState(false)
 
   const onChangeStatus = async (value: string) => {
+    if (value === EmployeeStatus.LEFT) {
+      Modal.confirm({
+        title: 'Confirm Employee Status Change',
+        content: (
+          <div>
+            <p>Are you sure you want to change the status to "Left"?</p>
+            <label>
+              <input
+                type="checkbox"
+                checked={isKeepFwdEmail}
+                onChange={(e) => setIsKeepFwdEmail(e.target.checked)}
+              />
+              Keep Forward Email
+            </label>
+          </div>
+        ),
+        onOk() {
+          return updateEmployeeStatus(value);
+        },
+        okText: 'Confirm',
+        cancelText: 'Cancel',
+      });
+    } else {
+      await updateEmployeeStatus(value);
+    }
+  }
+
+  const updateEmployeeStatus = async (value: string) => {
     try {
       setIsLoading(true)
 
