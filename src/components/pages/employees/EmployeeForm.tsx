@@ -14,7 +14,7 @@ import { renderEmployeeOption } from 'components/common/Select/renderers/employe
 import { renderStatusOption } from 'components/common/Select/renderers/statusOption'
 import { SELECT_BOX_DATE_FORMAT, SERVER_DATE_FORMAT } from 'constants/date'
 import { ROUTES } from 'constants/routes'
-import { EmployeeStatus, employeeStatuses } from '../../constants/status'
+import { EmployeeStatus, employeeStatuses } from 'constants/status'
 import { client, GET_PATHS } from 'libs/apis'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
@@ -182,13 +182,11 @@ export const EmployeeForm = (props: Props) => {
                 showArrow
                 filterOption={searchFilterOption}
               >
-                {Object.keys(employeeStatuses)
-                  .map((key) => ({
-                    value: key,
-                    label:
-                      employeeStatuses[key as keyof typeof employeeStatuses],
-                  }))
-                  .map(renderStatusOption)}
+                {Object.values(EmployeeStatus).map((status) => (
+                  <Select.Option key={status} value={status}>
+                    {employeeStatuses[status]}
+                  </Select.Option>
+                ))}
               </Select>
             </Form.Item>
           </Col>
