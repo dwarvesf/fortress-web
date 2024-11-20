@@ -184,8 +184,7 @@ export const General = (props: Props) => {
     if (value === EmployeeStatus.LEFT) {
       const modalRef = Modal.confirm({
         title: 'Confirm Employee Status Change',
-        content: (props) => {
-          const { okButtonProps } = props;
+        content: () => {
           return (
             <div>
               <p>Are you sure you want to change the status to "Left"?</p>
@@ -195,14 +194,12 @@ export const General = (props: Props) => {
                   id="keepForwardEmailCheckbox"
                   checked={isKeepFwdEmail}
                   onChange={(e) => {
-                    const newValue = e.target.checked;
-                    setIsKeepFwdEmail(newValue);
-                    okButtonProps.disabled = false;
+                    setIsKeepFwdEmail(e.target.checked);
                   }}
                 />
                 <label
                   htmlFor="keepForwardEmailCheckbox"
-                  style={{ marginLeft: '8px' }}
+                  style={{ marginLeft: '8px', cursor: 'pointer' }}
                 >
                   Keep Forward Email
                 </label>
@@ -211,11 +208,10 @@ export const General = (props: Props) => {
           );
         },
         onOk() {
-          return updateEmployeeStatus(value)
+          return updateEmployeeStatus(value);
         },
         okText: 'Confirm',
         cancelText: 'Cancel',
-        okButtonProps: { disabled: false },
       })
     } else {
       await updateEmployeeStatus(value)
