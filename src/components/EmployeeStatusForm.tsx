@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
 import { EmployeeStatus, employeeStatuses } from '../constants/status';
-import { EmployeeStatus, employeeStatuses } from '../constants/status';
-import { EmployeeStatus, employeeStatuses } from '../constants/status';
-
 interface EmployeeStatusFormProps {
   onSubmit: (status: string, isKeepFwdEmail: boolean) => void;
 }
