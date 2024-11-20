@@ -177,11 +177,13 @@ export const General = (props: Props) => {
     mutate([GET_PATHS.getEmployees, data.username])
   }
 
+  const [isKeepFwdEmail, setIsKeepFwdEmail] = useState(false)
+
   const onChangeStatus = async (value: string) => {
     try {
       setIsLoading(true)
 
-      await client.updateEmployeeStatus(data.id || '', value, false)
+      await client.updateEmployeeStatus(data.id || '', value, isKeepFwdEmail)
 
       // Refetch user data
       notification.success({ message: 'Employee status updated successfully!' })
