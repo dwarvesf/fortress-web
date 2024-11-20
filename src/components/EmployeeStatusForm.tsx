@@ -17,14 +17,19 @@ const EmployeeStatusForm: React.FC<EmployeeStatusFormProps> = ({ onSubmit }) => 
     <form onSubmit={handleSubmit}>
       <label>
         Status:
-        <select value={status} onChange={(e) => setStatus(e.target.value)}>
+        <select value={status} onChange={(e) => {
+          setStatus(e.target.value);
+          // Reset isKeepFwdEmail when status changes
+          if (e.target.value !== 'leave') {
+            setIsKeepFwdEmail(false);
+          }
+        }}>
           <option value="">Select status</option>
           {Object.keys(EmployeeStatus).map((key) => (
             <option key={key} value={key}>
               {employeeStatuses[key as EmployeeStatus]}
             </option>
           ))}
-          {/* Add other statuses as needed */}
         </select>
       </label>
       {status === 'leave' && (
