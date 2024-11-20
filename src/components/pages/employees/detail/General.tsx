@@ -28,7 +28,7 @@ import {
   ViewPosition,
 } from 'types/schema'
 import { client, GET_PATHS } from 'libs/apis'
-import { Fragment, ReactElement, useMemo, useState } from 'react'
+import {  ReactElement,  useRef, useMemo, useState } from 'react'
 import {
   EmployeeStatus,
   employeeStatuses,
@@ -178,12 +178,12 @@ export const General = (props: Props) => {
     mutate([GET_PATHS.getEmployees, data.username])
   }
 
-  const [isKeepFwdEmail, setIsKeepFwdEmail] = useState(false)
+  const isKeepFwdEmailRef = useRef(false)
 
   const onChangeStatus = async (value: string) => {
     if (value === EmployeeStatus.LEFT) {
       // Reset the checkbox state before opening the modal
-      setIsKeepFwdEmail(false)
+      isKeepFwdEmailRef.current = false
       
       Modal.confirm({
         title: 'Confirm Employee Status Change',
@@ -194,9 +194,8 @@ export const General = (props: Props) => {
               <input
                 type="checkbox"
                 id="keepForwardEmailCheckbox"
-                checked={isKeepFwdEmail}
                 onChange={(e) => {
-                  setIsKeepFwdEmail(e.target.checked);
+                  isKeepFwdEmailRef.current = e.target.checked
                 }}
               />
               <label
@@ -223,7 +222,7 @@ export const General = (props: Props) => {
     try {
       setIsLoading(true)
 
-      await client.updateEmployeeStatus(data.id || '', value, isKeepFwdEmail)
+      await client.updateEmployeeStatus(data.id || '', value, isKeepFwdEmailRef.current)
 
       // Refetch user data
       notification.success({ message: 'Employee status updated successfully!' })
