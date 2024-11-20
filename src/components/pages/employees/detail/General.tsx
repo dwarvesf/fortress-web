@@ -197,6 +197,7 @@ export const General = (props: Props) => {
                 onChange={(e) => {
                   isKeepFwdEmailRef.current = e.target.checked
                 }}
+                aria-label="Keep Forward Email"
               />
               <label
                 htmlFor="keepForwardEmailCheckbox"
