@@ -216,7 +216,7 @@ class Client {
     })
   }
 
-  public updateEmployeeStatus(id: string, employeeStatus: string) {
+  public updateEmployeeStatus(id: string, employeeStatus: string, isKeepFwdEmail?: boolean) {
     return fetcher<Response<ViewEmployeeData>>(
       `${BASE_URL}/employees/${id}/employee-status`,
       {
@@ -224,6 +224,7 @@ class Client {
         headers: { ...this.privateHeaders, 'Content-Type': 'application/json' },
         body: JSON.stringify({
           employeeStatus,
+          isKeepFwdEmail,
         }),
       },
     )
