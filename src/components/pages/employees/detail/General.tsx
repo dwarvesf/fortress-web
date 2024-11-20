@@ -182,29 +182,34 @@ export const General = (props: Props) => {
 
   const onChangeStatus = async (value: string) => {
     if (value === EmployeeStatus.LEFT) {
+      // Reset the checkbox state before opening the modal
+      setIsKeepFwdEmail(false)
+      
       Modal.confirm({
         title: 'Confirm Employee Status Change',
-        content: (
-          <div>
-            <p>Are you sure you want to change the status to "Left"?</p>
+        content: (props: any) => {
+          return (
             <div>
-              <input
-                type="checkbox"
-                id="keepForwardEmailCheckbox"
-                checked={isKeepFwdEmail}
-                onChange={(e) => {
-                  setIsKeepFwdEmail(e.target.checked);
-                }}
-              />
-              <label
-                htmlFor="keepForwardEmailCheckbox"
-                style={{ marginLeft: '8px', cursor: 'pointer' }}
-              >
-                Keep Forward Email
-              </label>
+              <p>Are you sure you want to change the status to "Left"?</p>
+              <div>
+                <input
+                  type="checkbox"
+                  id="keepForwardEmailCheckbox"
+                  checked={isKeepFwdEmail}
+                  onChange={(e) => {
+                    setIsKeepFwdEmail(e.target.checked);
+                  }}
+                />
+                <label
+                  htmlFor="keepForwardEmailCheckbox"
+                  style={{ marginLeft: '8px', cursor: 'pointer' }}
+                >
+                  Keep Forward Email
+                </label>
+              </div>
             </div>
-          </div>
-        ),
+          );
+        },
         onOk() {
           return updateEmployeeStatus(value);
         },
