@@ -28,7 +28,7 @@ import {
   ViewPosition,
 } from 'types/schema'
 import { client, GET_PATHS } from 'libs/apis'
-import { ReactElement, useMemo, useState } from 'react'
+import { Fragment, ReactElement, useMemo, useState } from 'react'
 import {
   EmployeeStatus,
   employeeStatuses,
@@ -181,7 +181,7 @@ export const General = (props: Props) => {
     try {
       setIsLoading(true)
 
-      await client.updateEmployeeStatus(data.id || '', value)
+      await client.updateEmployeeStatus(data.id || '', value, false)
 
       // Refetch user data
       notification.success({ message: 'Employee status updated successfully!' })
@@ -420,18 +420,28 @@ export const General = (props: Props) => {
                     {
                       label: 'Status',
                       value: (
-                        <Select
-                          loading={isLoading}
-                          style={{ width: '100%' }}
-                          value={data.status}
-                          onChange={onChangeStatus}
-                          options={Object.keys(employeeStatuses).map((key) => {
-                            return {
-                              label: employeeStatuses[key as EmployeeStatus],
-                              value: key,
-                            }
-                          })}
-                        />
+                        <Fragment>
+                          <Select
+                            loading={isLoading}
+                            style={{ width: '100%' }}
+                            value={data.status}
+                            onChange={onChangeStatus}
+                            options={Object.keys(employeeStatuses).map((key) => {
+                              return {
+                                label: employeeStatuses[key as EmployeeStatus],
+                                value: key,
+                              }
+                            })}
+                          />
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={isKeepFwdEmail}
+                              onChange={(e) => setIsKeepFwdEmail(e.target.checked)}
+                            />
+                            Keep Forward Email
+                          </label>
+                        </Fragment>
                       ),
                     },
                     {
