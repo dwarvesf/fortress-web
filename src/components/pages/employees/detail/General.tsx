@@ -182,9 +182,9 @@ export const General = (props: Props) => {
 
   const onChangeStatus = async (value: string) => {
     if (value === EmployeeStatus.LEFT) {
-      const modalRef = Modal.confirm({
+      Modal.confirm({
         title: 'Confirm Employee Status Change',
-        content: (props: any) => {
+        content: () => {
           return (
             <div>
               <p>Are you sure you want to change the status to "Left"?</p>
@@ -212,7 +212,7 @@ export const General = (props: Props) => {
         },
         okText: 'Confirm',
         cancelText: 'Cancel',
-      })
+      });
     } else {
       await updateEmployeeStatus(value)
     }
