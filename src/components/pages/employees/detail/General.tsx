@@ -194,20 +194,23 @@ export const General = (props: Props) => {
                 checked={isKeepFwdEmail}
                 onChange={(e) => setIsKeepFwdEmail(e.target.checked)}
               />
-              <label htmlFor="keepForwardEmailCheckbox" style={{ marginLeft: '8px' }}>
+              <label
+                htmlFor="keepForwardEmailCheckbox"
+                style={{ marginLeft: '8px' }}
+              >
                 Keep Forward Email
               </label>
             </div>
           </div>
         ),
         onOk() {
-          return updateEmployeeStatus(value);
+          return updateEmployeeStatus(value)
         },
         okText: 'Confirm',
         cancelText: 'Cancel',
-      });
+      })
     } else {
-      await updateEmployeeStatus(value);
+      await updateEmployeeStatus(value)
     }
   }
 
@@ -454,28 +457,18 @@ export const General = (props: Props) => {
                     {
                       label: 'Status',
                       value: (
-                        <Fragment>
-                          <Select
-                            loading={isLoading}
-                            style={{ width: '100%' }}
-                            value={data.status}
-                            onChange={onChangeStatus}
-                            options={Object.keys(employeeStatuses).map((key) => {
-                              return {
-                                label: employeeStatuses[key as EmployeeStatus],
-                                value: key,
-                              }
-                            })}
-                          />
-                          <label>
-                            <input
-                              type="checkbox"
-                              checked={isKeepFwdEmail}
-                              onChange={(e) => setIsKeepFwdEmail(e.target.checked)}
-                            />
-                            Keep Forward Email
-                          </label>
-                        </Fragment>
+                        <Select
+                          loading={isLoading}
+                          style={{ width: '100%' }}
+                          value={data.status}
+                          onChange={onChangeStatus}
+                          options={Object.keys(employeeStatuses).map((key) => {
+                            return {
+                              label: employeeStatuses[key as EmployeeStatus],
+                              value: key,
+                            }
+                          })}
+                        />
                       ),
                     },
                     {
