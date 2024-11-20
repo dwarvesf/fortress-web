@@ -182,7 +182,7 @@ export const General = (props: Props) => {
 
   const onChangeStatus = async (value: string) => {
     if (value === EmployeeStatus.LEFT) {
-      Modal.confirm({
+      const modalRef = Modal.confirm({
         title: 'Confirm Employee Status Change',
         content: (
           <div>
@@ -192,7 +192,57 @@ export const General = (props: Props) => {
                 type="checkbox"
                 id="keepForwardEmailCheckbox"
                 checked={isKeepFwdEmail}
-                onChange={(e) => setIsKeepFwdEmail(e.target.checked)}
+                onChange={(e) => {
+                  const newValue = e.target.checked;
+                  setIsKeepFwdEmail(newValue);
+                  modalRef.update({
+                    content: (
+                      <div>
+                        <p>Are you sure you want to change the status to "Left"?</p>
+                        <div>
+                          <input
+                            type="checkbox"
+                            id="keepForwardEmailCheckbox"
+                            checked={newValue}
+                            onChange={(e) => {
+                              const updatedValue = e.target.checked;
+                              setIsKeepFwdEmail(updatedValue);
+                              modalRef.update({
+                                content: (
+                                  <div>
+                                    <p>Are you sure you want to change the status to "Left"?</p>
+                                    <div>
+                                      <input
+                                        type="checkbox"
+                                        id="keepForwardEmailCheckbox"
+                                        checked={updatedValue}
+                                        onChange={(e) => {
+                                          setIsKeepFwdEmail(e.target.checked);
+                                        }}
+                                      />
+                                      <label
+                                        htmlFor="keepForwardEmailCheckbox"
+                                        style={{ marginLeft: '8px' }}
+                                      >
+                                        Keep Forward Email
+                                      </label>
+                                    </div>
+                                  </div>
+                                ),
+                              });
+                            }}
+                          />
+                          <label
+                            htmlFor="keepForwardEmailCheckbox"
+                            style={{ marginLeft: '8px' }}
+                          >
+                            Keep Forward Email
+                          </label>
+                        </div>
+                      </div>
+                    ),
+                  });
+                }}
               />
               <label
                 htmlFor="keepForwardEmailCheckbox"
