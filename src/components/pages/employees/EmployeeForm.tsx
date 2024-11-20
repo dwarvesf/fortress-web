@@ -182,13 +182,11 @@ export const EmployeeForm = (props: Props) => {
                 showArrow
                 filterOption={searchFilterOption}
               >
-                {Object.keys(employeeStatuses)
-                  .map((key) => ({
-                    value: key,
-                    label:
-                      employeeStatuses[key as keyof typeof employeeStatuses],
-                  }))
-                  .map(renderStatusOption)}
+                {Object.values(EmployeeStatus).map((status) => (
+                  <Select.Option key={status} value={status}>
+                    {employeeStatuses[status]}
+                  </Select.Option>
+                ))}
               </Select>
             </Form.Item>
           </Col>
