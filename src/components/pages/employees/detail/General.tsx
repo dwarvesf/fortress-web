@@ -184,80 +184,38 @@ export const General = (props: Props) => {
     if (value === EmployeeStatus.LEFT) {
       const modalRef = Modal.confirm({
         title: 'Confirm Employee Status Change',
-        content: (
-          <div>
-            <p>Are you sure you want to change the status to "Left"?</p>
+        content: (props) => {
+          const { okButtonProps } = props;
+          return (
             <div>
-              <input
-                type="checkbox"
-                id="keepForwardEmailCheckbox"
-                checked={isKeepFwdEmail}
-                onChange={(e) => {
-                  const newValue = e.target.checked;
-                  setIsKeepFwdEmail(newValue);
-                  modalRef.update({
-                    content: (
-                      <div>
-                        <p>Are you sure you want to change the status to "Left"?</p>
-                        <div>
-                          <input
-                            type="checkbox"
-                            id="keepForwardEmailCheckbox"
-                            checked={newValue}
-                            onChange={(e) => {
-                              const updatedValue = e.target.checked;
-                              setIsKeepFwdEmail(updatedValue);
-                              modalRef.update({
-                                content: (
-                                  <div>
-                                    <p>Are you sure you want to change the status to "Left"?</p>
-                                    <div>
-                                      <input
-                                        type="checkbox"
-                                        id="keepForwardEmailCheckbox"
-                                        checked={updatedValue}
-                                        onChange={(e) => {
-                                          setIsKeepFwdEmail(e.target.checked);
-                                        }}
-                                      />
-                                      <label
-                                        htmlFor="keepForwardEmailCheckbox"
-                                        style={{ marginLeft: '8px' }}
-                                      >
-                                        Keep Forward Email
-                                      </label>
-                                    </div>
-                                  </div>
-                                ),
-                              });
-                            }}
-                          />
-                          <label
-                            htmlFor="keepForwardEmailCheckbox"
-                            style={{ marginLeft: '8px' }}
-                          >
-                            Keep Forward Email
-                          </label>
-                        </div>
-                      </div>
-                    ),
-                  });
-                }}
-              />
-              <label
-                htmlFor="keepForwardEmailCheckbox"
-                style={{ marginLeft: '8px' }}
-              >
-                Keep Forward Email
-              </label>
+              <p>Are you sure you want to change the status to "Left"?</p>
+              <div>
+                <input
+                  type="checkbox"
+                  id="keepForwardEmailCheckbox"
+                  checked={isKeepFwdEmail}
+                  onChange={(e) => {
+                    const newValue = e.target.checked;
+                    setIsKeepFwdEmail(newValue);
+                    okButtonProps.disabled = false;
+                  }}
+                />
+                <label
+                  htmlFor="keepForwardEmailCheckbox"
+                  style={{ marginLeft: '8px' }}
+                >
+                  Keep Forward Email
+                </label>
+              </div>
             </div>
-          </div>
-        ),
+          );
+        },
         onOk() {
           return updateEmployeeStatus(value)
         },
         okText: 'Confirm',
         cancelText: 'Cancel',
+        okButtonProps: { disabled: false },
       })
     } else {
       await updateEmployeeStatus(value)
