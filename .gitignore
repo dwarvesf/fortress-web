@@ -40,3 +40,4 @@ storybook-static
 .netlify
 .aider*
 .env
+.vercel

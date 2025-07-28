@@ -1,0 +1,15 @@
+{
+  "env": {
+    "BASE_URL": "https://develop-api.fortress.d.foundation/api/v1",
+    "GOOGLE_CLIENT_ID": "180094408893-s17eot91hbmqa5lp6gsgjglan9et20sp.apps.googleusercontent.com",
+    "PNPM_FLAGS": "--shamefully-hoist"
+  },
+  "build": {
+    "env": {
+      "BASE_URL": "https://develop-api.fortress.d.foundation/api/v1",
+      "GOOGLE_CLIENT_ID": "180094408893-s17eot91hbmqa5lp6gsgjglan9et20sp.apps.googleusercontent.com",
+      "PNPM_FLAGS": "--shamefully-hoist"
+    }
+  },
+  "installCommand": "pnpm install --shamefully-hoist"
+}
