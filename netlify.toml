@@ -1,3 +1,14 @@
+# ==========================================
+# DEPRECATED: This file is no longer used
+# ==========================================
+# This project has been migrated to Vercel.
+# This file is kept for historical reference only.
+# New deployments use vercel.json configuration.
+# 
+# Migration date: 2025-07-28
+# See: .github/workflows/ for current deployment setup
+# ==========================================
+
 # Settings in the [build] context are global and are applied to all contexts
 # unless otherwise overridden by more specific contexts.
 [build]
