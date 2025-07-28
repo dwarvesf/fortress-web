@@ -34,8 +34,8 @@ pnpm install --shamefully-hoist
 The application uses the following environment variables (configured in `vercel.json`):
 
 ```bash
-BASE_URL=https://develop-api.fortress.d.foundation/api/v1
-GOOGLE_CLIENT_ID=180094408893-s17eot91hbmqa5lp6gsgjglan9et20sp.apps.googleusercontent.com
+BASE_URL=https://api.fortress.d.foundation/api/v1
+GOOGLE_CLIENT_ID=579303681879-lavu71osb0v5ko9nudn0p2dpppmbqjsb.apps.googleusercontent.com
 PNPM_FLAGS=--shamefully-hoist
 ```
 
